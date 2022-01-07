@@ -1,0 +1,51 @@
+% !TeX root = thesis.tex
+\ifdefined\UtilIncluded
+  \renewcommand{\startchapter}[1]{}
+  \renewcommand{\stopchapter}{}
+\else
+
+\newcommand{\startchapter}[1]{\begin{document}\setcounter{chapter}{#1}\addtocounter{chapter}{-1}}
+\newcommand{\stopchapter}{\end{document}}
+
+
+\documentclass{book}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsfonts,amsmath, amsthm, amssymb}
+\usepackage{xspace}
+\usepackage[hidelinks,bookmarks]{hyperref}
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{bm}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{physics}
+\usepackage{multicol}
+\usepackage{xstring}
+\usepackage{pythonhighlight}
+\usepackage{parskip}
+\usepackage{thmtools}
+\usepackage{relsize}
+\usepackage{bookmark}
+\usepackage{lmodern}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\DeclareRobustCommand{\oneD}{{1{\relsize{-1}D}}\xspace}
+\DeclareRobustCommand{\twoD}{{2{\relsize{-1}D}}\xspace}
+\DeclareRobustCommand{\threeD}{{3{\relsize{-1}D}}\xspace}
+\DeclareRobustCommand{\cpp}{{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}\textbf{++}}}\xspace}}
+\pdfstringdefDisableCommands{%
+    \def\cpp{C++}%
+    \def\oneD{1D}%
+    \def\twoD{2D}%
+    \def\threeD{3D}%
+}
+
+\fi
+\gdef\UtilIncluded{}
+

@@ -1,0 +1,7 @@
+{
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "ltex.latex.commands": {
+    "\\DeclareRobustCommand{}{}": "ignore",
+    "\\texorpdfstring{}{}": "dummy"
+  }
+}
