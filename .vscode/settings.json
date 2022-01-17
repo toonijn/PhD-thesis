@@ -3,5 +3,15 @@
   "ltex.latex.commands": {
     "\\DeclareRobustCommand{}{}": "ignore",
     "\\texorpdfstring{}{}": "dummy"
-  }
+  },
+  "ltex.enabled": [
+    "context",
+    "context.tex",
+    "html",
+    "latex",
+    "markdown",
+    "org",
+    "restructuredtext",
+    "rsweave"
+  ]
 }

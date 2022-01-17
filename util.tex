@@ -8,12 +8,12 @@
 \newcommand{\stopchapter}{\end{document}}
 
 
-\documentclass{book}
+\documentclass[a4paper]{book}
 \usepackage[utf8]{inputenc}
 
 \usepackage{amsfonts,amsmath, amsthm, amssymb}
 \usepackage{xspace}
-\usepackage[hidelinks,bookmarks]{hyperref}
+\usepackage[hidelinks,bookmarks,pdfusetitle]{hyperref}
 \usepackage{listings}
 \usepackage[pdftex]{graphicx}
 \usepackage{bm}
@@ -30,6 +30,11 @@
 \usepackage{relsize}
 \usepackage{bookmark}
 \usepackage{lmodern}
+\usepackage{ifthen}
+\usepackage{biblatex}
+\usepackage{csquotes}
+
+\addbibresource{references.bib}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -45,6 +50,10 @@
     \def\twoD{2D}%
     \def\threeD{3D}%
 }
+
+\newcommand{\longchapter}[2][]{%
+    \chapter[#2]{#2}%
+    \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
 
 \fi
 \gdef\UtilIncluded{}
