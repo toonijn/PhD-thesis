@@ -1,3 +1,5 @@
 Matslise
 Toon
 Baeyens
+Sturm-Liouville
+eigenproblem

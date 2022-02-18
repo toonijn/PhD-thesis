@@ -4,6 +4,48 @@
 
 \longchapter[The \oneD Schrödinger equation]{The one-dimensional time-independent Schrödinger equation}
 
+\section{Introduction}
+
+The one-dimensional time-independent Schrödinger equation is an eigenvalue problem with boundary conditions. Solutions are given as an eigenvalue $\lambda \in \RR$ with corresponding eigenfunction $y: \RR \to \RR$. These eigenfunctions are defined over the bounded domain $[a, b] \subseteq \RR$ of the problem. Each solution has to satisfy the following equation
+$$
+    -y''(x) + V(x)y(x) = \lambda y(x)
+$$
+for each of the values $x\in [a, b]$. In this equation the given function $V: \RR \to \RR$ is the potential of the problem at hand. Note that in general if $y(x)$ is an eigenfunction, $c\,y(x)$ will also be an eigenfunction with the same eigenvalue, for each value of $c \in \RR$. As such, it is not really possible to say ``\emph{the} eigenfunction of corresponding to a certain eigenvalue". Later on we will prove that in many cases the eigenfunction is, up to a constant factor, uniquely defined.
+
+Boundary conditions have to be specified before solutions can be found. These conditions pose restrictions on $y(a)$, $y'(a)$, $y(b)$ and $y'(b)$. Boundary conditions come in many flavors. We provide an overview of the most common ones:
+\begin{itemize}
+    \item \emph{Dirichlet boundary conditions} specify which value the solution takes on the boundary of the domain. In our case, eigenfunctions can always be scaled, as such, it is not useful to specify the value of the solution different from zero on the boundary. This type of boundary condition thus simplifies to $y(a) = 0$ and $y(b) = 0$.
+    \item \emph{Neumann boundary conditions} specify which value the derivative of a solution takes on the boundary of the domain. In our case, the same remark as given for the Dirichlet boundary conditions applies. This means that Neumann boundary conditions imply that $y'(a) = 0$ and $y'(b) = 0$.
+    \item \emph{Robin boundary conditions} are a generalization of both previous boundary conditions. When these conditions are imposed on a solution $y(x)$ we imply that a certain weighted average of the function and its derivative are a fixed value. As solutions can always be scaled, Robin boundary conditions can be, in our case, rewritten to
+          $$
+              \alpha_a y(a) + \beta_a y(a) = 0 \text{ and } \alpha_b y(b) + \beta_b y(b) = 0  \text{.}
+          $$
+    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{anti-periodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized to
+          $$
+              \begin{pmatrix} y(a) \\ y'(a) \end{pmatrix} = \vb{K} \begin{pmatrix} y(b) \\ y'(b) \end{pmatrix}\text{.}
+          $$
+\end{itemize}
+
+Note that Dirichlet or Neumann boundary conditions can always be written as Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is most general to always consider Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and give rise to more edge cases and subtleties. This case will be later studied in section \ref{sec:1d_periodic}.
+
+\subsection{Properties of the time-independent one-dimensional Schrödinger equation}
+
+Before developing numerical methods for solving these equations it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
+
+In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, articles and books cover the more general Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more wildly applicable, and so more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of the Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961a}
+
+The Sturm-Liouville equation is a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$
+$$
+    -(p(x) y'(x))' + q(x) y(x) = E w(x) y(x)\text{.}
+$$
+The continuous and finite functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain. These functions define the problem. A solution consists of an eigenvalue $E$ with corresponding eigenfunction $y(x)$. For now, we will study the Sturm-Liouville equation with Robin boundary conditions:
+$$
+    \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
+$$
+
+Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$. Even stronger, Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
+
+
 \section{Background about Matslise}
 
 \subsection{CP-methods}
@@ -17,5 +59,11 @@
 \subsection{Architecture of the \texorpdfstring{\cpp}{C++} library}
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}
+\label{sec:1d_periodic}
+
+\begin{theorem}
+
+\end{theorem}
+\cite{binding_prufer_2012}
 
 \stopchapter

@@ -32,6 +32,7 @@
 \usepackage{lmodern}
 \usepackage{ifthen}
 \usepackage{biblatex}
+\usepackage{microtype}
 \usepackage{csquotes}
 
 \addbibresource{references.bib}
@@ -45,15 +46,17 @@
 \DeclareRobustCommand{\threeD}{{3{\relsize{-1}D}}\xspace}
 \DeclareRobustCommand{\cpp}{{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}\textbf{++}}}\xspace}}
 \pdfstringdefDisableCommands{%
-    \def\cpp{C++}%
-    \def\oneD{1D}%
-    \def\twoD{2D}%
-    \def\threeD{3D}%
+  \def\cpp{C++}%
+  \def\oneD{1D}%
+  \def\twoD{2D}%
+  \def\threeD{3D}%
 }
 
 \newcommand{\longchapter}[2][]{%
-    \chapter[#2]{#2}%
-    \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
+  \chapter[#2]{#2}%
+  \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
+
+\newcommand{\RR}{\mathbb{R}}
 
 \fi
 \gdef\UtilIncluded{}
