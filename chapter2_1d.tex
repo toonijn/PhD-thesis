@@ -28,7 +28,7 @@ Boundary conditions have to be specified before solutions can be found. These co
 
 Note that Dirichlet or Neumann boundary conditions can always be written as Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is most general to always consider Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and give rise to more edge cases and subtleties. This case will be later studied in section \ref{sec:1d_periodic}.
 
-\subsection{Properties of the time-independent one-dimensional Schrödinger equation}
+\subsection{Properties of the Sturm-Liouville equation}
 
 Before developing numerical methods for solving these equations it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
@@ -43,7 +43,26 @@ $$
     \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 $$
 
-Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$. Even stronger, Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
+Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$. 
+
+{\color{red}
+
+Following from the mathematical background chapter:
+\begin{itemize}
+    \item Eigenvalues are real and ordered.
+    \item Eigenfunctions can be orthonormal
+\end{itemize}
+
+In finite and non-periodic cases: eigenvalues are unique.
+
+\subsection{Prüfer's transformation}
+
+
+\subsection{Liouville's transformation}
+Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
+
+}
+
 
 
 \section{Background about Matslise}
