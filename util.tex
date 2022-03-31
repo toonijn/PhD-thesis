@@ -2,6 +2,7 @@
 \ifdefined\UtilIncluded
   \renewcommand{\startchapter}[1]{}
   \renewcommand{\stopchapter}{}
+  \renewcommand{\undefinedlabel}[2]{}
 \else
 
 \newcommand{\startchapter}[1]{\begin{document}\setcounter{chapter}{#1}\addtocounter{chapter}{-1}}
@@ -56,11 +57,24 @@
   \chapter[#2]{#2}%
   \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
 
-  \newcommand{\NN}{\mathbb{N}}
-  \newcommand{\ZZ}{\mathbb{Z}}
-  \newcommand{\QQ}{\mathbb{Q}}
-  \newcommand{\QQbar}{\overline{\mathbb{Q}}}
-  \newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\QQbar}{\overline{\mathbb{Q}}}
+\newcommand{\RR}{\mathbb{R}}
+
+\newcommand{\xmin}{x_\text{min}}
+\newcommand{\xmax}{x_\text{max}}
+\newcommand{\ymin}{y_\text{min}}
+\newcommand{\ymax}{y_\text{max}}
+
+% https://tex.stackexchange.com/a/18192/163747
+\makeatletter
+\newcommand{\undefinedlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}} }%
+   \hypertarget{#1}{}
+}
+\makeatother
 
 \fi
 \gdef\UtilIncluded{}

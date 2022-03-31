@@ -2,7 +2,29 @@
 \input{util.tex}
 \startchapter{3}
 
+\undefinedlabel{sec:intro_selfadjoing}{1.\~}
+
 \longchapter[A shooting method]{A shooting method for the \twoD time-independent Schrödinger equation}
+
+There are many general methods for partial differential equations. Each method has its own benefits and disadvantages. As a rule of thumb one can say that a method which is very general and widely applicable, will be less efficient, less accurate or both then a method which is specifically tuned for the problem at hand. With that in mind, there is a real advantage to gain when investing time and research into a highly tuned optimized method for a specific problem.
+
+In this, and the next, chapter we will study the two-dimensional time-independent Schrödinger equations
+\begin{equation}\label{equ:schrodinger_2d}
+    -\nabla\psi(x, y) + V(x, y) \psi(x, y) = \lambda \psi(x, y)
+\end{equation}
+on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogenous Dirichlet boundary conditions, this means $\forall (x, y) \in \delta\Omega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $\lambda$ such that a function $\psi(x, y)$  exists such they together satisfy the equation \eqref{equ:schrodinger_2d}. Such a value $\lambda$ is called an \emph{eigenvalue} with the corresponding \emph{eigenfunction} $\psi(x, y)$.
+
+Equation \eqref{equ:schrodinger_2d} can also be interpreted as finding the eigenvalues of the \emph{Hamiltonian} $H$:
+$$
+    H := -\nabla + V(x, y)\text{.}
+$$
+\begin{theorem}
+    The Hamiltonian operator is self-adjoint. And some more adjectives.
+\end{theorem}
+
+Proving the Hamiltonian is a linear self-adjoint operator allows us to employ the theory as described in section \ref{sec:intro_selfadjoing}.
+
+In \cite{ixaru_new_2010} a new method is proposed to approximate solutions of the two-dimensional time-independent Schrödinger equation.
 
 \section{The method}
 
