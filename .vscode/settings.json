@@ -2,7 +2,8 @@
   "latex-workshop.latex.outDir": "%DIR%/build",
   "ltex.latex.commands": {
     "\\DeclareRobustCommand{}{}": "ignore",
-    "\\texorpdfstring{}{}": "dummy"
+    "\\texorpdfstring{}{}": "dummy",
+    "\\undefinedlabel{}{}": "dummy"
   },
   "ltex.enabled": [
     "context",

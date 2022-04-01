@@ -4,3 +4,4 @@ Baeyens
 Sturm-Liouville
 eigenproblem
 Stevin
+Ixaru
