@@ -134,20 +134,71 @@ This concludes our overview of the method described by Ixaru in \cite{ixaru_new_
 
 \section{Determining the index of eigenvalues}
 
+\begin{theorem}[Counting eigenvalues]
+    \label{the:c3_counting_eigenvalues}
+\end{theorem}
+
 \subsection{A test on a more exotic domain}
 
+As a numerical demonstration that this theorem is true for more domains than only the rectangle, we demonstrate it on a series of moon-shaped domains. For this, define the transformation $T:[-\frac{\pi}{2}, \frac{\pi}{2}] \times [-1, 1] \to \RR^2$ as:
+\begin{equation}\label{equ:c3_disc_transformation}
+    T(\alpha, t) = \begin{pmatrix}
+        \cot(\alpha) \sin(t \alpha) \\
+        \frac{1}{\sin(\alpha)} - \cot(\alpha) \cos(t \alpha)
+    \end{pmatrix}\text{.}
+\end{equation}
+Strictly speaking, for $\alpha = 0$,  $T(\alpha, t)$ is undefined. In these points the limit $\lim_{\alpha \to 0} T(\alpha, t)$ should be considered. In figure \ref{fig:c3_disc_transformation} this transformation is visualized.
 
 \begin{figure}
     \begin{center}
         \begin{minipage}{.5\textwidth}
             \includegraphics[width=\textwidth]{img/chapter3/on_disc/disc_original.pdf}%
-        \end{minipage}\begin{minipage}{.1\textwidth}
-            $$ \to $$
+        \end{minipage}\begin{minipage}{.1\textwidth}\begin{center}
+                \Large $ \xrightarrow{T} $
+            \end{center}
         \end{minipage}\begin{minipage}{.4\textwidth}
             \includegraphics[width=\textwidth]{img/chapter3/on_disc/disc_transformed.pdf}
         \end{minipage}
     \end{center}
+    \caption{The transformation $T(\alpha, t)$ from \eqref{equ:c3_disc_transformation} is applied to a grid of points.}
+    \label{fig:c3_disc_transformation}
 \end{figure}
+
+
+
+To demonstrate the effectiveness of theorem \ref{the:c3_counting_eigenvalues}, we will consider the series of continuous subdomains
+$$
+    \Omega_\epsilon = \left\{T(\alpha, t) | \forall \alpha \in \left[-\frac{\pi}{2}, \frac{\pi}{2}\right], \forall t \in [-1, 2\epsilon - 1]  \right\}\text{.}
+$$
+On these subdomains $\Omega_\epsilon$ we will approximate the eigenvalues of the Schrödinger equation with Dirichlet boundary conditions. Subsequently, these eigenvalues can be compared to the eigenvalues on the unit disc. The theorem promises that for an eigenvalue $\lambda_i$ on the unit disc, exactly $i$ subdomains can be found on which this $\lambda_i$ is also an eigenvalue.
+
+First, let us clearly define which Schrödinger problem we are solving: Find the eigenvalues $\lambda$ with corresponding eigenfunction $\psi(x, y) \in \Omega_\epsilon \to \RR$ for which
+\begin{equation}\label{equ:c3_disc_schrodinger}
+-\nabla^2 \psi(x, y) = \lambda \psi(x, y)
+\end{equation}
+holds. As boundary conditions we impose $\psi(x, y) = 0$ on the boundary $\delta \Omega$.
+
+\subsubsection{A specialized numerical method}
+
+Approximating solutions for the eigenvalues of \eqref{equ:c3_disc_schrodinger} on such an exotic domain $\Omega_\epsilon$ is not a trivial task. In principle, this problem could be seen as solving the Schrödinger equation on $[-1,1]^2$ with the potential
+$$
+V(x, y) = \begin{cases}
+    0 & \text{if $(x, y)\in \Omega_\epsilon$} \\
+    +\infty & \text{otherwise}
+\end{cases}\text{.}
+$$
+But numerically, this does not make the problem easier. Yes, the rectangular domain would allow us to employ the earlier developed method. But on the other hand, the potential becomes infinite, which is very difficult to implement with sufficiently high accuracies. Also, Ixaru's method has difficulties with non-continuous potentials.
+
+We propose another technique. We can transform equation \eqref{equ:c3_disc_schrodinger} from these moon-shaped domains to a more manageable rectangular domain. The cost of this transformation is that \eqref{equ:c3_disc_schrodinger} will no longer be a Schrödinger equation. 
+
+With
+$$
+\phi(\alpha, t) = \psi(T(\alpha, t))
+$$
+the Schrödinger equation \eqref{equ:c3_disc_schrodinger} transforms into
+$$
+123
+$$
 
 
 
