@@ -273,6 +273,53 @@ with
 
 \subsubsection{Analysis of eigenvalues in relation to the domain}
 
+Before applying this numerical method on different domains $\Omega_\epsilon$ it is valuable to first find the eigenvalues on the disc $\Omega_1$ itself. In many introductory textbooks to (partial) differential equations the study of the wave equation on a drum is considered. In most texts, if not all, the idea boils down to: with a transformation to polar coordinates and separation of variables this two-dimensional problem can be transformed into two one-dimensional problems. One of these can be solved directly, the other gives rise to the so-called Bessel functions.
+
+Here we will give a brief overview of the symbolic calculations to solve
+\begin{equation}\label{equ:c3_disc_before_polar}
+    -\nabla^2 \psi(x, y) = \lambda \psi(x, y)
+\end{equation}
+on the unit disc $B(\vb{0}, 1)$, with homogenous Dirichlet boundary conditions. For more details one could consult for example \cite[chapter~4]{asmar_partial_2005}. As stated we first transform \eqref{equ:c3_disc_before_polar} to polar coordinates. For this we pose $x = r\cos(\theta)$ and $y = r\sin(\theta)$, with $r \in [0,1]$ and $\theta \in [0, 2\pi]$. The solutions $u(r, \theta) := \psi(r\cos(\theta), r\sin(\theta))$ are now considered in the transformed domain. Applying the chain rule to $\nabla^2\psi$, yields the new equation
+\begin{equation}\label{equ:c3_disc_after_polar}
+    -{\pdv[2]{u}{r}} - \frac{1}{r}{\pdv[]{u}{r}} - \frac{1}{r^2} {\pdv[2]{u}{\theta}} = - \lambda u\text{.}
+\end{equation}
+The boundary conditions are likewise transformed: $u(1, \theta) = 0$ for all $\theta \in [0, 2\pi]$ and $u(r, 0) = u(r, 2\pi)$ and ${\pdv[]{u}{\theta}}(r, 0) = {\pdv[]{u}{\theta}}(r, 2\pi)$ for all $r \in [0, 1]$.
+
+Now we use the method of separation of variables to transform \eqref{equ:c3_disc_after_polar} into two one-dimensional problems. For this, we separate $u(r, \theta) = R(r) \Theta(\theta)$ into a product of an $r$-dependent function and a $\theta$-dependent function. This allows us to write
+$$
+    -\frac{r^2 R''}{R} - \frac{rR'}{R} - \frac{\Theta''}{\Theta} = \lambda r^2 \text{.}
+$$
+Rearranging terms to an $r$-dependent side and a $\theta$-dependent side yields two separate equations
+\begin{align*}
+    \lambda r^2 + \frac{r^2 R''}{R} + \frac{rR'}{R} & = k & \text{and} &  & -\frac{\Theta''}{\Theta} & = k\text{,}
+\end{align*}
+with $k$ a constant and boundary conditions $R(1) = 0$, $\Theta(0) = \Theta(2\pi)$ and $\Theta'(0) = \Theta'(2\pi)$.
+
+Solutions for $\Theta(\theta)$ can directly be found, as a solution of a linear second order differential equation with constant coefficients. Thus, $\Theta$ only has periodic solutions
+$$
+    \Theta(\theta) = A_m \cos(m\theta) + B_m \sin(m\theta)\text{,}
+$$
+if $k = m^2$ with $m \in \{0, 1, 2, \dots\}$. Note that if $m > 0$, there are two linear independent solutions for $\Theta$.
+
+The differential equation for $R(r)$ becomes
+$$
+    r^2 R'' + r R + (\lambda r^2 - m^2)R = 0\text{.}
+$$
+We find that solutions to our equation can be written using the $m^\text{th}$ so-called Bessel function of the first kind $R(r) = J_m(r \sqrt{\lambda})$, for more details about these functions see for example \cite[section~4.7]{asmar_partial_2005}. These solutions only satisfy the boundary condition $R(1) = 0$, if and only if $\sqrt{\lambda}$ is a positive zero of $J_m$. If we denote $j_{m, n}$ as the $n^\text{th}$ positive root of the $m^\text{th}$ Bessel function $J_m$ we find that all eigenvalues of \eqref{equ:c3_disc_after_polar} and also of \eqref{equ:c3_disc_before_polar} are given as the squares of roots of the Bessel functions. So $\lambda = j_{m, n}^2$ is an eigenvalue of \eqref{equ:c3_disc_before_polar}. It is single eigenvalue if $m = 0$, otherwise it is a double eigenvalue. The following table contains the first ten eigenvalues, counted with multiplicity.
+
+\begin{center}
+    \bgroup
+    \def\arraystretch{1.5}
+    \begin{tabular}{r|cccccc}
+        Eigenvalue       & $\lambda_0$ & $\lambda_{1,2}$ & $\lambda_{3,4}$ & $\lambda_{5}$ & $\lambda_{6,7}$ & $\lambda_{8,9}$ \\ \hline\hline
+        Analytical value & $j_{0,1}^2$ & $j_{1,1}^2$     & $j_{2,1}^2$     & $j_{0,2}^2$   & $j_{3,1}^2$     & $j_{1,2}^2$     \\ \hline
+        Numerical value  & $5.783$     & $14.68$         & $26.37$         & $30.47$       & $40.71$         & $49.22$
+    \end{tabular}
+    \egroup
+\end{center}
+
+{\color{red} To do: analysis of eigenvalues in function of the domain.}
+
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter3/on_disc/eigenvalues_flow.pdf}
