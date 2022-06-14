@@ -37,6 +37,10 @@ Rainbow = mc.LinearSegmentedColormap.from_list(
     "ugent_Rainbow", list(map(kleuren.get, rainbow_kleuren)))
 
 
+def mix(a, b, f):
+    return tuple((1-f)*x + f*y for x, y in zip(a, b))
+
+
 class LazyMap:
     def __init__(self, f):
         self.f = f

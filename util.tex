@@ -9,8 +9,14 @@
 \newcommand{\stopchapter}{\end{document}}
 
 
-\documentclass[a4paper]{book}
+\documentclass{book}
 \usepackage[utf8]{inputenc}
+
+
+\usepackage{geometry}
+\geometry{
+  papersize={170mm,240mm},
+}
 
 \usepackage{amsfonts,amsmath, amsthm, amssymb}
 \usepackage{xspace}
@@ -85,8 +91,8 @@
 % https://tex.stackexchange.com/a/18192/163747
 \makeatletter
 \newcommand{\undefinedlabel}[2]{%
-   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}} }%
-   \hypertarget{#1}{}
+  \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}} }%
+  \hypertarget{#1}{}
 }
 \makeatother
 

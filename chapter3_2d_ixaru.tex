@@ -147,17 +147,17 @@ As a numerical demonstration that this theorem is true for more domains than onl
         \frac{1}{\sin(\alpha)} - \cot(\alpha) \cos(t \alpha)
     \end{pmatrix}\text{.}
 \end{equation}
-Strictly speaking, for $\alpha = 0$,  $T(\alpha, t)$ is undefined. In these points the limit $\lim_{\alpha \to 0} T(\alpha, t)$ should be considered. In figure \ref{fig:c3_disc_transformation} this transformation is visualized.
+Strictly speaking, for $\alpha = 0$,  $T(\alpha, t)$ is undefined. In these points the limit $\lim_{\alpha \to 0} T(\alpha, t)$ should be considered. In figure \ref{fig:c3_disc_transformation} this transformation is visualized. Note that when $t$ is limited to $[-1, 2\epsilon -1]$ the transformation results in a moon-shape.
 
 \begin{figure}
     \begin{center}
-        \begin{minipage}{.5\textwidth}
-            \includegraphics[width=\textwidth]{img/chapter3/on_disc/disc_original.pdf}%
-        \end{minipage}\begin{minipage}{.1\textwidth}\begin{center}
+        \begin{minipage}{.53\textwidth}
+            \includegraphics[scale=.75]{img/chapter3/on_disc/disc_original.pdf}%
+        \end{minipage}\begin{minipage}{.05\textwidth}\begin{center}
                 \Large $ \xrightarrow{T} $
             \end{center}
-        \end{minipage}\begin{minipage}{.4\textwidth}
-            \includegraphics[width=\textwidth]{img/chapter3/on_disc/disc_transformed.pdf}
+        \end{minipage}\begin{minipage}{.42\textwidth}\centering
+            \includegraphics[scale=.75]{img/chapter3/on_disc/disc_transformed.pdf}
         \end{minipage}
     \end{center}
     \caption{The transformation $T(\alpha, t)$ from \eqref{equ:c3_disc_transformation} is applied to a grid of points.}
@@ -234,7 +234,7 @@ We will place a $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gi
     {\pdv[2]{\phi}{t}}(\alpha_i, t_j)        & = \frac{1}{h_t^2}\left( \phi_{i,j+1} - 2 \phi_{i,j} + \phi_{i,j-1} \right)
 \end{align*}
 
-When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote the identity matrix of dimensions $n \times n$ as $\vb{I}_n$. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and a $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
+When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote the identity matrix of dimensions $n \times n$ as $\vb{I}_n$. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and a $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
 
 We will define the Kronecker product of a $k \times l$ matrix $\vb{A}$ and $m \times n$ matrix $\vb{B}$ as the $km \times ln$ block matrix:
 $$
@@ -243,16 +243,16 @@ $$
         A_{2,1} \vb{B} & A_{2, 2} \vb{B} & \dots  & A_{2, l} \vb{B} \\
         \vdots         & \vdots          & \ddots & \vdots          \\
         A_{k,1} \vb{B} & A_{k, 2} \vb{B} & \dots  & A_{k, l} \vb{B} \\
-    \end{pmatrix} \text{.}
+    \end{pmatrix}\text{.}
 $$
 
-To approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix problem, we also need to aggregate the grid points $\phi_{i,j}$ as a vector. For this we define
+To approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix problem, we need to aggregate the grid points $\phi_{i,j}$ as a vector. For this we define
 $$
     \vb*{\phi} := \transpose{\begin{pmatrix}
             \phi_{1,1}, \phi_{2,1}, \dots \phi_{n_\alpha-1, 1}, \phi_{1,2}, \dots \phi_{n_\alpha-1, n_t-1}
         \end{pmatrix}}\text{.}
 $$
-Also, to be able to write down $\mathcal{D}$ as a matrix operation we also need to define
+Also, to be able to write down $\mathcal{D}$ as a matrix operation we need to define
 $$
     \vb{C}^{\alpha} := \transpose{\begin{pmatrix}
             c^{\alpha}(\alpha_1, t_1), c^{\alpha}(\alpha_2, t_1) \dots c^{\alpha}(\alpha_{n_\alpha-1}, t_1), c^{\alpha}(\alpha_1, t_2), \dots c^{\alpha}({\alpha_{n_\alpha-1}, t_{n_t-1}})
@@ -266,9 +266,9 @@ $$
 $$
 with
 \begin{align*}
-    \vb{M} = {} & \frac{1}{2 h_\alpha} \vb{C}^{\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) + \frac{1}{2 h_t} \vb{C}^{t} \left(\vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right)            \\
+    \vb{M} = {} & \frac{1}{h_\alpha} \vb{C}^{\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) + \frac{1}{h_t} \vb{C}^{t} \left(\vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right)            \\
                 & {} + \frac{1}{h_\alpha^2} \vb{C}^{\alpha\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(2)}_{n_\alpha - 1}\right) + \frac{1}{h_t^2} \vb{C}^{tt} \left(\vb{D}^{(2)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right) \\
-                & {} + \frac{1}{4 h_\alpha h_t} \vb{C}^{\alpha t} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) \left( \vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1} \right)\text{.}
+                & {} + \frac{1}{h_\alpha h_t} \vb{C}^{\alpha t} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) \left( \vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1} \right)\text{.}
 \end{align*}
 
 \subsubsection{Analysis of eigenvalues in relation to the domain}
@@ -318,12 +318,19 @@ We find that solutions to our equation can be written using the $m^\text{th}$ so
     \egroup
 \end{center}
 
+With a numerical method to compute eigenvalues of the wave equation \eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to demonstrate theorem \ref{the:c3_counting_eigenvalues}. 
+
+By employing our numerical method on different domains $\Omega_\epsilon$ we can compute figure \ref{fig:c3_eigenvalues_flow}. Here each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line, right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represent is marked on the right side. In accordance with theorem \ref{the:c3_counting_eigenvalues} all lines in figure \ref{fig:c3_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.
+
+
+
 {\color{red} To do: analysis of eigenvalues in function of the domain.}
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter3/on_disc/eigenvalues_flow.pdf}
         \caption{Eigenvalues in relation to $\epsilon$.}
+        \label{fig:c3_eigenvalues_flow}
     \end{center}
 \end{figure}
 
