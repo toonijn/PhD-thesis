@@ -6,3 +6,5 @@ eigenproblem
 Stevin
 Ixaru
 semidiscrete
+tridiagonal
+Toeplitz

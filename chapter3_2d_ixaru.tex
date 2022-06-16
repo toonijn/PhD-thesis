@@ -12,14 +12,14 @@ In this, and the next, chapter we will study two-dimensional time-independent Sc
 \begin{equation}\label{equ:c3_schrodinger_2d}
     -\nabla^2\psi(x, y) + V(x, y) \psi(x, y) = \lambda \psi(x, y)
 \end{equation}
-on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogenous Dirichlet boundary conditions, this means $\forall (x, y) \in \delta\Omega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $\lambda$ such that a function $\psi(x, y)$  exists such they together satisfy the equation \eqref{equ:c3_schrodinger_2d}. Such a value $\lambda$ is called an \emph{eigenvalue} with the corresponding \emph{eigenfunction} $\psi(x, y)$.
+on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogeneous Dirichlet boundary conditions, this means $\forall (x, y) \in \delta\Omega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $\lambda$ such that a function $\psi(x, y)$  exists such they together satisfy the equation \eqref{equ:c3_schrodinger_2d}. Such a value $\lambda$ is called an \emph{eigenvalue} with the corresponding \emph{eigenfunction} $\psi(x, y)$.
 
 Equation \eqref{equ:c3_schrodinger_2d} can also be interpreted as finding the eigenvalues and eigenfunctions of the \emph{Hamiltonian} $\hamiltonian$:
 $$
     \hamiltonian := -\nabla^2 + V(x, y)\text{.}
 $$
 \begin{theorem}
-    The Hamiltonian operator with homogenous Dirichlet boundary conditions is self-adjoint. And some more adjectives.
+    The Hamiltonian operator with homogeneous Dirichlet boundary conditions is self-adjoint. And some more adjectives.
 \end{theorem}
 \begin{proof}
     To prove that $H$ is self-adjoint, it is sufficient to prove that $\bra{\hamiltonian f}\ket{g} = \bra{f}\ket{\hamiltonian g}$, for functions $f$ and $g$ {\color{red} To do: which function space?}. This can be shown by direct computation.
@@ -28,7 +28,7 @@ $$
                                     & = -\int_\Omega \nabla^2 f g + \int_\Omega V f g                                                                                       \\
         \intertext{Applying Green's second identity yields the following. Here $\vb{n}$ is the outward pointing surface normal of $\dd S$ }
                                     & = -\int_\Omega f \nabla^2 g + \oint_{\delta\Omega} \left( f \pdv[]{g}{\vb{n}} - \pdv[]{f}{\vb{n}} g  \right)\dd S + \int_\Omega V f g \\
-        \intertext{Recalling the homogenous Dirichlet boundary conditions, allows us to remove the second term, as $f(x,y) = g(x, y) = 0$ for all $(x, y) \in \delta\Omega$.}
+        \intertext{Recalling the homogeneous Dirichlet boundary conditions, allows us to remove the second term, as $f(x,y) = g(x, y) = 0$ for all $(x, y) \in \delta\Omega$.}
                                     & =\int_\Omega f\,\left(-\nabla^2 g  + V g\right)                                                                                       \\
                                     & = \bra{f}\ket{\hamiltonian g}
     \end{align*}
@@ -170,7 +170,7 @@ To demonstrate the effectiveness of theorem \ref{the:c3_counting_eigenvalues}, w
 $$
     \Omega_\epsilon = \left\{T(\alpha, t) | \forall \alpha \in \left[-\frac{\pi}{2}, \frac{\pi}{2}\right], \forall t \in [-1, 2\epsilon - 1]  \right\}\text{.}
 $$
-On these subdomains $\Omega_\epsilon$ we will approximate the eigenvalues of the Schrödinger equation with homogenous Dirichlet boundary conditions. Subsequently, these eigenvalues can be compared to the eigenvalues on the unit disc. The theorem promises that for an eigenvalue $\lambda_i$ on the unit disc, exactly $i$ subdomains can be found on which this $\lambda_i$ is also an eigenvalue.
+On these subdomains $\Omega_\epsilon$ we will approximate the eigenvalues of the Schrödinger equation with homogeneous Dirichlet boundary conditions. Subsequently, these eigenvalues can be compared to the eigenvalues on the unit disc. The theorem promises that for an eigenvalue $\lambda_i$ on the unit disc, exactly $i$ subdomains can be found on which this $\lambda_i$ is also an eigenvalue.
 
 First, let us clearly define which Schrödinger problem we are solving: Find the eigenvalues $\lambda$ with corresponding eigenfunction $\psi(x, y) \in \Omega_\epsilon \to \RR$ for which
 \begin{equation}\label{equ:c3_disc_schrodinger}
@@ -185,7 +185,7 @@ $$
     V(x, y) = \begin{cases}
         0       & \text{if $(x, y)\in \Omega_\epsilon$} \\
         +\infty & \text{otherwise}
-    \end{cases}\text{.}
+    \end{cases} {}\text{.}
 $$
 But numerically, this does not make the problem easier. Yes, the rectangular domain would allow us to employ the earlier developed method. But on the other hand, the potential becomes infinite, which is very difficult to implement with sufficiently high accuracies. Also, Ixaru's method has difficulties with non-continuous potentials.
 
@@ -225,7 +225,7 @@ $$
 
 Before we can analyze eigenvalues of \eqref{equ:c3_disc_schrodinger} or after transformation of the operator $-\mathcal{D}$ in relation to the domain $\Omega_\epsilon$, we still need a method to approximate these eigenvalues. For general partial differential equations with boundary conditions some standard techniques are available, \cite[Chapter~11]{heath_scientific_2018} contains an overview of some of these methods. Our choices include, but are not limited to a finite difference method, or a finite element method or a semidiscrete method with shooting. For our purposes a method which is easy to implement, yet gives reliable results will be the best choice. A simple finite difference scheme will be sufficient.
 
-We will place a $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gives rise to the equidistant points $-\frac{pi}{2}=\alpha_0, \alpha_1, \dots, \alpha_{n_\alpha} = \frac{\pi}{2}$, and the points $-1 = t_0, t_1, \dots t_{n_t} = 1 - 2\epsilon$. The distances between two points are given by $h_\alpha = \frac{\pi}{n_\alpha}$ and $h_t = \frac{2\epsilon}{n_t}$. Because of the homogenous Dirichlet boundary conditions $\phi_{0,j} = \phi_{n_\alpha,j} = \phi_{i, 0} = \phi_{i,n_t} = 0$ for all $i$ and $j$. These grid points allow us to write down approximations of first and second derivatives of $\phi(\alpha, t)$ in each of the grid points $\phi_{i, j} = \phi(\alpha_i, t_j)$.
+We will place an $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gives rise to the equidistant points $-\frac{pi}{2}=\alpha_0, \alpha_1, \dots, \alpha_{n_\alpha} = \frac{\pi}{2}$, and the points $-1 = t_0, t_1, \dots t_{n_t} = 1 - 2\epsilon$. The distances between two points are given by $h_\alpha = \frac{\pi}{n_\alpha}$ and $h_t = \frac{2\epsilon}{n_t}$. Because of the homogeneous Dirichlet boundary conditions $\phi_{0,j} = \phi_{n_\alpha,j} = \phi_{i, 0} = \phi_{i,n_t} = 0$ for all $i$ and $j$. These grid points allow us to write down approximations of first and second derivatives of $\phi(\alpha, t)$ in each of the grid points $\phi_{i, j} = \phi(\alpha_i, t_j)$.
 \begin{align*}
     {\pdv[]{\phi}{\alpha}}(\alpha_i, t_j)    & = \frac{1}{2h_\alpha}\left( \phi_{i+1,j} - \phi_{i-1,j} \right)                                           \\
     {\pdv[]{\phi}{t}}(\alpha_i, t_j)         & = \frac{1}{2h_t}\left( \phi_{i,j+1} - \phi_{i,j-1} \right)                                                \\
@@ -234,7 +234,7 @@ We will place a $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gi
     {\pdv[2]{\phi}{t}}(\alpha_i, t_j)        & = \frac{1}{h_t^2}\left( \phi_{i,j+1} - 2 \phi_{i,j} + \phi_{i,j-1} \right)
 \end{align*}
 
-When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote the identity matrix of dimensions $n \times n$ as $\vb{I}_n$. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and a $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
+When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote the identity matrix of dimensions $n \times n$ as $\vb{I}_n$. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and an $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
 
 We will define the Kronecker product of a $k \times l$ matrix $\vb{A}$ and $m \times n$ matrix $\vb{B}$ as the $km \times ln$ block matrix:
 $$
@@ -243,7 +243,7 @@ $$
         A_{2,1} \vb{B} & A_{2, 2} \vb{B} & \dots  & A_{2, l} \vb{B} \\
         \vdots         & \vdots          & \ddots & \vdots          \\
         A_{k,1} \vb{B} & A_{k, 2} \vb{B} & \dots  & A_{k, l} \vb{B} \\
-    \end{pmatrix}\text{.}
+    \end{pmatrix}{}\text{.}
 $$
 
 To approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix problem, we need to aggregate the grid points $\phi_{i,j}$ as a vector. For this we define
@@ -254,11 +254,11 @@ $$
 $$
 Also, to be able to write down $\mathcal{D}$ as a matrix operation we need to define
 $$
-    \vb{C}^{\alpha} := \transpose{\begin{pmatrix}
-            c^{\alpha}(\alpha_1, t_1), c^{\alpha}(\alpha_2, t_1) \dots c^{\alpha}(\alpha_{n_\alpha-1}, t_1), c^{\alpha}(\alpha_1, t_2), \dots c^{\alpha}({\alpha_{n_\alpha-1}, t_{n_t-1}})
+    \vb{C}^{t} := \transpose{\begin{pmatrix}
+            c^{t}(\alpha_1, t_1), c^{t}(\alpha_2, t_1) \dots c^{t}(\alpha_{n_\alpha-1}, t_1), c^{t}(\alpha_1, t_2), \dots c^{t}({\alpha_{n_\alpha-1}, t_{n_t-1}})
         \end{pmatrix}}\text{,}
 $$
-and analogous for $\vb{C}^t$, $\vb{C}^{\alpha\alpha}$, $\vb{C}^{\alpha t}$ and $\vb{C}^{t t}$.
+and analogous for $\vb{C}^{\alpha}$, $\vb{C}^{\alpha\alpha}$, $\vb{C}^{\alpha t}$ and $\vb{C}^{t t}$.
 
 All this notation allows us to approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix eigenvalue problem:
 $$
@@ -266,7 +266,7 @@ $$
 $$
 with
 \begin{align*}
-    \vb{M} = {} & \frac{1}{h_\alpha} \vb{C}^{\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) + \frac{1}{h_t} \vb{C}^{t} \left(\vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right)            \\
+    \vb{M} = {} & \frac{1}{h_\alpha} \vb{C}^{\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) + \frac{1}{h_t} \vb{C}^{t} \left(\vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right)                \\
                 & {} + \frac{1}{h_\alpha^2} \vb{C}^{\alpha\alpha} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(2)}_{n_\alpha - 1}\right) + \frac{1}{h_t^2} \vb{C}^{tt} \left(\vb{D}^{(2)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1}\right) \\
                 & {} + \frac{1}{h_\alpha h_t} \vb{C}^{\alpha t} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) \left( \vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1} \right)\text{.}
 \end{align*}
@@ -279,7 +279,7 @@ Here we will give a brief overview of the symbolic calculations to solve
 \begin{equation}\label{equ:c3_disc_before_polar}
     -\nabla^2 \psi(x, y) = \lambda \psi(x, y)
 \end{equation}
-on the unit disc $B(\vb{0}, 1)$, with homogenous Dirichlet boundary conditions. For more details one could consult for example \cite[chapter~4]{asmar_partial_2005}. As stated we first transform \eqref{equ:c3_disc_before_polar} to polar coordinates. For this we pose $x = r\cos(\theta)$ and $y = r\sin(\theta)$, with $r \in [0,1]$ and $\theta \in [0, 2\pi]$. The solutions $u(r, \theta) := \psi(r\cos(\theta), r\sin(\theta))$ are now considered in the transformed domain. Applying the chain rule to $\nabla^2\psi$, yields the new equation
+on the unit disc $B(\vb{0}, 1)$, with homogeneous Dirichlet boundary conditions. For more details one could consult for example \cite[chapter~4]{asmar_partial_2005}. As stated we first transform \eqref{equ:c3_disc_before_polar} to polar coordinates. For this we pose $x = r\cos(\theta)$ and $y = r\sin(\theta)$, with $r \in [0,1]$ and $\theta \in [0, 2\pi]$. The solutions $u(r, \theta) := \psi(r\cos(\theta), r\sin(\theta))$ are now considered in the transformed domain. Applying the chain rule to $\nabla^2\psi$, yields the new equation
 \begin{equation}\label{equ:c3_disc_after_polar}
     -{\pdv[2]{u}{r}} - \frac{1}{r}{\pdv[]{u}{r}} - \frac{1}{r^2} {\pdv[2]{u}{\theta}} = - \lambda u\text{.}
 \end{equation}
@@ -318,7 +318,7 @@ We find that solutions to our equation can be written using the $m^\text{th}$ so
     \egroup
 \end{center}
 
-With a numerical method to compute eigenvalues of the wave equation \eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to demonstrate theorem \ref{the:c3_counting_eigenvalues}. 
+With a numerical method to compute eigenvalues of the wave equation \eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to demonstrate theorem \ref{the:c3_counting_eigenvalues}.
 
 \begin{figure}
     \begin{center}
@@ -334,11 +334,12 @@ By employing our numerical method on different domains $\Omega_\epsilon$ we can 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter3/on_disc/solutions.pdf}
-        \caption{There are exactly 8 moon-shaped domains on which $\lambda = 45$ is an eigenvalue.}
+        \caption{There are $8$ smaller moon shaped domains on which $\lambda = 45$ is an eigenvalue of the wave equation $-\nabla^2 \psi = \lambda \psi$ with homogeneous Dirichlet boundary conditions.}
         \label{fig:c3_disc_solutions}
     \end{center}
 \end{figure}
 
-{\color{red} To do: analysis of eigenvalues in function of the domain.}
+
+Consider now the fixed value of $E = 45$. From the previous table we know that there are $8$ eigenvalues, counted with multiplicity, less than $E$. This means, following \ref{the:c3_counting_eigenvalues}, there should be exactly $8$ moon shaped domains on which $E$ is also an eigenvalue. These eight domains, with the corresponding eigenfunction of $E = 45$, are plotted in figure \ref{fig:c3_disc_solutions}.
 
 \stopchapter
