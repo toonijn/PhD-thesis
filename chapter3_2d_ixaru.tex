@@ -320,18 +320,25 @@ We find that solutions to our equation can be written using the $m^\text{th}$ so
 
 With a numerical method to compute eigenvalues of the wave equation \eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to demonstrate theorem \ref{the:c3_counting_eigenvalues}. 
 
-By employing our numerical method on different domains $\Omega_\epsilon$ we can compute figure \ref{fig:c3_eigenvalues_flow}. Here each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line, right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represent is marked on the right side. In accordance with theorem \ref{the:c3_counting_eigenvalues} all lines in figure \ref{fig:c3_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.
-
-
-
-{\color{red} To do: analysis of eigenvalues in function of the domain.}
-
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter3/on_disc/eigenvalues_flow.pdf}
         \caption{Eigenvalues in relation to $\epsilon$.}
-        \label{fig:c3_eigenvalues_flow}
+        \label{fig:c3_disc_eigenvalues_flow}
     \end{center}
 \end{figure}
+
+By employing our numerical method on different domains $\Omega_\epsilon$ we can compute figure \ref{fig:c3_disc_eigenvalues_flow}. Here each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line, right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represent is marked on the right side. In accordance with theorem \ref{the:c3_counting_eigenvalues} all lines in figure \ref{fig:c3_disc_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter3/on_disc/solutions.pdf}
+        \caption{There are exactly 8 moon-shaped domains on which $\lambda = 45$ is an eigenvalue.}
+        \label{fig:c3_disc_solutions}
+    \end{center}
+\end{figure}
+
+{\color{red} To do: analysis of eigenvalues in function of the domain.}
 
 \stopchapter
