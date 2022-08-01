@@ -8,3 +8,6 @@ Ixaru
 semidiscrete
 tridiagonal
 Toeplitz
+Runge-Kutta
+LAPACK
+dstev

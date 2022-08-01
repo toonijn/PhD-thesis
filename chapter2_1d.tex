@@ -32,7 +32,7 @@ Note that Dirichlet or Neumann boundary conditions can always be written as Robi
 
 Before developing numerical methods for solving these equations it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
-In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, articles and books cover the more general Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more wildly applicable, and so more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of the Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}
+In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, articles and books cover the more general Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more wildly applicable, and so more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of the Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
 
 The Sturm-Liouville equation is a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$
 $$
@@ -43,31 +43,92 @@ $$
     \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 $$
 
-Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$. 
+Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
 
-{\color{red}
+    {\color{red}
 
-Following from the mathematical background chapter:
-\begin{itemize}
-    \item Eigenvalues are real and ordered.
-    \item Eigenfunctions can be orthonormal
-\end{itemize}
+        Following from the mathematical background chapter:
+        \begin{itemize}
+            \item Eigenvalues are real and ordered.
+            \item Eigenfunctions can be orthonormal
+        \end{itemize}
 
-In finite and non-periodic cases: eigenvalues are unique.
+        In finite and non-periodic cases: eigenvalues are unique.
 
-\subsection{Prüfer's transformation}
+        \subsection{Liouville's transformation}
+        Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
 
-
-\subsection{Liouville's transformation}
-Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
-
-}
+    }
 
 
 
 \section{Background about Matslise}
 
+Numerical methods for ordinary differential equations as \emph{initial value} problems are already more than a century old. In particular, linear multistep methods and Runge-Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
+
+For ordinary differential equations as \emph{boundary value} problems, such as the Sturm-Liouville equations, the story is different. There still are very few general methods for such problems. For linear ordinary differential equations, one of the more popular choices is a method based upon finite differences.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/finite_difference_grid.pdf}
+    \end{center}
+    \caption{An equidistant division of the domain $[a, b]$ in $n$ intervals.}
+    \label{fig:c2_finite_difference_grid}
+\end{figure}
+
+The idea for these kinds of methods, is to discretize the integration domain $[a, b]$ into an equally spaced grid of points $a = x_0$, $x_1$, $\dots$, $x_i$, $\dots$, $x_{n-1}$, $x_{n} = b$, with $\Delta x$ the distance between two consecutive points. This discretization can be seen in figure \ref{fig:c2_finite_difference_grid}. The differential equation is now approximated by using finite difference expressions of the involved derivatives. This leads to a linear matrix-vector reformulation of the differential equation, which can be solved with classical linear algebra tools.
+
+\subsubsection{Finite difference approximation of the Sturm-Liouville equation}
+
+Around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville equation looked at the simpler form of the Schrödinger equation and apply. After the fact, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae,  later they developed highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions.
+
+To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simpler version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general disadvantages of this technique. The Sturm-Liouville equations we will consider are given by
+\begin{equation}\label{equ:c2_finite_difference_slp}
+    -(p(x)y')' + q(x) y = \lambda w(w) y\text{.}
+\end{equation}
+Solutions consist of eigenvalues $\lambda$ and corresponding eigenfunctions $y(x)$ such that \eqref{equ:c2_finite_difference_slp} is satisfied on the domain $[a, b]$ with homogeneous Dirichlet boundary conditions $y(a) = y(b) = 0$.
+
+As a first step we discretize the domain $[a, b]$ with $n+1$ equidistant points, as in figure \ref{fig:c2_finite_difference_grid}. The eigenfunctions $y(x)$ we are looking for, can now be approximated by values in each of the grid points $y(x_i) \approx y_i$. For translating this problem into a linear matrix-vector equation, we are missing one key component. We still need a way to discretize the expression $(p(x) y')'$. For this, we apply the central second order finite difference formula for the first derivative twice, with half the step size. In more detail, the first derivative of a scalar function $f(x)$ can be approximated as:
+$$
+    f'(x) \approx \frac{f(x + h) - f(x - h)}{2h}\text{.}
+$$
+
+Applying this expression once to $(p(x) y')'$ in the point $x_i$, with step size $h = \frac{\Delta x}{2}$ gives:
+$$
+    (p(x) y')'(x_i) \approx \frac{1}{\Delta x}\left((p y')\left(x_{i+\frac{1}{2}}\right) - (p y')\left(x_{i-\frac{1}{2}}\right))\right)\text{.}
+$$
+Applying the finite difference formula a second time, with step size $\frac{\Delta x}{2}$ to approximate $y'(x)$ yields:
+$$
+    (p(x) y')'(x_i) \approx \frac{1}{\Delta x^2}\left(p_{i+\frac{1}{2}} y_{i+1} - \left(p_{i-\frac{1}{2}} + p_{i+\frac{1}{2}}\right) y_i + p_{i-\frac{1}{2}} y_{i-1}\right)
+$$
+To ease notation we have substituted $y(x_i)$ with its approximation $y_i$, and have denoted $\frac{x_i + x_{i+1}}{2}$ as $x_{i+\frac{1}{2}}$, and $p(x_i)$ as $p_i$. Also, note that if $p(x) = 1$ this formula simplifies to the classical, well-known, central second order approximation of the second derivative.
+
+If we apply this finite difference approximation to \eqref{equ:c2_finite_difference_slp} in each point $x_i$. We get the linear generalized eigenvalue problem:
+$$
+    -\frac{1}{\Delta x^2}\left(p_{i+\frac{1}{2}} y_{i+1} - \left(p_{i-\frac{1}{2}} + p_{i+\frac{1}{2}}\right) y_i + p_{i-\frac{1}{2}} y_{i-1}\right) + q(x_i) y_i = \lambda w(x_i) y_i \text{.}
+$$
+
+To emphasize that this is a linear algebra problem we can rewrite this in matrix notation:
+\begin{equation}\label{equ:c2_finite_difference_matrix_problem}
+    \left(-\vb{D} + \diag(\vb{q})\right)\vb{y} = \lambda \diag(\vb{w}) \vb{y}\text{.}
+\end{equation}
+
+The $(n-1)$-dimensional vector $\vb{y} = \transpose{\begin{pmatrix}y_1 & y_2 & \dots & y_{n-1}\end{pmatrix}}$ is the unknown approximation of the eigenfunction. The $(n-1)$-dimensional vectors $\vb{q} = \transpose{\begin{pmatrix}q(x_1) & q(x_2) & \dots & q(x_{n-1})\end{pmatrix}}$  and $\vb{w} = \transpose{\begin{pmatrix}w(x_1) & w(x_2) & \dots & w(x_{n-1})\end{pmatrix}}$ are the values of the coefficient functions $q$ and $p$. And lastly, the matrix $\vb{D}$ is the tridiagonal matrix given by:
+$$
+    \vb{D} = \frac{1}{\Delta x^2}\begin{pmatrix}
+        -p_{\frac{1}{2}} -p_{\frac{3}{2}} & p_{\frac{3}{2}}                   &                                   &                     &                                            \\
+        p_{\frac{3}{2}}                   & -p_{\frac{3}{2}} -p_{\frac{5}{2}} & p_{\frac{5}{2}}                   &                     &                                            \\
+                                          & p_{\frac{5}{2}}                   & -p_{\frac{5}{2}} -p_{\frac{7}{2}} & p_{\frac{7}{2}}     &                                            \\
+                                          &                                   &                                   & \ddots              &                                            \\
+                                          &                                   &                                   & p_{n - \frac{3}{2}} & -p_{n - \frac{3}{2}} - p_{n - \frac{1}{2}} \\
+    \end{pmatrix}{}\text{.}
+$$
+
+To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with our favorite tridiagonal eigenvalue solver. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines: \texttt{dstev} and relatives.
+
 \subsection{CP-methods}
+
+\subsection{Prüfer's transformation}
 
 \section{Matslise 3.0}
 

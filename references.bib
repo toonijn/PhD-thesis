@@ -1,4 +1,21 @@
 
+@article{andrew_correction_1985,
+  title = {Correction of {{Numerov}}'s Eigenvalue Estimates},
+  author = {Andrew, Alan L. and Paine, John W.},
+  year = {1985},
+  month = jun,
+  journal = {Numer. Math.},
+  volume = {47},
+  number = {2},
+  pages = {289--300},
+  issn = {0945-3245},
+  doi = {10.1007/BF01389712},
+  abstract = {The error in the estimate of thekth eigenvalue of a regular Sturm-Liouville problem obtained by Numerov's method with mesh lengthh isO(k6h4). We show that a simple correction technique of Paine, de Hoog and Anderssen reduces the error to one ofO(k3h4). Numerical examples demonstrate the usefulness of this correction even for low values ofk.},
+  langid = {english},
+  keywords = {AMS(MOS): 65L15,CR: G1.7},
+  file = {/home/toon/Zotero/storage/IDBZIL95/Andrew and Paine - 1985 - Correction of Numerov's eigenvalue estimates.pdf;/home/toon/Zotero/storage/MSKJ3SY9/bf01389712.pdf}
+}
+
 @book{asmar_partial_2005,
   title = {Partial {{Differential Equations}} with {{Fourier Series}} and {{Boundary Value Problems}}},
   author = {Asmar, Nakhl{\'e} H.},
@@ -72,6 +89,38 @@
   file = {/home/toon/Zotero/storage/NLUZC7AB/Heath - 2018 - Scientific Computing.pdf}
 }
 
+@article{ixaru_cp_1998,
+  title = {{{CP}} Methods for the {{Schr\"odinger}} Equation Revisited},
+  author = {Ixaru, L. Gr. and De Meyer, H. and Vanden Berghe, G.},
+  year = {1998},
+  month = mar,
+  journal = {Journal of Computational and Applied Mathematics},
+  volume = {88},
+  number = {2},
+  pages = {289--314},
+  issn = {0377-0427},
+  doi = {10.1016/S0377-0427(97)00218-5},
+  abstract = {On constructing CPM propagators with an abundant number of terms by MATHEMATICA, we have shown that the CPM[N, Q], where N is the number of polynomial terms by which the potential is approximated in each interval and Q the number of corrections introduced, is a method of order 2N + 2 at low energies if Q {$\geqslant$} {$\lfloor$}23N{$\rfloor$} + 1 and of order N at high energies if Q {$\geqslant$} 1. We have also proved that in the last case the error damps out as 1E for both initial- and boundary-value problems. We have written a program for boundary-value problems which is of order 12, 10 at low and high energies, respectively, and have found out that it is far more efficient than the well-established codes SL02F, SLEDGE and SLEIGN.},
+  keywords = {CP methods,Eigenvalue problem,Error analysis,Initial-value problem,Schrödinger equation},
+  file = {/home/toon/Zotero/storage/C8K99IRW/Ixaru et al. - 1998 - CP methods for the Schrödinger equation revisited.pdf;/home/toon/Zotero/storage/NMX8PQKM/S0377042797002185.html}
+}
+
+@article{ixaru_cp_2000,
+  title = {{{CP}} Methods for the {{Schr\"odinger}} Equation},
+  author = {Ixaru, L. Gr.},
+  year = {2000},
+  month = dec,
+  journal = {Journal of Computational and Applied Mathematics},
+  series = {Numerical {{Analysis}} 2000. {{Vol}}. {{VI}}: {{Ordinary Differential Equations}} and {{Integral Equations}}},
+  volume = {125},
+  number = {1},
+  pages = {347--357},
+  issn = {0377-0427},
+  doi = {10.1016/S0377-0427(00)00478-7},
+  abstract = {After a short survey over the efforts in the direction of solving the Schr\"odinger equation by using piecewise approximations of the potential function, the paper focuses on the piecewise perturbation methods in their CP implementation. The presentation includes a short list of problems for which CP versions are available, a sketch of the derivation of the CPM formulae, a description of various ways to construct or identify a certain version and also the main results of the error analysis. One of the most relevant results of the latter is that the energy dependence of the error is bounded, a fact which places these methods on a special position among the numerical methods for differential equations. A numerical illustration is also included in which a CPM based code for the regular Sturm\textendash Liouville problem is compared with some other, well-established codes.},
+  file = {/home/toon/Zotero/storage/4CU9JNB6/Ixaru - 2000 - CP methods for the Schrödinger equation.pdf;/home/toon/Zotero/storage/7BPTLK4J/S0377042700004787.html}
+}
+
 @article{ixaru_new_2010,
   title = {New Numerical Method for the Eigenvalue Problem of the {{2D Schr\"odinger}} Equation},
   author = {Ixaru, L. Gr.},
@@ -97,6 +146,32 @@
   isbn = {978-90-277-1597-5},
   langid = {english},
   file = {/home/toon/Zotero/storage/25GC53AF/Ixaru - 1984 - Numerical Methods for Differential Equations and A.pdf;/home/toon/Zotero/storage/2H4MDS4E/9789027715975.html}
+}
+
+@book{lapack,
+  title = {{{LAPACK}} Users' Guide},
+  author = {Anderson, E. and Bai, Z. and Bischof, C. and Blackford, S. and Demmel, J. and Dongarra, J. and Du Croz, J. and Greenbaum, A. and Hammarling, S. and McKenney, A. and Sorensen, D.},
+  year = {1999},
+  edition = {Third},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  address = {{Philadelphia, PA}},
+  isbn = {0-89871-447-8 (paperback)}
+}
+
+@article{ledoux_cp_2004,
+  title = {{{CP}} Methods of Higher Order for {{Sturm}}\textendash{{Liouville}} and {{Schr\"odinger}} Equations},
+  author = {Ledoux, V. and Van Daele, M. and Vanden Berghe, G.},
+  year = {2004},
+  month = oct,
+  journal = {Computer Physics Communications},
+  volume = {162},
+  number = {3},
+  pages = {151--165},
+  issn = {0010-4655},
+  doi = {10.1016/j.cpc.2004.07.001},
+  abstract = {The algorithm upon which the code SLCPM12, described in Computer Physics Communications 118 (1999) 259\textendash 277, is based, is extended to higher order. The implementation of the original algorithm, which was of order \{12,10\} (meaning order 12 at low energies and order 10 at high energies), was more efficient than the well-established codes SL02F, SLEDGE and SLEIGN. In the new algorithm the orders \{14,12\}, \{16,14\} and \{18,16\} are introduced. Besides regular Sturm\textendash Liouville and one-dimensional Schr\"odinger problems also radial Schr\"odinger equations are considered with potentials of the form V(r)=S(r)/r+R(r), where S(r) and R(r) are well behaved functions which tend to some (not necessarily equal) constants when r\textrightarrow 0 and r\textrightarrow{$\infty$}. Numerical illustrations are given showing the accuracy, the robustness and the CPU-time gain of the proposed algorithms.},
+  keywords = {Eigenvalue problem,Schrödinger equation,Sturm–Liouville problem},
+  file = {/home/toon/Zotero/storage/284WCZ2P/Ledoux et al. - 2004 - CP methods of higher order for Sturm–Liouville and.pdf;/home/toon/Zotero/storage/WH676BF9/S0010465504003704.html}
 }
 
 @article{ledoux_numerical_2007a,
@@ -126,6 +201,22 @@
   file = {/home/toon/Zotero/storage/45TRRC6X/Ledoux and Van Daele - 2007 - Study of special algorithms for solving Sturm-Liou.pdf}
 }
 
+@article{milne_numerical_1926,
+  title = {Numerical {{Integration}} of {{Ordinary Differential Equations}}},
+  author = {Milne, W. E.},
+  year = {1926},
+  month = nov,
+  journal = {The American Mathematical Monthly},
+  volume = {33},
+  number = {9},
+  pages = {455--460},
+  publisher = {{Taylor \& Francis}},
+  issn = {0002-9890},
+  doi = {10.1080/00029890.1926.11986619},
+  annotation = {\_eprint: https://doi.org/10.1080/00029890.1926.11986619},
+  file = {/home/toon/Zotero/storage/9G7SDGC4/Milne - 1926 - Numerical Integration of Ordinary Differential Equ.pdf;/home/toon/Zotero/storage/BBJPRD6M/00029890.1926.html}
+}
+
 @article{rieth_exact_2002,
   title = {Exact Numerical Solution of Schr\"odinger's Equation for a Particle in an Interaction Potential of General Shape},
   author = {Rieth, M. and Schommers, W. and Baskoutas, S.},
@@ -143,7 +234,7 @@
   file = {/home/toon/Zotero/storage/QFHWVWK9/Rieth et al. - 2002 - Exact numerical solution of schrödinger's equation.pdf}
 }
 
-@book{sagan_boundary_1961a,
+@book{sagan_boundary_1961,
   title = {Boundary and Eigenvalue Problems in Mathematical Physics},
   author = {Sagan, Hans},
   year = {1961},
@@ -165,6 +256,23 @@
   isbn = {978-0-19-853317-7},
   langid = {english},
   file = {/home/toon/Zotero/storage/875C3R7E/E. C. Titchmarsh - Eigenfunction expansions associated with second-order differential equations. Part 1 (1962, Oxford University Press) - libgen.lc.djvu}
+}
+
+@article{vandenberghe_accurate_1991,
+  title = {Accurate Computation of Higher {{Sturm-Liouville}} Eigenvalues},
+  author = {Vanden Berghe, G. and De Meyer, H.},
+  year = {1991},
+  month = dec,
+  journal = {Numer. Math.},
+  volume = {59},
+  number = {1},
+  pages = {243--254},
+  issn = {0945-3245},
+  doi = {10.1007/BF01385778},
+  abstract = {The computation of eigenvalues of regular Sturm-Liouville problems is considered. It is shown that a simple step-dependent linear multistep method can be used to reduce the error of the orderk4h2 of the centered finite difference estimate of thek-th eigenvalue with uniform step lengthh, to an error of orderkh2. By an appropriate minimization of the local error term of the method one can obtain even more accurate results. A comparison of the simple correction techniques of Paine, de Hoog and Anderssen and of Andrew and Paine is given. Numerical examples demonstrate the usefulness of this correction even for low values ofk.},
+  langid = {english},
+  keywords = {C.R. Categories: G.1.7,G1.0; 5.17},
+  file = {/home/toon/Zotero/storage/XV7YHCZ5/Vanden Berghe and De Meyer - 1991 - Accurate computation of higher Sturm-Liouville eig.pdf}
 }
 
 
