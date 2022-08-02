@@ -12,3 +12,4 @@ Runge-Kutta
 LAPACK
 dstev
 Numerov
+piecewise
