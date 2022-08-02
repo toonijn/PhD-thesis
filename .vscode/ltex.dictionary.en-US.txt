@@ -11,3 +11,4 @@ Toeplitz
 Runge-Kutta
 LAPACK
 dstev
+Numerov

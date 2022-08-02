@@ -124,7 +124,35 @@ $$
     \end{pmatrix}{}\text{.}
 $$
 
-To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with our favorite tridiagonal eigenvalue solver. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines: \texttt{dstev} and relatives.
+To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with our favorite tridiagonal eigenvalue solver. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines: \texttt{?stev} and relatives.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/finite_difference_h_error.pdf}
+    \end{center}
+    \caption{Relative error of approximated eigenvalues of problem \eqref{equ:c2_fd_test_problem} in function of the grid size $n$ on the domain.}
+    \label{fig:c2_fd_h_error}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/finite_difference_k_error.pdf}
+    \end{center}
+    \caption{Relative error of approximated eigenvalues of problem \eqref{equ:c2_fd_test_problem} in function of the eigenvalue index $k$.}
+    \label{fig:c2_fd_k_error}
+\end{figure}
+
+As a numerical experiment of this method we will take a look at the following Sturm-Liouville equation:
+\begin{equation}\label{equ:c2_fd_test_problem}
+    -\left((1+x)^2 y \right)' + (x^2 - 2) y = \lambda e^x y
+\end{equation}
+on the domain $[0, 1]$ with homogeneous Dirichlet boundary conditions. Figure \ref{fig:c2_fd_h_error} shows the relative errors of the 4 lowest eigenvalues in function of the chosen grid size $n$. As $n$ increases, the error decreases, as desired. Notice that as the constructed method is based upon second order finite difference formulae, we expect to see the decrease of error be of second order too, as indicated in the figure with the dotted line. This constructed method is of relatively low order, so to compute very accurate estimations, a large grid size is needed. In the literature one can find many such methods, even with much higher orders. These better methods can reach high accuracy with relatively little computational work, for the first few eigenvalues.
+
+As earlier hinted, this type of method struggles with the computation of higher eigenvalues. Figure \ref{fig:c2_fd_k_error} illustrates this. Here, the relative error of the first 50 eigenvalues is plotted, for different values of $n$. Note that in the case of $n = 32$, only $32$ eigenvalues can be computed. On this figure, the line corresponding to $\mathcal{O}(k^2)$ is drawn. Together with the $\mathcal{O}(\Delta x^2)$ from earlier, this indicates that the relative error of the $k^\text{th}$ eigenvalue is expected to be
+$$
+    \mathcal{O}(\Delta x^2 k^2)
+$$
+for this method applied to problem \eqref{equ:c2_fd_test_problem}. This teaches us, for that this method in particular, but this conclusion also applies to all methods of this type, that the larger the eigenvalue, the more difficult it is to compute accurately. In the literature one can find some techniques to mitigate this effect by applying some corrections after the fact. In \cite{andrew_correction_1985} such a correction is analyzed when applied to Numerov's method. Here the authors are able to bring the error down from $\mathcal{O}(k^6 h^4)$ to $\mathcal{O}(k^3 h^4)$. This is remarkably better. But even with this correction technique, computing large eigenvalues is still computationally difficult.
 
 \subsection{CP-methods}
 
