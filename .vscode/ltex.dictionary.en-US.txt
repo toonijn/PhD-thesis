@@ -13,3 +13,5 @@ LAPACK
 dstev
 Numerov
 piecewise
+Canosa
+Pruess
