@@ -43,6 +43,21 @@
   file = {/home/toon/Zotero/storage/WTXGG572/Baeyens and Van Daele - 2020 - The fast and accurate computation of eigenvalues a.pdf;/home/toon/Zotero/storage/XJ64DC8V/S001046552030271X.html}
 }
 
+@article{baeyens_improvements_2022,
+  title = {Improvements to the Computation of Eigenvalues and Eigenfunctions of Two-Dimensional {{Schr\"odinger}} Equations by Constant Perturbation Based Algorithms},
+  author = {Baeyens, Toon and Van Daele, Marnix},
+  year = {2022},
+  month = apr,
+  journal = {Journal of Computational and Applied Mathematics},
+  pages = {114292},
+  issn = {0377-0427},
+  doi = {10.1016/j.cam.2022.114292},
+  abstract = {We present important improvements and additions to a modern technique developed by Ixaru to solve the time-dependent two-dimensional Schr\"odinger equation with homogeneous Dirichlet boundary conditions over a rectangular domain. The algorithm, first described in Ixaru (2010), is based on the so-called Constant Perturbation technique. In this paper, we refine and extend the algorithm with important features. We focus in particular on new algorithms for the determination of the index of the eigenvalues, for the orthonormalization of eigenfunctions, for automatic step size selection and for the accurate computation of integrals. We provide the new developments with sufficient theoretical background and numerical experiments.},
+  langid = {english},
+  keywords = {Constant Perturbations Methods,Eigenfunctions,Eigenvalues,Schrödinger equation},
+  file = {/home/toon/Zotero/storage/YQQYR37K/Baeyens and Van Daele - 2022 - Improvements to the computation of eigenvalues and.pdf;/home/toon/Zotero/storage/MMPCBPZN/S0377042722001212.html}
+}
+
 @article{binding_prufer_2012,
   title = {A {{Pr\"ufer Angle Approach}} to the {{Periodic Sturm-Liouville Problem}}},
   author = {Binding, Paul and Volkmer, Hans},
@@ -92,17 +107,17 @@
   file = {/home/toon/Zotero/storage/V2EDJHCJ/Elgharbi et al. - 2021 - Double exponential Sinc numerical methods for the .pdf;/home/toon/Zotero/storage/TFJHXLUY/00268976.2021.html}
 }
 
-@book{heath_scientific_2018,
+@book{heath_scientific_2002,
   title = {Scientific {{Computing}}},
   author = {Heath, Michael T.},
-  year = {2018},
-  month = nov,
-  series = {Classics in {{Applied Mathematics}}},
-  publisher = {{Society for Industrial and Applied Mathematics}},
-  doi = {10.1137/1.9781611975581},
-  isbn = {978-1-61197-557-4},
-  keywords = {computational mathematics,mathematical software,numerical analysis,numerical methods,scientific computing},
-  file = {/home/toon/Zotero/storage/NLUZC7AB/Heath - 2018 - Scientific Computing.pdf}
+  year = {2002},
+  month = jul,
+  edition = {2nd edition},
+  publisher = {{The McGraw-Hill Companies, Inc.}},
+  address = {{Boston}},
+  abstract = {Heath 2/e, presents a broad overview of numerical methods for solving all the major problems in scientific computing, including linear and nonlinear equations, least squares, eigenvalues, optimization, interpolation, integration, ordinary and partial differential equations, fast Fourier transforms, and random number generators. The treatment is comprehensive yet concise, software-oriented yet compatible with a variety of software packages and programming languages. The book features more than 160 examples, 500 review questions, 240 exercises, and 200 computer problems. Changes for the second edition include: expanded motivational discussions and examples; formal statements of all major algorithms; expanded discussions of existence, uniqueness, and conditioning for each type of problem so that students can recognize "good" and "bad" problem formulations and understand the corresponding quality of results produced; and expanded coverage of several topics, particularly eigenvalues and constrained optimization. The book contains a wealth of material and can be used in a variety of one- or two-term courses in computer science, mathematics, or engineering. Its comprehensiveness and modern perspective, as well as the software pointers provided, also make it a highly useful reference for practicing professionals who need to solve computational problems.},
+  isbn = {978-0-07-239910-3},
+  langid = {english}
 }
 
 @article{ixaru_cp_1998,
@@ -151,6 +166,23 @@
   abstract = {The standard monograph in this area is the book Exponential fitting by Ixaru and Vanden Berghe (Kluwer, Boston - Dordrecht - London, 2004) but a fresh look on things is necessary because many new contributions have been accumulated in the meantime. With no claim that our investigation is exhaustive we consider various directions of interest, try to integrate the new contributions in a natural, easy to follow way, and also detect some open problems of acute interest. We present the extension of the successful Constant Perturbation Method (CPM) for Schr\"odinger problems to the more general class of Sturm\textendash Liouville eigenvalue problems. Whereas the original CPM can only be applied to Sturm\textendash Liouville problems after a Liouville transformation, the more general CPM presented here solves the Sturm\textendash Liouville problem directly. This enlarges the range of applicability of the CPM to a wider variety of problems and allows a more efficient solution of many problems. The CPMs are closely related to the second-order coefficient approximation method underlying the SLEDGE software package, but provide for higher order approximations. These higher order approximations can also be obtained by applying a modified Neumann method. The CPM approach, however, leads to simpler formulae in a more convenient form. Finding the eigenvalues of a Sturm\textendash Liouville problem can be a computationally challenging task, especially when a large set of eigenvalues is computed, or just when particularly large eigenvalues are sought. This is a consequence of the highly oscillatory behavior of the solutions corresponding to high eigenvalues, which forces a naive integrator to take increasingly smaller steps. We will discuss the most used approaches to the numerical solution of the Sturm\textendash Liouville problem: finite differences and variational methods, both leading to a matrix eigenvalue problem; shooting methods using an initial-value solver; and coefficient approximation methods. Special attention will be paid to techniques that yield uniform approximation over the whole eigenvalue spectrum and that allow large steps even for high eigenvalues. The paper is devoted to the enhancement of the accuracy of the line-based perturbation method via the introduction of the perturbation corrections. We effectively construct the first and the second order corrections. We also perform the error analysis to predict that the introduction of successive corrections substantially enhances the order of the method from four, for the zeroth order version, to six and ten when the first and the second-order corrections are included. In order to remove the effect of the accuracy loss due to near-cancellation of like-terms when evaluating the perturbation corrections we construct alternative asymptotic formulae using a Maple code. We also propose a procedure for choosing the step size in terms of the preset accuracy and give a number of numerical illustrations. After a short survey over the efforts in the direction of solving the Schr\"odinger equation by using piecewise approximations of the potential function, the paper focuses on the piecewise perturbation methods in their CP implementation. The presentation includes a short list of problems for which CP versions are available, a sketch of the derivation of the CPM formulae, a description of various ways to construct or identify a certain version and also the main results of the error analysis. One of the most relevant results of the latter is that the energy dependence of the error is bounded, a fact which places these methods on a special position among the numerical methods for differential equations. A numerical illustration is also included in which a CPM based code for the regular Sturm\textendash Liouville problem is compared with some other, well-established codes. We develop algorithms based on coefficient approximation for the automatic solution of regular and singular Sturm\textendash Liouville problems.},
   langid = {english},
   file = {/home/toon/Zotero/storage/VMQAK2H4/Ixaru - 1972 - The error analysis of the algebraic method for sol.pdf;/home/toon/Zotero/storage/BCDJHS7V/0021999172900411.html}
+}
+
+@article{ixaru_lilix_2002,
+  title = {{{LILIX}}\textemdash{{A}} Package for the Solution of the Coupled Channel {{Schr\"odinger}} Equation. {{This}} Program Can Be Downloaded from the {{CPC Program Library}} under Catalogue Identifier: {{http://cpc.cs.qub.ac.uk/summaries/ADQF}}},
+  shorttitle = {{{LILIX}}\textemdash{{A}} Package for the Solution of the Coupled Channel {{Schr\"odinger}} Equation. {{This}} Program Can Be Downloaded from the {{CPC Program Library}} under Catalogue Identifier},
+  author = {Ixaru, L. Gr.},
+  year = {2002},
+  month = sep,
+  journal = {Computer Physics Communications},
+  volume = {147},
+  number = {3},
+  pages = {834--852},
+  issn = {0010-4655},
+  doi = {10.1016/S0010-4655(02)00459-9},
+  abstract = {The code LILIX is based on a CP method for solving systems of coupled Schr\"odinger equations. The method is of the sixth order, highly stable and with uniform accuracy with respect to the energy. The package contains three main subroutines to be accessed directly by the user. Subroutine LI generates the partition consistent with the desired accuracy while subroutine LIX helps propagating the solution and its derivative with respect to the momentum k in both directions (forwards and backwards) along the mesh points of the partition. Subroutine RENORM helps conserving the linear independence of various vectors in the solution matrix whenever this may be of concern.},
+  langid = {english},
+  file = {/home/toon/Zotero/storage/NLPARNSR/Ixaru - 2002 - LILIX—A package for the solution of the coupled ch.pdf;/home/toon/Zotero/storage/2APEQUVJ/S0010465502004599.html}
 }
 
 @article{ixaru_new_2010,
@@ -220,6 +252,23 @@
   abstract = {The algorithm upon which the code SLCPM12, described in Computer Physics Communications 118 (1999) 259\textendash 277, is based, is extended to higher order. The implementation of the original algorithm, which was of order \{12,10\} (meaning order 12 at low energies and order 10 at high energies), was more efficient than the well-established codes SL02F, SLEDGE and SLEIGN. In the new algorithm the orders \{14,12\}, \{16,14\} and \{18,16\} are introduced. Besides regular Sturm\textendash Liouville and one-dimensional Schr\"odinger problems also radial Schr\"odinger equations are considered with potentials of the form V(r)=S(r)/r+R(r), where S(r) and R(r) are well behaved functions which tend to some (not necessarily equal) constants when r\textrightarrow 0 and r\textrightarrow{$\infty$}. Numerical illustrations are given showing the accuracy, the robustness and the CPU-time gain of the proposed algorithms.},
   keywords = {Eigenvalue problem,Schrödinger equation,Sturm–Liouville problem},
   file = {/home/toon/Zotero/storage/284WCZ2P/Ledoux et al. - 2004 - CP methods of higher order for Sturm–Liouville and.pdf;/home/toon/Zotero/storage/WH676BF9/S0010465504003704.html}
+}
+
+@article{ledoux_cpmp_2006,
+  title = {{{CPM}}\{\vphantom\}{{P}},{{N}}\vphantom\{\} Methods Extended for the Solution of Coupled Channel {{Schr\"odinger}} Equations},
+  author = {Ledoux, V. and Van Daele, M. and Vanden Berghe, G.},
+  year = {2006},
+  month = mar,
+  journal = {Computer Physics Communications},
+  volume = {174},
+  number = {5},
+  pages = {357--370},
+  issn = {0010-4655},
+  doi = {10.1016/j.cpc.2005.10.009},
+  abstract = {The successful CPM\{P,N\} methods for the one-dimensional time-independent Schr\"odinger problem are generalized to the coupled channel case. The derivation of the formulae is discussed and a Maple program code is included which allows to determine the analytic expressions of the perturbation corrections needed to construct methods of different orders. Some numerical illustrations are given showing the accuracy, the robustness and the CPU-time gain of the proposed algorithms over the sixth order LILIX method which was presented in [L.Gr. Ixaru, LILIX\textemdash A package for the solution of the coupled channel Schr\"odinger equation, Comput. Phys. Comm. 147 (2002) 834\textendash 852].},
+  langid = {english},
+  keywords = {Coupled channel Schrödinger equation,CP methods},
+  file = {/home/toon/Zotero/storage/MWLZE2Q9/Ledoux et al. - 2006 - CPM P,N methods extended for the solution of coup.pdf;/home/toon/Zotero/storage/MNHJTI8F/S0010465505005801.html}
 }
 
 @article{ledoux_numerical_2007a,

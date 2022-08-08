@@ -80,7 +80,7 @@ In this expression $\vb{V}^{(k)}$ is an $N\times N$ matrix dependent on $y$:
     \vb{V}^{(k)}_{ij}(y) = \int_{\xmin}^{\xmax} b_i^{(k)}(x) b_j^{(k)}(x) \left(V(x, y) - \bar{V}^{(k)}(x)\right) \dd x + \delta_{ij} \lambda_i^{(k)} \text{.}
 \end{equation}
 
-The system of ordinary differential equations given in \eqref{equ:c3_coupled_system} is a coupled system of Schrö\-dinger equations. For coupled systems, there are well-known CP-methods available \cite{ledoux_numerical_2007a,ixaru_lilix_2002a}, with various implementations.
+The system of ordinary differential equations given in \eqref{equ:c3_coupled_system} is a coupled system of Schrö\-dinger equations. For coupled systems, there are well-known CP-methods available \cite{ledoux_numerical_2007a,ixaru_lilix_2002}, with various implementations.
 
 For the accurate computation of the integral in \eqref{equ:c3_v_matrix} we have developed specialized formulae. These will be presented later on in section \ref{sec:c3_calculate_vk}.
 
@@ -125,7 +125,63 @@ This concludes our overview of the method described by Ixaru in \cite{ixaru_new_
 
 \section{Our improvements}
 
+In \cite{ixaru_new_2010}, Ixaru has presented a new promising method. As we have seen with the rise of CP-methods for the one-dimensional Sturm-Liouville equation, research builds upon previous work. With this in mind we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily the work done in \cite{baeyens_fast_2020}.
+
+The first addition we have identified is implementing a robust algorithm to determine the eigenvalues themselves.
+
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
+
+In \cite{ixaru_new_2010}, it is mentioned that the eigenvalues correspond to the values $E$ for which \eqref{equ:c3_psi_e} becomes singular. The suggestion is that the eigenvalues of this matrix are zero in when $E$ is an eigenvalue of \eqref{equ:c3_schrodinger_2d}. Nothing further is present on how these values for $E$ should be found.
+
+In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by continuously halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different sign on the boundary of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains more than one root, of a root with higher multiplicity.
+
+Another well-known technique is Newton's method. Here, the root of a scalar function $f$ can be approximated by iterating the following scheme:
+$$
+    x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\text{.}
+$$
+For single roots, this method has a faster rate of convergence. Choosing initial values is also easier, because a value $x_0$ should be chosen only to be `sufficiently close' to a true root. One of the biggest drawbacks of this method is that the derivative of $f(x)$ should be available. For complicated functions, this can be difficult. Extensions of this method exist for which the derivative is not necessary, the secant method for example.
+
+In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions for which roots are uniquely defined $\RR^n \to \RR^n$. In our case, we are interested in when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ become zero. This does not map directly on any of these classical root-finding algorithms.
+
+To combat these issues with the classical algorithms, we propose a light modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation \eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that $\vb{\Phi}(E)$ is singular, as defined by \eqref{equ:c3_psi_e}. In other words, the matrix $\vb{\Phi}(E)$ has to have a zero eigenvalue.
+
+In Newton's method the derivative of the value in question should be available. Fortunately, in \cite{ixaru_lilix_2002} and also in \cite{ledoux_cpmp_2006} procedures are available to compute the derivative of solutions with respect to $E$. In our case, this means that the matrices
+$$
+    \pdv[]{\Cbottom}{E}, \pdv[]{\Cbottom'}{E}, \pdv[]{\Ctop}{E} \text{ and } \pdv[]{\Ctop'}{E}
+$$
+are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself.
+\begin{align*}
+    \pdv{\vb{\Psi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
+                         & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}
+\end{align*}
+
+Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}. Some care should be taken when two eigenvalues coincide, but since we are dealing with only numerical results this (almost) never happens. Let $\lambda$ be an eigenvalue of $\vb{\Phi}(E)$ with corresponding left and right eigenvectors $\vb{u}$ and $\vb{v}$, then the derivative of $\lambda$ with respect to $E$ is given as {\color{red} To do: include and proof this as a theorem.}
+$$
+    \pdv{\lambda}{E} = \frac{1}{\transpose{\vb{u}}\vb{v}}\transpose{\vb{u}} \pdv{\vb{\Phi}}{E} \vb{v} \text{.}
+$$
+
+With all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
+$$
+    \eigs(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
+$$
+
+Now, we define the scalar function $f(E) : \RR \to \RR$ as {\color{red}To do: proof that $\vb{\Phi}(E)$ has only real eigenvalues.}
+$$
+f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
+$$
+
+On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that at each moment the eigenvalue with the closest possible root will be selected.
+
+\begin{figure}
+    \centering
+    % \includegraphics[width=\textwidth]{rainbow.pdf}
+    TO DO
+    \caption{\label{fig:rainbow} The eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem from section \ref{sec:num_exp_ixaru} as a function of $E$. }
+\end{figure}
+
+
+To give some intuition about the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ we present figure \ref{fig:rainbow}. Here, the problem with potential $V(x, y) = (1+x^2)(1+y^2)$ on the square $[-5.5; 5.5]\times[-5.5; 5.5]$ is analysed, see also section \ref{sec:num_exp_ixaru}. For a range of energies $E$ the eigenvalues $\lambda$ of the corresponding mismatch matrix $\vb{\Phi}(E)$ are plotted. One can see that at least one eigenvalue becomes zero in the neighbourhood of $E=3.2$, of $E=5.5$, of $E=7.6$\dots\ Near $E=5.5$ there is a value for $E$ for which two eigenvalues of the mismatch matrix become zero,
+which indicates that this value is a degenerate eigenvalue of this Schrödinger problem, with multiplicity two.
 
 \subsection{Determining the index of an eigenvalue}\label{sec:c3_index_of_e}
 
