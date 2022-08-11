@@ -61,7 +61,6 @@ RUN apt-get update \
     nodejs \
     cmake \
     # some special requests
-    # pm4py
     python3.9-tk graphviz gcc g++ libblas-dev liblapack-dev libsuitesparse-dev \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -86,14 +85,16 @@ WORKDIR /home/student
 
 # Populate python 3 kernel
 RUN python -m pip --no-cache install --user --no-warn-script-location \
-    'numpy==1.21.*' \
-    'scipy==1.7.*' \
-    'matplotlib==3.4.*' \
-    'sympy==1.8.*' \
-    'pandas==1.3.*' \
-    'pillow==8.3.*' \
-    'openpyxl==3.0.*' \
-    'pm4py==2.2.*'
+    'numpy==1.23.*' \
+    'scipy==1.9.*' \
+    'matplotlib==3.5.*' \
+    'sympy==1.10.*' \
+    'pandas==1.4.*' \
+    'pillow==9.2.*' \
+    'pqdm==0.2.*'
+    
+RUN sage -pip --no-cache install --user --no-warn-script-location \
+    'pqdm==0.2.*'
 
 RUN mkdir -p /home/sage/sage/local/share/doc/sage/html/en
 
@@ -119,10 +120,19 @@ RUN mkdir -p /home/student/.jupyter/lab/user-settings/\@jupyterlab/git \
 WORKDIR /home/student/
 RUN git clone https://gitlab.com/libeigen/eigen.git
 RUN git clone --recursive https://github.com/twist-numerical/matslise.git
-RUN mkdir eigen/build; mkdir matslise/build-sage;  mkdir matslise/build-python
+RUN git clone --recursive https://github.com/twist-numerical/matslise2d.git
+RUN mkdir eigen/build
+RUN mkdir matslise/build-sage;  mkdir matslise/build-python
+RUN mkdir matslise2d/build-sage ; mkdir matslise2d/build-python
 
 WORKDIR /home/student/eigen/build
 RUN git checkout 3.3; cmake -Wno-dev ..
+
+WORKDIR /home/student/matslise/build-python
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
+    -DEigen3_DIR="/home/student/eigen/build" \
+    -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
+RUN cmake --build . --target pyslise_install --config Release -- -j 5
 
 WORKDIR /home/student/matslise/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
@@ -130,11 +140,17 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
 RUN cmake --build . --target pyslise_install --config Release -- -j 5
 
-WORKDIR /home/student/matslise/build-python
+WORKDIR /home/student/matslise2d/build-sage
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
+    -DEigen3_DIR="/home/student/eigen/build" \
+    -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
+RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
+
+WORKDIR /home/student/matslise2d/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
-RUN cmake --build . --target pyslise_install --config Release -- -j 5
+RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
 
 WORKDIR /home/student
 
