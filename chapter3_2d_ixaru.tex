@@ -155,19 +155,48 @@ are available. This allows us to also compute the derivative of $\vb{\Phi}$ itse
                          & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}
 \end{align*}
 
-Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}. Some care should be taken when two eigenvalues coincide, but since we are dealing with only numerical results this (almost) never happens. Let $\lambda$ be an eigenvalue of $\vb{\Phi}(E)$ with corresponding left and right eigenvectors $\vb{u}$ and $\vb{v}$, then the derivative of $\lambda$ with respect to $E$ is given as {\color{red} To do: include and proof this as a theorem.}
+Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
+
+\begin{theorem}[Lancaster 1964]\label{the:c3_eigenvalue_derivative}
+    Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C^{n\times n}}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
+
+    Let $\lambda$ be a simple eigenvalue of $\vb{A}(x_0)$ with left and right eigenvalues $\vb{v}$, $\vb{u}$ respectively. It now holds that
+    $$
+        \left(\dv[]{\lambda}{x}\right)_{x=x_0} = \frac{1}{\transpose{\vb{v}}\vb{u}} \left(\transpose{\vb{v}}\dv[]{\vb{A}}{x} \vb{u} \right)_{x=x_0}\text{,}
+    $$
+    where $\dv[]{\vb{A}}{x}$ is the matrix with, as each coefficient, the derivative of the corresponding coefficient of $\vb{A}(x)$ with respect to $x$.
+
+\end{theorem}
+\begin{proof}
+    As $\vb{u}$ and $\vb{v}$ are right, respectively left, eigenvectors corresponding to the eigenvalue $\lambda$ it follows that:
+    \begin{equation}\label{equ:c3_eigenvalue_derivative_equ1}
+        \transpose{\vb{v}}\vb{A}(x_0)\vb{u}  = \lambda \transpose{\vb{v}}\vb{u}\text{.}
+    \end{equation}
+    Because all involved variables are dependent on $x$, and we will only take the value (or the value of the derivative) in $x_0$, we will, to ease notation, omit this $x$ dependency and implied evaluation in the point $x_0$. Furthermore, we will denote the derivative with respect to $x$ with a prime $'$. This allows us to write down the derivative of both sides of \eqref{equ:c3_eigenvalue_derivative_equ1}. These derivatives can further be simplified by using the product rule when applied to matrix multiplications:
+    \begin{align*}
+        \left(\transpose{\vb{v}}\vb{A}(x_0)\vb{u}\right)'                                                                    & = \left(\lambda \transpose{\vb{v}}\vb{u}\right)'                                                                      \\
+        \implies \quad {\transpose{\vb{v}}}'\vb{A}\vb{u} + \transpose{\vb{v}}\vb{A}'\vb{u} + \transpose{\vb{v}}\vb{A}\vb{u}' & = \lambda' \transpose{\vb{v}}\vb{u} + \lambda {\transpose{\vb{v}}}'\vb{u} + \lambda \transpose{\vb{v}}\vb{u}'\text{.}
+    \end{align*}
+    Using that $\vb{u}$ and $\vb{v}$ are eigenvectors ($\vb{A} \vb{u} = \lambda \vb{u}$ and $\transpose{\vb{v}}\vb{A} = \lambda \transpose{\vb{v}}$), gives us the required expression:
+    \begin{align*}
+        \transpose{\vb{v}}\vb{A}'\vb{u} & = \lambda' \transpose{\vb{v}}\vb{u}                                         \\
+        \implies \quad \lambda'         & = \frac{\transpose{\vb{v}}\vb{A}'\vb{u}}{\transpose{\vb{v}}\vb{u}} \text{.}
+    \end{align*}
+\end{proof}
+
+Some care should be taken when two eigenvalues coincide. In \cite{lancaster_eigenvalues_1964}, this is handled by considering the left and right eigenvector space corresponding to the multiple eigenvalue. But since we are dealing with only numerical results this (almost) never happens. Theorem \ref{the:c3_eigenvalue_derivative} applied to $\vb{\Phi}(E)$ gives, with left and right eigenvectors, $\vb{v}$ and $\vb{u}$ respectively, corresponding to the eigenvalue $\lambda$:
 $$
-    \pdv{\lambda}{E} = \frac{1}{\transpose{\vb{u}}\vb{v}}\transpose{\vb{u}} \pdv{\vb{\Phi}}{E} \vb{v} \text{.}
+    \pdv{\lambda}{E} = \frac{1}{\transpose{\vb{v}}\vb{u}}\transpose{\vb{v}} \pdv{\vb{\Phi}}{E} \vb{u} \text{.}
 $$
 
-With all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
+With values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
 $$
     \eigs(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
 $$
 
 Now, we define the scalar function $f(E) : \RR \to \RR$ as {\color{red}To do: proof that $\vb{\Phi}(E)$ has only real eigenvalues.}
 $$
-f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
+    f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
 $$
 
 On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that at each moment the eigenvalue with the closest possible root will be selected.
