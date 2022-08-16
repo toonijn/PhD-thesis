@@ -68,23 +68,19 @@ RUN apt-get update \
 # Installing pip
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
+RUN npm install -g yarn 
+
 # Installing jupyter
 RUN python -m pip install --no-cache --upgrade pip setuptools \
-    && python -m pip --no-cache install \
+    && python -m pip install --no-cache \
     'notebook==6.4.*' \
     'jupyterhub==1.4.*' \
     'jupyterlab==3.*' \
     'jupyterlab-git' \
     'jupyterlab-execute-time'
 
-RUN npm install -g yarn 
-
-USER student
-ENV HOME /home/student
-WORKDIR /home/student
-
 # Populate python 3 kernel
-RUN python -m pip --no-cache install --user --no-warn-script-location \
+RUN python -m pip install --no-cache --no-warn-script-location \
     'numpy==1.23.*' \
     'scipy==1.9.*' \
     'matplotlib==3.5.*' \
@@ -93,8 +89,12 @@ RUN python -m pip --no-cache install --user --no-warn-script-location \
     'pillow==9.2.*' \
     'pqdm==0.2.*'
     
-RUN sage -pip --no-cache install --user --no-warn-script-location \
+RUN sage -pip install --no-cache --no-warn-script-location \
     'pqdm==0.2.*'
+
+USER student
+ENV HOME /home/student
+WORKDIR /home/student
 
 RUN mkdir -p /home/sage/sage/local/share/doc/sage/html/en
 
@@ -132,7 +132,9 @@ WORKDIR /home/student/matslise/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
+USER root
 RUN cmake --build . --target pyslise_install --config Release -- -j 5
+USER student
 
 WORKDIR /home/student/matslise/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
@@ -150,7 +152,9 @@ WORKDIR /home/student/matslise2d/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
+USER root
 RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
+USER student
 
 WORKDIR /home/student
 
