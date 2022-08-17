@@ -40,7 +40,7 @@ For almost all potential functions $V$ the corresponding Schrödinger equation c
 
 In \cite{ixaru_new_2010} a new method is proposed to approximate solutions of the two-dimensional time-independent Schrödinger equations.
 
-\section{Ixaru's method}
+\section{Ixaru's method}\label{sec:c3_ixarus_method}
 
  {\color{red} To do: this is a direct copy from the article: proofread}
 
@@ -151,14 +151,14 @@ $$
 $$
 are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself.
 \begin{align*}
-    \pdv{\vb{\Psi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
+    \pdv{\vb{\Phi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
                          & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}
 \end{align*}
 
 Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
 
 \begin{theorem}[Lancaster 1964]\label{the:c3_eigenvalue_derivative}
-    Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C^{n\times n}}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
+    Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C}^{n\times n}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
 
     Let $\lambda$ be a simple eigenvalue of $\vb{A}(x_0)$ with left and right eigenvalues $\vb{v}$, $\vb{u}$ respectively. It now holds that
     $$
@@ -195,22 +195,33 @@ $$
 $$
 
 Now, we define the scalar function $f(E) : \RR \to \RR$ as {\color{red}To do: proof that $\vb{\Phi}(E)$ has only real eigenvalues.}
-$$
+\begin{equation}\label{equ:c3_mismatch_newton_function}
     f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
-$$
+\end{equation}
 
-On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that at each moment the eigenvalue with the closest possible root will be selected.
+On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that in each step the eigenvalue with the closest, possible root will be selected.
+
+\subsubsection{A numerical example}
 
 \begin{figure}
     \centering
-    % \includegraphics[width=\textwidth]{rainbow.pdf}
-    TO DO
-    \caption{\label{fig:rainbow} The eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem from section \ref{sec:num_exp_ixaru} as a function of $E$. }
+    \includegraphics[width=\textwidth]{img/chapter3/mismatch_rainbow.pdf}
+    \caption{\label{fig:c3_mismatch_rainbow} Each of the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem \eqref{equ:c3_mismatch_ixaru} as a function of $E$. The true eigenvalues of this problem are indicated with $E_0$, $E_1$, $\dots$ The lines are colored and continued to aid in the clarity of this illustration. But, do notice that this is only a best guess approximation.}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{img/chapter3/mismatch_newton.pdf}
+    \caption{\label{fig:c3_mismatch_newton} The function \eqref{equ:c3_mismatch_newton_function}, derived from problem \eqref{equ:c3_mismatch_ixaru}, is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}
+\end{figure}
 
-To give some intuition about the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ we present figure \ref{fig:rainbow}. Here, the problem with potential $V(x, y) = (1+x^2)(1+y^2)$ on the square $[-5.5; 5.5]\times[-5.5; 5.5]$ is analysed, see also section \ref{sec:num_exp_ixaru}. For a range of energies $E$ the eigenvalues $\lambda$ of the corresponding mismatch matrix $\vb{\Phi}(E)$ are plotted. One can see that at least one eigenvalue becomes zero in the neighbourhood of $E=3.2$, of $E=5.5$, of $E=7.6$\dots\ Near $E=5.5$ there is a value for $E$ for which two eigenvalues of the mismatch matrix become zero,
-which indicates that this value is a degenerate eigenvalue of this Schrödinger problem, with multiplicity two.
+To provide some intuition about the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ we will analyze a numerical example. Consider the two-dimensional time-independent Schrödinger equation with potential function
+\begin{equation}\label{equ:c3_mismatch_ixaru}
+    V(x, y) = (1+x^2)(1+y^2)
+\end{equation}
+on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$ with homogeneous Dirichlet boundary conditions. This problem is also the numerical example from Ixaru's work \cite{ixaru_new_2010}.
+
+Throughout this research, one of the first graphs which we studied can be found in figure \ref{fig:c3_mismatch_rainbow}. Here all eigenvalues of the mismatch matrix $\vb{\Psi}(E)$ are plotted. For each value of $E$, $\vb{\Psi}(E)$ has the same number of eigenvalues ({\color{red} To do: only if the eigenvalues are real.}) as the chosen basis size $N$, as described in \ref{sec:c3_ixarus_method}. Intuitively, it is easy to say, that one can `follow' the trajectory of a single eigenvalue as $E$ changes. 
 
 \subsection{Determining the index of an eigenvalue}\label{sec:c3_index_of_e}
 

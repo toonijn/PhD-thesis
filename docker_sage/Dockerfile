@@ -87,10 +87,13 @@ RUN python -m pip install --no-cache --no-warn-script-location \
     'sympy==1.10.*' \
     'pandas==1.4.*' \
     'pillow==9.2.*' \
-    'pqdm==0.2.*'
+    'pqdm==0.2.*' \
+    'ipywidgets' \
+    'jupyterlab_widgets'
     
 RUN sage -pip install --no-cache --no-warn-script-location \
-    'pqdm==0.2.*'
+    'pqdm==0.2.*' \
+    'ipywidgets'
 
 USER student
 ENV HOME /home/student
@@ -107,6 +110,7 @@ RUN jq '. + {env: {SAGE_ROOT: "'$SAGE_ROOT'"}}' < /home/student/.local/share/jup
 
 # Install jupyter labextensions
 ENV JUPYTERLAB_DIR=/home/student/.lab
+RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter labextension enable jupyterlab-execute-time @jupyterlab/git
 RUN jupyter lab build
 RUN mkdir -p .jupyter/lab/user-settings/@jupyterlab/notebook-extension/ \

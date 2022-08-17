@@ -2,6 +2,11 @@ from matplotlib import cm
 import matplotlib.colors as mc
 import itertools
 from math import pi
+import matplotlib as mpl
+
+mpl.rc('text', usetex=True)
+mpl.rc('text.latex', preamble=r'\usepackage{amsmath}')
+mpl.rc('font', family='serif', size=14, serif="Computer Modern Roman")
 
 kleuren = {
     'wit': "#FFFFFF",
