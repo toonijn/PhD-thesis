@@ -42,7 +42,7 @@ In \cite{ixaru_new_2010} a new method is proposed to approximate solutions of th
 
 \section{Ixaru's method}\label{sec:c3_ixarus_method}
 
- {\color{red} To do: this is a direct copy from the article: proofread}
+{\color{red} To do: this is a direct copy from the article: proofread}
 
 The main idea of Ixaru's method is built on the well established technique \cite{titchmarsh_eigenfunction_1962} of writing a solution as a linear combination of well-chosen one dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that very many basis functions are necessary to ensure accurate solutions. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely he suggests splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article \cite{ixaru_new_2010} Ixaru splits the domain along the $x$-axis. But for notational purposes it is more natural to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
 $$
@@ -230,6 +230,17 @@ is sufficiently accurate.
 In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. The region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\lambda\right|$ was used different, this region would be even smaller. But still, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of an eigenvalue less than the value $E$. This allows us to detect these missing values, and locate them. This technique will be studied in section \ref{sec:c3_index_of_e}.
 
 \subsection{Calculation of \texorpdfstring{$\vb{V}^{(k)}(y)$}{Vk(y)}}\label{sec:c3_calculate_vk}
+
+Another improvement we have made can be found in the calculation of the matrix $\vb{V}^{(k)}(y)$ with the formula in \eqref{equ:c3_v_matrix}. When one wants to implement this formula accurately, some considerations have to be made. As the formula consist of an integral with a relatively complicated integrand, we have to consider in which points this integrand is known. Furthermore, evaluating more points is non-trivial. In Ixaru's work \cite{ixaru_new_2010} it was not even possible to evaluate this integrand in more points. The values were only known in the mesh points of SLCPM12.
+
+Because only a few values of the integrand, were known Ixaru has developed a particular exponentially fitted quadrature formula based upon \cite[Section~2.4]{ixaru_exponential_2004}. This method uses the exponential behavior of $b_i^{(k)}(x)$ and $b_j^{(k)}(x)$ the known approximate frequency to build specialized formulae. Because the derivatives with respect to $x$ of $b_i^{(k)}(x)$ and $b_j^{(k)}(x)$ are known, and those of $V(x, y)$ and $\bar{V}^{(k)}(x)$ can be estimated, these values are also used.
+
+In our case, the story is quite different. Because of our improvements to Matslise, we can improve accuracy even further. In particular, the computation of $b_i^{(k)}(x)$ is now efficiently possible in arbitrary points. This allows us to use off the shelf quadrature formulae, to ensure accuracy. As this was only a first test to approximate $\vb{V}^{(k)}(x)$, we did not use specialized exponentially fitted methods. When profiling our implementation we found that the time to execute these quadrature formulae was almost negligible.
+
+So in practice, there was little need to improve even further, with more complicated quadrature formulae. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$, are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, was the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewise. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can be accurately fitted on this function $V(x, y)$, if the same pieces as for $\bar{V}^{(k)}$ are used.
+
+
+    {\color{red} To do: writing more...}
 
 
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}

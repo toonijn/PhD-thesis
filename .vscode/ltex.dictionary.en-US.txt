@@ -15,3 +15,4 @@ Numerov
 piecewise
 Canosa
 Pruess
+integrand
