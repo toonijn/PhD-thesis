@@ -237,10 +237,10 @@ Because only a few values of the integrand, were known Ixaru has developed a par
 
 In our case, the story is quite different. Because of our improvements to Matslise, we can improve accuracy even further. In particular, the computation of $b_i^{(k)}(x)$ is now efficiently possible in arbitrary points. This allows us to use off the shelf quadrature formulae, to ensure accuracy. As this was only a first test to approximate $\vb{V}^{(k)}(x)$, we did not use specialized exponentially fitted methods. When profiling our implementation we found that the time to execute these quadrature formulae was almost negligible.
 
-So in practice, there was little need to improve even further, with more complicated quadrature formulae. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$, are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, was the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewise. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can be accurately fitted on this function $V(x, y)$, if the same pieces as for $\bar{V}^{(k)}$ are used.
+So in practice, there was little need to improve even further, with more complicated quadrature formulae. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$, are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewise. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can be accurately fitted on this function $V(x, y)$, if the same pieces as for $\bar{V}^{(k)}$ are used.
 
 
-    {\color{red} To do: writing more...}
+{\color{red} To do: writing more and include appendix from reinventing-2d-schrodinger}
 
 
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}

@@ -164,6 +164,8 @@ For this, we will only consider the Schrödinger equation
 \end{equation}
 on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a) + \beta_a y(a) = 0$ and $\alpha_b y(b) + \beta_b y(b) = 0$. But do note, that using Liouville's transformation all Sturm-Liouville problems can be transformed into Schrödinger problems.
 
+\subsubsection{Piecewise constant approximation of the potential}
+
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter2/cpm_constant_approx.pdf}
@@ -219,12 +221,12 @@ In \cite{pruess_estimating_1973}, the author also studies what happens to the er
 \begin{theorem}[Pruess 1973]\label{the:c2_pruess_1973_2}
     Following the notation from theorem \ref{the:c2_pruess_1973_1}, assume $\bar{V}(x)$ to be a least squares $m^\text{th}$ degree piecewise polynomial approximation of $V(x)$. This means, on each piece $[x_i, x_{i+1}]$, that $\bar{V}$ is the $m^\text{th}$ degree polynomial such the following is minimal
     $$
-    \int_{x_i}^{x_{i+1}} \left(V(x) - \bar{V}(x)\right)^2 \dd x \text{.}
+        \int_{x_i}^{x_{i+1}} \left(V(x) - \bar{V}(x)\right)^2 \dd x \text{.}
     $$
-    
+
     Under this assumption, if $k \to \infty$, it holds for the relative error that
     $$
-    \frac{\lambda_k - \tilde{\lambda}_k}{\lambda_k} = \mathcal{O}(k^{-4})\text{.}
+        \frac{\lambda_k - \tilde{\lambda}_k}{\lambda_k} = \mathcal{O}(k^{-4})\text{.}
     $$
 \end{theorem}
 
@@ -248,16 +250,118 @@ This last theorem does not only say that the error does not become larger if $k$
 
 As a numerical experiment we have applied the method with constant piecewise approximations ($m=0$) to the Mathieu problem
 \begin{equation}\label{equ:c2_pruess_test_problem}
--y'' + 100 \cos(x)^2 y = \lambda y
+    -y'' + 100 \cos(x)^2 y = \lambda y
 \end{equation}
 on the domain $[0, \pi]$ with homogeneous Dirichlet boundary conditions. In figure \ref{fig:c2_pruess_h_error} the relative error of the application of the method is illustrated. We see that the error follows indeed the predicted line of $\mathcal{O}(h^2)$. In figure \ref{fig:c2_pruess_k_error} we see the dramatic increase in accuracy when $k$ becomes larger. The predicted order of $\mathcal{O}(k^{-4})$ seems to be reached once $k$ is sufficiently large.
 
 
 But still some nuances have to be made. In \cite{pruess_estimating_1973} some numerical examples are given for constant ($m=0$), linear ($m=1$) and quadratic ($m=2$) approximations. But only for the constant approximations analytical solutions were used. For the higher order experiments, the true solution on a single piece is approximated by an at least fifteenth order Taylor series expansion. These Taylor series are only polynomial approximations of a possibly highly oscillatory function. Which, for much higher eigenvalues, gives problems.
 
-% To do...
+\subsubsection{Constant perturbation methods}
 
-\subsection{Prüfer's transformation}
+In the years since the first article from Canosa and De Oliveira \cite{canosa_new_1970}, the research into these kinds of methods has flourished. One of the first extensions was to consider not only piecewise constant approximations but also linear and quadratic, as in \cite{pruess_estimating_1973}. For constant approximations, the exact solution is given by hyperbolic or trigonometric functions. For linear approximations, the Airy functions $\Ai(x)$ and $\Bi(x)$ are appropriate. As these are well-known special functions, software packages are available to evaluate them. But not unexpectedly, these packages are harder to find, and more difficult to use, than $\sin$, $\cos$ and hyperbolic variants. For quadratic, and higher order, approximations no closed form formula exists for the exact solutions.
+
+To improve accuracy and computational efficiency, it is, when developing numerical methods, valuable to construct higher order methods. As we are limited to an order of $\mathcal{O}(h^2)$ for constant approximations, or $\mathcal{O}(h^4)$ when using linear approximations, some alternative improvements were required. In the book \cite{ixaru_numerical_1984}, Ixaru dedicated chapter 3 to the development of the constant perturbation methods. The main idea is to, not directly improve the approximation of $V(x)$. But, starting with a piecewise constant approximation $\bar{V}(x)$, adding correction terms to capture the difference between the reference solution for $\bar{V}(x)$ and the true solution for $V(x)$.
+
+Before we deconstruct the constant perturbation methods, let us take the time to formalize which mathematical problem we are solving. For now, we will only look at the differential equation
+\begin{equation}\label{equ:c2_cpm_schrodinger}
+    y''(\delta) = (\Delta V(\delta) + \bar{V} - \lambda) y(\delta)
+\end{equation}
+as initial value problem starting from $0$. Denote the homogeneous Dirichlet solution as $u(\delta)$, as such, $u(0) = 0$ and $u'(0) = 1$. And, we will write the homogeneous Neumann solution as $v(\delta)$, thus $v(0) = 1$ and $v'(0)=0$. In \eqref{equ:c2_cpm_schrodinger}, $\bar{V}$ is a constant (not piecewise) approximation of $V(x)$ on the current piece $[x_i, x_{i+1}]$ and $\Delta V(\delta) := V(x_i + \delta) - \bar{V}$. Being able to solve the initial value problem is sufficient to also solve the boundary value eigenproblem. For solving the latter we can employ a shooting procedure to the former, see section \ref{sec:c2_shooting_prufer} for more details. The procedure we will develop here can then be applied to each of the pieces in the constant piecewise approximation of $V(x)$.
+
+Following \cite{ixaru_numerical_1984,ixaru_cp_2000}, let us denote a solution of \eqref{equ:c2_cpm_schrodinger} generally as $p(\delta)$, this thus represents either $u(\delta)$ or $v(\delta)$. Now we write the solution $p(\delta)$ as a perturbation series:
+$$
+    p(\delta) = p_0(\delta) + p_1(\delta) + p_2(\delta) + \dots
+$$
+In this expression the first order term $p_0$ is the solution of the reference equation
+$$
+    p_0''(\delta) = (\bar{V} - \lambda) p_0(\delta)
+$$
+with appropriate initial values. That is, $u_0(0) = 1$ and $u_0'(0) = 0$ for $p = u$, if $p=v$ the initial values are $v_0(0)=0$ and $v_0'(0) = 1$. The perturbation corrections can now be recursively defined as the solution of
+$$
+    p_q''(\delta) = (\bar{V} - \lambda) p_q(\delta) + \Delta V(\delta) p_{q-1}
+$$
+with initial conditions $p_q(0) = p_q'(0) = 0$. Notice that this definition implies that $p$ indeed solves \eqref{equ:c2_cpm_schrodinger} with the appropriate initial values:
+\begin{align*}
+    p'' & = (\bar{V} - \lambda)p_0 + \sum_{q=1}^\infty\left((\bar{V} - \lambda)p_q + \Delta V(\delta) p_{q-1}\right) \\
+        & = (\bar{V} - \lambda)\sum_{q=0}^\infty p_q + \Delta V(\delta) \sum_{q=0}^\infty p_q                        \\
+        & = (\Delta V(\delta) + \bar{V} - \lambda)p\text{.}
+\end{align*}
+
+To symbolically compute the expression of $p_q$ Ixaru has introduced some auxiliary functions\footnote{What we will call $\eta_{-1}$, Ixaru has named $\xi$. The notation of the recursive definition becomes a little easier when the $\eta_m$ and $\xi$ names are unified.}, based upon the exact solution of the constant perturbation method.
+
+\begin{definition}[Ixaru 1984]\label{def:c2_eta_functions}
+    The family of $\eta$-functions $\eta_m : \RR \to \RR$ for $m \in \{-1, 0, 1, \dots\}$ is defined recursively as:
+    \begin{align*}
+        \eta_{-1}(Z) & = \cosh(\sqrt{Z})                                        \\
+        \eta_{0}(Z)  & = \frac{\sinh(\sqrt{Z})}{\sqrt{Z}}                       \\
+        \eta_{m}(Z)  & = \frac{\eta_{m-2}(Z) - (2m-1) \eta_{m-1}(Z)}{Z}\text{.}
+    \end{align*}
+    When $Z < 0$ the definitions of $\eta_{-1}$ and $\eta_{0}$ should be read as calculations in $\CC$. But, notice that the resulting values will always be real. Furthermore, if $Z = 0$, one should take the limit of $\eta_m$ to zero, this yields\footnote{In this expression $n!!$ is the double factorial: $n!! := n\cdot (n-2) \cdot (n - 4) \cdot ...$, with only strictly positive integers as factors. For our purposes we define $0!! = (-1)!! = 1$.} $\eta_m(0) = \frac{1}{(2m+1)!!}$.
+\end{definition}
+
+When implementing these formulas, it is more efficient to keep all calculations in $\RR$, by using $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
+
+Another interesting property of these $\eta$-functions are its series expansions:\begin{align*}
+    \eta_{-1}(Z) & = \sum_{q=0}^{\infty} \frac{Z^q}{(2q + 1)!}                                                      \\
+    \eta_{m}(Z)  & = 2^m \sum_{q=0}^{\infty} \frac{(q+m)! Z^q}{q!(2q + 2m + 1)!} \qquad \text{if } m \geq 0\text{.}
+\end{align*}
+When $|Z|$ is small, the recursion from the definition becomes numerically unstable. It is more accurate to use this series expansion on $\eta_m$ and $\eta_{m+1}$, for $m$ sufficiently large, and work our way back to $m=0$ and $m=-1$ with the inverted recursion
+$$
+    \eta_{m-1}(Z) = Z \eta_{m+1}(Z) + (2 m + 1) \eta_{m}(Z)
+    \text{.}
+$$
+
+Other interesting properties of these special functions are already studied. Here we provide some results, without proofs.
+\begin{theorem}[Ixaru 1984]
+    For the family of functions defined in definition \ref{def:c2_eta_functions}, the following properties hold for $m \in \{-1, 0, 1, 2, \dots\}$ and $Z \in \RR$.
+    \begin{itemize}
+        \item Asymptotic behavior for $|Z| \to \infty$:
+              $$\eta_m(Z) \approx  \begin{dcases}
+                      \frac{\eta_{-1}(Z)}{Z^{(m+1)/2}} & \text{if $m$ is odd}  \\
+                      \frac{\eta_{0}(Z)}{Z^{m/2}}      & \text{if $m$ is even}
+                  \end{dcases}$$
+        \item Differentiation with respect to $Z$:
+              $$
+                  \eta'_{m}(Z) = \frac{1}{2}\eta_{m+1}(Z)
+              $$
+        \item Differentiation with respect to $\delta$ if $Z = F\delta^2$:
+              \begin{align*}
+                  \pdv[]{\eta_{-1}(Z)}{\delta}             & = \frac{Z}{\delta} \eta_0(Z)                           \\
+                  \pdv[]{\delta^{2m+1}\eta_{m}(Z)}{\delta} & = \delta^{2m} \eta_{m-1}(Z) \qquad \text{if } m \geq 0 \\
+              \end{align*}
+    \end{itemize}
+\end{theorem}
+
+With the theory about the family of $\eta$-functions in hand, we are able to formulate the main theorem to symbolically compute the formulae for $p_q(\delta)$.
+
+\begin{theorem}[Ixaru 1984]\label{the:c2_perturbation_terms}
+    If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
+    \begin{align*}
+        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
+        \intertext{with derivative:}
+        p_q'(\delta) & = \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z) + \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
+    \end{align*}
+    The functions $ C^{(q)}_i (\delta) $ satisfy the following recursive relation: \begin{align*}
+        C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
+        C_{i-1}^{(q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
+        \right)\dd\varepsilon                                                                 \\
+        C_{i}^{(0)}(\delta)  & = \begin{cases}
+            \delta & \text{if $p = u$ and $i = -1$} \\
+            1      & \text{if $p = v$ and $i = 0$}  \\
+            0      & \text{otherwise}
+        \end{cases}                                   \\
+        C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
+    \end{align*}
+
+\end{theorem}
+
+{\color{red} To do: Maybe proof?}
+
+{\color{red} To do: Some history and details about implementing these?}
+
+
+\subsection{Shooting with Prüfer's transformation}\label{sec:c2_shooting_prufer}
 
 \section{Matslise 3.0}
 
