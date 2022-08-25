@@ -1,11 +1,29 @@
 % !TeX root = chapter4_2d_new.tex
 \input{util.tex}
 \startchapter{4}
+\undefinedlabel{cha:c2}{2}
+\undefinedlabel{cha:c3}{3}
 
-\longchapter[New methods]{New methods for the \twoD time-independent Schrödinger equation}
+\longchapter[New methods]{New methods for the \twoD time-independent Schrödinger equation}\label{cha:c4}
+
+In chapter \ref{cha:c2} we have studied the constant perturbation methods. We have seen a brief history about these CP-methods, as well as, a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
+
+Chapter \ref{cha:c3} was dedicated to the treatment of a recent method to solve the time-independent two-dimensional Schrödinger equation. This method aims to use the strengths of the constant perturbation methods for higher dimensional problems. This new method is promising, and we developed many improvements upon the original idea.
+
+One of the unique powers of the CP-methods was their ability to not only compute low eigenvalues accurately, but even increase accuracy for higher eigenvalues. This is one of the few, if not the only, method which has this very desirable property for Sturm-Liouville problems. For two dimensions, this property did not translate cleanly. The method described in chapter \ref{cha:c3} tries to capture this by considering solutions of a one-dimensional Schrödinger problem in the $x$-direction. And a method for a coupled system of Schrödinger equations has been used in the $y$-direction. In theory this method is capable of computing any eigenvalue. In practice, this is not the case. Along the $x$-direction an eigenfunction is represented as a linear combination of basis functions. This basis is well-chosen, such that only a few number of functions are able to capture the true eigenfunctions sufficiently. Yet, as computers are finite, this basis has to be this as well. As eigenfunctions corresponding to higher eigenvalues will become more and more oscillatory, the chosen finite basis will no longer be able to express all necessary details.
+
+That the basis is finite, thus, limits the accuracy for higher eigenvalues. Which negates one of the strongest benefits of the employed CP-methods. As such, we believe that the utopian method for the more-dimensional time-independent Schrödinger equation, is one which does not decrease in accuracy, as the higher eigenvalues are requested. Just like the CP-methods are for the one-dimensional case. Developing such a method will, most likely, require new and very complicated formulae.
+
+For clarity, we did not develop such a perfect method. But in the last few years I've played with the idea... In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.
+
+More realistically, during our research into the method of Ixaru, we have found other research, also focussing upon the time-independent Schrödinger problem. These ideas and methods have inspired us to develop our own technique. The new methods we propose try to fix or mitigate some issues present in the other methods.
+
+{\color{red} To do: list other methods}
 
 \section{A semi-discrete method}
 
 \section{A woven interpolation method}
+
+\section{Some ideas for a utopian method}\label{c4:sec_utopy}
 
 \stopchapter
