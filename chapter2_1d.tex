@@ -184,8 +184,8 @@ Here, $V_i$ is the value of $\bar{V}$ on the $i^\text{th}$ piece $[x_i, x_{i+1}]
 $$
     \psi_i(x) = \begin{cases}
         A_i + B_i x                                                         & \text{ if $V_i = \lambda$} \\
-        A_i \sin(x\sqrt{\lambda - V_i}) + B_i \cos(x\sqrt{\lambda - V_i})   & \text{ if $V_i < \lambda$} \\
-        A_i \sinh(x\sqrt{V_i - \lambda}) + B_i \cosh(x\sqrt{V_i - \lambda}) & \text{ if $V_i > \lambda$}
+        A_i \cos(x\sqrt{\lambda - V_i}) + B_i \sin(x\sqrt{\lambda - V_i})   & \text{ if $V_i < \lambda$} \\
+        A_i \cosh(x\sqrt{V_i - \lambda}) + B_i \sinh(x\sqrt{V_i - \lambda}) & \text{ if $V_i > \lambda$}
     \end{cases}
 $$
 
@@ -264,12 +264,12 @@ In the years since the first article from Canosa and De Oliveira \cite{canosa_ne
 To improve accuracy and computational efficiency, it is, when developing numerical methods, valuable to construct higher order methods. As we are limited to an order of $\mathcal{O}(h^2)$ for constant approximations, or $\mathcal{O}(h^4)$ when using linear approximations, some alternative improvements were required. In the book \cite{ixaru_numerical_1984}, Ixaru dedicated chapter 3 to the development of the constant perturbation methods. The main idea is to, not directly improve the approximation of $V(x)$. But, starting with a piecewise constant approximation $\bar{V}(x)$, adding correction terms to capture the difference between the reference solution for $\bar{V}(x)$ and the true solution for $V(x)$.
 
 Before we deconstruct the constant perturbation methods, let us take the time to formalize which mathematical problem we are solving. For now, we will only look at the differential equation
-\begin{equation}\label{equ:c2_cpm_schrodinger}
+\begin{equation}\label{equ:c2_cpm_corrected}
     y''(\delta) = (\Delta V(\delta) + \bar{V} - \lambda) y(\delta)
 \end{equation}
-as initial value problem starting from $0$. Denote the homogeneous Dirichlet solution as $u(\delta)$, as such, $u(0) = 0$ and $u'(0) = 1$. And, we will write the homogeneous Neumann solution as $v(\delta)$, thus $v(0) = 1$ and $v'(0)=0$. In \eqref{equ:c2_cpm_schrodinger}, $\bar{V}$ is a constant (not piecewise) approximation of $V(x)$ on the current piece $[x_i, x_{i+1}]$ and $\Delta V(\delta) := V(x_i + \delta) - \bar{V}$. Being able to solve the initial value problem is sufficient to also solve the boundary value eigenproblem. For solving the latter we can employ a shooting procedure to the former, see section \ref{sec:c2_shooting_prufer} for more details. The procedure we will develop here can then be applied to each of the pieces in the constant piecewise approximation of $V(x)$.
+as initial value problem starting from $0$. Denote the homogeneous Dirichlet solution as $u(\delta)$, as such, $u(0) = 0$ and $u'(0) = 1$. And, we will write the homogeneous Neumann solution as $v(\delta)$, thus $v(0) = 1$ and $v'(0)=0$. In \eqref{equ:c2_cpm_corrected}, $\bar{V}$ is a constant (not piecewise) approximation of $V(x)$ on the current piece $[x_i, x_{i+1}]$ and $\Delta V(\delta) := V(x_i + \delta) - \bar{V}$. Being able to solve the initial value problem is sufficient to also solve the boundary value eigenproblem. For solving the latter we can employ a shooting procedure to the former, see section \ref{sec:c2_shooting_prufer} for more details. The procedure we will develop here can then be applied to each of the pieces in the constant piecewise approximation of $V(x)$.
 
-Following \cite{ixaru_numerical_1984,ixaru_cp_2000}, let us denote a solution of \eqref{equ:c2_cpm_schrodinger} generally as $p(\delta)$, this thus represents either $u(\delta)$ or $v(\delta)$. Now we write the solution $p(\delta)$ as a perturbation series:
+Following \cite{ixaru_numerical_1984,ixaru_cp_2000}, let us denote a solution of \eqref{equ:c2_cpm_corrected} generally as $p(\delta)$, this thus represents either $u(\delta)$ or $v(\delta)$. Now we write the solution $p(\delta)$ as a perturbation series:
 $$
     p(\delta) = p_0(\delta) + p_1(\delta) + p_2(\delta) + \dots
 $$
@@ -281,7 +281,7 @@ with appropriate initial values. That is, $u_0(0) = 1$ and $u_0'(0) = 0$ for $p 
 $$
     p_q''(\delta) = (\bar{V} - \lambda) p_q(\delta) + \Delta V(\delta) p_{q-1}
 $$
-with initial conditions $p_q(0) = p_q'(0) = 0$. Notice that this definition implies that $p$ indeed solves \eqref{equ:c2_cpm_schrodinger} with the appropriate initial values:
+with initial conditions $p_q(0) = p_q'(0) = 0$. Notice that this definition implies that $p$ indeed solves \eqref{equ:c2_cpm_corrected} with the appropriate initial values:
 \begin{align*}
     p'' & = (\bar{V} - \lambda)p_0 + \sum_{q=1}^\infty\left((\bar{V} - \lambda)p_q + \Delta V(\delta) p_{q-1}\right) \\
         & = (\bar{V} - \lambda)\sum_{q=0}^\infty p_q + \Delta V(\delta) \sum_{q=0}^\infty p_q                        \\
@@ -336,7 +336,7 @@ Other interesting properties of these special functions are already studied. Her
 With the theory about the family of $\eta$-functions in hand, we are able to formulate the main theorem to symbolically compute the formulae for $p_q(\delta)$.
 
 \begin{theorem}[Ixaru 1984]\label{the:c2_perturbation_terms}
-    If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
+    If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by: {\color{red} To do: What is $Z$?}
     \begin{align*}
         p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
         \intertext{with derivative:}
