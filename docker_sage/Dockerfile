@@ -160,6 +160,26 @@ USER root
 RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
 USER student
 
+
+WORKDIR /home/student/
+RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git
+RUN mkdir schrodinger/build-sage;  mkdir schrodinger/build-python
+
+WORKDIR /home/student/schrodinger/build-sage
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
+    -DEigen3_DIR="/home/student/eigen/build" \
+    -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
+RUN cmake --build . --target install_schrodinger_py --config Release -- -j 5
+
+WORKDIR /home/student/schrodinger/build-python
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
+    -DEigen3_DIR="/home/student/eigen/build" \
+    -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
+USER root
+RUN cmake --build . --target install_schrodinger_py --config Release -- -j 5
+USER student
+
+
 WORKDIR /home/student
 
 RUN mkdir /home/student/work

@@ -55,9 +55,9 @@ $$
 $$
 
 To ensure $\psi(x, y)$ is uniquely defined in each point in $\Omega$ we have to require that in each intersection point $(x_i, y_j)$, $\psi(x_i, y_j)$ has only one solution:
-$$
+\begin{equation}\label{equ:c4_new_method_pre_matrix_equality}
     \psi(x_i, y_j) = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x_i)\text{.}
-$$
+\end{equation}
 
 Before deciding on which basis functions we should use, let us consider the Schrödinger equation \eqref{equ:c4_schrodinger_equation_new_method} on each intersection point $(x_i, y_j)$ with this new representation of $\psi$:
 $$
@@ -76,14 +76,93 @@ with homogenous Dirichlet boundary conditions, and as domain the intersection of
 
 By choosing half the original potential in each of the approximations, in each intersection $(x_i, y_j)$, equation \eqref{equ:c4_schrodinger_equation_new_method} simplifies, and $V(x, y)$ disappears:
 \begin{equation}\label{equ:c4_new_method_pre_matrix}
-    \sum_{k=0}^\infty \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^\infty \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) = E \psi(x_i, y_j) \text{.}  
+    \sum_{k=0}^\infty \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^\infty \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) = E \psi(x_i, y_j) \text{.}
 \end{equation}
 
-Notice that in this expression only $E$ (the eigenvalue) and $c_k^{x_i}$ and $c_k^{y_j}$ are unknown, as $\psi(x_i, y_j)$ depends linearly on $c_k^{x_i}$ and $c_k^{y_j}$. So, expression \eqref{equ:c4_new_method_pre_matrix} is, in fact, a linear eigenvalue-like problem.
+Notice that in this expression only $E$ (the eigenvalue) and $c_k^{x_i}$ and $c_k^{y_j}$ are unknown, as $\psi(x_i, y_j)$ depends linearly on $c_k^{x_i}$ and $c_k^{y_j}$. So, expression \eqref{equ:c4_new_method_pre_matrix} is, in fact, a linear problem.
 
-{\color{red} To do: limit the infinite sums, and approximate as a matrix problem.}
+Before writing this as a matrix-problem, we first have to limit the extent of the sum. It is, of course, impossible to implement these formulas while the function bases are still infinite. Therefor, we limit the basis on the line $x = x_i$ to the first $K_{x_i}$ functions and to the first $K_{y_j}$ functions on the line $y = y_j$. Notice that the size of a basis on each line, should not be greater than the number of intersections on that line. If the basis size is to larger, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be underdetermined.
 
+With these finite sums equations \eqref{equ:c4_new_method_pre_matrix_equality} and \eqref{equ:c4_new_method_pre_matrix} become, on the intersection $(x_i, y_j)$:
+\begin{align}
+     & \sum_{k=0}^{K_{x_i}-1} \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^{K_{y_j}-1} \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i)\nonumber                                  \\
+     & \qquad\qquad\qquad     = \sum_{k=0}^{K_{x_i}-1} c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = \sum_{k=0}^{K_{y_j}-1} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) \text{.}\label{equ:c4_new_method_pre_matrix_unified}
+\end{align}
+Introducing appropriate vectors and matrices will allow is to translate this into a matrix-problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
+\begin{align*}
+    \vb{c_x}            & = \transpose{\begin{pmatrix} c_0^{(x_0)} & c_1^{(x_0)} & \dots & c_{K_{x_0}-1}^{(x_0)} & c_0^{(x_1)} & c_1^{(x_1)} & \dots \end{pmatrix}}         \\
+    \text{and }\vb{c_y} & = \transpose{\begin{pmatrix} c_0^{(y_0)} & c_1^{(y_0)} & \dots & c_{K_{y_0}-1}^{(y_0)} & c_0^{(y_1)} & c_1^{(y_1)} & \dots \end{pmatrix}}\text{.}
+\end{align*}
+
+Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ and the $n_y \times n_y$ diagonal matrix $\vb{\Lambda_y}$ which contain the eigenvalues of the one-dimensional Schrödinger problems used to define the basis functions:
+\begin{align*}
+    \vb{\Lambda_x}            & = \diag\begin{pmatrix} \lambda_0^{(x_0)} & \lambda_1^{(x_0)} & \dots & \lambda_{K_{x_0}-1}^{(x_0)} & \lambda_0^{(x_1)} & \lambda_1^{(x_1)} & \dots \end{pmatrix}         \\
+    \text{and }\vb{\Lambda_y} & = \diag\begin{pmatrix} \lambda_0^{(y_0)} & \lambda_1^{(y_0)} & \dots & \lambda_{K_{y_0}-1}^{(y_0)} & \lambda_0^{(y_1)} & \lambda_1^{(y_1)} & \dots \end{pmatrix}\text{.} \\
+\end{align*}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/new_method_beta.pdf}
+        \caption{The non-zero entries from the matrices $\vb{B_x}$ and $\vb{B_y}$ from equation \eqref{equ:c4_new_method_beta_definition} are visualized. These were calculated on the problem from section \ref{sec:c4_new_method_ixaru} with a 5 by 5 internal grid and 4 basis functions per line. In practice, these matrices are much larger.}
+        \label{fig:c4_new_method_beta}
+    \end{center}
+\end{figure}
+
+Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r$ of these matrices correspond to an intersection $(x_i, y_j)$. Matrix $\vb{B_x}$ is mostly zero, except, on row $r$, for the values in columns from $o_x := \sum_{i' < i} K_{x_{i'}}$ to before $o_x + K_i$. Analogous, is $\vb{B_y}$ mostly zero on row $r$, except for the values in the columns from $o_y := \sum_{j' < j} K_{y_{j'}}$ to before $o_y + K_j$. These non-zero entries are now given as:
+\begin{align}
+    \left(\vb{B_x}\right)_{r, o_x + k} & =  \beta_{k}^{(x_i)}(y_j) \text{ for $k \in \{0, 1, \dots, K_{x_i} - 1\}$ }   \nonumber                               \\
+    \text{and }
+    \left(\vb{B_y}\right)_{r, o_y + k} & =  \beta_{k}^{(y_j)}(x_i) \text{ for $k \in \{0, 1, \dots, K_{y_i} - 1\}$.} \label{equ:c4_new_method_beta_definition}
+\end{align}
+To aid an intuitive understanding of the $\vb{B_x}$ and $\vb{B_y}$ matrices, figure \ref{fig:c4_new_method_beta} provides a schematic view of them, calculated from a small numerical example.
+
+
+As promised, these definitions allow us to rewrite the system \eqref{equ:c4_new_method_pre_matrix_unified} with $m$ equations more compactly as:
+$$
+    \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_x} \vb{c_x} = E \vb{B_y} \vb{c_y}\text{.}
+$$
+This formulation is not yet reminiscent of any classical linear algebra problem. One of the unfamiliar parts of this expression is the fact that there are two vectors of unknowns, another unfamiliar part is that this are, in fact, two different problems.
+\begin{equation}
+    \begin{cases}
+        \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_x} \vb{c_x} \\
+        \vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}
+    \end{cases} \label{equ:c4_new_method_first_matrix_problem}
+\end{equation}
+The first equation resembles a generalized rectangular eigenvalue problem, the second is a classical linear system. Let us start by considering only $n_x + n_y$ dimensional vectors $\vb{c} = \transpose{\begin{pmatrix}\transpose{\vb{c_x}} & \transpose{\vb{c_y}} \end{pmatrix}}$ which solve
+$$
+    \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{c} = \vb{0}\text{.}
+$$
+This allows us to unify $\vb{c_x}$ and $\vb{c_y}$, while ensuring $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$ is satisfied. To expand on this idea, we will write $\vb{c}$ to be an element of the right kernel of  $\begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix}$. For this define $\vb{Z}$ to be the $(n_x + n_y) \times z$-dimensional basis of this right kernel:
+$$
+    \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{Z} = \vb{0}\text{.}
+$$
+Note that numerically, it is impossible to consider the exact kernel. In section \ref{sec:c4_calculate_kernel} we will deal with the numerical treatment of the computation of this kernel.
+
+The vector $\vb{c}$ can now be written as a certain linear combination of columns of $\vb{Z}$:
+$$
+    \vb{c} = \begin{pmatrix}\vb{c_x} \\ \vb{c_y} \end{pmatrix} = \begin{pmatrix} \vb{Z_x} \\ \vb{Z_y} \end{pmatrix}  \vb{u} = \vb{Z} \vb{u} \text{.}
+$$
+Another benefit of considering $\vb{Z}\vb{u}$, besides only considering solutions of $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$, is that we unified the two vectors of unknowns $\vb{c_x}$ and $\vb{c_y}$ into one (much) smaller vector $\vb{u}$. This simplifies the two problems of equation \eqref{equ:c4_new_method_first_matrix_problem} into
+$$
+\begin{pmatrix}
+    \vb{B_x}\vb{\Lambda_x} & \vb{B_y}\vb{\Lambda_x}
+\end{pmatrix} \vb{Z} \vb{u} = E \vb{B_x} \vb{Z_x} \vb{u} = E \vb{B_y} \vb{Z_y} \vb{u} \text{.}
+$$
+For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$. Now, this problem has become a generalized rectangular eigenvalue problem. 
+
+{\color{red} To do: A small word about this kind of problem.}
+
+\subsection{Calculating kernels}\label{sec:c4_calculate_kernel}
+
+\subsection{Solving pencils}
+
+\subsection{Computing eigenvalues}
+
+\subsection{Numerical experiments}
+
+\subsubsection{Ixaru's potential}\label{sec:c4_new_method_ixaru}
 
 \section{Some ideas for a utopian method}\label{c4:sec_utopy}
+
 
 \stopchapter
