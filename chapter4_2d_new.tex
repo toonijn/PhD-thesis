@@ -108,7 +108,7 @@ Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ 
     \end{center}
 \end{figure}
 
-Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r$ of these matrices correspond to an intersection $(x_i, y_j)$. Matrix $\vb{B_x}$ is mostly zero, except, on row $r$, for the values in columns from $o_x := \sum_{i' < i} K_{x_{i'}}$ to before $o_x + K_i$. Analogous, is $\vb{B_y}$ mostly zero on row $r$, except for the values in the columns from $o_y := \sum_{j' < j} K_{y_{j'}}$ to before $o_y + K_j$. These non-zero entries are now given as:
+Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r$ of these matrices correspond to an intersection $(x_i, y_j)$. Matrix $\vb{B_x}$ is mostly zero, except, on row $r$, for the values in columns from $o_x := \sum_{i' < i} K_{x_{i'}}$ to before $o_x + K_i$. Analogous, is $\vb{B_y}$ mostly zero on row $r$, except for the values in the columns from $o_y := \sum_{j' < j} K_{y_{j'}}$ to before $o_y + K_{y_j}$. These non-zero entries are now given as:
 \begin{align}
     \left(\vb{B_x}\right)_{r, o_x + k} & =  \beta_{k}^{(x_i)}(y_j) \text{ for $k \in \{0, 1, \dots, K_{x_i} - 1\}$ }   \nonumber                               \\
     \text{and }
