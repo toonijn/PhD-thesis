@@ -113,12 +113,12 @@ ENV JUPYTERLAB_DIR=/home/student/.lab
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter labextension enable jupyterlab-execute-time @jupyterlab/git
 RUN jupyter lab build
-RUN mkdir -p .jupyter/lab/user-settings/@jupyterlab/notebook-extension/ \
-    && echo '{"recordTiming": true}' > .jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
-RUN mkdir -p .jupyter/lab/user-settings/jupyterlab-execute-time \
-    && echo '{"highlight": false, "positioning": "right"}' > .jupyter/lab/user-settings/jupyterlab-execute-time/settings.jupyterlab-settings
-RUN mkdir -p /home/student/.jupyter/lab/user-settings/\@jupyterlab/git \
-    && echo '{"displayStatus": false, "refreshInterval": 10000}' > /home/student/.jupyter/lab/user-settings/\@jupyterlab/git/plugin.jupyterlab-settings
+RUN mkdir -p /home/student/.sage/jupyter-4.1/lab/user-settings/@jupyterlab/notebook-extension/ \
+    && echo '{"recordTiming": true}' > /home/student/.sage/jupyter-4.1/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
+RUN mkdir -p /home/student/.sage/jupyter-4.1/lab/user-settings/jupyterlab-execute-time \
+    && echo '{"highlight": false, "positioning": "right"}' > /home/student/.sage/jupyter-4.1/lab/user-settings/jupyterlab-execute-time/settings.jupyterlab-settings
+RUN mkdir -p /home/student/.sage/jupyter-4.1/lab/user-settings/\@jupyterlab/git \
+    && echo '{"displayStatus": false, "refreshInterval": 10000}' > /home/student/.sage/jupyter-4.1/lab/user-settings/\@jupyterlab/git/plugin.jupyterlab-settings
 
 # Install pyslise
 WORKDIR /home/student/
@@ -163,7 +163,9 @@ USER student
 
 WORKDIR /home/student/
 RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git
-RUN mkdir schrodinger/build-sage;  mkdir schrodinger/build-python
+WORKDIR /home/student/schrodinger
+RUN git checkout 2feb465
+RUN mkdir build-sage;  mkdir build-python
 
 WORKDIR /home/student/schrodinger/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
