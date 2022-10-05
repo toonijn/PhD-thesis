@@ -59,7 +59,7 @@ This split in sectors is illustrated in figure \ref{fig:c3_2dsectors}.
 
 On each sector $k$ (with domain $[\xmin, \xmax]\times[y_{k-1}, y_k]$) a solution $\psi(x, y)$ will be approximated as a linear combination of the first $N$ basis functions:
 \begin{equation}\label{equ:c3_lincomb_basis}
-    \psi(x, y) \approx \sum_{i=1}^{N} b_i^{(k)}(x) c_i^{(k)}(y) = \transpose{\vb{b}^{(k)}}(x) \, \vb{c}^{(k)}(y) \text{.}
+    \psi(x, y) \approx \sum_{i=1}^{N} b_i^{(k)}(x) c_i^{(k)}(y) = \transpose{{\vb{b}^{(k)}}}(x) \, \vb{c}^{(k)}(y) \text{.}
 \end{equation}
 
 The well-chosen basis $\left\{b_i^{(k)}\right\}$ Ixaru proposes can be calculated from the one dimensional Schrödinger equation. Let $b_i^{(k)}(x)$ be defined as the $i^\text{th}$ eigenfunction of the eigenvalue problem

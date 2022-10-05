@@ -128,7 +128,76 @@ This formulation is not yet reminiscent of any classical linear algebra problem.
         \vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}
     \end{cases} \label{equ:c4_new_method_first_matrix_problem}
 \end{equation}
-The first equation resembles a generalized rectangular eigenvalue problem, the second is a classical linear system. Let us start by considering only $n_x + n_y$ dimensional vectors $\vb{c} = \transpose{\begin{pmatrix}\transpose{\vb{c_x}} & \transpose{\vb{c_y}} \end{pmatrix}}$ which solve
+
+There are a few strategies to further translate this problem into a form for which efficiently implemented and well-studied algorithms exist. Ideally, the solution would take the sparsity of the involved matrices into account.
+
+\subsection{Solving the matrix approximation}
+
+As a first strategy we researched how this problem can be directly transformed into a known type of problem.
+
+\subsubsection{By direct transformation into an eigenvalue problem}
+
+We tackle equation \eqref{equ:c4_new_method_first_matrix_problem} by rewriting it as
+$$
+    \begin{cases}
+        \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_x} \vb{c_x} \\
+        \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_y} \vb{c_y} \\
+    \end{cases}\text{.}
+$$
+This system can be seen as the following generalized rectangular eigenvalue problem:
+\begin{equation}\label{equ:c4_new_method_alternative_system}
+    \begin{pmatrix}
+        \vb{B_x} \vb{\Lambda_x} & \vb{B_y} \vb{\Lambda_y} \\
+        \vb{B_x} \vb{\Lambda_x} & \vb{B_y} \vb{\Lambda_y}
+    \end{pmatrix} \begin{pmatrix}
+        \vb{c_x} \\ \vb{c_y}
+    \end{pmatrix} = E \begin{pmatrix}
+        \vb{B_x} & \vb{0} \\ \vb{0} & \vb{B_y}
+    \end{pmatrix} \begin{pmatrix}
+        \vb{c_x} \\ \vb{c_y}
+    \end{pmatrix}\text{.}
+\end{equation}
+
+At first glance this may seem to enable us to solve the problem elegantly. But, there are a few issues apparent with this translation. One of the most visible problems is that we have translated this into a matrix problem which is twice as large in both rows and columns. On the other hand, one can argue, the matrices are clearly sparse. The matrices $\vb{B_x}$ and $\vb{B_y}$ are sparse indeed, but the problem is that there are few algorithms available that are able to solve a generalized rectangular eigenvalue problem, let alone a sparse one.
+
+But a lack of sparse implementations, does not deter us from trying out some numerical experiments. In this first experiment we will have to fall back to algorithms working on dense matrices. Of course, the runtime will suffer, but from a numerical point of view the results will still be valuable.
+
+Consider the Schrödinger equation with the harmonic oscillator potential:
+$$
+    -\nabla^2\psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
+$$
+on the domain $[-10, 10] \times [-10, 10]$ with homogenous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
+
+If we write equation \eqref{equ:c4_new_method_alternative_system} symbolically as $\vb{A} \vb{c} = E \vb{D} \vb{c}$, and the truncated singular value decomposition of $\vb{D}$ as $\vb{D} = \vb{U_D} \vb{\Sigma_D} \vb{V_D^\adjointsign}$, then any solution of \eqref{equ:c4_new_method_alternative_system} will also be a solution of the generalized square eigenvalue problem
+$$
+    \vb{U_D^\adjointsign} \vb{A} \vb{V_D} \vb{v} = E \vb{\Sigma_D} \vb{v} \text{,}
+$$
+with $\vb{c} = \vb{V_D} \vb{v}$. Applying this method to the numeric problem yields 840 eigenvalues. Firstly, it is important to remark that the resulting values are elements of $\CC$. But, in this case, the imaginary part of all values lies between \numprint{-1.36e-14} and \numprint{1.36e-14}. So all values may be considered real. The lowest few values are given:
+$$
+    \underbrace{
+        \numprint{-3.75e-14} \quad \dots \quad \numprint{5.59e-14}
+    }_\text{196 values close to zero} \quad \numprint{2.00} \quad \numprint{3.46} \quad \numprint{3.46} \quad \numprint{4.00} \quad \numprint{4.00} \quad \dots
+$$
+
+This can be more compactly summarized when repeated values are indicated by a subscript:
+$$
+    \numprint{0.00}_{196} \quad \numprint{2.00} \quad \numprint{3.46}_2 \quad \numprint{4.00} \quad \numprint{4.89}_2 \quad \numprint{6.00}_3 \quad \numprint{6.12}_2 \quad \dots \quad \numprint{7.73}_2 \quad \numprint{8.00}_4\quad \dots
+$$
+
+One immediately notices the many returned zero values. This does not have to be surprising, in fact, the matrix on the left-hand side of \eqref{equ:c4_new_method_alternative_system} may not be of full rank. But these zeros indicate another problem. Namely, that for these values it is not at all guaranteed that $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$.
+
+Remember that the true eigenvalues of the harmonic oscillator are 2, 4, 4, 6, 6, 6, 8, 8, 8, 8, \dots. And, we notice that these true values can indeed be found in our solutions. But also many other values are present. Because the method from \cite{hua_svd_1991} for solving generalized rectangular eigenvalue problems may return more solutions than the original problems has, we still have to filter some out. One way to only end up with true eigenvalues is by substituting them back into the original problem \eqref{equ:c4_new_method_first_matrix_problem} and verifying the residuals of both equations:
+$$
+    r_1 = \left\| \vb{B_x} \vb{\Lambda_x} \vb{c_x} + \vb{B_y} \vb{\Lambda_y} \vb{c_y} - \frac{E}{2}\left(\vb{B_x}\vb{c_x} + \vb{B_y}\vb{c_y}\right) \right\| \text{ and } r_2=\left\| \vb{B_x} \vb{c_x} - \vb{B_y} \vb{c_y} \right\|\text{.}
+$$
+
+\input{img/chapter4/nm_alternative_solve.tex}
+
+\subsubsection{By restriction to a null space}
+
+Another idea to solve equation \eqref{equ:c4_new_method_first_matrix_problem} is by only taking solutions to the second equation into account.
+
+The first equation resembles a generalized rectangular eigenvalue problem, the second is a classical linear system. Let us only consider $n_x + n_y$ dimensional vectors $\vb{c} = \transpose{\begin{pmatrix}\transpose{\vb{c_x}} & \transpose{\vb{c_y}} \end{pmatrix}}$ which solve
 $$
     \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{c} = \vb{0}\text{.}
 $$
@@ -136,7 +205,7 @@ This allows us to unify $\vb{c_x}$ and $\vb{c_y}$, while ensuring $\vb{B_x} \vb{
 $$
     \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{Z} = \vb{0}\text{.}
 $$
-Note that numerically, it is impossible to consider the exact kernel. In section \ref{sec:c4_calculate_kernel} we will deal with the numerical treatment of the computation of this kernel.
+Note that numerically, it is impossible to consider the exact kernel. {\color{red} To do: the numerical treatment of the computation of this kernel.}
 
 The vector $\vb{c}$ can now be written as a certain linear combination of columns of $\vb{Z}$:
 $$
@@ -144,17 +213,16 @@ $$
 $$
 Another benefit of considering $\vb{Z}\vb{u}$, besides only considering solutions of $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$, is that we unified the two vectors of unknowns $\vb{c_x}$ and $\vb{c_y}$ into one (much) smaller vector $\vb{u}$. This simplifies the two problems of equation \eqref{equ:c4_new_method_first_matrix_problem} into
 $$
-\begin{pmatrix}
-    \vb{B_x}\vb{\Lambda_x} & \vb{B_y}\vb{\Lambda_x}
-\end{pmatrix} \vb{Z} \vb{u} = E \vb{B_x} \vb{Z_x} \vb{u} = E \vb{B_y} \vb{Z_y} \vb{u} \text{.}
+    \begin{pmatrix}
+        \vb{B_x}\vb{\Lambda_x} & \vb{B_y}\vb{\Lambda_x}
+    \end{pmatrix} \vb{Z} \vb{u} = E \vb{B_x} \vb{Z_x} \vb{u} = E \vb{B_y} \vb{Z_y} \vb{u} \text{.}
 $$
-For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$. Now, this problem has become a generalized rectangular eigenvalue problem. 
+For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$. Now, this problem has become a generalized rectangular eigenvalue problem.
+
+
+\subsubsection{Finding solutions of generalized rectangular eigenvalue problems}
 
 {\color{red} To do: A small word about this kind of problem.}
-
-\subsection{Calculating kernels}\label{sec:c4_calculate_kernel}
-
-\subsection{Solving pencils}
 
 \subsection{Computing eigenfunctions}
 

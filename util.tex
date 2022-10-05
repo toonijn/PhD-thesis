@@ -6,7 +6,7 @@
 \else
 
 \newcommand{\startchapter}[1]{\begin{document}\setcounter{chapter}{#1}\addtocounter{chapter}{-1}}
-\newcommand{\stopchapter}{\end{document}}
+\newcommand{\stopchapter}{\printbibliography[title=Bibliography,heading=bibintoc]\end{document}}
 
 
 \documentclass{book}
@@ -43,6 +43,7 @@
 \usepackage{csquotes}
 \usepackage{numprint}
 \npthousandsep{{\ifmmode\mskip2mu\else\hskip0.2em\fi}}
+\npdecimalsign{.}
 
 \addbibresource{references.bib}
 
@@ -77,7 +78,10 @@
 
 \newcommand{\hamiltonian}{\mathcal{H}}
 
-\newcommand{\transpose}[1]{{#1}^\intercal}
+\newcommand{\transposesign}{\intercal}
+\newcommand{\transpose}[1]{{#1}^\transposesign}
+\newcommand{\adjointsign}{\text{H}}
+\newcommand{\adjoint}[1]{{#1}^\adjointsign}
 
 \newcommand{\xmin}{{x_{\text{min}}}}
 \newcommand{\xmax}{{x_{\text{max}}}}
