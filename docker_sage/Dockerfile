@@ -162,10 +162,10 @@ USER student
 
 
 WORKDIR /home/student/
-RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git
+RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git \
+    && cd schrodinger && git checkout 623f7bd
 WORKDIR /home/student/schrodinger
-RUN git checkout 2feb465
-RUN mkdir build-sage;  mkdir build-python
+RUN mkdir build-sage && mkdir build-python
 
 WORKDIR /home/student/schrodinger/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
