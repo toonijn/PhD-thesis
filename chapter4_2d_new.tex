@@ -22,7 +22,57 @@ More realistically, during our research into the method of Ixaru, we have found 
 
 \section{Inspiration}
 
+After careful implementation and thorough testing of Ixaru's method from chapter \ref{cha:c3}, I could browse through the literature with renewed appreciation for the Schrödinger problem. When researching that method, many obstacles and challenges arose. It was an interesting task to balance computation time, symbolic formulas and numerical accuracy. So with this in mind, I came across \cite{wang_new_2009} by Wang and Shao.
+
+In this article they proposed a new kind of discretization scheme for solving two-dimensional time-independent Schrödinger equations. Before studying the details of the method, I like to review the numerical results. They tested their algorithm on two potential functions. Firstly, the harmonic oscillator: Schrödinger equations with this potential function are not extremely difficult, but it captures some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues. Secondly, they provided results for the Hénon-Heiles potential. Here, the exact solutions are not known, but reliable approximations exist. For both potentials their results were quite impressive. The reached high accuracy, for a significant number of eigenvalues, without using excessive computation time.
+
+But the thing that strikes me most about \cite{wang_new_2009} is the simplicity of their method. They constructed formulas for a direct discrete approximation on a grid. Finding these kinds of results within the literature is disheartening and inspirational at the same time. At first glance they were able to reach higher accuracy with a simpler method than Ixaru's work \cite{ixaru_new_2010} and our improvements \cite{baeyens_improvements_2022} to it. Before throwing away all our work, and declaring \cite{wang_new_2009} to be superior, let us analyze it ourselves.
+
 \subsection{A finite difference scheme}
+
+In \cite{wang_new_2009} they discretize space with an equidistant grid. With this, they approximate the second partial derivative of a function $\psi(x, y)$ with, what they call, a new scheme:
+$$
+    {\pdv[2]{}{x}}\psi(x, y) = -\frac{1}{h^2}\sum_{i=-N_q}{N_q} c_i \psi(x + ih, y)\text{.}
+$$
+In this expression $h$ is the $x$-step of the equidistant grid. An analogous formula for the second partial derivative of $\psi(x, y)$ with respect to $y$ is proposed, with $y$-step $\eta$:
+$$
+    {\pdv[2]{}{y}}\psi(x, y) = -\frac{1}{\eta^2}\sum_{i=-N_q}{N_q} c_i \psi(x, y + i\eta)\text{.}
+$$
+
+To determine the value of $c_i$, the authors propose to use the Taylor series expansion of
+$$
+    \left({\pdv[2]{}{x}} + {\pdv[2]{}{y}}\right)\psi(x, y) = -\frac{1}{h^2} \sum_{i=-N_q}^{N_q} c_i \left(\psi(x+ih, y) + \left(\frac{h}{\eta}\right)^2\psi(x, y+i\eta)\right)\text{.}
+$$
+In \cite{wang_new_2009} the coefficients $c_i$ for $N_q = 3, 4, 5, 6$ are provided. If we restrict the Schrödinger equation to the domain $[-R_x, R_x] \times [-R_y, R_y]$ the authors propose to assume all eigenfunctions will be zero outside this region. This way, their formulae, for a fixed $N_q$ can still be used, even for grid points close to the edge of the domain.
+
+Using these formulae the problem now approximates to a simple, albeit very large, square matrix eigenvalue problem. Many classical, well tested,  solvers exist for this kind of problem, they have used algorithms provided by Mathematica.
+
+Before reviewing, and recalculating their numerical results, I want to take the time to thoroughly analyze their formulae. Using an equidistant grid and coefficients which optimize for the Taylor series of the function in question, is oddly reminiscent of finite difference approximations. To confirm this similarity we have calculated the central finite difference approximations of the second order derivative.
+
+The following table contains the first few central symmetric finite differences.
+\begin{center}
+    \input{img/chapter4/fd_experiments.tex}
+\end{center}
+
+As one sees, these give exactly the same coefficients as in \cite{wang_new_2009}. It is quite disingenuous to call this a new scheme. The study of finite difference can be traced back to, among others, Newton. One of the first English works was by Boole \cite{boole_calculus_1860} in 1860, with many more textbooks to follow \cite{thomson_calculus_1933,jordan_calculus_1965}. Even the symbolic construction of high order approximations has already been studied and tabulated as early as 1967 \cite{ballester_construction_1967,keller_symbolic_1978,fornberg_generation_1988}.
+
+
+Besides this remark, \cite{wang_new_2009} is very valuable as an application of very high orders of these well-known formulae to the two-dimensional time-independent Schrödinger equation. There numerical results are still valid and nonetheless impressive.
+
+\subsubsection{Numerical experiments with high order finite difference approximations}
+
+{\color{red}To do: experiments}
+
+\subsubsection{Possible improvements when applying finite differences}
+
+{\color{red}To do
+
+    \begin{enumerate}
+        \item Do not assume zero outside domain
+        \item High orders loose sparsity
+    \end{enumerate}
+
+}
 
 \subsection{A semi-discrete method}\label{sec:c4_semi_discrete}
 
@@ -191,11 +241,19 @@ $$
     r_1 = \left\| \vb{B_x} \vb{\Lambda_x} \vb{c_x} + \vb{B_y} \vb{\Lambda_y} \vb{c_y} - \frac{E}{2}\left(\vb{B_x}\vb{c_x} + \vb{B_y}\vb{c_y}\right) \right\| \text{ and } r_2=\left\| \vb{B_x} \vb{c_x} - \vb{B_y} \vb{c_y} \right\|\text{.}
 $$
 
-\input{img/chapter4/nm_alternative_solve.tex}
+The found possible eigenvalue with the lowest residuals $r_1$ and $r_2$ are also true eigenvalues of the Schrödinger problem. When we sort all possibilities by their first residual $r_1$ we obtain the following table.
+
+\begin{center}
+    \input{img/chapter4/nm_alternative_solve.tex}
+\end{center}
+
+Here, we see that when the first residual $r_1$ is low, the other is as well. Also, in the first few eigenvalues, only true solutions are present.
+
+Upon studying this direct method to solve the system of equations \eqref{equ:c4_new_method_first_matrix_problem}, we have noticed some drawbacks. Firstly, the proposed system \eqref{equ:c4_new_method_alternative_system} is, in a certain sense, twice as large as the discrete problem we started from. Eigenvalue algorithms are at least cubic in complexity. So, this doubling in size implies an eightfold runtime penalty Secondly, and numerically interesting, we obtain many more `solutions' than the ones we are looking for. Each generalized eigenvalue, with its eigenvector, has to be computed and checked against the residuals. Many eigenvalues will be thrown away.
 
 \subsubsection{By restriction to a null space}
 
-Another idea to solve equation \eqref{equ:c4_new_method_first_matrix_problem} is by only taking solutions to the second equation into account.
+One improvement we can make to the runtime is by not solving a system that is twice as large, but by solving two, smaller, systems. Furthermore, instead of ending up with to many eigenvalues and trying to filter out the wrong ones, we have devised a way to a priori already limit the number of solutions. The idea here is that, before solving an eigenvalue problem, we solve the second equation of \eqref{equ:c4_new_method_first_matrix_problem} and only take those solutions into account.
 
 The first equation resembles a generalized rectangular eigenvalue problem, the second is a classical linear system. Let us only consider $n_x + n_y$ dimensional vectors $\vb{c} = \transpose{\begin{pmatrix}\transpose{\vb{c_x}} & \transpose{\vb{c_y}} \end{pmatrix}}$ which solve
 $$

@@ -18,3 +18,5 @@ Pruess
 integrand
 underdetermined
 overdetermined
+Shao
+Mathematica
