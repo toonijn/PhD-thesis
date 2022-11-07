@@ -61,9 +61,60 @@ Besides this remark, \cite{wang_new_2009} is very valuable as an application of 
 
 \subsubsection{Numerical experiments with high order finite difference approximations}
 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/fd_harmonic.pdf}
+    \end{center}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic}, computed for different values of $h = \eta$ and $N_x = N_y$.}
+    \label{fig:c4_fd_harmonic}
+\end{figure}
+
+As a first example we will replicate the results of \cite{wang_new_2009} for the harmonic oscillator:
+\begin{equation}\label{equ:c4_fd_harmonic}
+    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)    
+\end{equation}
+on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions. Notice that in \cite{wang_new_2009} the authors have chosen to scale the potential and eigenvalue by an extra factor of two. Here we did not do this, as such are computed eigenvalues will be twice as large. But, the relative error still can be compared.
+
+In figure \ref{fig:c4_fd_harmonic} the relative errors for the first $100$ eigenvalues are plotted. This is done for $h = \eta \in \left\{\frac{19}{40}, \frac{19}{60}, \frac{19}{100}\right\}$ and $N_x = N_y \in \left\{ 5, 10, 20, 25 \right\}$. In these graphs a few things can be noted. Unsurprisingly, when $N_x = N_y$ is increased, the results become more accurate. And also, when $h = \eta$ is decreased, that is to say more grid points are used, the results also become more accurate. As is the case with most algorithms for approximating Schrödinger equations, when larger eigenvalues are computed, the accuracy decreases. The corresponding eigenfunctions become more and more oscillatory, and are thus more difficult to approximate accurately.
+
+But most impressively, all these graphs were computed within a minute on a simple laptop. More detailed runtime analysis can be found in section \ref{sec:c4_nm_vs_fd}. Furthermore, the obtained results are also impressive. In the most accurate case $h= \eta = \frac{19}{100}$ and $N_x = N_y = 20$, the first $100$ eigenvalues are found with $45$ bits of precision, which is close to the ideal machine precision of $53$ bits.
+
+To get a deeper understanding of this finite difference method it may be beneficial to study the asymptotic behavior of the error. In theory the finite difference approximation error can be used as a jumping point. Assume $N = N_x = N_y$, then the finite difference approximation of the second derivative of a function $f : \RR \to \RR$ is of the form:
+$$
+f''(x) = \frac{1}{h^2}\sum_{i=-N}^{N} c_{i} f(x + i h) + \OO\mleft(h^{2N}\mright)\text{.}
+$$
+
+Going further with a theoretical analysis becomes unnecessarily difficult. We will estimate the order by using the numerical results for the first $100$ eigenvalues of the harmonic oscillator, calculated for the values of $h = \eta = \left\{\frac{19}{20}, \frac{19}{30}, \frac{19}{40}, \frac{19}{50}, \frac{19}{60}, \frac{19}{80}, \frac{19}{100}\right\}$. These $7$ different sets of parameters yield for each of the $100$ eigenvalues (with index $k \in \{1, 2, \dots, 100\}$) a data point. Next, through all these points we find the best fitting curve (in the least squares sense) which follows the formula $c_1 h^{c_2} k^{c_3}$.
+
+\begin{center}
+    \input{img/chapter4/fd_harmonic_orders.tex}
+\end{center}
+
+
+
+
 {\color{red}To do: experiments}
 
+\begin{equation}\label{equ:c4_fd_zero}
+    -\nabla^2 \psi(x, y) = E \psi(x, y)
+\end{equation}
+on the domain $[0, \pi] \times [0, \pi]$.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/fd_zero.pdf}
+    \end{center}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the zero potential \eqref{equ:c4_fd_zero}, computed for different values of $h = \eta$ and $N_x = N_y$.}
+    \label{fig:c4_fd_zero}
+\end{figure}
+
 \subsubsection{Possible improvements when applying finite differences}
+
+Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, however, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
+
+Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results high orders, combined with large grids, have to be used. This results in huge, sparse, matrices. And only thanks to their sparsity are algorithms able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
+
+Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
 {\color{red}To do
 
@@ -118,11 +169,11 @@ This last formula suggest to chose $\beta_k^{(x_i)}$ and $\beta_k^{(y_j)}$, such
 $$
     -\beta_k''^{(x_i)}(y) + \frac{V(x_i, y)}{2}\beta_k^{(x_i)}(y) = \lambda_k^{(x_i)} \beta_k^{(x_i)}(y)
 $$
-with homogenous Dirichlet boundary conditions. The domain for this one-dimensional problem is the intersection of the vertical line $x = x_i$ and the two-dimensional domain $\Omega$. Similarly, for the horizontal line $y = y_j$, we propose $\beta_k^{(y_j)}(x)$ to be the eigenfunctions of
+with homogeneous Dirichlet boundary conditions. The domain for this one-dimensional problem is the intersection of the vertical line $x = x_i$ and the two-dimensional domain $\Omega$. Similarly, for the horizontal line $y = y_j$, we propose $\beta_k^{(y_j)}(x)$ to be the eigenfunctions of
 $$
     -\beta_k''^{(y_j)}(x) + \frac{V(x, y_j)}{2}\beta_k^{(y_j)}(x) = \lambda_k^{(y_j)} \beta_k^{(y_j)}(x)
 $$
-with homogenous Dirichlet boundary conditions, and as domain the intersection of $y = y_j$ and $\Omega$.
+with homogeneous Dirichlet boundary conditions, and as domain the intersection of $y = y_j$ and $\Omega$.
 
 By choosing half the original potential in each of the approximations, in each intersection $(x_i, y_j)$, equation \eqref{equ:c4_schrodinger_equation_new_method} simplifies, and $V(x, y)$ disappears:
 \begin{equation}\label{equ:c4_new_method_pre_matrix}
@@ -287,6 +338,8 @@ For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$
 \subsection{Numerical experiments}
 
 \subsubsection{Ixaru's potential}\label{sec:c4_new_method_ixaru}
+
+\subsection{Comparing run time with the finite difference method}\label{sec:c4_nm_vs_fd}
 
 \section{Some ideas for a utopian method}\label{c4:sec_utopy}
 

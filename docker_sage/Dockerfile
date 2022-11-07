@@ -88,11 +88,13 @@ RUN python -m pip install --no-cache --no-warn-script-location \
     'pandas==1.4.*' \
     'pillow==9.2.*' \
     'pqdm==0.2.*' \
+    'p-tqdm==1.4.*' \
     'ipywidgets' \
     'jupyterlab_widgets'
     
 RUN sage -pip install --no-cache --no-warn-script-location \
     'pqdm==0.2.*' \
+    'p-tqdm==1.4.*' \
     'ipywidgets'
 
 USER student
