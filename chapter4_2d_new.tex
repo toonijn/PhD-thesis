@@ -30,7 +30,7 @@ But the thing that strikes me most about \cite{wang_new_2009} is the simplicity 
 
 \subsection{A finite difference scheme}
 
-In \cite{wang_new_2009} they discretize space with an equidistant grid. With this, they approximate the second partial derivative of a function $\psi(x, y)$ with, what they call, a new scheme:
+In \cite{wang_new_2009} they discretize space with an equidistant $n_x \times n_y$ grid. With this, they approximate the second partial derivative of a function $\psi(x, y)$ with, what they call, a new scheme:
 $$
     {\pdv[2]{}{x}}\psi(x, y) = -\frac{1}{h^2}\sum_{i=-N_q}{N_q} c_i \psi(x + ih, y)\text{.}
 $$
@@ -45,7 +45,11 @@ $$
 $$
 In \cite{wang_new_2009} the coefficients $c_i$ for $N_q = 3, 4, 5, 6$ are provided. If we restrict the Schrödinger equation to the domain $[-R_x, R_x] \times [-R_y, R_y]$ the authors propose to assume all eigenfunctions will be zero outside this region. This way, their formulae, for a fixed $N_q$ can still be used, even for grid points close to the edge of the domain.
 
-Using these formulae the problem now approximates to a simple, albeit very large, square matrix eigenvalue problem. Many classical, well tested,  solvers exist for this kind of problem, they have used algorithms provided by Mathematica.
+Using these formulae the problem now approximates to a simple, albeit very large, square matrix eigenvalue problem.
+\begin{equation}\label{equ:c4_fd_sparse_matrix}
+    \left(-\vb{D}_{n_x} \otimes \vb{I}_{n_y} - \vb{I}_{n_x} \otimes \vb{D}_{n_y} +  \diag\begin{pmatrix}V(x_1, y_1) \\ V(x_1, y_2) \\ \vdots \end{pmatrix} \right)\vb{u} = \lambda \vb{u}
+\end{equation}
+Here, $\vb{D}_{n_x}$ is the symmetric Toeplitz\footnote{A matrix is called Toeplitz if each diagonal only contains a constant value. In other words, a matrix $\vb{A}$ is Toeplitz if it can be written as follows. $\vb{A}$ is a symmetric Toeplitz matrix if $a_{-i} = a_i$. $$\begin{pmatrix} a_0 & a_1 & a_2 & \dots \\ a_{-1} & a_0 & a_1 & \ddots \\ \vdots & \ddots & \ddots & \ddots \end{pmatrix}$$} $n_x \times n_x$ matrix with the first row $\begin{pmatrix} c_0 & c_1 & \dots & c_{N_x} & 0 & \dots \end{pmatrix}$. Analogous for $\vb{D}_{n_y}$. The $n\times n$ identity matrix is denoted as $\vb{I}_n$. The operation $\cdot \otimes \cdot$ is the Kronecker product\footnote{The Kronecker product of the $m\times m$ matrix $\vb{A}$ and the $n\times n$ matrix $\vb{B}$ is the following $(m+n)\times (m+n)$ block matrix: $$ \vb{A} \otimes \vb{B} = \begin{pmatrix} A_{1,1} \vb{B} & A_{1,2} \vb{B} & \dots \\ A_{2,1} \vb{B} & A_{2,2} \vb{B} & \\ \vdots & & \ddots \end{pmatrix} $$}. And finally, the vector of unknowns $\vb{u}$ is the approximation of $\psi$ in each of the grid points: $\vb{u} \approx \transpose{\begin{pmatrix} \psi(x_1, y_1) & \psi(x_1, y_2) & \dots \end{pmatrix}}$. The matrix on the left-hand side of \eqref{equ:c4_fd_sparse_matrix} can be directly computed. It is valuable to note that most of the entries of this matrix will be zero, so considering it as a sparse matrix is preferred. Many classical, well tested,  solvers exist for sparse eigenvalue problems. The authors of \cite{wang_new_2009} have used algorithms provided by Mathematica.
 
 Before reviewing, and recalculating their numerical results, I want to take the time to thoroughly analyze their formulae. Using an equidistant grid and coefficients which optimize for the Taylor series of the function in question, is oddly reminiscent of finite difference approximations. To confirm this similarity we have calculated the central finite difference approximations of the second order derivative.
 
@@ -65,13 +69,13 @@ Besides this remark, \cite{wang_new_2009} is very valuable as an application of 
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_harmonic.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic}, computed for different values of $h = \eta$ and $N_x = N_y$.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic}, computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalue are connected.}
     \label{fig:c4_fd_harmonic}
 \end{figure}
 
 As a first example we will replicate the results of \cite{wang_new_2009} for the harmonic oscillator:
 \begin{equation}\label{equ:c4_fd_harmonic}
-    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)    
+    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 \end{equation}
 on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions. Notice that in \cite{wang_new_2009} the authors have chosen to scale the potential and eigenvalue by an extra factor of two. Here we did not do this, as such are computed eigenvalues will be twice as large. But, the relative error still can be compared.
 
@@ -81,34 +85,55 @@ But most impressively, all these graphs were computed within a minute on a simpl
 
 To get a deeper understanding of this finite difference method it may be beneficial to study the asymptotic behavior of the error. In theory the finite difference approximation error can be used as a jumping point. Assume $N = N_x = N_y$, then the finite difference approximation of the second derivative of a function $f : \RR \to \RR$ is of the form:
 $$
-f''(x) = \frac{1}{h^2}\sum_{i=-N}^{N} c_{i} f(x + i h) + \OO\mleft(h^{2N}\mright)\text{.}
+    f''(x) = \frac{1}{h^2}\sum_{i=-N}^{N} c_{i} f(x + i h) + \OO\mleft(h^{2N}\mright)\text{.}
 $$
 
-Going further with a theoretical analysis becomes unnecessarily difficult. We will estimate the order by using the numerical results for the first $100$ eigenvalues of the harmonic oscillator, calculated for the values of $h = \eta = \left\{\frac{19}{20}, \frac{19}{30}, \frac{19}{40}, \frac{19}{50}, \frac{19}{60}, \frac{19}{80}, \frac{19}{100}\right\}$. These $7$ different sets of parameters yield for each of the $100$ eigenvalues (with index $k \in \{1, 2, \dots, 100\}$) a data point. Next, through all these points we find the best fitting curve (in the least squares sense) which follows the formula $c_1 h^{c_2} k^{c_3}$.
+Going further with a theoretical analysis becomes unnecessarily difficult. We will estimate the order by using the numerical results for the first $100$ eigenvalues of the harmonic oscillator, calculated for the values of $h = \eta = \frac{1}{n}$ for $n \in \left\{20, 30, 40, 50, 60, 70, 80, 90, 100\right\}$. These $9$ different sets of parameters yield for each of the $100$ eigenvalues (with index $k \in \{1, 2, \dots, 100\}$) a data point. Next, through all these points we find the best fitting curve which follows the formula $c_1 h^{c_2} k^{c_3}$. In this case we define the best fitting curve to be such that for the error $\epsilon_k^{(h)}$ (for each eigenvalue $k$ calculated with a step size of $h = \eta$), the following is minimized:
+$$
+    \sum_{k, h}\left|\log|\epsilon_{k}^{(h)}| - \log\mleft(c_1 h^{c_2} k^{c_3}\mright)\right|^2 \text{.}
+$$
 
+These best fits are summarized in the following table.
 \begin{center}
     \input{img/chapter4/fd_harmonic_orders.tex}
 \end{center}
 
+It is important to note that these values or estimates, and quite sensitive to the used values of $n$ and $k$. But, some trends are visible. We first note that increasing $N$ indeed increases the order in $h$ as well, maybe not as much as theoretical assumed $\OO\mleft(h^{2N}\mright)$, but nonetheless significantly. Another visible behavior is that a more accurate (higher order in $h$) method also has a larger exponent with respect to $k$. This means that higher eigenvalues are asymptotically less accurate. This property can also be seen in the graphs of figure \ref{fig:c4_fd_harmonic}, a virtual line through the points corresponding to $N = 5$ is less steep than a line through the points of $N = 10$. For one-dimensional problems the order in function of $k$ has already been well studied. In \cite{paine_correction_1981} expressions are constructed which provide a correction to the numeric approximation with finite difference schemes for Sturm-Liouville problems. These correction formulae bring the order in k down from $\OO(k^4h^2)$ to $\OO(k h^2)$. For multidimensional Schrödinger equations no such corrections are available, let alone for the extremely high order schemes considered here.
 
-
-
-{\color{red}To do: experiments}
-
+Besides the harmonic oscillator it is also instructive to consider the problem with a zero potential function on the domain $[0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions:
 \begin{equation}\label{equ:c4_fd_zero}
-    -\nabla^2 \psi(x, y) = E \psi(x, y)
+    -\nabla^2 \psi(x, y) = E \psi(x, y) \text{.}
 \end{equation}
-on the domain $[0, \pi] \times [0, \pi]$.
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_zero.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the zero potential \eqref{equ:c4_fd_zero}, computed for different values of $h = \eta$ and $N_x = N_y$.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the zero potential \eqref{equ:c4_fd_zero}, computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalue are connected.}
     \label{fig:c4_fd_zero}
 \end{figure}
 
-\subsubsection{Possible improvements when applying finite differences}
+By separation of variables, the exact solutions of this equation can be found: $\psi_{i, j}(x, y) = \sin(i x)\sin(j y)$ with eigenvalue $\lambda_{i,j} = i^2 + j^2$ for all $i, j \in \NN_{>0}$. The first few of these eigenvalues are listed.
+\input{img/chapter4/zero_exact.tex}
+In a certain way, these eigenvalues are more interesting than those from the harmonic oscillator, as their multiplicities are less predictable.
+
+In figure \ref{fig:c4_fd_zero} the error on each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$. Which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
+
+These results bring to light one of the biggest drawbacks of the method from \cite{wang_new_2009}. This method only works if it is assumed that the eigenfunctions always are zero outside the domain. For the harmonic oscillator, this is the case, as $V(x, y) \to +\infty$ if $\|x, y\| \to +\infty$. For the zero potential function this is definitely not the case, the eigenfunctions are periodic. One could argue that, in theory, an eigenfunction may be anything outside the domain $\Omega$. So in particular, we could define them to be zero there. But, most numerical methods, and this method in particular, assume that solutions are sufficiently continuous. To cleanly define the problem, at least $C_0^2(\Omega)$ is needed, and when using $N^\text{th}$ order central finite difference schemes are used $C_0^{N}(\Omega)$ is implicitly assumed. And this assumption fails if we define the function to be zero outside $\Omega$.
+
+To combat this issue, on the boundary of the domain asymmetric schemes could be used, the authors of \cite{wang_new_2009} did not do this. As an example, we have tabulated all relevant six point formulae.
+\begin{center}
+    \input{img/chapter4/fd_coefficients.tex}
+\end{center}
+There are two difficulties when using these formulae. Firstly, to reach the required order, one point more should be used. And secondly, when using asymmetric formulae the matrix from \eqref{equ:c4_fd_sparse_matrix} looses its symmetry as well. In principle this should not matter. But, in practice, many sparse matrix eigenvalue solvers are much more efficient when working with a real symmetric matrix.
+
+
+
+
+    {\color{red}To do: Hénon-Heiles}
+
+
+\subsubsection{Computational cost of the method}
 
 Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, however, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
 
@@ -116,14 +141,14 @@ Yet, these finite difference methods are not without issues. One of the most pro
 
 Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
-{\color{red}To do
+    {\color{red}To do
 
-    \begin{enumerate}
-        \item Do not assume zero outside domain
-        \item High orders loose sparsity
-    \end{enumerate}
+        \begin{enumerate}
+            \item Do not assume zero outside domain
+            \item High orders loose sparsity
+        \end{enumerate}
 
-}
+    }
 
 \subsection{A semi-discrete method}\label{sec:c4_semi_discrete}
 
@@ -133,7 +158,7 @@ In contrast to the previous methods, we propose a technique which is not necessa
 \begin{equation}\label{equ:c4_schrodinger_equation_new_method}
     -\nabla^2 \psi + V(x, y) \psi = E \psi\text{.}
 \end{equation}
-Still, we impose homogenous Dirichlet boundary conditions, thus, $\psi(x, y) = 0$ for $(x, y) \in \Omega$.
+Still, we impose homogeneous Dirichlet boundary conditions, thus, $\psi(x, y) = 0$ for $(x, y) \in \Omega$.
 
 The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as it's values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}. Here we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
 
@@ -267,7 +292,7 @@ Consider the Schrödinger equation with the harmonic oscillator potential:
 $$
     -\nabla^2\psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 $$
-on the domain $[-10, 10] \times [-10, 10]$ with homogenous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
+on the domain $[-10, 10] \times [-10, 10]$ with homogeneous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
 
 If we write equation \eqref{equ:c4_new_method_alternative_system} symbolically as $\vb{A} \vb{c} = E \vb{D} \vb{c}$, and the truncated singular value decomposition of $\vb{D}$ as $\vb{D} = \vb{U_D} \vb{\Sigma_D} \vb{V_D^\adjointsign}$, then any solution of \eqref{equ:c4_new_method_alternative_system} will also be a solution of the generalized square eigenvalue problem
 $$
