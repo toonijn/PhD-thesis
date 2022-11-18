@@ -372,15 +372,27 @@ We start with the observation that classical matrix problems, normally, do not c
     \text{and }\vb{c_y} & = \left(\vb{B_y^\transposesign} \vb{B_y}\right)^{-1} \vb{B_y^\transposesign} \vb{z} \text{.}
 \end{align*}
 
-Notice that the computation of $\left(\vb{B_x^\transposesign} \vb{B_x}\right)^{-1}$ is not at all as difficult as this may seem: $\vb{B_x}$ is a block diagonal matrix. So, these computations, calculating an inverse or multiplying with another block diagonal matrix, can be done of each of the much smaller dense subblocks on the diagonal. From figure \ref{fig:c4_new_method_beta} we known that the matrix $\vb{B_y}$ is not block diagonal. But, if we apply an $m \times m$ permutation matrix $P$ we find that $\vb{\widetilde{B}_y} := \vb{P} \vb{B_y}$ is, in fact, a block diagonal matrix. So, the computation of $\vb{c_y}$ can be written as:
+Notice that the computation of $\left(\vb{B_x^\transposesign} \vb{B_x}\right)^{-1}$ is not at all as difficult as this may seem: $\vb{B_x}$ is a block diagonal matrix. So, these computations, calculating an inverse or multiplying with another block diagonal matrix, can be done of each of the much smaller dense subblocks on the diagonal. From figure \ref{fig:c4_new_method_beta} we known that the matrix $\vb{B_y}$ is not block diagonal. But, if we apply an appropriate $m \times m$ permutation matrix $\vb{P}$ we can obtain that $\vb{\widetilde{B}_y} := \vb{P} \vb{B_y}$ is, in fact, also a block diagonal matrix. So, the computation of $\vb{c_y}$ can be written as:
 $$
 \vb{c_y} = \left(\vb{\widetilde{B}_y^\transposesign} \vb{\widetilde{B}_y}\right)^{-1} \vb{\widetilde{B}^\transposesign_y} \vb{P} \vb{z} \text{.}
 $$
 And again, as the involved matrices (except $\vb{P}$) are block diagonal, all computation can be delegated to the much smaller dense subblocks of $\vb{\widetilde{B}_y}$.
 
-Numerically, directly computing inverse matrices should be avoided. {\color{red}To do: qr solve I}.
+Numerically, directly computing inverse matrices should be avoided. Therefor, the values for the matrix $\vb{Z_x} = \left(\vb{B_x^\transposesign} \vb{B_x}\right)^{-1} \vb{B_x^\transposesign}$ from $\vb{z}$ to $\vb{c_x}$ can be constructed as the least squares solution of $\vb{B_x} \vb{Z_x} = \vb{I}_{m \times m}$, and analogous for $\vb{Z_y} = \left(\vb{\widetilde{B}_y^\transposesign} \vb{\widetilde{B}_y}\right)^{-1} \vb{\widetilde{B}^\transposesign_y}$. And again, all these computations can be executed on each of much smaller dense diagonal blocks.
 
-{\color{red}To do: full eigenvalue problem}.
+The expressions for $\vb{c_x}$ and $\vb{c_y}$ now allow us to rewrite the first equation of \eqref{equ:c4_new_method_first_matrix_problem} into
+\begin{equation}\label{equ:c4_nm_sparse_system}
+\left(\vb{B_x}\vb{\Lambda_x} \vb{Z_x} + \transpose{\vb{P}}\vb{\widetilde{B}_y}\vb{\Lambda_y}  \vb{Z_y} \vb{P}\right) \vb{z} = E \vb{z} \text{.}
+\end{equation}
+This problem is a classical square non-symetric sparse eigenvalue problem. And, the main reason we developed this technique, many well-tested extremely-efficient sparse eigenvalue solvers exist. Before declaring this technique as superior, there is still an issue left to solve. Up until now, we have ignored that $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$ should hold. So one way to ensure this, is by checking that each eigenvector $\vb{z}$ of \eqref{equ:c4_nm_sparse_system} satisfies (up to the required tolerance)
+$$
+\vb{Z_x} \vb{z} = \vb{Z_y} \vb{P} \vb{z} \text{.}
+$$
+
+Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. {\color{red}slepc} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow user to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvector. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues. In our case, this feature can be used with as a deflation space $\vb{Z_x} - \vb{Z_y} \vb{P}$. Then, only solutions will be considered which satisfy that condition. {\color{red}To do: test that this deflation space effectively works}
+% To do: reference: https://slepc.upv.es/documentation/current/docs/manualpages/EPS/EPSSetDeflationSpace.html
+
+{\color{red}To do: numerical examples}.
 
 \subsection{Computing eigenfunctions}
 

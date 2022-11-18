@@ -21,3 +21,4 @@ overdetermined
 Shao
 Mathematica
 subblocks
+eigensolver
