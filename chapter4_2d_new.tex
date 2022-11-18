@@ -307,7 +307,7 @@ $$
 
 This can be more compactly summarized when repeated values are indicated by a subscript:
 $$
-    \numprint{0.00}_{196} \quad \numprint{2.00} \quad \numprint{3.46}_2 \quad \numprint{4.00} \quad \numprint{4.89}_2 \quad \numprint{6.00}_3 \quad \numprint{6.12}_2 \quad \dots \quad \numprint{7.73}_2 \quad \numprint{8.00}_4\quad \dots
+    \numprint{0.00}_{196} \quad \numprint{2.00} \quad \numprint{3.46}_2 \quad \numprint{4.00}_2 \quad \numprint{4.89}_2 \quad \numprint{6.00}_3 \quad \numprint{6.12}_2 \quad \dots \quad \numprint{7.73}_2 \quad \numprint{8.00}_4\quad \dots
 $$
 
 One immediately notices the many returned zero values. This does not have to be surprising, in fact, the matrix on the left-hand side of \eqref{equ:c4_new_method_alternative_system} may not be of full rank. But these zeros indicate another problem. Namely, that for these values it is not at all guaranteed that $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$.
@@ -336,9 +336,14 @@ $$
     \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{c} = \vb{0}\text{.}
 $$
 This allows us to unify $\vb{c_x}$ and $\vb{c_y}$, while ensuring $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$ is satisfied. To expand on this idea, we will write $\vb{c}$ to be an element of the right kernel of  $\begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix}$. For this define $\vb{Z}$ to be the $(n_x + n_y) \times z$-dimensional basis of this right kernel:
-$$
+\begin{equation}\label{equ:c4_null_space_kernel}
     \begin{pmatrix}\vb{B_x} & -\vb{B_y} \end{pmatrix} \vb{Z} = \vb{0}\text{.}
-$$
+\end{equation}
+
+Computing this kernel numerically is definitely not trivial. For rectangular matrices, there are a few much used methods to compute the kernel. In the next few paragraphs we will explore these methods and consider how well they are suited for our problem. For ease of notation we will be solving the rectangular system $\vb{A} \vb{Z} = \vb{0}$ with $\vb{A}$ a (sparse) $n\times m$ matrix and $\vb{Z}$ a yet unknown basis $\vb{m} \times \vb{k}$ for the right null space of $\vb{A}$.
+
+One of the first methods one finds browsing the literature ({\color{red}To do: a nice reference to a textbook}), is by using a QR-decomposition with pivoting. For this we decompose the matrix as $\transpose{\vb{A}}\vb{E} = \vb{Q} \vb{R}$, with $\vb{E}$ a permutation matrix, $\vb{Q}$ a square orthogonal matrix and $\vb{R}$ a rectangular upper triangular matrix, with the elements on its diagonal sorted (descending in absolute value). To find the kernel we now consider for which vectors $\vb{Z}$ the expression $\vb{A} \vb{z} = \vb{E}\transpose{\vb{R}}\transpose{\vb{Q}}$ becomes zero. Notice that this only happens when $\vb{z}$ is one of the columns of $\vb{Q}$, corresponding to a diagonal item in $\vb{R}$ that does not exist or is (close to) zero. So an orthogonal basis of the null space of $\vb{A}$ can simply be found in a selection of columns of $\vb{Q}$ in the QR-decomposition of $\transpose{\vb{A}}$. For dense matrices this procedure works very well. We can quite easily compute the full kernel with built-in QR routines. Upon selecting which columns to include, the diagonal elements of $\vb{R}$ can even be used to respect a prespecified tolerance. But for sparse matrices, the story is quite different. There are many well-tested routines to compute sparse QR decompositions (SPQR, Eigen's QR, and scipy's). Yet, we have tested this algorithm with many different solvers, without success. Some implementations do not contain a rank revealing QR decomposition, and as such are unable to compute the full kernel. With other implementations were sometimes able to compute the kernel. But this computation was each time very sensitive to the tolerances for when pivoting should happen. Even worse, the perfect 'tolerance' was different for each test problem, or even the same problem with different parameters.
+
 Note that numerically, it is impossible to consider the exact kernel. {\color{red} To do: the numerical treatment of the computation of this kernel.}
 
 The vector $\vb{c}$ can now be written as a certain linear combination of columns of $\vb{Z}$:
