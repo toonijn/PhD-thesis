@@ -389,7 +389,7 @@ $$
 \vb{Z_x} \vb{z} = \vb{Z_y} \vb{P} \vb{z} \text{.}
 $$
 
-Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. {\color{red}slepc} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow user to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvector. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues. In our case, this feature can be used with as a deflation space $\vb{Z_x} - \vb{Z_y} \vb{P}$. Then, only solutions will be considered which satisfy that condition. {\color{red}To do: test that this deflation space effectively works}
+Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. {\color{red}slepc} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow user to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvectors. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues. In our case, this feature can be used with as a deflation space $\vb{Z_x} - \vb{Z_y} \vb{P}$. Then, only solutions will be considered which satisfy that condition. {\color{red}To do: test that this deflation space technique works}
 % To do: reference: https://slepc.upv.es/documentation/current/docs/manualpages/EPS/EPSSetDeflationSpace.html
 
 {\color{red}To do: numerical examples}.
