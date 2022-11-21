@@ -22,3 +22,6 @@ Shao
 Mathematica
 subblocks
 eigensolver
+SLEPc
+Hénon-Heiles
+Eigen
