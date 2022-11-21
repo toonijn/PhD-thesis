@@ -267,20 +267,20 @@ Before we deconstruct the constant perturbation methods, let us take the time to
 \begin{equation}\label{equ:c2_cpm_corrected}
     y''(\delta) = (\Delta V(\delta) + \bar{V} - \lambda) y(\delta)
 \end{equation}
-as initial value problem starting from $0$. Denote the homogeneous Dirichlet solution as $u(\delta)$, as such, $u(0) = 0$ and $u'(0) = 1$. And, we will write the homogeneous Neumann solution as $v(\delta)$, thus $v(0) = 1$ and $v'(0)=0$. In \eqref{equ:c2_cpm_corrected}, $\bar{V}$ is a constant (not piecewise) approximation of $V(x)$ on the current piece $[x_i, x_{i+1}]$ and $\Delta V(\delta) := V(x_i + \delta) - \bar{V}$. Being able to solve the initial value problem is sufficient to also solve the boundary value eigenproblem. For solving the latter we can employ a shooting procedure to the former, see section \ref{sec:c2_shooting_prufer} for more details. The procedure we will develop here can then be applied to each of the pieces in the constant piecewise approximation of $V(x)$.
+as initial value problem starting from $0$. Denote the homogeneous Neumann solution as $u(\delta)$, as such, $u(0) = 1$ and $u'(0) = 0$. And, we will write the homogeneous Dirichlet solution as $v(\delta)$, thus $v(0) = 0$ and $v'(0)=1$. In \eqref{equ:c2_cpm_corrected}, $\bar{V}$ is a constant (not piecewise) approximation of $V(x)$ on the current piece $[x_i, x_{i+1}]$ and $\Delta V(\delta) := V(x_i + \delta) - \bar{V}$. Being able to solve the initial value problem is sufficient to also solve the boundary value eigenproblem. For solving the latter we can employ a shooting procedure to the former, see section \ref{sec:c2_shooting_prufer} for more details. The procedure we will develop here can then be applied to each of the pieces in the constant piecewise approximation of $V(x)$.
 
 Following \cite{ixaru_numerical_1984,ixaru_cp_2000}, let us denote a solution of \eqref{equ:c2_cpm_corrected} generally as $p(\delta)$, this thus represents either $u(\delta)$ or $v(\delta)$. Now we write the solution $p(\delta)$ as a perturbation series:
 $$
     p(\delta) = p_0(\delta) + p_1(\delta) + p_2(\delta) + \dots
 $$
 In this expression the first order term $p_0$ is the solution of the reference equation
-$$
+\begin{equation}\label{equ:c2_p0_reference}
     p_0''(\delta) = (\bar{V} - \lambda) p_0(\delta)
-$$
+\end{equation}
 with appropriate initial values. That is, $u_0(0) = 1$ and $u_0'(0) = 0$ for $p = u$, if $p=v$ the initial values are $v_0(0)=0$ and $v_0'(0) = 1$. The perturbation corrections can now be recursively defined as the solution of
-$$
+\begin{equation}\label{equ:c2_pq_definition}
     p_q''(\delta) = (\bar{V} - \lambda) p_q(\delta) + \Delta V(\delta) p_{q-1}
-$$
+\end{equation}
 with initial conditions $p_q(0) = p_q'(0) = 0$. Notice that this definition implies that $p$ indeed solves \eqref{equ:c2_cpm_corrected} with the appropriate initial values:
 \begin{align*}
     p'' & = (\bar{V} - \lambda)p_0 + \sum_{q=1}^\infty\left((\bar{V} - \lambda)p_q + \Delta V(\delta) p_{q-1}\right) \\
@@ -313,7 +313,7 @@ $$
 $$
 
 Other interesting properties of these special functions are already studied. Here we provide some results, without proofs.
-\begin{theorem}[Ixaru 1984]
+\begin{theorem}[Ixaru 1984]\label{the:c2_eta_functions}
     For the family of functions defined in definition \ref{def:c2_eta_functions}, the following properties hold for $m \in \{-1, 0, 1, 2, \dots\}$ and $Z \in \RR$.
     \begin{itemize}
         \item Asymptotic behavior for $|Z| \to \infty$:
@@ -333,16 +333,29 @@ Other interesting properties of these special functions are already studied. Her
     \end{itemize}
 \end{theorem}
 
-With the theory about the family of $\eta$-functions in hand, we are able to formulate the main theorem to symbolically compute the formulae for $p_q(\delta)$.
+With the theory about the family of $\eta$-functions in hand, we are able to solve equations \eqref{equ:c2_p0_reference} and \eqref{equ:c2_pq_definition} symbolically. The following theorem from \cite{ixaru_numerical_1984} captures these symbolic calculations for $p_q(\delta)$. As these formulae have been instrumental to our work (especially for section \ref{sec:c2_cp_in_delta}), we will provide a proof.
 
 \begin{theorem}[Ixaru 1984]\label{the:c2_perturbation_terms}
-    If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by: {\color{red} To do: What is $Z$?}
+    Let $p(\delta)$ be a general solution of
+    $$
+        p''(\delta) = \left(\Delta V(\delta) + \bar{V} - \lambda\right)p(\delta)
+    $$
+    over the interval $[0, h]$. In this expression $V = \bar{V} + \Delta V(\delta)$ is a given potential function, with $\bar{V}$ a constant approximation and $\Delta V(\delta)$ the residual term. The value $\lambda$ is fixed. We denote the solution with initial conditions $u(0) = 1$ and $u'(0)=0$ as $u(\delta) = p(\delta)$, and the solution with initial conditions $v(0) = 0$ and $v'(0) = 1$ will be denoted with $v(\delta) = p(\delta)$. For ease of notation we will write $Z(\delta) = \left(\bar{V} - \lambda\right)\delta^2$. Let $p(\delta) = p_0(\delta) + p_1(\delta) + p_2(\delta) + \dots$ with:
     \begin{align*}
-        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
-        \intertext{with derivative:}
-        p_q'(\delta) & = \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z) + \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
+        p_0''(\delta) & = (\bar{V} - \lambda) p_0(\delta)                                                             \\
+        p_q''(\delta) & = (\bar{V} - \lambda) p_q(\delta) + \Delta V(\delta) p_{q-1}(\delta) \quad\text{for $q > 0$.}
     \end{align*}
-    The functions $ C^{(q)}_i (\delta) $ satisfy the following recursive relation: \begin{align*}
+    The function $p_0$ inherits the initial conditions of $p$. If $q > 0$, $p_q$ has as initial conditions $p_q(0) = p_q'(0) = 0$.
+
+
+    If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
+    \begin{align}
+        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))  \label{equ:c2_cp_coeff_pq_formula}                                  &
+        \intertext{with derivative:}
+        p_q'(\delta) & = \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z(\delta))+Z(\delta)\eta_{0}(Z(\delta))\right)            \label{equ:c2_cp_coeff_pq_diff_formula}                               \\\nonumber
+                     & \qquad + \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z(\delta)) \text{.}
+    \end{align}
+    The functions $ C^{(q)}_i (\delta) $ are polynomials and satisfy the following recursive relation: \begin{align*}
         C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
         C_{i-1}^{(q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
         \right)\dd\varepsilon                                                                 \\
@@ -353,10 +366,25 @@ With the theory about the family of $\eta$-functions in hand, we are able to for
         \end{cases}                                   \\
         C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
     \end{align*}
-
 \end{theorem}
+\begin{proof}
+    As these formulae are recursively defined, a proof by induction is most natural. For $q=0$ the exact solutions can be calculated. If $\bar{V} \geq \lambda$, then $u_0(\delta) = \cosh(\sqrt{Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{Z(\delta)})/\sqrt{\bar{V} - \lambda}$. If $\bar{V} < \lambda$ on the other hand, then $u_0(\delta) = \cosh(\sqrt{-Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{-Z(\delta)})/\sqrt{\lambda - \bar{V}}$. By using the $\eta$-functions both these can be summarized as:
+    $$ u_0 = \eta_{-1}(Z(\delta)) \text{ and } v_0 = \delta\eta_{0}(Z(\delta))\text{.}$$
+    Substituting, for $q=0$, the values of $C^{(0)}_i$ into \eqref{equ:c2_cp_coeff_pq_formula} yields exactly the same expressions. This proves the induction basis.
+    
+    Assume, as induction hypothesis, that the theorem holds for any value for $q$ less than $Q$. First we prove that for each $i$, $C_i^{(Q)}$ is a polynomial. For this we apply induction with respect to $i$. For $i = -1$, the $C^{(Q)}_{-1} =0$ is a polynomial. Because $\Delta V(\delta)$ is assumed to be polynomial, we notice that for any other $i$
+    $$
+    C_{i-1}^{(Q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(Q)\prime\prime}(\varepsilon)
+    $$
+    is a polynomial, as a consequence of the induction hypothesis in $Q$, and the induction hypothesis in $i$. This implies that the integrand in the definition of $C_i^{(Q)}(\delta)$ is polynomial no terms of degree less than $i-1$. This means that the integral in that definition will be divisible by $\delta^i$. Which proves that all $C_{i}^{(Q)}$ are polynomials.
 
-{\color{red} To do: Maybe proof?}
+    Next we proof that $p_Q(\delta)$ is a solution of
+    $$
+    p_Q''(\delta)  = (\bar{V} - \lambda) p_Q(\delta) + \Delta V(\delta) p_{Q-1}(\delta)
+    $$
+    with initial conditions $p_Q(0) = p_Q'(0) = 0$. That $p_Q(0) = 0$ can be seen in \eqref{equ:c2_cp_coeff_pq_formula}, using the facts that $C^{(Q)}_{-1} = 0$ for $Q > 0$ and that $C_i^{(Q)}$ are polynomials. Using the properties from theorem \ref{the:c2_eta_functions}, we can compute $p_Q'(\delta)$ to be as in \eqref{equ:c2_cp_coeff_pq_diff_formula}. That this expression is zero for $\delta = 0$ is less apparent. First, notice that most terms are zero because $C_i^{(Q)}$ are polynomials and $C^{(Q)}_{-1} = 0$ for $Q > 0$. The only term for which this is not clear is with $i = -1$: $C_0^{(Q)}(0)\eta_{0}(Z(0))$. For this term, we remark that the polynomial $C^{(q)}_{-1}(\delta)$ never contains a constant term, for most values of $q$ it is zero, and for $q=0$ it can only be zero or $\delta$. This means, by the recursive construction, that $C_{i}^{(q)}(\delta)$ also does not contain a constant term. Which means $C_{i}^{(q)}(0) = 0$, and thus $p_Q'(0) = 0$, for $Q > 0$.
+\end{proof}
+
 
 {\color{red} To do: Some history and details about implementing these?}
 
@@ -367,7 +395,7 @@ With the theory about the family of $\eta$-functions in hand, we are able to for
 
 \cite{baeyens_fast_2020}
 
-\subsection{CP-methods in function of \texorpdfstring{$\delta$}{delta}}
+\subsection{CP-methods in function of \texorpdfstring{$\delta$}{delta}}\label{sec:c2_cp_in_delta}
 
 \subsection{Architecture of the \texorpdfstring{\cpp}{C++} library}
 
