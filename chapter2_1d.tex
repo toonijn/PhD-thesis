@@ -350,9 +350,9 @@ With the theory about the family of $\eta$-functions in hand, we are able to sol
 
     If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
     \begin{align}
-        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))  \label{equ:c2_cp_coeff_pq_formula}                                  &
+        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))  \label{equ:c2_cp_coeff_pq_formula}                                             &
         \intertext{with derivative:}
-        p_q'(\delta) & = \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z(\delta))+Z(\delta)\eta_{0}(Z(\delta))\right)            \label{equ:c2_cp_coeff_pq_diff_formula}                               \\\nonumber
+        p_q'(\delta) & = \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z(\delta))+Z(\delta)\eta_{0}(Z(\delta))\right)            \label{equ:c2_cp_coeff_pq_diff_formula}   \\\nonumber
                      & \qquad + \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z(\delta)) \text{.}
     \end{align}
     The functions $ C^{(q)}_i (\delta) $ are polynomials and satisfy the following recursive relation: \begin{align*}
@@ -368,26 +368,55 @@ With the theory about the family of $\eta$-functions in hand, we are able to sol
     \end{align*}
 \end{theorem}
 \begin{proof}
-    As these formulae are recursively defined, a proof by induction is most natural. For $q=0$ the exact solutions can be calculated. If $\bar{V} \geq \lambda$, then $u_0(\delta) = \cosh(\sqrt{Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{Z(\delta)})/\sqrt{\bar{V} - \lambda}$. If $\bar{V} < \lambda$ on the other hand, then $u_0(\delta) = \cosh(\sqrt{-Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{-Z(\delta)})/\sqrt{\lambda - \bar{V}}$. By using the $\eta$-functions both these can be summarized as:
-    $$ u_0 = \eta_{-1}(Z(\delta)) \text{ and } v_0 = \delta\eta_{0}(Z(\delta))\text{.}$$
-    Substituting, for $q=0$, the values of $C^{(0)}_i$ into \eqref{equ:c2_cp_coeff_pq_formula} yields exactly the same expressions. This proves the induction basis.
-    
-    Assume, as induction hypothesis, that the theorem holds for any value for $q$ less than $Q$. First we prove that for each $i$, $C_i^{(Q)}$ is a polynomial. For this we apply induction with respect to $i$. For $i = -1$, the $C^{(Q)}_{-1} =0$ is a polynomial. Because $\Delta V(\delta)$ is assumed to be polynomial, we notice that for any other $i$
-    $$
-    C_{i-1}^{(Q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(Q)\prime\prime}(\varepsilon)
-    $$
-    is a polynomial, as a consequence of the induction hypothesis in $Q$, and the induction hypothesis in $i$. This implies that the integrand in the definition of $C_i^{(Q)}(\delta)$ is polynomial no terms of degree less than $i-1$. This means that the integral in that definition will be divisible by $\delta^i$. Which proves that all $C_{i}^{(Q)}$ are polynomials.
+As these formulae are recursively defined, a proof by induction is most natural. For $q=0$ the exact solutions can be calculated. If $\bar{V} \geq \lambda$, then $u_0(\delta) = \cosh(\sqrt{Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{Z(\delta)})/\sqrt{\bar{V} - \lambda}$. If $\bar{V} < \lambda$ on the other hand, then $u_0(\delta) = \cosh(\sqrt{-Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{-Z(\delta)})/\sqrt{\lambda - \bar{V}}$. By using the $\eta$-functions both these can be summarized as:
+$$ u_0 = \eta_{-1}(Z(\delta)) \text{ and } v_0 = \delta\eta_{0}(Z(\delta))\text{.}$$
+Substituting, for $q=0$, the values of $C^{(0)}_i$ into \eqref{equ:c2_cp_coeff_pq_formula} yields exactly the same expressions. This proves the induction basis.
 
-    Next we proof that $p_Q(\delta)$ is a solution of
-    $$
+Assume, as induction hypothesis, that the theorem holds for any value for $q$ less than $Q$. First we prove that for each $i$, $C_i^{(Q)}$ is a polynomial. For this we apply induction with respect to $i$. For $i = -1$, the $C^{(Q)}_{-1} =0$ is a polynomial. Because $\Delta V(\delta)$ is assumed to be polynomial, we notice that for any other $i$
+$$
+    C_{i-1}^{(Q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(Q)\prime\prime}(\varepsilon)
+$$
+is a polynomial, as a consequence of the induction hypothesis in $Q$, and the induction hypothesis in $i$. This implies that the integrand in the definition of $C_i^{(Q)}(\delta)$ is polynomial no terms of degree less than $i-1$. This means that the integral in that definition will be divisible by $\delta^i$. Which proves that all $C_{i}^{(Q)}$ are polynomials.
+
+Next we proof that $p_Q(\delta)$ is a solution of
+$$
     p_Q''(\delta)  = (\bar{V} - \lambda) p_Q(\delta) + \Delta V(\delta) p_{Q-1}(\delta)
-    $$
-    with initial conditions $p_Q(0) = p_Q'(0) = 0$. That $p_Q(0) = 0$ can be seen in \eqref{equ:c2_cp_coeff_pq_formula}, using the facts that $C^{(Q)}_{-1} = 0$ for $Q > 0$ and that $C_i^{(Q)}$ are polynomials. Using the properties from theorem \ref{the:c2_eta_functions}, we can compute $p_Q'(\delta)$ to be as in \eqref{equ:c2_cp_coeff_pq_diff_formula}. That this expression is zero for $\delta = 0$ is less apparent. First, notice that most terms are zero because $C_i^{(Q)}$ are polynomials and $C^{(Q)}_{-1} = 0$ for $Q > 0$. The only term for which this is not clear is with $i = -1$: $C_0^{(Q)}(0)\eta_{0}(Z(0))$. For this term, we remark that the polynomial $C^{(q)}_{-1}(\delta)$ never contains a constant term, for most values of $q$ it is zero, and for $q=0$ it can only be zero or $\delta$. This means, by the recursive construction, that $C_{i}^{(q)}(\delta)$ also does not contain a constant term. Which means $C_{i}^{(q)}(0) = 0$, and thus $p_Q'(0) = 0$, for $Q > 0$. The last thing, we still have to proof, is that this $p_Q$ indeed solves its defining equation.
+$$
+with initial conditions $p_Q(0) = p_Q'(0) = 0$. That $p_Q(0) = 0$ can be seen in \eqref{equ:c2_cp_coeff_pq_formula}, using the facts that $C^{(Q)}_{-1} = 0$ for $Q > 0$ and that $C_i^{(Q)}$ are polynomials. Using the properties from theorem \ref{the:c2_eta_functions}, we can compute $p_Q'(\delta)$ to be as in \eqref{equ:c2_cp_coeff_pq_diff_formula}. That this expression is zero for $\delta = 0$ is less apparent. First, notice that most terms are zero because $C_i^{(Q)}$ are polynomials and $C^{(Q)}_{-1} = 0$ for $Q > 0$. The only term for which this is not clear is with $i = -1$: $C_0^{(Q)}(0)\eta_{0}(Z(0))$. For this term, we remark that the polynomial $C^{(q)}_{-1}(\delta)$ never contains a constant term, for most values of $q$ it is zero, and for $q=0$ it can only be zero or $\delta$. This means, by the recursive construction, that $C_{i}^{(q)}(\delta)$ also does not contain a constant term. Which means $C_{i}^{(q)}(0) = 0$, and thus $p_Q'(0) = 0$, for $Q > 0$. The last thing, we still have to proof, is that this $p_Q$ indeed solves its defining equation.
+
+For this, we compute $p_Q''$. For the sake of brevity, we will omit the argument $\delta$ from most functions, and remember that all derivatives are with respect to $\delta$. But first, we know, from the definition of $C_i^q$ that
+$$
+    C_i^{(q)\prime} = -i \delta^{-1} C_i^{(q)} + \frac{\delta^{-1}}{2}\left(C^{(q-1)}_{i-1}\Delta V - C^{(q)\prime\prime}_{i-1}\right)\text{,}
+$$
+but also that
+\begin{align*}
+    {\dv[]{\delta^{2i+1}\eta_i(Z)}{\delta}}               & = \delta^{2i} \eta_{i-1}                                         \\
+    \text{ and } {\dv[2]{\delta^{2i+1}\eta_i(Z)}{\delta}} & = \delta^{2i-1}\left(2i\eta_{i-1}(Z) + Z\eta_i(Z)\right)\text{.}
+\end{align*}
+
+\begingroup
+\allowdisplaybreaks
+These expressions, together with $C_{-1}^{(Q)} = 0$, now can be used to simplify $p_Q''$:
+\begin{align*}
+    p_Q   & = \sum_{i=0}^{+\infty} C_{i}^{(Q)} \delta^{2i + 1} \eta_{i}(Z)                                                                            \\
+    p_Q'' & = \sum_{i=0}^{+\infty} C_i^{(Q)}\delta^{2i-1}\left(2i\eta_{i-1}(Z) + Z\eta_i(Z)\right)                                                    \\
+          & + \sum_{i=-1}^{+\infty} 2C_{i+1}^{(Q)\prime}\delta^{2i+2}\eta_{i}(Z) + \sum_{i=0}^{+\infty} C_i^{(Q)\prime\prime}\delta^{2i+1}\eta_{i}(Z) \\
+          & = \sum_{i=0}^{+\infty} C_i^{(Q)}\delta^{2i-1}\left(2i\eta_{i-1}(Z) + Z\eta_i(Z)\right)                                                    \\
+          & + \sum_{i=-1}^{+\infty} -2(i+1)C_{i+1}^{(Q)}\delta^{2i+1}\eta_{i}(Z) + p_{Q-1} \Delta V                                                   \\
+          & = \frac{Z}{\delta^2}p_Q + p_{Q-1} \Delta V \text{.}
+\end{align*}
+\endgroup
+Due to the definition of $Z = \delta^2(\bar{V} - \lambda)$, this expresses exactly that $p_Q$ is a solution to $p_Q'' = (\bar{V} - \lambda)p_Q + \delta V p_{Q-1}$. Which, in turn, proves the induction step.
 \end{proof}
 
+At first glance, it may not be clear why theorem \ref{the:c2_perturbation_terms} is that important. Still, these rather tedious computations and relatively complicated recursive relation allows us to construct formulae of any order. To calculate such a formula choose values $N$ and $Q$ and compute the values of $C_{i}^{(q)}$ for $q \leq Q$ and $i \leq N$. If $\Delta V$ is assumed to be a polynomial in $\delta$, then $C_{i}^{(q)}$ will be as well. The solution $p(\delta)$ will now take the following form:
+$$
+    p(\delta) = \sum_{q=0}^{Q} p_q(\delta) \text{ with } p_q(\delta) = \sum_{i=-1}^{N} C_{i}^{(q)}(\delta) \delta^{2i+1} \eta_i(Z) \text{.}
+$$
 
-{\color{red} To do: Some history and details about implementing these?}
+{\color{red} To do: in practice, this is not sufficient. As $C$ very much depends on $V$.}
 
+    {\color{red} To do: Some history and details about implementing these?}
 
 \subsection{Shooting with Prüfer's transformation}\label{sec:c2_shooting_prufer}
 
