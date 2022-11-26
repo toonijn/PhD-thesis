@@ -12,4 +12,4 @@ jobs:
             thesis.tex
       - name: Upload thesis.pdf
         run: |
-          curl -X POST -F pdf=@thesis.pdf -d 'token=${{ secrets.UPLOAD_TOKEN }}' ${{ secrets.UPLOAD_URL }}
+          curl -F pdf=@thesis.pdf&token=${{ secrets.UPLOAD_TOKEN }}' ${{ secrets.UPLOAD_URL }}
