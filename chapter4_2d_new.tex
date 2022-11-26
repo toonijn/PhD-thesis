@@ -402,7 +402,21 @@ With these null spaces in hand, it is still not as easy as adding them to the de
 
 Now, finally, we are able to request the low end of the spectrum of the right-hand side of \eqref{equ:c4_nm_sparse_system}. And the numerical results are promising! But, we noticed that this sparse technique is significantly slower than the dense implementation from \ref{sec:nm_by_restriction}.
 
-The reason for this slowness can be suspected to be the computation of the smaller basis with the QR-decomposition. Even with using a sparse QR decomposition, this still takes a significant amount of runtime. Besides this, there is also a more implementation specific time sink: one can provide the deflation space in \slepc as a list of vectors. In this library all vectors are dense. With the large deflation space we are using, this results in many dense vector operation on this huge list of dense vectors. Which defeats are goal of maximally using the sparsity of the system. We did not find another library which supports deflation spaces, let alone sparse deflation spaces. But even if we would have, this still would not have worked. After the QR decomposition, the vectors from our new basis for the deflation space are dense. Which inherently slows everything down.
+{\color{red} To do: may be a table with the numerical results from the different solvers, with respect to runtime for example. (Method 2, dense right kernel. Method 3 Spectra without deflation. Method 3 slepc with dense deflation. Method 3 Spectra with direct deflation)}
+
+The reason for this slowness can be suspected to be the computation of the smaller basis with the QR-decomposition. Even with using a sparse QR decomposition, this still takes a significant amount of runtime. Besides this, there is also a more implementation specific time sink: one can provide the deflation space in \slepc as a list of vectors. In this library all vectors are dense. With the large deflation space we are using, this results in many dense vector operation on this huge list of dense vectors. Which defeats our goal of maximally using the sparsity of the system. We did not find another library which supports deflation spaces, let alone sparse deflation spaces. But even if we would have, this still would not have worked. After the QR decomposition, the vectors from our new basis for the deflation space are dense. Which inherently slows everything down.
+
+Using deflation gave promising numerical results, but due to implementation drawbacks it was still to slow. But, fortunately, we are able to add deflation to any eigenvalue problem, even if the solver does not support it. In the literature there are a few techniques available {\color{red} references to deflation in eigenvalue problems}. The ideas that are used for sparse problems mostly involve ensuring that all vectors from the deflation space have eigenvalue zero. This makes sure that iterative schemes, like power iteration or (restarted) Arnoldi ({\color{red} cite Arnoldi}), which converge to the high end (in magnitude) of the spectrum never find eigenvectors contained within the deflation space. In our case, we are only interested in the first small eigenvalues. This forces us to use these eigenvalue routines in shift-and-invert mode. Here, the largest eigenvalues of $\left(\vb{I} - \sigma \vb{I}\right)^{-1}$ are sought, instead of the eigenvalues of $\vb{A}$ itself. To employ deflation in this mode of operation we transform the eigenvalue problem as follows.
+
+\begin{theorem}
+    Let $\vb{A}$ be a real square matrix and the columns of the orthogonal matrices $\vb{D}_i$ be each an orthogonal basis of a deflation space, for $i \in \{1, \dots, n\}$. Then, the matrix
+    $$
+    \left(\prod_{i=1}^{n}(I - \transpose{D_i} D_i)\right) \vb{A} \left(\prod_{i=1}^{n}(I - \transpose{D_i} D_i)\right)
+    $$
+    has the same eigenvalues of $\vb{A}$, except for the eigenvectors within any of the deflation spaces with basis $\vb{D_i}$.
+\end{theorem}
+
+
 
     {\color{red}To do: trying to solve this by directly deflating the matrix. (And try to use Spectra)}
 
