@@ -1,0 +1,15 @@
+name: Build thesis
+on: [push]
+jobs:
+  build-thesis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            thesis.tex
+      - name: Upload thesis.pdf
+        run: |
+          curl -X POST -F pdf=@thesis.pdf -d 'token=${{ secrets.UPLOAD_TOKEN }}' ${{ secrets.UPLOAD_URL }}
