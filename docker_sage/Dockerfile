@@ -125,7 +125,9 @@ RUN mkdir -p /home/student/.sage/jupyter-4.1/lab/user-settings/\@jupyterlab/git 
 # Install pyslise
 WORKDIR /home/student/
 RUN git clone https://gitlab.com/libeigen/eigen.git
-RUN git clone --recursive https://github.com/twist-numerical/matslise.git
+RUN git clone --recursive https://github.com/twist-numerical/matslise.git \
+    && cd matslise \
+    && git checkout e7c180fe64f5fc2f9752073f44845cd88418f16e
 RUN git clone --recursive https://github.com/twist-numerical/matslise2d.git
 RUN mkdir eigen/build
 RUN mkdir matslise/build-sage;  mkdir matslise/build-python
@@ -165,7 +167,7 @@ USER student
 
 WORKDIR /home/student/
 RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git \
-    && cd schrodinger && git checkout 623f7bd
+    && cd schrodinger && git checkout 96cb66bcfe1f7dc8b230767a7cc3b2fa63d58542
 WORKDIR /home/student/schrodinger
 RUN mkdir build-sage && mkdir build-python
 
