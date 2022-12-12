@@ -41,12 +41,33 @@
 \usepackage{biblatex}
 \usepackage{microtype}
 \usepackage{csquotes}
-\usepackage{numprint}
 \usepackage{mleftright}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{booktabs}
+
+\usepackage{numprint}
 \npthousandsep{{\ifmmode\mskip2mu\else\hskip0.2em\fi}}
 \npdecimalsign{.}
+
+\usepackage{xcolor}
+\definecolor{ugent_wit}{HTML}{FFFFFF}
+\definecolor{ugent_zwart}{HTML}{000000}
+\definecolor{ugent_blauw}{HTML}{1E64C8}
+\definecolor{ugent_geel}{HTML}{FFD200}
+\definecolor{ugent_oranje}{HTML}{F1A42B}
+\definecolor{ugent_rood}{HTML}{DC4E28}
+\definecolor{ugent_aqua}{HTML}{2D8CA8}
+\definecolor{ugent_roze}{HTML}{E85E71}
+\definecolor{ugent_hemelsblauw}{HTML}{8BBEE8}
+\definecolor{ugent_lichtgroen}{HTML}{AEB050}
+\definecolor{ugent_paars}{HTML}{825491}
+\definecolor{ugent_warmoranje}{HTML}{FB7E3A}
+\definecolor{ugent_turquoise}{HTML}{27ABAD}
+\definecolor{ugent_lichtpaars}{HTML}{BE5190}
+\definecolor{ugent_groen}{HTML}{71A860}
+
 
 \addbibresource{references.bib}
 
@@ -69,6 +90,8 @@
 \newcommand{\longchapter}[2][]{%
   \chapter[#2]{#2}%
   \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
+
+\newcommand{\todo}[1]{\textcolor{red}{To do: #1}}
 
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\ZZ}{\mathbb{Z}}
@@ -100,6 +123,7 @@
 \newcommand{\Ctop}{\vb{C}_\text{top}}
 \newcommand{\ubottom}{\vb{u}_\text{bottom}}
 \newcommand{\utop}{\vb{u}_\text{top}}
+
 
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\tridiag}{tridiag}

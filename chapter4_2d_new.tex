@@ -182,13 +182,14 @@ The main idea underlying this method is that we want to represent the eigenfunct
 In this new method we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid need not be equidistant or square. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Upon formulating and implementing this new method, this varying number of intersections is one example of some difficulties that arise by explicitly allowing more flexibility.
 
 After placing the grid on $\Omega$, the next step is to approximate the unknown eigenfunction $\psi$ as a linear combination of basis functions on each of the grid lines. On the vertical line $x = x_i$, we denote these basis functions as $\beta_k^{(x_i)}(y)$, for each value of $k$. This yields the expression
-$$
+\begin{equation}\label{equ:c4_expression_on_lines_x}
     \psi(x_i, y) = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y) \text{.}
-$$
+\end{equation}
+
 For horizontal lines $y = y_j$, the basis functions $\beta_k^{(y_j)}(x)$ yield a similar expression
-$$
+\begin{equation}\label{equ:c4_expression_on_lines_y}
     \psi(x, y_j) = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x) \text{.}
-$$
+\end{equation}
 
 To ensure $\psi(x, y)$ is uniquely defined in each point in $\Omega$ we have to require that in each intersection point $(x_i, y_j)$, $\psi(x_i, y_j)$ has only one solution:
 \begin{equation}\label{equ:c4_new_method_pre_matrix_equality}
@@ -447,19 +448,19 @@ It is interesting to remark that, at first glance, the right most factor $\prod_
 Of course, literally computing the matrix \eqref{equ:c4_projection_deflation} is ill-advised. Firstly, this is numerically unstable, secondly this is computationally expensive and thirdly, this would void all sparsity we painstakingly tried to preserve. As such, a simple sparse matrix eigenvalue solver can no longer be used; a matrix-free solver will be necessary. Fortunately, most notable sparse eigenvalue solvers \cite{hernandez_slepc_2005}{\color{red} cite matrix-free solvers} support this mode of operation and require only a routine which applies the involved matrix to supplied vectors. In our case, this operation looks like the pseudocode in algorithm \ref{alg:c4_deflation}.
 
 \begin{algorithm}
-\begin{algorithmic}
-    \State Compute the sparse LU decomposition of $\vb{A} - \sigma \vb{I}$
-    \State
-    \Function{ApplyMatrix}{vector $\vb{v}$, result $\vb{r}$}
+    \begin{algorithmic}
+        \State Compute the sparse LU decomposition of $\vb{A} - \sigma \vb{I}$
+        \State
+        \Function{ApplyMatrix}{vector $\vb{v}$, result $\vb{r}$}
         \State $\vb{u} = \left(\prod_{i=1}^{n}(\vb{I} - \vb{D_i}\transpose{\vb{D_i}})\right) \vb{v}$
         \State Use LU-decomposition to solve $\left(\vb{A} - \sigma \vb{I}\right) \vb{x} = \vb{u}$ for $\vb{x}$.
         \State $\vb{r} = \left(\prod_{i=1}^{n}(\vb{I} - \vb{D_i}\transpose{\vb{D_i}})\right) \vb{x}$
-    \EndFunction
-    \State
-    \Statex \Comment Call matrix-free eigensolver library
-    \State eigenvalueSolver(ApplyMatrix)
-\end{algorithmic}
-\caption{The pseudocode of the algorithm to apply projection deflation from theorem \ref{the:c4_projection_deflation}.}\label{alg:c4_deflation}
+        \EndFunction
+        \State
+        \Statex \Comment Call matrix-free eigensolver library
+        \State eigenvalueSolver(ApplyMatrix)
+    \end{algorithmic}
+    \caption{The pseudocode of the algorithm to apply projection deflation from theorem \ref{the:c4_projection_deflation}.}\label{alg:c4_deflation}
 \end{algorithm}
 
 {\color{red}To do: a conclusion about solving \eqref{equ:c4_new_method_first_matrix_problem} with \eqref{equ:c4_nm_sparse_system}.}
@@ -467,6 +468,110 @@ Of course, literally computing the matrix \eqref{equ:c4_projection_deflation} is
 {\color{red}To do: trying to solve this by directly deflating the matrix. (And try to use Spectra)}
 
 \subsection{Computing eigenfunctions}
+
+This new method is able to compute eigenvalues of Schrödinger equations efficiently and accurately. One of the disadvantages of many simpler numerical schemes is their inability to truly compute eigenfunctions. The method from \cite{wang_new_2009}, for example, provides an approximation to the value of the eigenfunctions in a finite number of fixed evaluation points. The eigenfunction is only known in the grid points, used to construct the matrix problem. For us, this is unsatisfactory.
+
+In recent years we have focussed upon accurately computing eigenfunctions in arbitrary points. If we look back at the one dimensional case for a moment, we see that in Matslise 2.0 \cite{ledoux_matslise_2016a} it was possible to compute eigenfunctions. But, each of the required evaluation points needed to be specified beforehand. Also, when requesting the value of the eigenfunction in many points, the runtime increased dramatically. Only in our work from chapter \ref{cha:c2} and \cite{baeyens_fast_2020}, we were able to build an algorithm which could compute the value of the eigenfunction in many points efficiently. These points needed not to be specified beforehand. In a more technical sense, when eigenfunctions are requested, our implementation of Matslise returns a function. Not just a grid of values. This has many benefits: firstly Matslise may decide its own step size, based upon the required accuracy and jumps in the domain. Without taking a ridiculous amount of steps, because we want to evaluate the eigenfunction in many points. Secondly, besides these clear efficiency gains, doing computations with these eigenfunctions becomes a lot more user-friendly. Many numerical procedures are adaptive, for example ODE-solvers with adaptive step size, based upon an error estimate. Or, the computation of a numerical quadrature is ideally done with adaptive formulae to get a grip on the error of the result. When using these adaptive procedures it is not known beforehand which values of the involved functions will be required. Therefor, we strived to build in the dynamic computation of eigenfunctions into the core of algorithms.
+
+In our own work, see \cite{baeyens_improvements_2022}, chapter \ref{cha:c3} and even this chapter, we already benefitted immensely from the ability to compute eigenfunctions efficiently in arbitrary points. Of course, we want to also build in this feature into the new method developed in this section.
+
+This new method provides not only the eigenvalues but also the corresponding vector $\vb{c_x}$ and $\vb{c_y}$, containing each of the values $c_k^{(x_i)}$ and $c_k^{(y_j)}$, for each $i$, $j$ and $k$. These can be used to reconstruct the two-dimensional eigenfunction $\psi(x, y)$ on each of the grid lines (see also \eqref{equ:c4_expression_on_lines_x} and \eqref{equ:c4_expression_on_lines_y}):
+\begin{align*}
+    \psi(x_i, y)             & = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y)          \\
+    \text{and } \psi(x, y_j) & = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x) \text{.}
+\end{align*}
+Because $\beta_k^{(x_i)}$ and $\beta_k^{(y_j)}$ are computed with Matslise 3.0, these functions can be cheaply evaluated in any point. This means that, visually, the value of the two-dimensional eigenfunction can be calculated on each of the horizontal and vertical lines of figure \ref{fig:woven_method_grid}.
+
+\begin{figure}
+    \begin{minipage}{.49\textwidth}
+        \begin{center}
+            \begin{tikzpicture}
+                \node[anchor=south west,inner sep=0] at (0,0) {\includegraphics[width=.8\textwidth]{img/chapter4/the_method_grid_zoomed.pdf}};
+                \draw[fill, color=ugent_blauw] (2.7,2) circle [radius=2pt] node[above right] {\Large ?};
+            \end{tikzpicture}
+        \end{center}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.49\textwidth}
+        \begin{center}
+            \includegraphics[width=.8\textwidth]{img/chapter4/the_method_grid_interpolate.pdf}
+        \end{center}
+    \end{minipage}
+    \caption{On the left: a closer look at an internal rectangle from figure \ref{fig:woven_method_grid}. On the right: the points calculated with a small finite difference approximation.}\label{fig:c4_new_method_zoomed_in}
+\end{figure}
+
+But almost all values in the domain $\Omega$ are not contained on any of these lines. It is not trivial how one would now, from the results $\vb{c_x}$ and $\vb{c_y}$ from the matrix problem reconstruct the eigenfunction $\psi(x, y)$ in such a general point. Let us simplify the problem by only considering a rectangle between two consecutive grid lines, in both the x- and y-direction. The left side of figure \ref{fig:c4_new_method_zoomed_in} contains such a single rectangle. The question now is to reconstruct the eigenfunction on this rectangle, given its value on the whole boundary. Because we have to approximate an unknown function, given the values on a fixed number of points, interpolation comes to mind. As a first idea, we have tried building a polynomial basis to interpolate the eigenfunction with nodes on the boundary of such a rectangle.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics*[width=1\textwidth]{img/chapter4/nm_interpolation.png}
+    \end{center}
+    \caption{Two different fourth degree polynomial functions with the same value on the boundary of the region $[-1, 1] \times [-1, 1]$.}\label{fig:c4_interpolation_boundary issue}
+\end{figure}
+
+The most natural $k$-degree polynomial basis to consider are for all $i, j$ the polynomials $x^i y^j$ with $i + j \leq k$. For $k = 4$, for example, this yields:
+$$
+    1\text{, } y\text{, } y^2\text{, } y^3\text{, } y^4\text{, } x\text{, } x y\text{, } x y^2\text{, } x y^3\text{, } x^2\text{, } x^2 y\text{, } x^2 y^2\text{, } x^3\text{, } x^3 y\text{ and } x^4\text{.}
+$$
+And this basis already highlights one of the fundamental issues with this approach. In figure \ref{fig:c4_interpolation_boundary issue} two different linear combinations of basis functions are plotted: $x^2 + y^2 -1$ and $x^2y^2$. Clearly, these functions are different. Yet, their value on the boundary of the unit square is identical. This indicates that, from the boundary alone, it is impossible to reconstruct the eigenfunction by polynomial basis functions.
+
+To be able to calculate an interpolating polynomial uniquely we also require values in the interior of the domain. Computing these from $\vb{c_x}$ or $\vb{c_y}$ is impossible. But, on the internal rectangle $\Omega_{i, j} = [x_i, x_{i+1}] \times [y_j, y_{j+1}]$ we know that the eigenfunction $\psi(x, y)$ satisfies the Schrödinger-like equation
+\begin{equation}\label{equ:c4_interpolation_schrodinger}
+    -\nabla^2 \psi(x, y) + V(x, y) \psi(x, y) = E \psi(x, y)
+\end{equation}
+with $E$ fixed and boundary conditions:
+\begin{align*}
+    \psi(x_i, y)                 & = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y)\text{,}          \\
+    \psi(x_{i+1}, y)             & = \sum_{k=0}^\infty c_k^{(x_{i+1})} \beta_k^{(x_{i+1})}(y)\text{,}  \\
+    \psi(x, y_j)                 & = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x)                  \\
+    \text{and } \psi(x, y_{j+1}) & = \sum_{k=0}^\infty c_k^{(y_{j+1})} \beta_k^{(y_{j+1})}(x) \text{.}
+\end{align*}
+
+We place a $K \times K$ grid on this small rectangular domain $\Omega_{i, j}$, as in the right-hand side of figure \ref{fig:c4_new_method_zoomed_in}. The grid points can now be described as $x_i = x^{(i)}_0$, $x^{(i)}_1$, $\dots$, $x^{(i)}_m$, $\dots$, $x^{(i)}_K = x_{i+1}$, and analogous for $y$: $y_j = y^{(j)}_0$, $y^{(j)}_1$, $\dots$, $y^{(j)}_n$, $\dots$, $y^{(j)}_K = y_{j+1}$. This allows the eigenfunction $\psi(x, y)$ to be approximated in each of these points by:
+$$
+    \psi^{(i,j)}_{m,n} \approx \psi(x^{(i)}_m, y^{(j)}_n) \quad \text{ for each $m, n \in \{0, 1, \dots, K\}$.}
+$$
+With this notation in hand, equation \ref{equ:c4_interpolation_schrodinger} can be approximated in each grid point by a finite difference approximation. Because $\Omega_{i,j}$ is only a small part of the total domain $\Omega$, the grid size $K$ may be chosen relatively small, without a penalty on accuracy. In our case, we found that fixing $K = 4$ gives satisfactory results, without too much computational overhead. So for the following discussion about a finite difference approximation on $\Omega_{i,j}$, we assume $K = 4$.
+
+Because only a relatively small grid is used, the finite difference scheme should be as accurate as possible, without making any assumptions on points outside $\Omega_{i,j}$. Denote with $f''_0$ the value we want to approximate on an equidistant grid on which the function in question takes the values $\dots, f_{-2}, f_{-1}, f_{0}, f_{1}, f_{2}, \dots$ around the central point. The finite difference approximation can be written as
+$$
+    f''_0 \approx \sum_{i = a}^{b} \alpha_i f_i
+$$
+with appropriate choices for $a$ and $b$ such each $f_i$ lies within the grid of approximations. The relevant five-point formula we will be using are provided in the following table.
+
+\begin{center}
+    \begin{tabular}{@{}ccc|c|ccc@{}}
+        $-3$                               & $-2$            & $-1$            & $0$            & $1$             & $2$             & $3$             \\ \hline
+        \rule{0pt}{3ex}                    &                 & $\frac{11}{12}$ & $\frac{-5}{3}$ & $\frac{1}{2}$   & $\frac{1}{3}$   & $\frac{-1}{12}$ \\
+        \rule{0pt}{3ex}                    & $\frac{-1}{12}$ & $\frac{4}{3}$   & $\frac{-5}{2}$ & $\frac{4}{3}$   & $\frac{-1}{12}$ &                 \\
+        \rule{0pt}{3ex}    $\frac{-1}{12}$ & $\frac{1}{3}$   & $\frac{1}{2}$   & $\frac{-5}{3}$ & $\frac{11}{12}$ &                 &
+    \end{tabular}
+\end{center}
+
+Let us, for ease of notation, summarize these values into the following matrix:
+$$
+    \vb{D} = \begin{pmatrix}
+        0                             & 0            & 0            & 0            & 0             \\
+        \rule{0pt}{3ex} \frac{11}{12} & \frac{-5}{3} & \frac{1}{2}  & \frac{1}{3}  & \frac{-1}{12} \\
+        \rule{0pt}{3ex} \frac{-1}{12} & \frac{4}{3}  & \frac{-5}{2} & \frac{4}{3}  & \frac{-1}{12} \\
+        \rule{0pt}{3ex} \frac{-1}{12} & \frac{1}{3}  & \frac{1}{2}  & \frac{-5}{3} & \frac{11}{12} \\
+        0                             & 0            & 0            & 0            & 0
+    \end{pmatrix}\text{.}
+$$
+With this finite difference approximation \eqref{equ:c4_interpolation_schrodinger} can now be approximated as a nine-dimensional linear system: for each $m, n \in \{1,2,3\}$:
+$$
+    \begin{cases}
+        \qquad\vdots                                                                                                                                                                                                 \\
+        {\displaystyle \sum_{l=0}^4 \frac{D_{m, l}}{\Delta x_i^2}\psi^{(i,j)}_{l, n} + \sum_{l=0}^4 \frac{D_{n, l}}{\Delta y_j^2}\psi^{(i,j)}_{m, l} =  \left(V(x^{(i)}_m, y^{(j)}_n) - E\right)\psi^{(i,j)}_{m, n}} \\
+        \qquad\vdots
+    \end{cases}
+$$
+The nine unknown variables are $\psi^{(i, j)}_{m, n}$ for $m, n \in \{1,2,3\}$. The step sizes $\Delta x_i$ and $\Delta x_j$ are defined as $\left(x_{i+1} - x_{i}\right) / K$ and $\left(y_{i+1} - y_{i}\right) / K$ respectively. Notice that for all $m, n \in \{0,1,\dots, K\}$, if any of $m, n \in \{0, 4\}$ the values $\psi^{(i, j)}_{m, n}$ are known, as they can be computed as the boundary values.
+
+This relatively small linear system can now be numerically solved to obtain values of the eigenfunction within the small rectangle $\Omega_{i,j}$. On the right-hand side of figure \ref{fig:c4_new_method_zoomed_in}, all red dots are now computed values and can be used to construct a polynomial interpolation. \todo{Give some info about interpolation basis.}
+
+
+
 
 \subsection{Numerical experiments}
 
