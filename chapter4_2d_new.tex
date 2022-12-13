@@ -73,6 +73,8 @@ Besides this remark, \cite{wang_new_2009} is very valuable as an application of 
 
 \subsubsection{Numerical experiments with high order finite difference approximations}
 
+\paragraph{The harmonic oscillator}
+
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_harmonic.pdf}
@@ -110,7 +112,7 @@ It is important to note that these values are estimates, and are quite sensitive
 
 For one-dimensional problems the behavior of the error with respect to $k$ has already been well studied and improved. In \cite{paine_correction_1981} expressions are constructed which provide a correction to the numeric approximation with finite difference schemes for Sturm-Liouville problems. These correction formulae bring the order in $k$ down from $\OO(k^4h^2)$ to $\OO(k h^2)$. For multidimensional Schrödinger equations no such corrections are available, let alone for the extremely high order schemes considered here.
 
-Besides the harmonic oscillator it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\delta\Omega$ such that the following holds:
+\paragraph{Zero potential} Besides the harmonic oscillator it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\delta\Omega$ such that the following holds:
 \begin{equation}\label{equ:c4_fd_zero}
     -\nabla^2 \psi(x, y) = E \psi(x, y) \text{.}
 \end{equation}
@@ -127,7 +129,7 @@ By separation of variables, the exact solutions of this equation can be found: $
 \input{img/chapter4/zero_exact.tex}
 In a certain way, these eigenvalues are more interesting than those from the harmonic oscillator, as their multiplicities are less predictable.
 
-In figure \ref{fig:c4_fd_zero} the error on each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$, which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
+In figure \ref{fig:c4_fd_zero} the error in each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$, which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
 
 These results bring to light one of the biggest drawbacks of the method from \cite{wang_new_2009}. This method only works if it is assumed that the eigenfunctions always are zero outside the domain. For the harmonic oscillator, this is the case, as $V(x, y) \to +\infty$ if $\|x, y\| \to +\infty$. For the zero potential function this is definitely not the case, the eigenfunctions are periodic. One could argue that, in theory, an eigenfunction may be anything outside the domain $\Omega$. So in particular, we could define them to be zero there. But, most numerical methods, and this method in particular, assume that solutions are sufficiently continuous. To cleanly define the problem, at least $C_0^2(\Omega)$ is needed, and when using $N^\text{th}$ order central finite difference schemes are used $C_0^{N}(\Omega)$ is implicitly assumed. And this assumption fails if we define the function to be zero outside $\Omega$.
 
@@ -137,40 +139,32 @@ To combat this issue, on the boundary of the domain asymmetric schemes could be 
 \end{center}
 There are two difficulties when using these formulae. Firstly, to reach the required order, one point more should be used. And secondly, when using asymmetric formulae the matrix from \eqref{equ:c4_fd_sparse_matrix} looses its symmetry as well. In principle this should not matter. But, in practice, many sparse matrix eigenvalue solvers are much more efficient when working with a real symmetric matrix.
 
+{\color{red}To do: give some results of this extension, maybe in a later subsection}
 
-
-
-    {\color{red}To do: Hénon-Heiles}
+\paragraph{Hénon-Heiles} Lastly, ... {\color{red}To do}
 
 
 \subsubsection{Computational cost of the method}
 
 Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, however, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
 
-Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results high orders, combined with large grids, have to be used. This results in huge, sparse, matrices. And only thanks to their sparsity are algorithms able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
+Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results high orders, combined with fine grids, have to be used. This results in huge, sparse, matrices. And only thanks to their sparsity are algorithms able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
 
 Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
-    {\color{red}To do
-
-        \begin{enumerate}
-            \item Do not assume zero outside domain
-            \item High orders loose sparsity
-        \end{enumerate}
-
-    }
-
 \subsection{A semi-discrete method}\label{sec:c4_semi_discrete}
+
+{\color{red} To do: consider to write this intermediate method}
 
 \section{A woven interpolation method}
 
-In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR$ on which we are searching eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
+In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
 \begin{equation}\label{equ:c4_schrodinger_equation_new_method}
     -\nabla^2 \psi + V(x, y) \psi = E \psi\text{.}
 \end{equation}
-Still, we impose homogeneous Dirichlet boundary conditions, thus, $\psi(x, y) = 0$ for $(x, y) \in \Omega$.
+Still, we impose homogeneous Dirichlet boundary conditions: $\psi(x, y) = 0$ for $(x, y) \in \Omega$.
 
-The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as it's values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}. Here we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
+The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as its values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}. Here we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
 
 \begin{figure}
     \begin{center}
@@ -179,7 +173,7 @@ The main idea underlying this method is that we want to represent the eigenfunct
     \end{center}
 \end{figure}
 
-In this new method we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid need not be equidistant or square. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Upon formulating and implementing this new method, this varying number of intersections is one example of some difficulties that arise by explicitly allowing more flexibility.
+In this new method we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid does not need to be equidistant. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Upon formulating and implementing this new method, this varying number of intersections is one example of some difficulties that arise by explicitly allowing more flexibility.
 
 After placing the grid on $\Omega$, the next step is to approximate the unknown eigenfunction $\psi$ as a linear combination of basis functions on each of the grid lines. On the vertical line $x = x_i$, we denote these basis functions as $\beta_k^{(x_i)}(y)$, for each value of $k$. This yields the expression
 \begin{equation}\label{equ:c4_expression_on_lines_x}
@@ -201,7 +195,7 @@ $$
     -\sum_{k=0}^\infty c_k^{(x_i)} \beta''^{(x_i)}_k(y_j) - \sum_{k=0}^\infty c_k^{(y_j)} \beta''^{(y_j)}_k(x_i) + (V(x_i, y_j) - E) \psi(x_i, y_j) = 0\text{.}
 $$
 
-This last formula suggest to chose $\beta_k^{(x_i)}$ and $\beta_k^{(y_j)}$, such that its second derivative contains, in a certain sense, $V(x_i, y_j)$. Together with the idea from chapter \ref{cha:c3} to use a one-dimensional Schrödinger equation, this leads us to propose $\beta_k^{(x_i)}$ and $\beta_k^{(y_j)}$ to be the ordered eigenfunctions which satisfy the one dimensional Schrödinger equation
+This last formula suggest to choose $\beta_k^{(x_i)}$ and $\beta_k^{(y_j)}$, such that its second derivative contains, in a certain sense, $V(x_i, y_j)$. Together with the idea from chapter \ref{cha:c3} to use a one-dimensional Schrödinger equation, this leads us to propose $\beta_k^{(x_i)}$ to be the ordered eigenfunctions which satisfy the one dimensional Schrödinger equation
 $$
     -\beta_k''^{(x_i)}(y) + \frac{V(x_i, y)}{2}\beta_k^{(x_i)}(y) = \lambda_k^{(x_i)} \beta_k^{(x_i)}(y)
 $$
@@ -216,16 +210,16 @@ By choosing half the original potential in each of the approximations, in each i
     \sum_{k=0}^\infty \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^\infty \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) = E \psi(x_i, y_j) \text{.}
 \end{equation}
 
-Notice that in this expression only $E$ (the eigenvalue) and $c_k^{x_i}$ and $c_k^{y_j}$ are unknown, as $\psi(x_i, y_j)$ depends linearly on $c_k^{x_i}$ and $c_k^{y_j}$. So, expression \eqref{equ:c4_new_method_pre_matrix} is, in fact, a linear problem.
+Notice that in this expression only $E$ (the eigenvalue) and $c_k^{(x_i)}$ and $c_k^{(y_j)}$ are unknown, as $\psi(x_i, y_j)$ depends linearly on $c_k^{(x_i)}$ and $c_k^{(y_j)}$. So, expression \eqref{equ:c4_new_method_pre_matrix} is, in fact, a linear problem.
 
-Before writing this as a matrix-problem, we first have to limit the extent of the sum. It is, of course, impossible to implement these formulas while the function bases are still infinite. Therefor, we limit the basis on the line $x = x_i$ to the first $K_{x_i}$ functions and to the first $K_{y_j}$ functions on the line $y = y_j$. Notice that the size of a basis on each line, should not be greater than the number of intersections on that line. If the basis size is to larger, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be underdetermined.
+Before writing this as a matrix-problem, we first have to limit the extent of the sum. It is, of course, impossible to implement these formulas while the function bases are still infinite. Therefor, we limit the basis on the line $x = x_i$ to the first $K_{x_i}$ functions and to the first $K_{y_j}$ functions on the line $y = y_j$. Notice that the size of a basis on each line, should not be greater than the number of intersections on that line. If the basis size is too large, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be underdetermined. In this case, solutions will no longer be uniquely defined, which is a problem. In contrast, if the basis size is smaller, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be overdetermined. Which does not lead to issues, because we can reformulate it as finding solutions in a least squares sense.
 
 With these finite sums equations \eqref{equ:c4_new_method_pre_matrix_equality} and \eqref{equ:c4_new_method_pre_matrix} become, on the intersection $(x_i, y_j)$:
 \begin{align}
      & \sum_{k=0}^{K_{x_i}-1} \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^{K_{y_j}-1} \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i)\nonumber                                  \\
      & \qquad\qquad\qquad     = \sum_{k=0}^{K_{x_i}-1} c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = \sum_{k=0}^{K_{y_j}-1} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) \text{.}\label{equ:c4_new_method_pre_matrix_unified}
 \end{align}
-Introducing appropriate vectors and matrices will allow is to translate this into a matrix-problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
+Introducing appropriate vectors and matrices will allow us to translate this into a matrix-problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
 \begin{align*}
     \vb{c_x}            & = \transpose{\begin{pmatrix} c_0^{(x_0)} & c_1^{(x_0)} & \dots & c_{K_{x_0}-1}^{(x_0)} & c_0^{(x_1)} & c_1^{(x_1)} & \dots \end{pmatrix}}         \\
     \text{and }\vb{c_y} & = \transpose{\begin{pmatrix} c_0^{(y_0)} & c_1^{(y_0)} & \dots & c_{K_{y_0}-1}^{(y_0)} & c_0^{(y_1)} & c_1^{(y_1)} & \dots \end{pmatrix}}\text{.}
@@ -240,19 +234,18 @@ Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/new_method_beta.pdf}
-        \caption{The non-zero entries from the matrices $\vb{B_x}$ and $\vb{B_y}$ from equation \eqref{equ:c4_new_method_beta_definition} are visualized. These were calculated on the problem from section \ref{sec:c4_new_method_ixaru} with a 5 by 5 internal grid and 4 basis functions per line. In practice, these matrices are much larger.}
+        \caption{The non-zero entries of the matrices $\vb{B_x}$ and $\vb{B_y}$ from equation \eqref{equ:c4_new_method_beta_definition} are visualized. These were calculated on the problem from section \ref{sec:c4_new_method_ixaru} with a 5 by 5 internal grid and $K_{x_i} = K_{y_j} = 4$ basis functions per line. In practice, these matrices are much larger.}
         \label{fig:c4_new_method_beta}
     \end{center}
 \end{figure}
 
-Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r$ of these matrices correspond to an intersection $(x_i, y_j)$. Matrix $\vb{B_x}$ is mostly zero, except, on row $r$, for the values in columns from $o_x := \sum_{i' < i} K_{x_{i'}}$ to before $o_x + K_i$. Analogous, is $\vb{B_y}$ mostly zero on row $r$, except for the values in the columns from $o_y := \sum_{j' < j} K_{y_{j'}}$ to before $o_y + K_{y_j}$. These non-zero entries are now given as:
+Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r_{i,j}$ of these matrices correspond to an intersection $(x_i, y_j)$. The non-zero entries on each of the rows $r_{i,j}$ of the matrices $\vb{B_x}$ and $\vb{B_y}$ can be calculated as
 \begin{align}
-    \left(\vb{B_x}\right)_{r, o_x + k} & =  \beta_{k}^{(x_i)}(y_j) \text{ for $k \in \{0, 1, \dots, K_{x_i} - 1\}$ }   \nonumber                               \\
+    \left(\vb{B_x}\right)_{r_{i,j}, o^{(x)}_{i} + k} & =  \beta_{k}^{(x_i)}(y_j) \text{ for $k \in \{0, 1, \dots, K_{x_i} - 1\}$ }   \nonumber                               \\
     \text{and }
-    \left(\vb{B_y}\right)_{r, o_y + k} & =  \beta_{k}^{(y_j)}(x_i) \text{ for $k \in \{0, 1, \dots, K_{y_i} - 1\}$.} \label{equ:c4_new_method_beta_definition}
+    \left(\vb{B_y}\right)_{r_{i,j}, o^{(y)}_{j} + k} & =  \beta_{k}^{(y_j)}(x_i) \text{ for $k \in \{0, 1, \dots, K_{y_i} - 1\}$.} \label{equ:c4_new_method_beta_definition}
 \end{align}
-To aid an intuitive understanding of the $\vb{B_x}$ and $\vb{B_y}$ matrices, figure \ref{fig:c4_new_method_beta} provides a schematic view of them, calculated from a small numerical example.
-
+In this expression the values $o^{(x)}_{i}$ and $o^{(y)}_{j}$ are certain offsets depending on the row. These offsets are defined as: $o^{(x)}_{i} := \sum_{i' < i} K_{x_{i'}}$ and $o^{(y)}_{j} := \sum_{j' < j} K_{y_{j'}}$. To aid an intuitive understanding of the $\vb{B_x}$ and $\vb{B_y}$ matrices, figure \ref{fig:c4_new_method_beta} provides a schematic view of them, calculated from a small numerical example.
 
 As promised, these definitions allow us to rewrite the system \eqref{equ:c4_new_method_pre_matrix_unified} with $m$ equations more compactly as:
 $$
@@ -270,9 +263,9 @@ There are a few strategies to further translate this problem into a form for whi
 
 \subsection{Solving the matrix approximation}
 
-As a first strategy we researched how this problem can be directly transformed into a known type of problem.
+As a first strategy we investigated how this problem can be directly transformed into a known type of problem.
 
-\subsubsection{By direct transformation into an eigenvalue problem}
+\subsubsection{Direct transformation into an eigenvalue problem}
 
 We tackle equation \eqref{equ:c4_new_method_first_matrix_problem} by rewriting it as
 $$
@@ -295,15 +288,15 @@ This system can be seen as the following generalized rectangular eigenvalue prob
     \end{pmatrix}\text{.}
 \end{equation}
 
-At first glance this may seem to enable us to solve the problem elegantly. But, there are a few issues apparent with this translation. One of the most visible problems is that we have translated this into a matrix problem which is twice as large in both rows and columns. On the other hand, one can argue, the matrices are clearly sparse. The matrices $\vb{B_x}$ and $\vb{B_y}$ are sparse indeed, but the problem is that there are few algorithms available that are able to solve a generalized rectangular eigenvalue problem, let alone a sparse one.
+At first glance this may seem to enable us to solve the problem elegantly. But, there are a few issues apparent with this translation. One of the most visible problems is that we have translated this into a matrix problem which is twice as large as the original matrices $\vb{B_x}$ and $\vb{B_y}$ in both rows and columns. On the other hand, one can argue, the matrices are clearly sparse. The matrices $\vb{B_x}$ and $\vb{B_y}$ are sparse indeed, but the problem is that there are few algorithms available that are even able to solve a generalized rectangular eigenvalue problem, let alone a sparse one.
 
-But a lack of sparse implementations, does not deter us from trying out some numerical experiments. In this first experiment we will have to fall back to algorithms working on dense matrices. Of course, the runtime will suffer, but from a numerical point of view the results will still be valuable.
+But a lack of sparse implementations does not deter us from trying out some numerical experiments. In this first experiment we will have to fall back to algorithms working on dense matrices. Of course, the runtime will suffer, but from a numerical point of view the results will still be valuable.
 
 Consider the Schrödinger equation with the harmonic oscillator potential:
 $$
     -\nabla^2\psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 $$
-on the domain $[-10, 10] \times [-10, 10]$ with homogeneous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
+on the domain $[-10, 10] \times [-10, 10]$ {\color{red}to do: $[-9.5, 9.5]^2$} with homogeneous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ {\color{red} to do: 450?} matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
 
 If we write equation \eqref{equ:c4_new_method_alternative_system} symbolically as $\vb{A} \vb{c} = E \vb{D} \vb{c}$, and the truncated singular value decomposition of $\vb{D}$ as $\vb{D} = \vb{U_D} \vb{\Sigma_D} \vb{V_D^\adjointsign}$, then any solution of \eqref{equ:c4_new_method_alternative_system} will also be a solution of the generalized square eigenvalue problem
 $$
@@ -316,11 +309,12 @@ $$
     }_\text{196 values close to zero} \quad \numprint{2.00} \quad \numprint{3.46} \quad \numprint{3.46} \quad \numprint{4.00} \quad \numprint{4.00} \quad \dots
 $$
 
-This can be more compactly summarized when repeated values are indicated by a subscript:
+This can be more compactly summarized when the number of times an eigenvalue is repeated are indicated by a subscript:
 $$
     \numprint{0.00}_{196} \quad \numprint{2.00} \quad \numprint{3.46}_2 \quad \numprint{4.00}_2 \quad \numprint{4.89}_2 \quad \numprint{6.00}_3 \quad \numprint{6.12}_2 \quad \dots \quad \numprint{7.73}_2 \quad \numprint{8.00}_4\quad \dots
 $$
 
+{\color{red} To do: expand the next paragraph, make rank explicit}
 One immediately notices the many returned zero values. This does not have to be surprising, in fact, the matrix on the left-hand side of \eqref{equ:c4_new_method_alternative_system} may not be of full rank. But these zeros indicate another problem. Namely, that for these values it is not at all guaranteed that $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$.
 
 Remember that the true eigenvalues of the harmonic oscillator are 2, 4, 4, 6, 6, 6, 8, 8, 8, 8, \dots. And, we notice that these true values can indeed be found in our solutions. But also many other values are present. Because the method from \cite{hua_svd_1991} for solving generalized rectangular eigenvalue problems may return more solutions than the original problems has, we still have to filter some out. One way to only end up with true eigenvalues is by substituting them back into the original problem \eqref{equ:c4_new_method_first_matrix_problem} and verifying the residuals of both equations:
@@ -336,9 +330,9 @@ The found possible eigenvalue with the lowest residuals $r_1$ and $r_2$ are also
 
 Here, we see that when the first residual $r_1$ is low, the other is as well. Also, in the first few eigenvalues, only true solutions are present.
 
-Upon studying this direct method to solve the system of equations \eqref{equ:c4_new_method_first_matrix_problem}, we have noticed some drawbacks. Firstly, the proposed system \eqref{equ:c4_new_method_alternative_system} is, in a certain sense, twice as large as the discrete problem we started from. Eigenvalue algorithms are at least cubic in complexity. So, this doubling in size implies an eightfold runtime penalty Secondly, and numerically interesting, we obtain many more `solutions' than the ones we are looking for. Each generalized eigenvalue, with its eigenvector, has to be computed and checked against the residuals. Many eigenvalues will be thrown away.
+Upon studying this direct method to solve the system of equations \eqref{equ:c4_new_method_first_matrix_problem}, we have noticed some drawbacks. Firstly, the proposed system \eqref{equ:c4_new_method_alternative_system} is, in a certain sense, twice as large as the discrete problem we started from. Eigenvalue algorithms are at least cubic in complexity. So, this doubling in size implies an eightfold runtime penalty. Secondly, and numerically interesting, we obtain many more `solutions' than the ones we are looking for. Each generalized eigenvalue, with its eigenvector, has to be computed and checked against the residuals. Many eigenvalues will be thrown away.
 
-\subsubsection{By restriction to a null space}\label{sec:nm_by_restriction}
+\subsubsection{Restriction to a null space}\label{sec:nm_by_restriction}
 
 One improvement we can make to the runtime is by not solving a system that is twice as large, but by solving two, smaller, systems. Furthermore, instead of ending up with to many eigenvalues and trying to filter out the wrong ones, we have devised a way to a priori already limit the number of solutions. The idea here is that, before solving an eigenvalue problem, we solve the second equation of \eqref{equ:c4_new_method_first_matrix_problem} and only take those solutions into account.
 
@@ -373,7 +367,7 @@ For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$
 
     {\color{red}To do: Finding solutions of generalized rectangular eigenvalue problems}
 
-\subsubsection{By least squares approximation and classical eigenvalue problem}
+\subsubsection{Least squares approximation}
 
 For dense matrices, the previous technique works very well. The correct eigenvalues are found within very reasonable computation time. But, if extremely high accuracies are required, the used grid size, should be increased. This also has a significant impact on the size of the relevant matrices. As these become larger, using their sparsity becomes a necessity. This is where both of the previous techniques to solve \eqref{equ:c4_new_method_first_matrix_problem} fall short. There, existing algorithms for sparse matrices were not able to do the required computations efficiently and accurately. To combat this, we have developed an alternative method. Explicitly tuned to be able to use the sparsity of the matrices.
 
@@ -400,7 +394,7 @@ $$
     \vb{Z_x} \vb{z} = \vb{Z_y} \vb{P} \vb{z} \text{.}
 $$
 
-Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. \slepc {\color{red} with reference} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow user to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvectors. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues.
+Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. \slepc \cite{hernandez_slepc_2005} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow user to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvectors. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues.
 
 In our case, this feature can be used with as a deflation space $\vb{Z_x} - \vb{Z_y} \vb{P}$. Then, only solutions will be considered which satisfy that condition. Upon implementing and testing we have found that the algorithms within \slepc have trouble converging to the low end of the spectrum of the matrix from \eqref{equ:c4_nm_sparse_system}. One of  the issues \slepc encounters is that the matrix is highly singular. The employed algorithms for finding the low end of the spectrum are advanced adaptations of inverse power iterations. Therefor, during the execution many linear systems will be solved with our singular matrix. To solve these systems they are using an LU-decomposition of the matrix in question. And, this decomposition is not rank-revealing and has issues with the singularity of the matrix. The developers of \slepc propose that a user should use a different, external, linear solver. Or, one could compute the null space independently and provide the results as the deflation space.
 
@@ -413,7 +407,7 @@ With these null spaces in hand, it is still not as easy as adding them to the de
 
 Now, finally, we are able to request the low end of the spectrum of the right-hand side of \eqref{equ:c4_nm_sparse_system}. And the numerical results are promising! But, we noticed that this sparse technique is significantly slower than the dense implementation from \ref{sec:nm_by_restriction}.
 
-{\color{red} To do: may be a table with the numerical results from the different solvers, with respect to runtime for example. (Method 2, dense right kernel. Method 3 Spectra without deflation. Method 3 slepc with dense deflation. Method 3 Spectra with direct deflation)}
+{\color{red} To do: maybe a table with the numerical results from the different solvers, with respect to runtime for example. (Method 2, dense right kernel. Method 3 Spectra without deflation. Method 3 slepc with dense deflation. Method 3 Spectra with direct deflation)}
 
 The reason for this slowness can be suspected to be the computation of the smaller basis with the QR-decomposition. Even with using a sparse QR decomposition, this still takes a significant amount of runtime. Besides this, there is also a more implementation specific time sink: one can provide the deflation space in \slepc as a list of vectors. In this library all vectors are dense. With the large deflation space we are using, this results in many dense vector operation on this huge list of dense vectors. Which defeats our goal of maximally using the sparsity of the system. We did not find another library which supports deflation spaces, let alone sparse deflation spaces. But even if we would have, this still would not have worked. After the QR decomposition, the vectors from our new basis for the deflation space are dense. Which inherently slows everything down.
 
@@ -445,7 +439,7 @@ Using deflation gave promising numerical results, but due to implementation draw
 
 It is interesting to remark that, at first glance, the right most factor $\prod_{i=1}^{n}(\vb{I} - \vb{D_i}\transpose{\vb{D_i}})$ of \eqref{equ:c4_projection_deflation} seems to be unnecessary. Yet, numerically, this factor ensures that, even if $\sigma \approx 0$, the system $(\vb{A} - \sigma \vb{I})^{-1} \vb{u}$ can be reliably computed. Only because $\vb{u}$ is projected out of the right kernel of $\vb{A}$.
 
-Of course, literally computing the matrix \eqref{equ:c4_projection_deflation} is ill-advised. Firstly, this is numerically unstable, secondly this is computationally expensive and thirdly, this would void all sparsity we painstakingly tried to preserve. As such, a simple sparse matrix eigenvalue solver can no longer be used; a matrix-free solver will be necessary. Fortunately, most notable sparse eigenvalue solvers \cite{hernandez_slepc_2005}{\color{red} cite matrix-free solvers} support this mode of operation and require only a routine which applies the involved matrix to supplied vectors. In our case, this operation looks like the pseudocode in algorithm \ref{alg:c4_deflation}.
+Of course, literally computing the matrix \eqref{equ:c4_projection_deflation} is ill-advised. Firstly, this is numerically unstable, secondly this is computationally expensive and thirdly, this would void all sparsity we painstakingly tried to preserve. As such, a simple sparse matrix eigenvalue solver can no longer be used; a matrix-free solver will be necessary. Fortunately, most notable sparse eigenvalue solvers \cite{hernandez_slepc_2005,lehoucq_arpack_1998,qiu_yixuan_2022} support this mode of operation and require only a routine which applies the involved matrix to supplied vectors. In our case, this operation looks like the pseudocode in algorithm \ref{alg:c4_deflation}.
 
 \begin{algorithm}
     \begin{algorithmic}
