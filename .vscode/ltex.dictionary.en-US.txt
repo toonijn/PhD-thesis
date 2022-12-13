@@ -25,3 +25,5 @@ eigensolver
 SLEPc
 Hénon-Heiles
 Eigen
+SuiteSparseQR
+nullspace

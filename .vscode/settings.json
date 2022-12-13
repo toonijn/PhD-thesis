@@ -3,7 +3,8 @@
   "ltex.latex.commands": {
     "\\DeclareRobustCommand{}{}": "ignore",
     "\\texorpdfstring{}{}": "dummy",
-    "\\undefinedlabel{}{}": "dummy"
+    "\\undefinedlabel{}{}": "dummy",
+    "\\Eigen": "dummy"
   },
   "ltex.enabled": [
     "context",
