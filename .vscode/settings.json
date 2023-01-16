@@ -4,7 +4,8 @@
     "\\DeclareRobustCommand{}{}": "ignore",
     "\\texorpdfstring{}{}": "dummy",
     "\\undefinedlabel{}{}": "dummy",
-    "\\Eigen": "dummy"
+    "\\Eigen": "dummy",
+    "\\slepc": "dummy"
   },
   "ltex.enabled": [
     "context",
