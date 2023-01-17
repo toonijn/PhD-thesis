@@ -167,7 +167,7 @@ USER student
 
 WORKDIR /home/student/
 RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git \
-    && cd schrodinger && git checkout b09678d82c914079287d452bedeff625c7adc0f7
+    && cd schrodinger && git checkout 6abb085f6a2237d91be7bcd64db7a186c39b2dfc
 WORKDIR /home/student/schrodinger
 RUN mkdir build-sage && mkdir build-python
 
