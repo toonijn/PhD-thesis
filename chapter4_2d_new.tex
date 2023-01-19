@@ -68,10 +68,9 @@ The following table contains the first few central symmetric finite differences.
 
 As one sees, these give exactly the same coefficients as in \cite{wang_new_2009}. It is quite disingenuous to call this a \emph{new} scheme. The study of finite difference can be traced back to, among others, Newton. One of the first English books was by Boole \cite{boole_calculus_1860} in 1860, with many more textbooks to follow \cite{thomson_calculus_1933,jordan_calculus_1965}. Even the symbolic construction of high order approximations has already been studied and tabulated as early as 1967 \cite{ballester_construction_1967,keller_symbolic_1978,fornberg_generation_1988}.
 
-
 Besides this remark, \cite{wang_new_2009} is very valuable as an application of very high orders of these well-known formulae to the two-dimensional time-independent Schrödinger equation. Their numerical results are still valid and nonetheless impressive.
 
-\subsubsection{Numerical experiments with high order finite difference approximations}
+\subsubsection{Numerical experiments with high order finite difference approximations}\label{sec:c4_fd_numerical}
 
 \paragraph{The harmonic oscillator}
 
@@ -234,7 +233,7 @@ Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/new_method_beta.pdf}
-        \caption{The non-zero entries of the matrices $\vb{B_x}$ and $\vb{B_y}$ from equation \eqref{equ:c4_new_method_beta_definition} are visualized. These were calculated on the problem from section \ref{sec:c4_new_method_ixaru} with a 5 by 5 internal grid and $K_{x_i} = K_{y_j} = 4$ basis functions per line. In practice, these matrices are much larger.}
+        \caption{The non-zero entries of the matrices $\vb{B_x}$ and $\vb{B_y}$ from equation \eqref{equ:c4_new_method_beta_definition} are visualized. These were calculated on the problem from section \ref{sec:c4_numerical_ixaru} with a 5 by 5 internal grid and $K_{x_i} = K_{y_j} = 4$ basis functions per line. In practice, these matrices are much larger.}
         \label{fig:c4_new_method_beta}
     \end{center}
 \end{figure}
@@ -579,9 +578,25 @@ This relatively small linear system can now be numerically solved to obtain valu
 
 \subsection{Numerical experiments}
 
+When developing a new method it is instrumental these are well tested. This inescapably means that the program should be run on many problems with a wide variety of settings. Doing this thoroughly and consistently after code changes can be a cumbersome task. Knowing this, we have from the very first versions onwards included many automatic tests. On every code change, these tests would run on all supported platforms (Linux, Windows and macOS) to verify that our changes still produce sufficiently accurate results for the considered problems. For the development of this new method we continuously test the harmonic oscillator, the Hénon-Heiles potential and the quartic oscillator (\ref{sec:c4_numerical_harmonic} and \ref{sec:c4_numerical_henon_heiles}) on simple rectangular domains, the zero potential (\ref{sec:c4_numerical_zero}) on a rectangular and circular domain and Ixaru's potential on a rectangular, circular and a $45\degree$ rotated rectangle. All tests are conducted in \texttt{double}-precision and most problems are also tested in de extended \texttt{long double} datatype.
+
+These automated tests are extremely valuable during development to quickly notice regressions. But for a thorough mathematical analysis more work is required. In this section we will provide many graphs and figures to evaluate the accuracy of our method. The evaluation of the runtime performance is another can of worms which will be treated in section \ref{sec:c4_nm_vs_fd}.
+
+\subsubsection{Harmonic oscillator}\label{sec:c4_numerical_harmonic}
+
+Following section \ref{sec:c4_fd_numerical}, the first example we will consider is the harmonic oscillator with equation
+\begin{equation}\label{equ:c4_fd_harmonic}
+    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)\text{.}
+\end{equation}
+on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions.
+
+\subsubsection{Zero potential}\label{sec:c4_numerical_zero}
+
+\subsubsection{Hénon-Heiles potential}\label{sec:c4_numerical_henon_heiles}
+
 {\color{red}To do: numerical examples}.
 
-\subsubsection{Ixaru's potential}\label{sec:c4_new_method_ixaru}
+\subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
 
 \subsection{Comparing run time with the finite difference method}\label{sec:c4_nm_vs_fd}
 

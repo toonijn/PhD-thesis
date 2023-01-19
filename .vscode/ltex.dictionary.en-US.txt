@@ -27,3 +27,4 @@ Hénon-Heiles
 Eigen
 SuiteSparseQR
 nullspace
+quartic
