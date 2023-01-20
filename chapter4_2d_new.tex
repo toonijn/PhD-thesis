@@ -78,7 +78,7 @@ Besides this remark, \cite{wang_new_2009} is very valuable as an application of 
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_harmonic.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic}, computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalue are connected.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic}, computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalues are connected.}
     \label{fig:c4_fd_harmonic}
 \end{figure}
 
@@ -497,7 +497,7 @@ But almost all values in the domain $\Omega$ are not contained on any of these l
 
 \begin{figure}
     \begin{center}
-        \includegraphics*[width=1\textwidth]{img/chapter4/nm_interpolation.png}
+        \includegraphics*[width=1\textwidth]{img/chapter4/nm_interpolation.pdf}
     \end{center}
     \caption{Two different fourth degree polynomial functions with the same value on the boundary of the region $[-1, 1] \times [-1, 1]$.}\label{fig:c4_interpolation_boundary issue}
 \end{figure}
@@ -585,10 +585,37 @@ These automated tests are extremely valuable during development to quickly notic
 \subsubsection{Harmonic oscillator}\label{sec:c4_numerical_harmonic}
 
 Following section \ref{sec:c4_fd_numerical}, the first example we will consider is the harmonic oscillator with equation
-\begin{equation}\label{equ:c4_fd_harmonic}
+\begin{equation}\label{equ:c4_nm_harmonic}
     -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)\text{.}
 \end{equation}
 on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions.
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic.pdf}
+    \end{center}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_nm_harmonic} on a rectangular domain $[-9.5,9.5]\times[-9.5, 9.5]$, computed for different grid sizes $N$ and basis sizes $K$. Repeated eigenvalues are connected.}
+    \label{fig:c4_nm_harmonic_rectangle}
+\end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_disc.pdf}
+    \end{center}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_nm_harmonic} on the disc around $\vb{0}$ with radius $9.5$, computed for different grid sizes $N$ and maximal basis sizes $K$. On every line, the used basis size will be limitted to the number of grid points on that line. Repeated eigenvalues are connected.}
+    \label{fig:c4_nm_harmonic_disc}
+\end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_eigenfunctions.pdf}
+    \end{center}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic} on the disc around $\vb{0}$ with radius $9.5$, computed for different grid sizes $N$ and maximal basis sizes $K$.}
+    \label{fig:c4_nm_harmonic_eigenfunctions}
+\end{figure}
 
 \subsubsection{Zero potential}\label{sec:c4_numerical_zero}
 
