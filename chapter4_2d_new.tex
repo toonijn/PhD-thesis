@@ -66,7 +66,7 @@ The following table contains the first few central symmetric finite differences.
     \input{img/chapter4/fd_formulae.tex}
 \end{center}
 
-As one sees, these give exactly the same coefficients as in \cite{wang_new_2009}. It is quite disingenuous to call this a \emph{new} scheme. The study of finite difference can be traced back to, among others, Newton. One of the first English books was by Boole \cite{boole_calculus_1860} in 1860, with many more textbooks to follow \cite{thomson_calculus_1933,jordan_calculus_1965}. Even the symbolic construction of high order approximations has already been studied and tabulated as early as 1967 \cite{ballester_construction_1967,keller_symbolic_1978,fornberg_generation_1988}.
+As one sees, these give exactly the same coefficients as in \cite{wang_new_2009}. It is quite disingenuous to call this a \emph{new} scheme. The study of finite differences can be traced back to, among others, Newton. One of the first English books was by Boole \cite{boole_calculus_1860} in 1860, with many more textbooks to follow \cite{thomson_calculus_1933,jordan_calculus_1965}. Even the symbolic construction of high order approximations has already been studied and tabulated as early as 1967 \cite{ballester_construction_1967,keller_symbolic_1978,fornberg_generation_1988}.
 
 Besides this remark, \cite{wang_new_2009} is very valuable as an application of very high orders of these well-known formulae to the two-dimensional time-independent Schrödinger equation. Their numerical results are still valid and nonetheless impressive.
 
@@ -565,6 +565,14 @@ This relatively small linear system can now be numerically solved to obtain valu
 
 
 \subsubsection{Alternative methods}
+
+Throughout the development of an algorithm to compute values of the eigenfunctions, we have considered many other methods for the computation of these eigenfunctions on an interior rectangle as well. In this section we will acknowledge some of these alternatives, together with their strengths and weaknesses. To motivate our final idea of solving a tiny Schrodinger-like problem to find interior points to interpolate through, a modest numerical comparison will be studied.
+
+\paragraph{Interpolation through only boundary points} Previously, we stated that the functions $x^2 + y^2 - 1$ and $x^2 y^2$ have an identical boundary on the square $[-1, 1] \times [-1, 1]$. Also recall figure \ref{fig:c4_interpolation_boundary issue}. This non-uniqueness can be solved by only considering polynomials with a total degree strictly less than four:
+$$
+1, x, y, x^2, xy, y^2, x^3, x^2 y, x y^2 \text{ and } y^3\text{.}
+$$
+These ten functions can now be used as an interpolation basis. For this we choose ten points on the boundary of the internal rectangle. Or, we choose more points and use a least squares approximation.
 
 \todo{Interpolation up to cubic functions}
 
