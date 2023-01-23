@@ -7,3 +7,4 @@
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"\\Q\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q .\\E$"}
 {"rule":"THE_SUPERLATIVE","sentence":"^\\Qa least squares\\E$"}
 {"rule":"NUMEROUS_DIFFERENT","sentence":"^\\QYet, we have tested this algorithm with many different solvers, without success.\\E$"}
+{"rule":"SOME_OF_THE","sentence":"^\\QThis illustrates some of the challenges when trying to compare or numerically verify eigenfunctions.\\E$"}
