@@ -28,3 +28,4 @@ Eigen
 SuiteSparseQR
 nullspace
 quartic
+Arnoldi

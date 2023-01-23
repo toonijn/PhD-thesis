@@ -586,10 +586,9 @@ These automated tests are extremely valuable during development to quickly notic
 
 Following section \ref{sec:c4_fd_numerical}, the first example we will consider is the harmonic oscillator with equation
 \begin{equation}\label{equ:c4_nm_harmonic}
-    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)\text{.}
+    -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 \end{equation}
 on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions.
-
 
 \begin{figure}
     \begin{center}
@@ -599,12 +598,17 @@ on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numpr
     \label{fig:c4_nm_harmonic_rectangle}
 \end{figure}
 
+In our algorithm there are two main variables to experiment with. The first, most obvious one, is the density of the used grid. This density lies in line with the grid approximation of the method that uses a finite difference approximation. In our method the size of the involved matrices, and thus the runtime, is directly proportional to the total number of grid points. Being able to use a less dense grid would therefor bring a significant computational benefit to the table.
+
+The second parameter we can tweak is the number of basis functions on each of the grid lines. On each grid line, in both directions, \matslise needs to compute these basis functions. This computation requires, of course, a part of the runtime. In a very crude analysis we can take a look at the computational complexity of both operations. Assume there are $N$ grid lines in both directions. This yields $N^2$ grid points, and $2N$ grid lines. On each of these lines we compute $K \leq N$ basis functions, thus the computational overhead of the many one-dimensional problems is $\OO(K N)$. For the computation of the eigenvalues of the two-dimensional problem, the analysis is more nuanced. Finding accurate and reliable complexity estimates is a more difficult than one would expect. The restarted Arnoldi procedure (without shift-Invert), has a complexity of $\OO(k^2 n)$ when $k$ eigenvalues are requested for a sufficiently sparse $n \times n$ matrix\cite{lee_k2n_2009}. If the linear operator has a dense operation, this dominates the complexity $\OO(k n^2)$. In our case, we support a shift-invert scheme. In this scheme solving the sparse system is definitely something to take into account. \Eigen's built-in methods are based upon techniques from \superlu{}\cite{demmel_supernodal_1999,li_overview_2005}. In the performance analysis of this software, the authors provide a detailed overview of which properties have an impact on performance. An important property which contribute to the runtime is the structure of the matrix. If the non-zero elements of the involved matrix are so situated that the algorithm can exploit it, it helps the computational cost. It is not known whether our matrix has an exploitable structure or not. It would be surprising if our matrix had the perfect structure, independent of the size and shape of the domain.
+
+In summary, a first complexity analysis of our method indicates that the one-dimensional problems have a complexity of $\OO(K N)$ and solving the matrix eigenvalue problem has a complexity of at least $\OO(k N^2)$. One has to be wary to only rely on a theoretical analysis to conclude that solving the one-dimensional problems has a negligible computational cost. In section \ref{sec:c4_nm_vs_fd} we will conduct a thorough analysis of the runtime of our method.
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_disc.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_nm_harmonic} on the disc around $\vb{0}$ with radius $9.5$, computed for different grid sizes $N$ and maximal basis sizes $K$. On every line, the used basis size will be limitted to the number of grid points on that line. Repeated eigenvalues are connected.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_nm_harmonic} on the disc around $\vb{0}$ with radius $9.5$, computed for different grid sizes $N$ and maximal basis sizes $K \leq N$. On every line, the used basis size will be limited to the number of grid points on that line. Repeated eigenvalues are connected.}
     \label{fig:c4_nm_harmonic_disc}
 \end{figure}
 

@@ -158,6 +158,23 @@
   file = {/home/toon/Zotero/storage/DQCL3SMQ/Davis - 2011 - Algorithm 915, SuiteSparseQR Multifrontal multith.pdf}
 }
 
+@article{demmel_supernodal_1999,
+  title = {A {{Supernodal Approach}} to {{Sparse Partial Pivoting}}},
+  author = {Demmel, James W. and Eisenstat, Stanley C. and Gilbert, John R. and Li, Xiaoye S. and Liu, Joseph W. H.},
+  year = {1999},
+  month = jan,
+  journal = {SIAM J. Matrix Anal. Appl.},
+  volume = {20},
+  number = {3},
+  pages = {720--755},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  issn = {0895-4798},
+  doi = {10.1137/S0895479895291765},
+  abstract = {We investigate several ways to improve the performance of sparse LU factorization with partial pivoting, as used to solve unsymmetric linear systems. We introduce the notion of unsymmetric supernodes to perform most of the numerical computation in dense matrix kernels. We introduce unsymmetric supernode-panel updates and two-dimensional data partitioning to better exploit the memory hierarchy. We use Gilbert and Peierls's depth-first search with Eisenstat and Liu's symmetric structural reductions to speed up symbolic factorization. We have developed a sparse LU code using all these ideas. We present experiments demonstrating that it is significantly faster than earlier partial pivoting codes. We also compare its performance with UMFPACK, which uses a multifrontal approach; our code is very competitive in time and storage requirements, especially for large problems.},
+  keywords = {65F05,65F50,column elimination tree,partial pivoting,sparse matrix algorithms,supernodes,unsymmetric linear systems},
+  file = {/home/toon/Zotero/storage/42VD8JWS/Demmel et al. - 1999 - A Supernodal Approach to Sparse Partial Pivoting.pdf}
+}
+
 @article{elgharbi_double_2021,
   title = {Double Exponential {{Sinc}} Numerical Methods for the Two-Dimensional Time-Independent {{Schr\"odinger}} Equation},
   author = {Elgharbi, S. and Essaouini, M. and Abouzaid, B. and El Hajji, S. and Safouhi, H.},
@@ -536,6 +553,21 @@
   file = {/home/toon/Zotero/storage/45TRRC6X/Ledoux and Van Daele - 2007 - Study of special algorithms for solving Sturm-Liou.pdf}
 }
 
+@inproceedings{lee_k2n_2009,
+  title = {From {{O}}({{k2N}}) to {{O}}({{N}}): {{A}} Fast Complex-Valued Eigenvalue Solver for Large-Scale on-Chip Interconnect Analysis},
+  shorttitle = {From {{O}}({{k2N}}) to {{O}}({{N}})},
+  booktitle = {2009 {{IEEE MTT-S International Microwave Symposium Digest}}},
+  author = {Lee, Jongwon and Balakrishnan, Venkataramanan and Koh, Cheng-Kok and Jiao, Dan},
+  year = {2009},
+  month = jun,
+  pages = {181--184},
+  issn = {0149-645X},
+  doi = {10.1109/MWSYM.2009.5165662},
+  abstract = {In general, the optimal computational complexity of Arnoldi iteration is O(k2N) for solving a generalized eigenvalue problem, with k being the number of dominant eigenvalues and N the matrix size. In this work, we reduce the computational complexity of the Arnoldi iteration from O(k2N) to O(N), thus paving the way for full-wave extraction of very large-scale on-chip interconnects, the k of which is hundreds of thousands. Numerical and experimental results have demonstrated the accuracy and efficiency of the proposed fast eigenvalue solver.},
+  keywords = {Arnoldi iteration,Clocks,Computational complexity,Costs,Eigenvalues and eigenfunctions,frequency domain,Frequency domain analysis,full-wave analysis,generalized eigenvalue problem,Harmonic analysis,Integrated circuit interconnections,Integrated circuit modeling,Large-scale systems,on-chip interconnects,Wires},
+  file = {/home/toon/Zotero/storage/WVC24JH5/Lee et al. - 2009 - From O(k2N) to O(N) A fast complex-valued eigenva.pdf;/home/toon/Zotero/storage/YH26Y2UV/5165662.html}
+}
+
 @book{lehoucq_arpack_1998,
   title = {{{ARPACK Users}}' {{Guide}}: {{Solution}} of {{Large-scale Eigenvalue Problems}} with {{Implicitly Restarted Arnoldi Methods}}},
   shorttitle = {{{ARPACK Users}}' {{Guide}}},
@@ -548,6 +580,23 @@
   isbn = {978-0-89871-407-4},
   langid = {english},
   keywords = {Mathematics / Discrete Mathematics}
+}
+
+@article{li_overview_2005,
+  title = {An Overview of {{SuperLU}}: {{Algorithms}}, Implementation, and User Interface},
+  shorttitle = {An Overview of {{SuperLU}}},
+  author = {Li, Xiaoye S.},
+  year = {2005},
+  month = sep,
+  journal = {ACM Trans. Math. Softw.},
+  volume = {31},
+  number = {3},
+  pages = {302--325},
+  issn = {0098-3500},
+  doi = {10.1145/1089014.1089017},
+  abstract = {We give an overview of the algorithms, design philosophy, and implementation techniques in the software SuperLU, for solving sparse unsymmetric linear systems. In particular, we highlight the differences between the sequential SuperLU (including its multithreaded extension) and parallel SuperLU\_DIST. These include the numerical pivoting strategy, the ordering strategy for preserving sparsity, the ordering in which the updating tasks are performed, the numerical kernel, and the parallelization strategy. Because of the scalability concern, the parallel code is drastically different from the sequential one. We describe the user interfaces of the libraries, and illustrate how to use the libraries most efficiently depending on some matrix characteristics. Finally, we give some examples of how the solver has been used in large-scale scientific applications, and the performance.},
+  keywords = {distributed-memory computers,parallelism,scalability,Sparse direct solver,supernodal factorization},
+  file = {/home/toon/Zotero/storage/62Y5D5LT/Li - 2005 - An overview of SuperLU Algorithms, implementation.pdf}
 }
 
 @inproceedings{mackey_deflation_2008,
