@@ -124,7 +124,7 @@ For one-dimensional problems the behavior of the error with respect to $k$ has a
     \label{fig:c4_fd_zero}
 \end{figure}
 
-By separation of variables, the exact solutions of this equation can be found: $\psi_{i, j}(x, y) = \sin(i x)\sin(j y)$ with eigenvalue $\lambda_{i,j} = i^2 + j^2$ for all $i, j \in \NN_{>0}$. The first few of these eigenvalues are listed.
+By separation of variables, the exact solutions of this equation can be found: $\psi_{i, j}(x, y) = \sin(i x)\sin(j y)$ with eigenvalue $\lambda_{i,j} = i^2 + j^2$ for all $i, j \in \Nplus$. The first few of these eigenvalues are listed.
 \input{img/chapter4/zero_exact.tex}
 In a certain way, these eigenvalues are more interesting than those from the harmonic oscillator, as their multiplicities are less predictable.
 
@@ -630,7 +630,7 @@ Because we have constructed this method with non-rectangular domains in mind, ou
 
 \begin{figure}
     \begin{center}
-        \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_eigenfunctions.pdf}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_eigenfunctions.png}
     \end{center}
     \caption{These graphs display the relative error of each of the first $100$ eigenvalues of the harmonic oscillator \eqref{equ:c4_fd_harmonic} on the disc around $\vb{0}$ with radius $9.5$, computed for different grid sizes $N$ and maximal basis sizes $K$.}
     \label{fig:c4_nm_harmonic_eigenfunctions}
@@ -647,6 +647,26 @@ Figure \ref{fig:c4_nm_harmonic_eigenfunctions} plots a basis for all eigenfuncti
 Upon a first viewing of these eigenfunctions (left and right columns) one may be surprised that these are different. But, as the eigenspace corresponding to eigenvalue $8$ is multidimensional the basis is no longer unique. To be able to compare these results we have introduced the middle column. Here, a linear combination of basis functions from the rectangular domain is calculated such that we obtain the same basis functions as found on the circular domain. This illustrates some of the challenges when trying to compare or numerically verify eigenfunctions. 
 
 \subsubsection{Zero potential}\label{sec:c4_numerical_zero}
+
+Analogous to section \ref{sec:c4_fd_numerical}, the next example we will study is the zero potential. Here the Schrödinger equation simplifies to:
+$$
+-\nabla^2 \phi(x, y) = \lambda\phi(x, y)
+$$
+on the domain $\Omega$, with homogeneous Dirichlet boundary conditions.
+
+If the domain $\Omega$ is the rectangle $[0, \pi] \times [0, \pi]$ exact solutions can be obtained with separation of variables. This gives $\forall i, j \in \Nplus$ that $i^2 + j^2$ is an eigenvalue of this Schrödinger problem with corresponding eigenfunction $\phi(x, y) = \sin(i x)\sin(j y)$.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_zero_rectangle.pdf}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_zero_disc.pdf}
+    \end{center}
+    \caption{This graph displays the results of our new method for the zero potential on the square $[0, \pi] \times [0, \pi]$, for a fixed grid size of $N = 32$ and a varying basis size. Notice the zoomed in y-axis, close to the machine precision of $2^{-53}$. \todo{And on a disc.}}
+    \label{fig:c4_nm_zero_test_rectangle}  
+\end{figure}
+
+In figure \ref{fig:c4_nm_zero_test_rectangle} the results for this problem are visualized. Unsurprisingly, our method works extremely well for this. The main reason can be found in the fact that the basis functions \matslise calculates on each line are exactly $\sin(x)$, $\sin(2x)$, $\sin(3x)$\dots and analogous for $y$. These functions are able to exactly represent the true eigenfunctions $\sin(i x)\sin(j y)$ on each line.
+
 
 \subsubsection{Hénon-Heiles potential}\label{sec:c4_numerical_henon_heiles}
 
