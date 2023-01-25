@@ -240,7 +240,7 @@ In our case, the story is quite different. Because of our improvements to Matsli
 So in practice, there was little need to improve even further, with more complicated quadrature formulae. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$, are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewise. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can be accurately fitted on this function $V(x, y)$, if the same pieces as for $\bar{V}^{(k)}$ are used.
 
 
-{\color{red} To do: writing more and include appendix from reinventing-2d-schrodinger}
+    {\color{red} To do: writing more and include appendix from reinventing-2d-schrodinger}
 
 
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}
@@ -382,7 +382,7 @@ with
                 & {} + \frac{1}{h_\alpha h_t} \vb{C}^{\alpha t} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) \left( \vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1} \right)\text{.}
 \end{align*}
 
-\subsubsection{Analysis of eigenvalues in relation to the domain}
+\subsubsection{Analysis of eigenvalues in relation to the domain}\label{sec:c3_eigenvalues_wrt_domain_analysis}
 
 Before applying this numerical method on different domains $\Omega_\epsilon$ it is valuable to first find the eigenvalues on the disc $\Omega_1$ itself. In many introductory textbooks to (partial) differential equations the study of the wave equation on a drum is considered. In most texts, if not all, the idea boils down to: with a transformation to polar coordinates and separation of variables this two-dimensional problem can be transformed into two one-dimensional problems. One of these can be solved directly, the other gives rise to the so-called Bessel functions.
 
@@ -455,11 +455,13 @@ Consider now the fixed value of $E = 45$. From the previous table we know that t
 
 \section{Numerical experiments}
 
-{\color{red} To do}
+\subsection{Hénon-Heiles}\label{sec:c3_experiment_henon}
+
+ {\color{red} To do}
 
 \section{Conclusions}
 
-{\color{red} To do}
+ {\color{red} To do}
 
 \begin{enumerate}
     \item accuracy
