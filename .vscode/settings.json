@@ -5,7 +5,8 @@
     "\\texorpdfstring{}{}": "dummy",
     "\\undefinedlabel{}{}": "dummy",
     "\\Eigen": "dummy",
-    "\\slepc": "dummy"
+    "\\slepc": "dummy",
+    "\\matslise": "dummy"
   },
   "ltex.enabled": [
     "context",

@@ -5,6 +5,7 @@
 \undefinedlabel{cha:c3}{3}
 \undefinedlabel{sec:c3_eigenvalues_wrt_domain_analysis}{3.-.-.-}
 \undefinedlabel{sec:c3_experiment_henon}{3.-.-}
+\undefinedlabel{sec:c3_calculate_vk}{3.-.-}
 
 \longchapter[New methods]{New methods for the \twoD time-independent Schrödinger equation}\label{cha:c4}
 
@@ -408,7 +409,7 @@ With these null spaces in hand, it is still not as easy as adding them to the de
 
 Now, finally, we are able to request the low end of the spectrum of the right-hand side of \eqref{equ:c4_nm_sparse_system}. And the numerical results are promising! But, we noticed that this sparse technique is significantly slower than the dense implementation from \ref{sec:nm_by_restriction}.
 
-{\color{red} To do: maybe a table with the numerical results from the different solvers, with respect to runtime for example. (Method 2, dense right kernel. Method 3 Spectra without deflation. Method 3 slepc with dense deflation. Method 3 Spectra with direct deflation)}
+{\color{red} To do: maybe a table with the numerical results from the different solvers, with respect to runtime for example. (Method 2, dense right kernel. Method 3 Spectra without deflation. Method 3 \slepc with dense deflation. Method 3 Spectra with direct deflation)}
 
 The reason for this slowness can be suspected to be the computation of the smaller basis with the QR-decomposition. Even with using a sparse QR decomposition, this still takes a significant amount of runtime. Besides this, there is also a more implementation specific time sink: one can provide the deflation space in \slepc as a list of vectors. In this library all vectors are dense. With the large deflation space we are using, this results in many dense vector operation on this huge list of dense vectors. Which defeats our goal of maximally using the sparsity of the system. We did not find another library which supports deflation spaces, let alone sparse deflation spaces. But even if we would have, this still would not have worked. After the QR decomposition, the vectors from our new basis for the deflation space are dense. Which inherently slows everything down.
 
@@ -499,7 +500,7 @@ But almost all values in the domain $\Omega$ are not contained on any of these l
 
 \begin{figure}
     \begin{center}
-        \includegraphics*[width=1\textwidth]{img/chapter4/nm_interpolation.pdf}
+        \includegraphics[width=1\textwidth]{img/chapter4/nm_interpolation.pdf}
     \end{center}
     \caption{Two different fourth degree polynomial functions with the same value on the boundary of the region $[-1, 1] \times [-1, 1]$.}\label{fig:c4_interpolation_boundary issue}
 \end{figure}
@@ -634,7 +635,7 @@ Because we have constructed this method with non-rectangular domains in mind, ou
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/nm_test_harmonic_eigenfunctions.png}
     \end{center}
-    \caption{Left: four eigenfunctions with the same eigenvalue of the harmonic oscillator on the rectangular domain $[-5, 5]$. Right: the corresponding eigenfunctions on the circular domain with radius $5$. Middle: linear combinations of the left eigenfunctons are choosen such that they equal the right eigenfunctions.}
+    \caption{Left: four eigenfunctions with the same eigenvalue of the harmonic oscillator on the rectangular domain $[-5, 5]$. Right: the corresponding eigenfunctions on the circular domain with radius $5$. Middle: linear combinations of the left eigenfunctions are chosen such that they equal the right eigenfunctions.}
     \label{fig:c4_nm_harmonic_eigenfunctions}
 \end{figure}
 
@@ -676,7 +677,7 @@ In figure \ref{fig:c4_nm_zero_test_rectangle} the results for this problem are v
     \label{fig:c4_nm_zero_test_disc}
 \end{figure}
 
-For non-rectangular domains with the zero potential, the story is different. Let us consider the Schrödinger equation with the zero potential and the circular domain around $(0, 0)$ with radius $1$ and homogeneous Dirichlet boundary conditions. The exact eigenvalues are known as the squares of the roots of the bessel functions. See section \ref{sec:c3_eigenvalues_wrt_domain_analysis} for the full symbolic calculation.
+For non-rectangular domains with the zero potential, the story is different. Let us consider the Schrödinger equation with the zero potential and the circular domain around $(0, 0)$ with radius $1$ and homogeneous Dirichlet boundary conditions. The exact eigenvalues are known as the squares of the roots of the Bessel functions. See section \ref{sec:c3_eigenvalues_wrt_domain_analysis} for the full symbolic calculation.
 
 The relative errors of the first hundred eigenvalues found with our new method are shown in figure \ref{fig:c4_nm_zero_test_disc}. We have tested this with the grid size and maximal basis size both equal to $32$, $64$ or $128$. The results are less impressive than for rectangular domains as the maximal accuracy reached is somewhere around $10^{-6}$. But nevertheless being able to compute these values at all is quite unique.
 
@@ -693,21 +694,69 @@ For a detailed analysis of this potential we refer back to section \ref{sec:c3_e
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/nm_test_henon.pdf}
     \end{center}
-    \caption{These graphs displays the relative errors when we compare the results from our method with those from \cite{wang_new_2009} for the Hénon-Heiles system on the domain $[-10, 10]\times[-10, 10]$. For the parameters $N = K = 32$ and $N = K = 48$, our method found some physically nonsensical eigenvalues and therefor are missing from the plots.}
+    \caption{These graphs display the relative errors when we compare the results from our method with those from \cite{wang_new_2009} for the Hénon-Heiles system on the domain $[-10, 10]\times[-10, 10]$. For the parameters $N = K = 32$ and $N = K = 48$, our method found some physically nonsensical eigenvalues and therefor are missing from the plots.}
     \label{fig:c4_nm_henon_test}
 \end{figure}
 
-In \cite{wang_new_2009}, the authors remark to take care when choosing the size of the domain. This should not be to small to allow the eigenfunctions to converge to zero on the boundary. But it should neither be to large, because this can generate some physically nonsensical eigenvalues. They take as domain $[-10, 10] \times [-10, 10]$ and leave it at that. Looking at the available literature about this problem we find for example \cite{davis_semiclassical_1979}. Here, the proposed method does not use a clear defined boundary, but uses inifinite basis functions. But, the interesting regions of these basis functions are only present in a radius, much smaller than $10$, around zero. \cite{braun_efficient_1996} limits their grid to a $[-6, 6] \times [-6, 6]$ domain. And in \cite{baeyens_improvements_2022}, we follow \cite{braun_efficient_1996}. For this experiment we will also take a $[-10, 10] \times [-10, 10]$ domain.
+In \cite{wang_new_2009}, the authors remark to take care when choosing the size of the domain. This should not be too small to allow the eigenfunctions to converge to zero on the boundary. But it should neither be too large, because this can generate some physically nonsensical eigenvalues. They take as domain $[-10, 10] \times [-10, 10]$ and leave it at that. Looking at the available literature about this problem we find for example \cite{davis_semiclassical_1979}. Here, the proposed method does not use a clear defined boundary, but uses infinite basis functions. But, the interesting regions of these basis functions are only present in a radius, much smaller than $10$, around zero. \cite{braun_efficient_1996} limits their grid to a $[-6, 6] \times [-6, 6]$ domain. And in \cite{baeyens_improvements_2022}, we follow \cite{braun_efficient_1996}. For this experiment we will also take a $[-10, 10] \times [-10, 10]$ domain.
 
-In figure \ref{fig:c4_nm_henon_test} the relative errors obtained with our method our displayed for this experiment. We used the results from \cite{wang_new_2009} as reference. Before analysing these results we need to mention that for $N = K = 32$ and $N = K = 48$ our method found many close to zero nonsensical eigenvalues. We know that they have no physical meaning because the corresponding eigenfunctions are only non-zero inside the valleys at the boundary.
+In figure \ref{fig:c4_nm_henon_test} the relative errors obtained with our method our displayed for this experiment. We used the results from \cite{wang_new_2009} as reference. Before analyzing these results we need to mention that for $N = K = 32$ and $N = K = 48$ our method found many nonsensical small eigenvalues. We know that they have no physical meaning because the corresponding eigenfunctions are only non-zero inside the valleys at the boundary. These unwanted eigenvalues disappear if the domain would be a little smaller, such that it no longer contains any valleys at the boundary.
 
 Ignoring these special cases allows us to interpret the graphs from figure \ref{fig:c4_nm_henon_test}. Even on a small grid $N = 48$ we are able to accurately determine the eigenvalues. We also see that for the high eigenvalues increasing the grid size or basis size seems to have no effect. This is unexpected and seems to indicate that maybe the reference values are not perfect. The relative error for these high eigenvalues is $< 2^{-32} \approx 10^{-10}$ which is nonetheless extremely accurate.
 
 \subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
 
+
+
 \subsection{Comparing run time with the finite difference method}\label{sec:c4_nm_vs_fd}
 
 \section{Some ideas for a utopian method}\label{c4:sec_utopy}
+
+In the introduction of this chapter we briefly discussed what a perfect method for time independent Schrödinger equations may be. It should be a method which is fast and accurate, of course. More specifically, its accuracy should not degrade upon requesting higher eigenvalues. Even if ridiculously high eigenvalues are required. But, ideally, this guaranteed accuracy should not come with the cost of increased run time. Requesting the first five eigenvalues should be (approximately) as fast as requesting the five eigenvalues larger than one million for example.
+
+In this section, I want to give an overview of the ideas and experiments I explored in the past few years. This section will not be written as a scientific paper. It will not contain absolute truths. It will not allege to have any certainties. This section will contain many of my mathematical feelings, unverified, uncensored, and definitely not peer reviewed. And, I will try highlight in which ideas I still see merit, and with which ideas I have run into a dead end.
+
+Before diving into my mathematical ramblings, I need to give you some caveats: I have not read every article about the topics described here. I do not know all intricacies of developing numerical methods. And I see myself as an applied mathematician\footnote{This is not an apology, I am a proud (and proudly) applied mathematician. But, my background influences how I practice mathematics. And in this section in particular this is important to keep in mind when following along with my thoughts.}, so I prefer numerical experiments and testing a hypothesis over strong mathematical rigor and watertight proofs. Still, I believe myself to be somewhat qualified to write about numerical methods for two-dimensional time independent Schrödinger equations, as I spent the previous (almost) six years of my professional time developing such methods myself. But, if you have invested yourself in any of the topics we will cover here, and you find me to be unjustly negative or unfairly harsh, I really do want to apologize in advance for that. It is not my intention to write theories off. It is not my intention to declare topics a waste of time. All things I write here are and will be my experience with these topics, in and only in the context of numerical methods for the two-dimensional time independent Schrödinger equation.
+
+\subsection{Preliminary ideas}
+
+\subsubsection{Exponential fitting}
+
+The first topic I want to cover here is already controversial. My research group and in particular my promotor are already studying exponential fitting for over three decades. They were able to successfully use this technique countless times in various applications. And, I know, as a young researcher, even younger than they have been researching this topic even, it is quite pretentious to make statements about this topic. But my promotor and I have worked sufficiently close together, that he knows me to make some statement I better should not have. Let this subsection be such a statement.
+
+The general idea of exponential fitting is to develop methods which are specifically tuned to be accurate for exponential and oscillatory function of certain frequencies. They have been successfully applied to numerical differentiation, quadrature formulas and ordinary differential equations (linear multistep methods and Runge-Kutta methods)\cite{ixaru_exponential_2004}. For the more recent advances we refer to \cite{paternoster_present_2012}. The success of this technique can not be denied.
+
+Yet, my relationship with exponential fitting has been rocky. Most importantly, this thesis could not have come to fruition without them. The constant perturbation methods, and in particular \matslise, are exponentially fitted methods. The extreme accuracies reached for the one-dimensional problem are only possible because for each energy the specifically tuned $\eta$-functions take exactly the important frequencies into account.
+
+On the other hand, when we tried to use exponentially fitted quadrature formulas for the computation of the potential matrix $\vb{V}^{(k)}(y)$ in section \ref{sec:c3_calculate_vk}, the results were less than ideal. It was already quite the challenge to determine to which frequencies these formulae should be tuned. Because these quadrature formulae should be computed for many possible eigenvalues and for all sectors of the domain with a wildly varying potential, the fitted frequencies most definitely could not be constant. So they should be automatically and dynamically computed. In principle this only incurs a small computational overhead. In practice, this was quite difficult to implement. We needed to tune the formulae for different frequencies and many edge-cases arose: what if some of them were close together? What if some functions were exponential and the others trigonometric? Or all exponential? Or none of them? All these question were interconnected, and important. If two frequencies were close together, in the formulae we were dividing two tiny numbers. So the limit had to be taken. In relatively rare cases the resulting quadrature formulae became highly unstable with large negative weights. One of the major issues was that even though these cases were quite rare, they popped up often because we were approximating so many integrals. In short, this instability caused a numerical mess. After this experience, I hope you can understand the hesitation in my love for exponential fitting.
+
+The eigenfunctions of the two-dimensional eigenproblem we are trying to solve are oscillatory, even highly so for large eigenvalues. Therefor, it is natural to think about exponential fitting. But translating this idea into something practical is not straightforward. For ordinary differential systems much research from recent years is available: second order problems\cite{dambrosio_exponentially_2011,}, symplectic methods \cite{vandenberghe_symplectic_2011,wu_explicit_2012}\dots For partial differential equations we have found very little research available. In \cite{zahra_exponentially_2019} the authors develop an exponentially fitted method for the two-dimensional time fractional damped Klein-Gordon equation. Upon construction of the symbolic formulae they use a polynomial basis set together with the following exponential functions, based upon the parameters $\mu, \nu \in \CC$:
+$$
+\exp(\pm\mu x \pm\nu y), x\exp(\pm\mu x \pm\nu y), y\exp(\pm\mu x \pm\nu y), x y \exp(\pm\mu x \pm\nu y), \dots
+$$
+For determining $\mu$ and $\nu$ they propose an algorithm which is able to eliminate the leading term of the error by choosing these parameters appropriately. In our case, using this set of basis functions directly will be far from optimal. For the Schrödinger equation, we have seen that the frequency of the oscillations is highly dependent on the value of the potential. Where in the domain the potential is low, the eigenfunction will strongly oscillate, where the potential is higher the oscillations will slow down, and where the potential is even higher than the energy there will be no oscillations at all, and we have an exponential behavior. So in a certain sense, the values of $\mu$ and $\nu$ should dependent upon the energy and upon the value of the potential, and by extension thus the location $x, y$ in the domain.
+
+
+\subsubsection{Piecewise constant approximations}
+
+\todo{Canosa and De Oliveira first ideas, high level overview and quick sketch for 2D}
+
+\subsubsection{Constant perturbation}
+
+\todo{Without being negative: why it is secondary to the constant approximation}
+
+\subsubsection{Shooting}
+
+\todo{Shooting vs direct methods, why we need shooting for high eigenvalues}
+
+\subsubsection{Finding eigenvalues within an order of magnitude}
+
+\todo{Like Prüfer}
+
+\subsection{The main idea}
+
+\todo{Some formulas, boundary conditions, propagation, CP?}
+
 
 
 \stopchapter

@@ -80,7 +80,7 @@ The idea for these kinds of methods, is to discretize the integration domain $[a
 
 \subsubsection{Finite difference approximation of the Sturm-Liouville equation}
 
-Around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville equation looked at the simpler form of the Schrödinger equation and apply. After the fact, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae,  later they developed highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions.
+Around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville equation looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After the fact, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae, later they developed highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions.
 
 To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simpler version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general disadvantages of this technique. The Sturm-Liouville equations we will consider are given by
 \begin{equation}\label{equ:c2_finite_difference_slp}
@@ -230,7 +230,7 @@ In \cite{pruess_estimating_1973}, the author also studies what happens to the er
     $$
 \end{theorem}
 
-This last theorem does not only say that the error does not become larger if $k$ increases, but the relative error even decreases rapidly when $k \to \infty$. Theorem \ref{the:c2_pruess_1973_2} highlights the main advantage this technique has in comparison to other state-of-the-art methods. Where all other methods become less and less accurate for large eigenvalues, this method becomes even more accurate.
+This last theorem does not only say that the error does not become larger if $k$ increases, but the relative error even decreases rapidly when $k \to \infty$. Theorem \ref{the:c2_pruess_1973_2} highlights the main advantage this technique has in comparison to other state-of-the-art methods. Where many other methods become less and less accurate for large eigenvalues, this method becomes even more accurate.
 
 \begin{figure}
     \begin{center}
