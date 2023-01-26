@@ -9,15 +9,15 @@
 
 \longchapter[New methods]{New methods for the \twoD time-independent Schrödinger equation}\label{cha:c4}
 
-In chapter \ref{cha:c2} we have studied the constant perturbation methods. We have seen a brief history about these CP-methods, as well as, a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
+In chapter \ref{cha:c2} we have studied the constant perturbation methods. We have seen a brief history about these CP-methods, as well as a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
 
 Chapter \ref{cha:c3} was dedicated to the treatment of a recent method to solve the time-independent two-dimensional Schrödinger equation. This method aims to use the strengths of the constant perturbation methods for higher dimensional problems. This new method is promising, and we developed many improvements upon the original idea.
 
 One of the unique powers of the CP-methods is their ability to not only compute low eigenvalues accurately, but even increase accuracy for higher eigenvalues. For Sturm-Liouville problems there are methods which can accurately compute low eigenvalues ({\color{red}to do: reference to simple methods}) and there are methods which are accurate for higher eigenvalues (e.g. asymptotic methods \cite{kuzmina_asymptotic_2000,zhukova_asymptotic_2020}). A CP-method, however, is one of few, if not the only, technique which is accurate for low as well as high eigenvalues.
 
-For two dimensions, this property did not translate cleanly. The method described in chapter \ref{cha:c3} tries to capture this by considering solutions of a one-dimensional Schrödinger problem in the $x$-direction, while a method for a coupled system of Schrödinger equations has been used in the $y$-direction. In theory this method is capable of computing any eigenvalue. In practice, this is not the case. Along the $x$-direction an eigenfunction is represented as a linear combination of basis functions. This basis is well-chosen, such that only a few number of functions are able to capture the true eigenfunctions sufficiently. Yet, as computers are finite, this basis has to be finite as well. As eigenfunctions corresponding to higher eigenvalues will become more and more oscillatory, the chosen finite basis will no longer be able to express all necessary details.
+For two dimensions, this property did not translate cleanly. The method described in chapter \ref{cha:c3} tries to capture this by considering solutions of a one-dimensional Schrödinger problem in the $x$-direction, while a method for a coupled system of Schrödinger equations has been used in the $y$-direction. In theory this method is capable of computing any eigenvalue. In practice, this is not the case. A two-dimensional eigenfunction is represented as a linear combination $\sum_{i} c_i(y) \beta_i(x)$ of one-dimensional basis functions $\beta_i(x)$. This basis is well-chosen, such that even a few functions can already describe a two-dimensional eigenfunction sufficiently well. When implementing this, the basis has to be finite. As eigenfunctions corresponding to higher eigenvalues will become more and more oscillatory, the chosen finite basis will no longer be able to express all necessary details.
 
-That the basis is finite, thus limits the accuracy for higher eigenvalues, which negates one of the strongest benefits of the employed CP-methods. As such, we believe that the utopian method for the more-dimensional time-independent Schrödinger equation, is one which does not decrease in accuracy, as the higher eigenvalues are requested. Just like the CP-methods are for the one-dimensional case. Developing such a method will, most likely, require new and very complicated formulae.
+That the basis is finite, thus limits the accuracy for higher eigenvalues, which negates one of the strongest benefits of the employed CP-methods. As such, we believe that the perfect method for the more-dimensional time-independent Schrödinger equation is one which does not decrease in accuracy as the higher eigenvalues are requested. Just like the CP-methods are for the one-dimensional case. Developing such a method will, most likely, require new and very complicated formulae.
 
 For clarity, we did not develop such a perfect method. But in the last few years I've played with the idea... In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.
 
@@ -29,17 +29,17 @@ More realistically, during our research into the method of Ixaru, we have found 
 
 After careful implementation and thorough testing of Ixaru's method from chapter \ref{cha:c3}, I could browse through the literature with renewed appreciation for the Schrödinger problem. When researching that method, many obstacles and challenges arose. It was an interesting task to balance computation time, symbolic formulas and numerical accuracy. So with this in mind, I came across \cite{wang_new_2009} by Wang and Shao.
 
-In this article they proposed a new kind of discretization scheme for solving two-dimensional time-independent Schrödinger equations. Before studying the details of the method, I like to review their numerical results. They tested the algorithm on two potential functions. Firstly, the harmonic oscillator: Schrödinger equations with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues. Secondly, they provided results for the Hénon-Heiles potential. Here, the exact solutions are not known, but reliable approximations exist. For both potentials their results were quite impressive. They reached a high accuracy, for a significant number of eigenvalues, without using excessive computation time.
+In this article the authors proposed a new kind of discretization scheme for solving two-dimensional time-independent Schrödinger equations. Before studying the details of the method, I like to review their numerical results. They tested the algorithm on two potential functions. First, the harmonic oscillator was considered. Schrödinger problems with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues. Second, they provided results for the Hénon-Heiles potential. Here, the exact solutions are not known, but reliable approximations exist. For both potentials their results were quite impressive. They reached a high accuracy for a significant number of eigenvalues without using excessive computation time.
 
-But the thing that strikes me most about \cite{wang_new_2009} is the simplicity of their method. They constructed formulas for a discrete approximation on a grid. Finding these kinds of results within the literature is disheartening and inspirational at the same time. At first glance they were able to reach higher accuracy with a simpler method than Ixaru's work \cite{ixaru_new_2010} and our improvements \cite{baeyens_improvements_2022} to it. Before throwing away all our work, and declaring \cite{wang_new_2009} to be superior, let us analyze it ourselves.
+But the thing that strikes me most about \cite{wang_new_2009} is the simplicity of the method. They constructed formulas for a discrete approximation on a grid. Finding these kinds of results within the literature is disheartening and inspirational at the same time. At first glance they were able to reach higher accuracy with a simpler method than Ixaru's work \cite{ixaru_new_2010} and our improvements \cite{baeyens_improvements_2022} to it. Before throwing away all our work, and declaring \cite{wang_new_2009} to be superior, let us analyze it ourselves.
 
 \subsection{A finite difference scheme}
 
-As in chapter \ref{cha:c3}, we are considering Schrödinger equations
+As in chapter \ref{cha:c3}, we are considering the Schrödinger equation
 \begin{equation}\label{equ:c4_schrodinger}
     -\psi''(x, y) + V(x, y) \psi(x, y) = \lambda \psi(x, y)
 \end{equation}
-on a rectangular domain $\Omega = [\xmin, \xmax] \times [\ymin, \ymax]$ with homogeneous Dirichlet boundary conditions, so $\psi(x, y) = 0, \forall (x, y) \in \delta \Omega$. The potential $V(x, y)$ is known and eigenvalues $\lambda$ with corresponding eigenfunctions $\psi(x, y)$ which satisfy \eqref{equ:c4_schrodinger} are sought.
+on a rectangular domain $\Omega = [\xmin, \xmax] \times [\ymin, \ymax]$ with homogeneous Dirichlet boundary conditions, so $\psi(x, y) = 0, \forall (x, y) \in \dOmega$. The potential $V(x, y)$ is known and eigenvalues $\lambda$ with corresponding eigenfunctions $\psi(x, y)$ which satisfy \eqref{equ:c4_schrodinger} are sought.
 
 In \cite{wang_new_2009} the authors discretize the domain $\Omega$ with an equidistant $n_x \times n_y$ grid. With this, they approximate the second partial derivative of a function $\psi(x, y)$ with, what they call, a new scheme:
 $$
@@ -71,7 +71,7 @@ The following table contains the first few central symmetric finite differences.
 
 As one sees, these give exactly the same coefficients as in \cite{wang_new_2009}. It is quite disingenuous to call this a \emph{new} scheme. The study of finite differences can be traced back to, among others, Newton. One of the first English books was by Boole \cite{boole_calculus_1860} in 1860, with many more textbooks to follow \cite{thomson_calculus_1933,jordan_calculus_1965}. Even the symbolic construction of high order approximations has already been studied and tabulated as early as 1967 \cite{ballester_construction_1967,keller_symbolic_1978,fornberg_generation_1988}.
 
-Besides this remark, \cite{wang_new_2009} is very valuable as an application of very high orders of these well-known formulae to the two-dimensional time-independent Schrödinger equation. Their numerical results are still valid and nonetheless impressive.
+Besides this remark, \cite{wang_new_2009} is very valuable as an application of very high order versions of these well-known formulae to the two-dimensional time-independent Schrödinger equation. Their numerical results are still valid and nonetheless impressive.
 
 \subsubsection{Numerical experiments with high order finite difference approximations}\label{sec:c4_fd_numerical}
 
@@ -89,7 +89,7 @@ As a first example we will replicate the results of \cite{wang_new_2009} for the
 \begin{equation}\label{equ:c4_fd_harmonic}
     -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 \end{equation}
-on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions. Notice that in \cite{wang_new_2009} the authors have chosen to scale the potential and eigenvalue by an extra factor of two. Here we did not do this, as such are computed eigenvalues will be twice as large. But, the relative error still can be compared.
+on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions. Notice that in \cite{wang_new_2009} the authors have chosen to scale the potential and eigenvalue by an extra factor of two. Here we did not do this, as such are computed eigenvalues will be twice as large. But, the relative errors remain the same.
 
 In figure \ref{fig:c4_fd_harmonic} the relative errors for the first $100$ eigenvalues are plotted. This is done for $h = \eta \in \left\{\frac{19}{40}, \frac{19}{60}, \frac{19}{100}\right\}$ and $N_x = N_y \in \left\{ 5, 10, 20, 25 \right\}$. In these graphs a few things can be noted. Unsurprisingly, when $N_x = N_y$ is increased, the results become more accurate. And also, when $h = \eta$ is decreased, that is to say more grid points are used, the results also become more accurate. As is the case with most algorithms for approximating Schrödinger equations, when larger eigenvalues are computed, the accuracy decreases. The corresponding eigenfunctions become more and more oscillatory, and are thus more difficult to approximate accurately.
 
@@ -112,9 +112,9 @@ These best fits are summarized in the following table.
 
 It is important to note that these values are estimates, and are quite sensitive to the used values of $n$ and $k$. But, some trends are visible. We first note that increasing $N$ indeed increases the order in $h$ as well, maybe not as much as theoretical assumed $\OO\mleft(h^{2N}\mright)$, but nonetheless significantly. One of the reasons this theoretical value of $h^{2N}$ is not reached is because of the limited precision available in the \texttt{double} floating point type. For low eigenvalues, larger grids, and higher values of $N$, the error is so small that the numerical precision of the datatype becomes the main source of error. Another visible behavior is that a more accurate (higher order in $h$) method also has a larger exponent with respect to $k$. This means that higher eigenvalues are asymptotically less accurate. This property can also be seen in the graphs of figure \ref{fig:c4_fd_harmonic}, a virtual line through the points corresponding to $N = 5$ is less steep than a line through the points of $N = 10$.
 
-For one-dimensional problems the behavior of the error with respect to $k$ has already been well studied and improved. In \cite{paine_correction_1981} expressions are constructed which provide a correction to the numeric approximation with finite difference schemes for Sturm-Liouville problems. These correction formulae bring the order in $k$ down from $\OO(k^4h^2)$ to $\OO(k h^2)$. For multidimensional Schrödinger equations no such corrections are available, let alone for the extremely high order schemes considered here.
+For one-dimensional problems the behavior of the error with respect to $k$ has already been well studied and improved. In \cite{paine_correction_1981} expressions are constructed which provide a correction to the numeric approximation with a finite difference scheme for Sturm-Liouville problems. These correction formulae bring the order in $k$ down from $\OO(k^4h^2)$ to $\OO(k h^2)$. For multidimensional Schrödinger equations no such corrections are available, let alone for the extremely high order schemes considered here.
 
-\paragraph{Zero potential} Besides the harmonic oscillator it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\delta\Omega$ such that the following holds:
+\paragraph{Zero potential} Besides the harmonic oscillator it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\dOmega$ such that the following holds:
 \begin{equation}\label{equ:c4_fd_zero}
     -\nabla^2 \psi(x, y) = E \psi(x, y) \text{.}
 \end{equation}
@@ -123,7 +123,7 @@ For one-dimensional problems the behavior of the error with respect to $k$ has a
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_zero.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of a Schrödinger problem with a zero potential on a rectangular domain with homogeneous Dirichlet boundary conditions \eqref{equ:c4_fd_zero}. This error is computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalues are connected.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of a Schrödinger problem with a zero potential on the rectangular $[0, \pi] \times [0, \pi]$ domain with homogeneous Dirichlet boundary conditions \eqref{equ:c4_fd_zero}. This error is computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalues are connected.}
     \label{fig:c4_fd_zero}
 \end{figure}
 
@@ -131,11 +131,11 @@ By separation of variables, the exact solutions of this equation can be found: $
 \input{img/chapter4/zero_exact.tex}
 In a certain way, these eigenvalues are more interesting than those from the harmonic oscillator, as their multiplicities are less predictable.
 
-In figure \ref{fig:c4_fd_zero} the error in each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$, which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
+In figure \ref{fig:c4_fd_zero} the relative error in each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$, which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
 
 These results bring to light one of the biggest drawbacks of the method from \cite{wang_new_2009}. This method only works if it is assumed that the eigenfunctions always are zero outside the domain. For the harmonic oscillator, this is the case, as $V(x, y) \to +\infty$ if $\|x, y\| \to +\infty$. For the zero potential function this is definitely not the case, the eigenfunctions are periodic. One could argue that, in theory, an eigenfunction may be anything outside the domain $\Omega$. So in particular, we could define them to be zero there. But, most numerical methods, and this method in particular, assume that solutions are sufficiently continuous. To cleanly define the problem, at least $C_0^2(\Omega)$ is needed, and when using $N^\text{th}$ order central finite difference schemes are used $C_0^{N}(\Omega)$ is implicitly assumed. And this assumption fails if we define the function to be zero outside $\Omega$.
 
-To combat this issue, on the boundary of the domain asymmetric schemes could be used, the authors of \cite{wang_new_2009} did not do this. As an example, we have tabulated all relevant six point formulae.
+To combat this issue, on the boundary of the domain asymmetric schemes could be used, the authors of \cite{wang_new_2009} did not do this. As an example, we have tabulated all relevant seven point formulae.
 \begin{center}
     \input{img/chapter4/fd_coefficients.tex}
 \end{center}
@@ -150,7 +150,7 @@ There are two difficulties when using these formulae. Firstly, to reach the requ
 
 Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, however, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
 
-Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results high orders, combined with fine grids, have to be used. This results in huge, sparse, matrices. And only thanks to their sparsity are algorithms able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
+Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results, high orders combined with fine grids have to be used. This results in huge sparse matrices. And only thanks to their sparsity are algorithms able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
 
 Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
@@ -160,22 +160,22 @@ Alternatively, a method which is able to reduce the size of the matrices involve
 
 \section{A woven interpolation method}
 
-In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
+In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR^2$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
 \begin{equation}\label{equ:c4_schrodinger_equation_new_method}
     -\nabla^2 \psi + V(x, y) \psi = E \psi\text{.}
 \end{equation}
 Still, we impose homogeneous Dirichlet boundary conditions: $\psi(x, y) = 0$ for $(x, y) \in \Omega$.
 
-The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as its values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}. Here we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
+The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as its values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}, where we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
 
 \begin{figure}
     \begin{center}
-        \includegraphics[width=.8\linewidth]{img/chapter4/the_method_grid.pdf}
+        \includegraphics[width=.66\linewidth]{img/chapter4/the_method_grid.pdf}
         \caption{\label{fig:woven_method_grid} The grid}
     \end{center}
 \end{figure}
 
-In this new method we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid does not need to be equidistant. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Upon formulating and implementing this new method, this varying number of intersections is one example of some difficulties that arise by explicitly allowing more flexibility.
+We are now going to construct a new method in which we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid does not need to be equidistant. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Even worse, because we do not even require $\Omega$ to be convex, the intersection of a grid line with $\Omega$ may not be continuous. Upon formulating and implementing this new method, this varying number of intersections and these noncontinuous grid lines are some example of difficulties that arise by explicitly allowing more flexibility.
 
 After placing the grid on $\Omega$, the next step is to approximate the unknown eigenfunction $\psi$ as a linear combination of basis functions on each of the grid lines. On the vertical line $x = x_i$, we denote these basis functions as $\beta_k^{(x_i)}(y)$, for each value of $k$. This yields the expression
 \begin{equation}\label{equ:c4_expression_on_lines_x}
@@ -186,6 +186,8 @@ For horizontal lines $y = y_j$, the basis functions $\beta_k^{(y_j)}(x)$ yield a
 \begin{equation}\label{equ:c4_expression_on_lines_y}
     \psi(x, y_j) = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x) \text{.}
 \end{equation}
+
+Notice that the domain of each of these $\beta$-fucntions is the intersection of its corresponding grid line with $\Omega$. As earlier stated, this domain may not be continuous. In theory this is not a problem, as long as the definition of $\beta$ allows this. And, it will. In practice when one wants to implement this, care has to be taken. It may be beneficial to construct multiple separate sets of basis functions for each of the continuous parts of the grid line. Because the theory has no problem with discontinuities, we will not burden the notation and explanation with this separation into continuous parts.
 
 To ensure $\psi(x, y)$ is uniquely defined in each point in $\Omega$ we have to require that in each intersection point $(x_i, y_j)$, $\psi(x_i, y_j)$ has only one solution:
 \begin{equation}\label{equ:c4_new_method_pre_matrix_equality}
@@ -214,14 +216,14 @@ By choosing half the original potential in each of the approximations, in each i
 
 Notice that in this expression only $E$ (the eigenvalue) and $c_k^{(x_i)}$ and $c_k^{(y_j)}$ are unknown, as $\psi(x_i, y_j)$ depends linearly on $c_k^{(x_i)}$ and $c_k^{(y_j)}$. So, expression \eqref{equ:c4_new_method_pre_matrix} is, in fact, a linear problem.
 
-Before writing this as a matrix-problem, we first have to limit the extent of the sum. It is, of course, impossible to implement these formulas while the function bases are still infinite. Therefor, we limit the basis on the line $x = x_i$ to the first $K_{x_i}$ functions and to the first $K_{y_j}$ functions on the line $y = y_j$. Notice that the size of a basis on each line, should not be greater than the number of intersections on that line. If the basis size is too large, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be underdetermined. In this case, solutions will no longer be uniquely defined, which is a problem. In contrast, if the basis size is smaller, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be overdetermined. Which does not lead to issues, because we can reformulate it as finding solutions in a least squares sense.
+Before writing this as a matrix-problem, we first have to limit the extent of the sum. It is, of course, impossible to implement these formulas while the function bases are still infinite. Therefor, we limit the basis on the line $x = x_i$ to the first $K_{x_i}$ functions and to the first $K_{y_j}$ functions on the line $y = y_j$. Notice that the size of a basis on each line, should not be greater than the number of intersections on that line. If the basis size is too large, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be underdetermined. In this case, solutions will no longer be uniquely defined, which is a problem. In contrast, if the basis size is smaller, the system \eqref{equ:c4_new_method_pre_matrix_equality} would be overdetermined. This does not lead to issues, because we can reformulate it as finding solutions in a least squares sense.
 
 With these finite sums equations \eqref{equ:c4_new_method_pre_matrix_equality} and \eqref{equ:c4_new_method_pre_matrix} become, on the intersection $(x_i, y_j)$:
 \begin{align}
      & \sum_{k=0}^{K_{x_i}-1} \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^{K_{y_j}-1} \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i)\nonumber                                  \\
      & \qquad\qquad\qquad     = \sum_{k=0}^{K_{x_i}-1} c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = \sum_{k=0}^{K_{y_j}-1} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) \text{.}\label{equ:c4_new_method_pre_matrix_unified}
 \end{align}
-Introducing appropriate vectors and matrices will allow us to translate this into a matrix-problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
+The introduction of appropriate vectors and matrices will allow us to translate \eqref{equ:c4_new_method_pre_matrix_unified} into a matrix problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
 \begin{align*}
     \vb{c_x}            & = \transpose{\begin{pmatrix} c_0^{(x_0)} & c_1^{(x_0)} & \dots & c_{K_{x_0}-1}^{(x_0)} & c_0^{(x_1)} & c_1^{(x_1)} & \dots \end{pmatrix}}         \\
     \text{and }\vb{c_y} & = \transpose{\begin{pmatrix} c_0^{(y_0)} & c_1^{(y_0)} & \dots & c_{K_{y_0}-1}^{(y_0)} & c_0^{(y_1)} & c_1^{(y_1)} & \dots \end{pmatrix}}\text{.}
@@ -241,7 +243,7 @@ Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ 
     \end{center}
 \end{figure}
 
-Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r_{i,j}$ of these matrices correspond to an intersection $(x_i, y_j)$. The non-zero entries on each of the rows $r_{i,j}$ of the matrices $\vb{B_x}$ and $\vb{B_y}$ can be calculated as
+Lastly we define the matrices which contain the values of the basis functions in each of the grid points. For this let us define $m$ as the total number of intersection points. Now, we define the $m \times n_x$ matrix $\vb{B_x}$ and the $m \times n_y$ matrix $\vb{B_y}$. Each row $r_{i,j}$ of these matrices correspond to a grid point $(x_i, y_j)$. The non-zero entries on each of the rows $r_{i,j}$ of the matrices $\vb{B_x}$ and $\vb{B_y}$ can be calculated as
 \begin{align}
     \left(\vb{B_x}\right)_{r_{i,j}, o^{(x)}_{i} + k} & =  \beta_{k}^{(x_i)}(y_j) \text{ for $k \in \{0, 1, \dots, K_{x_i} - 1\}$ }   \nonumber                               \\
     \text{and }
@@ -250,10 +252,11 @@ Lastly we define the matrices which contain the values of the basis functions in
 In this expression the values $o^{(x)}_{i}$ and $o^{(y)}_{j}$ are certain offsets depending on the row. These offsets are defined as: $o^{(x)}_{i} := \sum_{i' < i} K_{x_{i'}}$ and $o^{(y)}_{j} := \sum_{j' < j} K_{y_{j'}}$. To aid an intuitive understanding of the $\vb{B_x}$ and $\vb{B_y}$ matrices, figure \ref{fig:c4_new_method_beta} provides a schematic view of them, calculated from a small numerical example.
 
 As promised, these definitions allow us to rewrite the system \eqref{equ:c4_new_method_pre_matrix_unified} with $m$ equations more compactly as:
-$$
+\begin{equation}\label{equ:c4_nm_matrix_compact}
     \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_x} \vb{c_x} = E \vb{B_y} \vb{c_y}\text{.}
-$$
-This formulation is not yet reminiscent of any classical linear algebra problem. One of the unfamiliar parts of this expression is the fact that there are two vectors of unknowns, another unfamiliar part is that this are, in fact, two different problems.
+\end{equation}
+
+This formulation is not yet reminiscent of any classical linear algebra problem. One of the unfamiliar parts of this expression is the fact that there are two vectors of unknowns, another unfamiliar part is that \eqref{equ:c4_nm_matrix_compact} defines, in fact, two different equations.
 \begin{equation}
     \begin{cases}
         \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} = E \vb{B_x} \vb{c_x} \\
@@ -265,7 +268,7 @@ There are a few strategies to further translate this problem into a form for whi
 
 \subsection{Solving the matrix approximation}
 
-As a first strategy we investigated how this problem can be directly transformed into a known type of problem.
+As a first strategy we investigated how this problem can be directly transformed into a standard mathematical problem.
 
 \subsubsection{Direct transformation into an eigenvalue problem}
 
@@ -290,7 +293,7 @@ This system can be seen as the following generalized rectangular eigenvalue prob
     \end{pmatrix}\text{.}
 \end{equation}
 
-At first glance this may seem to enable us to solve the problem elegantly. But, there are a few issues apparent with this translation. One of the most visible problems is that we have translated this into a matrix problem which is twice as large as the original matrices $\vb{B_x}$ and $\vb{B_y}$ in both rows and columns. On the other hand, one can argue, the matrices are clearly sparse. The matrices $\vb{B_x}$ and $\vb{B_y}$ are sparse indeed, but the problem is that there are few algorithms available that are even able to solve a generalized rectangular eigenvalue problem, let alone a sparse one.
+At first glance this may seem to enable us to solve the problem elegantly. But, there are a few issues apparent with this translation. One of the most visible problems is that we have translated this into a matrix problem which is twice as large as the original matrices $\vb{B_x}$ and $\vb{B_y}$ in both rows and columns. On the other hand, one can argue that the matrices are clearly sparse. The matrices $\vb{B_x}$ and $\vb{B_y}$ are sparse indeed, but the problem is that there are few algorithms available that are even able to solve a generalized rectangular eigenvalue problem, let alone a sparse one.
 
 But a lack of sparse implementations does not deter us from trying out some numerical experiments. In this first experiment we will have to fall back to algorithms working on dense matrices. Of course, the runtime will suffer, but from a numerical point of view the results will still be valuable.
 
@@ -298,23 +301,24 @@ Consider the Schrödinger equation with the harmonic oscillator potential:
 $$
     -\nabla^2\psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 $$
-on the domain $[-10, 10] \times [-10, 10]$ {\color{red}to do: $[-9.5, 9.5]^2$} with homogeneous Dirichlet boundary conditions. We apply the described method on a grid with 30 lines in each direction and 15 basis functions per line. This yields $900\times 420$ {\color{red} to do: 450?} matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{840} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
+on the domain $[-9.5, 9.5] \times [-9.5, 9.5]$ with homogeneous Dirichlet boundary conditions\footnote{We also considered this problem in section \ref{sec:c4_fd_numerical}.}. We apply the described method on a grid with 30 lines in each direction and 16 basis functions per line. This yields $900\times 480$ matrices $\vb{B_x}$ and $\vb{B_y}$, and the rectangular problem from \eqref{equ:c4_new_method_alternative_system} has \numprint{1800} equations and \numprint{960} variables. As this eigenvalue problem is heavily overdetermined, we have to considered that solutions will only be accurate in a least squares sense. Much research is already dedicated to solving this kind of problem, as such we will, for now, use the first method from \cite{hua_svd_1991} to find solutions. Later on, we will explore the world of generalized rectangular eigenvalue problems.
 
 If we write equation \eqref{equ:c4_new_method_alternative_system} symbolically as $\vb{A} \vb{c} = E \vb{D} \vb{c}$, and the truncated singular value decomposition of $\vb{D}$ as $\vb{D} = \vb{U_D} \vb{\Sigma_D} \vb{V_D^\adjointsign}$, then any solution of \eqref{equ:c4_new_method_alternative_system} will also be a solution of the generalized square eigenvalue problem
 $$
     \vb{U_D^\adjointsign} \vb{A} \vb{V_D} \vb{v} = E \vb{\Sigma_D} \vb{v} \text{,}
 $$
-with $\vb{c} = \vb{V_D} \vb{v}$. Applying this method to the numeric problem yields 840 eigenvalues. Firstly, it is important to remark that the resulting values are elements of $\CC$. But, in this case, the imaginary part of all values lies between \numprint{-1.36e-14} and \numprint{1.36e-14}. So all values may be considered real. The lowest few values are given:
+with $\vb{c} = \vb{V_D} \vb{v}$. Applying this method to the numerical problem yields 840 eigenvalues. Firstly, it is important to remark that the resulting values are elements of $\CC$. But, in this case, the imaginary part of all values lies between \numprint{-1.68e-14} and \numprint{1.68e-14}, so all values may be considered real. The lowest few values are given:
 $$
     \underbrace{
-        \numprint{-3.75e-14} \quad \dots \quad \numprint{5.59e-14}
-    }_\text{196 values close to zero} \quad \numprint{2.00} \quad \numprint{3.46} \quad \numprint{3.46} \quad \numprint{4.00} \quad \numprint{4.00} \quad \dots
+        \numprint{-2.85e-14} \quad \dots \quad \numprint{5.39e-14}
+    }_\text{256 values close to zero} \quad \numprint{2.00} \quad \numprint{3.93} \quad \numprint{3.93} \quad \numprint{4.00} \quad \numprint{4.00} \quad \dots
 $$
 
-This can be more compactly summarized when the number of times an eigenvalue is repeated is indicated by a subscript:
-$$
-    \numprint{0.00}_{196} \quad \numprint{2.00} \quad \numprint{3.46}_2 \quad \numprint{4.00}_2 \quad \numprint{4.89}_2 \quad \numprint{6.00}_3 \quad \numprint{6.12}_2 \quad \dots \quad \numprint{7.73}_2 \quad \numprint{8.00}_4\quad \dots
-$$
+This can be more compactly summarized when the number of times an eigenvalue is (up to a precision of $10^{-6}$) repeated is indicated by a subscript:
+
+    \begin{tabular}{ccccccccccc}
+        $\numprint{0.00}_{256}$ & $\numprint{2.00}$ & $\numprint{3.93}_2$ & $\numprint{4.00}_2$ & $\numprint{5.36}_2$ & $\numprint{6.00}_3$ & $\numprint{6.78}_2$ & $\numprint{6.87}_2$ & $\numprint{8.00}_4$ & $\dots$
+    \end{tabular}
 
 {\color{red} To do: expand the next paragraph, make rank explicit}
 One immediately notices the many returned zero values. This does not have to be surprising, in fact, the matrix on the left-hand side of \eqref{equ:c4_new_method_alternative_system} may not be of full rank. But these zeros indicate another problem. Namely, that for these values it is not at all guaranteed that $\vb{B_x} \vb{c_x} = \vb{B_y} \vb{c_y}$.
@@ -686,7 +690,7 @@ The relative errors of the first hundred eigenvalues found with our new method a
 
 Another often used test problem is the Hénon-Heiles system. In the context of time-independent two-dimensional Schrödinger equations the potential in question is given as:
 $$
-V(x, y) = x^2 + y^2 + \frac{3\sqrt{5}}{10}(3 x y^2 - x^3)\text{.}
+    V(x, y) = x^2 + y^2 + \frac{3\sqrt{5}}{10}(3 x y^2 - x^3)\text{.}
 $$
 For a detailed analysis of this potential we refer back to section \ref{sec:c3_experiment_henon}.
 
@@ -732,7 +736,7 @@ On the other hand, when we tried to use exponentially fitted quadrature formulas
 
 The eigenfunctions of the two-dimensional eigenproblem we are trying to solve are oscillatory, even highly so for large eigenvalues. Therefor, it is natural to think about exponential fitting. But translating this idea into something practical is not straightforward. For ordinary differential systems much research from recent years is available: second order problems\cite{dambrosio_exponentially_2011,}, symplectic methods \cite{vandenberghe_symplectic_2011,wu_explicit_2012}\dots For partial differential equations we have found very little research available. In \cite{zahra_exponentially_2019} the authors develop an exponentially fitted method for the two-dimensional time fractional damped Klein-Gordon equation. Upon construction of the symbolic formulae they use a polynomial basis set together with the following exponential functions, based upon the parameters $\mu, \nu \in \CC$:
 $$
-\exp(\pm\mu x \pm\nu y), x\exp(\pm\mu x \pm\nu y), y\exp(\pm\mu x \pm\nu y), x y \exp(\pm\mu x \pm\nu y), \dots
+    \exp(\pm\mu x \pm\nu y), x\exp(\pm\mu x \pm\nu y), y\exp(\pm\mu x \pm\nu y), x y \exp(\pm\mu x \pm\nu y), \dots
 $$
 For determining $\mu$ and $\nu$ they propose an algorithm which is able to eliminate the leading term of the error by choosing these parameters appropriately. In our case, using this set of basis functions directly will be far from optimal. For the Schrödinger equation, we have seen that the frequency of the oscillations is highly dependent on the value of the potential. Where in the domain the potential is low, the eigenfunction will strongly oscillate, where the potential is higher the oscillations will slow down, and where the potential is even higher than the energy there will be no oscillations at all, and we have an exponential behavior. So in a certain sense, the values of $\mu$ and $\nu$ should dependent upon the energy and upon the value of the potential, and by extension thus the location $x, y$ in the domain.
 

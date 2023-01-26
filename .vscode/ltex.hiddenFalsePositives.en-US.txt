@@ -5,6 +5,7 @@
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QIn \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, it is noted that different, less stringent, assumptions may be made on the structure of \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q: “This is equivalent to saying that every eigenvalue of [\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q] has only linear elementary divisors; or that [\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix.\\E$"}
 {"rule":"THE_SUPERLATIVE","sentence":"^\\QBut, do notice that this is only a best guess approximation.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"\\Q\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q .\\E$"}
-{"rule":"THE_SUPERLATIVE","sentence":"^\\Qa least squares\\E$"}
+{"rule":"THE_SUPERLATIVE","sentence":"\\Qa least squares\\E"}
 {"rule":"NUMEROUS_DIFFERENT","sentence":"^\\QYet, we have tested this algorithm with many different solvers, without success.\\E$"}
 {"rule":"SOME_OF_THE","sentence":"^\\QThis illustrates some of the challenges when trying to compare or numerically verify eigenfunctions.\\E$"}
+{"rule":"MISSING_GENITIVE","sentence":"^\\QSchrödinger problems with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues.\\E$"}
