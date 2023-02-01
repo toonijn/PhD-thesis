@@ -29,3 +29,4 @@ SuiteSparseQR
 nullspace
 quartic
 Arnoldi
+backronym

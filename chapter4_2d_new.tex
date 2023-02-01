@@ -7,7 +7,7 @@
 \undefinedlabel{sec:c3_experiment_henon}{3.-.-}
 \undefinedlabel{sec:c3_calculate_vk}{3.-.-}
 
-\longchapter[New methods]{New methods for the \twoD time-independent Schrödinger equation}\label{cha:c4}
+\longchapter[Strands: a new method]{Strands: a new method for the \twoD time-independent Schrödinger equation}\label{cha:c4}
 
 In chapter \ref{cha:c2} we have studied the constant perturbation methods. We have seen a brief history about these CP-methods, as well as a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
 
@@ -158,7 +158,7 @@ Alternatively, a method which is able to reduce the size of the matrices involve
 
 {\color{red} To do: consider writing this intermediate method}
 
-\section{A woven interpolation method}
+\section{Strands: A line-based collocation method}
 
 In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR^2$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
 \begin{equation}\label{equ:c4_schrodinger_equation_new_method}
@@ -725,9 +725,25 @@ Ignoring these special cases allows us to interpret the graphs from figure \ref{
 
 \subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
 
-
-
 \subsection{Comparing run time with the finite difference method}\label{sec:c4_nm_vs_fd}
+
+\subsection{The name Strands}
+
+When developing and publishing a new method maybe one of the most difficult challenges (besides developing, testing, analyzing, implementing\dots the method) is probably finding a fitting name. As mathematicians, we may sometimes forget the importance of a recognizable name. But let's take a look at some names we encounter in the area of Schrödinger equations. For the one-dimensional method we have for example SLEDGE, SLEIGN, SLCPM12 and Matslise itself. For the system of coupled equations we have LILIX or Matscs. For the specific two-dimensional problem we have not found any packages with memorable names. But if we look a bit further to the libraries we used: Eigen (\cpp library for linear algebra), Spectra (\cpp library for finding eigenvalues), PETSc and SLEPc (scalable c-libraries for linear algebra). We also came across Numpy and SciPy as numerical libraries in Python. Or, we can look at the wider scientific computing community for inspiration: BLAS and LAPACK (interfaces for basic linear algebra), Armadillo (\cpp library for linear algebra), GNU GSL (scientific computing in C), SageMath (a computer algebra system), Maple (program for symbolic computation), FEniCS with DOLPHIN (platform to solve partial differential equations), OpenFOAM (for computational fluid dynamics),
+
+A name should be short and be more or less relevant to the method. The names I like the most are the pronounceable fun names (with bonus points if it is a backronym\footnote{Wikipedia tells us: ``a backronym is an acronym formed from an already existing word". For example: Spectra stands for ``\emph{Sp}arse \emph{E}igenvalue \emph{C}omputation \emph{T}oolkit as a \emph{R}edesigned \emph{A}RPACK.}) like LILIX, Spectra, Sage and FEniCS.
+
+When first developing the ideas for this method I always saw it as a loom, with warp and weft threads. The tension ensures that in the grid points these threads intersect. There are many fun words in the weaving-industry for which a backronym could be found, but these are always quite niche and not well-known. But after a short conversation with ChatGPT it proposed `Stranded Schrödinger Solver' as name. And I liked the word \emph{strand} a lot. It is synonymous with \emph{thread} and \emph{wire}, so it fits definitely with my mental model of the method. But, \emph{strand} is also the Dutch word for \emph{beach}, which brings the `fun' aspect back to the table. And as our method uses many strands together, this gives us:
+
+% Logo idea: two pair orthogonaly intersecting harmonic eigenfunctions
+
+\begin{center}
+    \begin{minipage}{.8\textwidth}
+        \begin{description}
+            \item[\textbf{Strands}] \hfill\\ \textbf{St}anding waves app\textbf{r}oxim\textbf{a}tions for the $\bm{n}$-\textbf{d}imensional \textbf{S}chrödinger problem (with $n = 2$ and maybe in the future $n = 3$).
+        \end{description}
+    \end{minipage}
+\end{center}
 
 \section{Some ideas for a utopian method}\label{c4:sec_utopy}
 
