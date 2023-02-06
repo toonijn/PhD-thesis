@@ -1,0 +1,984 @@
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3423.69ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	555.18ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	555.16ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	457.75ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	29.65ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	399.23ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	372.91ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	309.59ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	90.82ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2867.49ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2867.48ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2795.20ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2746.72ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1171.37ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	503.34ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.57ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8851.70ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	519.15ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	519.15ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	424.92ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.48ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	378.37ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	352.85ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	292.39ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.47ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8331.58ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8331.58ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8268.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3699.43ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4498.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4118.38ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	143.17ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.03ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3268.13ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	534.73ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	534.71ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	439.93ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.30ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	386.41ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	361.13ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	299.55ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.31ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2732.38ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2732.37ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2660.03ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.67ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.63ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.67ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2611.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1189.12ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	499.95ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.60ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8972.14ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	509.39ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	509.39ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	413.45ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.58ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	368.07ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.50ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.32ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	90.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8461.74ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8461.74ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8401.08ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3645.22ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	33.46ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	33.41ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	1.13ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4674.22ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4305.31ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	145.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.18ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3404.42ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	516.85ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	516.85ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	421.16ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.44ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	367.90ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	344.16ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	287.72ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.29ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2886.54ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2886.53ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2816.00ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.72ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.70ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2768.57ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1158.98ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	497.68ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.73ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8965.35ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	518.85ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	518.85ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	424.40ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.35ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	376.49ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	350.79ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	291.79ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.75ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8445.53ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8445.53ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8383.28ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3810.37ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	24.15ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	24.09ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4497.08ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4108.93ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	142.46ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.45ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3256.77ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	512.30ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	512.30ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	417.00ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.44ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	363.83ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	341.29ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.06ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.03ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2743.44ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2743.43ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2673.42ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.75ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2626.43ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1145.37ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	492.24ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.54ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8678.63ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	508.17ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	508.17ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	412.87ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.78ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	367.23ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.08ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.86ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	90.34ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8169.49ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8169.49ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8107.63ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3630.70ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.81ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.76ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4406.61ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4042.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	140.04ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.52ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3327.09ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	523.44ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	523.44ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	427.81ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	28.10ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	372.00ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	348.86ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	292.22ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.25ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2802.62ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2802.61ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2730.58ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.74ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.70ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.70ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2683.29ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1135.87ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	486.13ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.85ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8814.90ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	520.25ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	520.25ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	425.88ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.29ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	379.35ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	354.21ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	295.06ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.69ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8293.64ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8293.64ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8230.81ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3682.13ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	23.11ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	23.06ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.80ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4477.65ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4098.50ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	141.31ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.44ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3297.96ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	518.85ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	518.85ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	422.50ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.70ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	368.71ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	345.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	288.22ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2778.08ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2778.07ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2707.23ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.79ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.75ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2659.29ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1129.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	484.77ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.01ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8769.51ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	524.52ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	524.52ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	425.65ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.40ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	377.76ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	353.17ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	294.68ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	93.61ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8243.97ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8243.97ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8179.64ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3662.41ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.72ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4444.09ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4067.22ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	139.02ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.48ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3335.74ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	515.38ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	515.38ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	419.59ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.51ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	366.01ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.02ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.57ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.39ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2819.03ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2819.02ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2729.42ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.78ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.74ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2682.51ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1167.86ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	497.67ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	34.92ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8965.74ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	510.56ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	510.56ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	416.61ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.57ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	368.89ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	344.31ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.35ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.29ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8454.21ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8454.21ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8392.33ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3735.24ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	23.56ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	23.51ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4585.59ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4216.12ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	142.88ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.13ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3309.87ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	514.76ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	514.76ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	419.49ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.83ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	366.16ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	288.71ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.00ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2794.07ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2794.07ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2723.84ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	2.27ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	2.21ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.94ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2675.90ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1136.33ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	485.77ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.54ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8764.65ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	501.39ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	501.38ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	408.96ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.64ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	364.19ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	340.74ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.32ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	87.92ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8262.30ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8262.30ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8202.03ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3643.61ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	23.46ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	23.40ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.82ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4487.42ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4109.25ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	140.63ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	29.83ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3253.34ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	528.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	528.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	433.00ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.20ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	379.28ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	353.69ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	291.84ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.11ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2723.97ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2723.96ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2654.51ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.78ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.74ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.68ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2607.72ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1134.44ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	483.14ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.33ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8619.05ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	499.44ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	499.43ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	406.66ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.36ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	361.76ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	338.08ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	281.93ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.12ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8118.65ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8118.65ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8057.88ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3600.25ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	23.10ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	23.04ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4386.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4025.91ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	137.42ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.13ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3307.20ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	532.61ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	532.61ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	434.68ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.81ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	379.84ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	354.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	292.47ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	90.91ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2773.58ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2773.57ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2699.77ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2641.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1116.98ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	480.00ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.26ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8721.15ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	513.00ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	513.00ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	419.40ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.22ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	372.98ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	347.30ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.57ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.67ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8207.19ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8207.19ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8145.72ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3656.03ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4419.75ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4044.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	139.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.71ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3216.81ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	512.35ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	512.35ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	417.99ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.76ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	365.26ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	342.08ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.00ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.14ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2703.42ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2703.41ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2632.43ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.80ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.74ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2585.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1130.62ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	483.27ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.41ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8669.09ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	497.42ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	497.42ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	404.92ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.37ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	359.94ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	336.29ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	280.41ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	87.90ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8170.70ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8170.70ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8109.36ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3625.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4414.27ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4044.81ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	139.25ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.26ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3311.66ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	513.98ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	513.98ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	418.95ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.52ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	365.21ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	342.38ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.72ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2796.65ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2796.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2726.03ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	2.16ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	2.12ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.92ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2678.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1138.08ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	485.75ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.53ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8732.42ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	504.12ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	504.12ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	410.92ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.46ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	364.54ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	340.73ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	284.23ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.58ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8227.33ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8227.33ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8166.43ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3649.15ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.73ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4447.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4070.58ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	140.66ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.42ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3202.51ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	510.86ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	510.85ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	416.27ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.53ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	362.84ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	340.22ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	284.76ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.27ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2690.61ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2690.60ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2621.29ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.66ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2575.19ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1129.52ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	482.26ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.39ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8660.60ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	501.88ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	501.88ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	408.40ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.67ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	363.36ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	339.54ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	283.00ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8157.75ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8157.74ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8096.55ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3624.08ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.75ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.69ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4402.88ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4037.62ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	138.37ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.24ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3327.55ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	517.69ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	517.69ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	422.30ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.97ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	368.17ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	344.90ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	288.26ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.94ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2808.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2808.80ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2738.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.77ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.72ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2691.44ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1139.35ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	487.79ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.12ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8678.07ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	499.08ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	499.08ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	406.75ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.12ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	361.10ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	337.57ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	281.91ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	87.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8178.03ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8178.03ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8116.58ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3636.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.91ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.85ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4409.72ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4032.31ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	139.37ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.14ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3166.31ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	507.20ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	507.20ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	413.92ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.03ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	361.08ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	338.69ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	283.99ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	87.13ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2658.10ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2658.10ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2589.09ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.67ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.63ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.68ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2543.11ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1130.97ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	480.79ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.92ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8579.68ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	499.90ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	499.90ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	407.27ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.13ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	362.69ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	338.97ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	283.10ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.10ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8078.82ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8078.82ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8017.66ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3562.61ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.84ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4384.53ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4029.85ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	138.01ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.16ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3262.46ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	515.79ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	515.78ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	419.32ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.94ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	366.38ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.45ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	287.58ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.92ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2745.66ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2745.65ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2676.49ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.87ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.83ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2629.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1150.64ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	490.30ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.56ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8614.06ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	498.22ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	498.21ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	404.96ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.63ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	359.75ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	336.34ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	280.85ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.55ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8114.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8114.89ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8053.82ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3593.55ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.69ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.64ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4389.67ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4030.05ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	138.32ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	29.68ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3233.01ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	509.55ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	509.54ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	415.27ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.49ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	363.28ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	340.78ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.83ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.11ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2722.45ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2722.44ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2651.99ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2605.55ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1155.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	495.01ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.00ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8600.97ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	497.14ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	497.14ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	404.50ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.07ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	360.11ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	336.59ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	281.26ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	88.12ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8102.85ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8102.85ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8040.73ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3585.33ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.64ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.59ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4384.83ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4028.09ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	137.60ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.51ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3210.39ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	514.19ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	514.18ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	418.46ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.98ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	365.82ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	342.55ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.95ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.49ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2695.18ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2695.17ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2626.50ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.84ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.80ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.76ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2579.67ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1151.81ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	491.44ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.96ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8737.06ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	511.47ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	511.47ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	416.44ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.55ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	371.05ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	346.84ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	289.23ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	90.38ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8224.57ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8224.57ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8161.49ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3601.86ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	22.65ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.60ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4490.80ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4119.55ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	142.19ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	32.54ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3256.58ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	512.74ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	512.73ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	417.10ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	26.12ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	364.23ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	341.72ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.51ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.38ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2742.80ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2742.79ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2672.96ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.71ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2626.66ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1166.36ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	493.89ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.37ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8696.34ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	507.87ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	507.87ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	414.25ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.33ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	368.11ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	343.60ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	286.06ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.04ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8187.49ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8187.49ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8126.34ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3657.81ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	23.03ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	22.97ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.78ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4398.24ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4042.85ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	138.18ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.29ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3225.67ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	523.89ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	523.88ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	427.68ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.59ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	375.05ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	350.52ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	290.42ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.68ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2700.77ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2700.75ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2630.88ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	2.52ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	2.48ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	1.00ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2581.53ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1124.63ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	481.00ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.88ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	9020.19ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	519.58ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	519.57ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	420.39ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.50ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	374.03ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	349.14ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	290.42ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	93.52ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8499.63ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8499.63ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8435.17ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3900.08ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	25.69ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	25.63ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.88ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4462.12ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4098.61ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	139.94ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.12ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
+===============================================================================
+All tests passed (28 assertions in 2 test cases)
+
+
+
+**Matslise profiler report:**
+ > Profile Hénon-Heiles	1	3174.93ms
+ > Profile Hénon-Heiles > construct Schrodinger	1	508.62ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger	1	508.62ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	414.69ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	25.93ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	362.31ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	340.23ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.72ms
+ > Profile Hénon-Heiles > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	87.78ms
+ > Profile Hénon-Heiles > calculate eigenvalues	1	2665.25ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs	1	2665.25ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest	1	2595.62ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init	1	1.73ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op	2	1.69ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.68ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute	1	2549.92ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op	1316	1113.03ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > SPECTRA select smallest > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	5264	476.98ms
+ > Profile Hénon-Heiles > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	31.62ms
+ > Profile Hénon-Heiles > check eigenvalues	1	0.00ms
+ > Profile Hénon-Heiles (shiftInvert)	1	8911.29ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger	1	506.12ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger	1	506.12ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread	128	412.09ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::Sector::calculateTCoeffs	5219	24.64ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex	128	366.82ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError	58130	342.83ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Schrodinger::computeThread > Matslise::eigenvaluesByIndex > Matslise::matchingError > Matslise::propagate	116260	285.92ms
+ > Profile Hénon-Heiles (shiftInvert) > construct Schrodinger > Schrodinger::Schrodinger > Evaluate Matslise::Eigenfunction::operator()(Array)	6144	89.39ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues	1	8404.20ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs	1	8404.19ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert	1	8342.95ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA set_shift	1	3663.68ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init	1	24.04ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op	2	23.99ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA init > SPECTRA perform_op > SPECTRA deflate forward	8	0.79ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute	1	4607.77ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op	353	4237.99ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > SPECTRA shift invert > SPECTRA compute > SPECTRA perform_op > SPECTRA deflate forward	1412	144.35ms
+ > Profile Hénon-Heiles (shiftInvert) > calculate eigenvalues > Sparse eigenpairs > Collect eigenvalues	1	30.31ms
+ > Profile Hénon-Heiles (shiftInvert) > check eigenvalues	1	0.00ms
