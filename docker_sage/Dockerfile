@@ -166,23 +166,23 @@ USER student
 
 
 WORKDIR /home/student/
-RUN git clone --recursive https://github.com/twist-numerical/schrodinger.git \
-    && cd schrodinger && git checkout 71942f609425fc9c1bd6ed15cd9fc139d87ee1ae
-WORKDIR /home/student/schrodinger
+RUN git clone --recursive https://github.com/twist-numerical/strands.git \
+    && cd strands && git checkout 412898f89ead9fcc814014c82dd6d7bacbc9e8f0
+WORKDIR /home/student/strands
 RUN mkdir build-sage && mkdir build-python
 
-WORKDIR /home/student/schrodinger/build-sage
+WORKDIR /home/student/strands/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
-RUN cmake --build . --target install_schrodinger_py --config Release -- -j 5
+RUN cmake --build . --target install_strands_py --config Release -- -j 5
 
-WORKDIR /home/student/schrodinger/build-python
+WORKDIR /home/student/strands/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
 USER root
-RUN cmake --build . --target install_schrodinger_py --config Release -- -j 5
+RUN cmake --build . --target install_strands_py --config Release -- -j 5
 USER student
 
 
