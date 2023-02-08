@@ -6,7 +6,8 @@
     "\\undefinedlabel{}{}": "dummy",
     "\\Eigen": "dummy",
     "\\slepc": "dummy",
-    "\\matslise": "dummy"
+    "\\matslise": "dummy",
+    "\\spectra": "dummy"
   },
   "ltex.enabled": [
     "context",

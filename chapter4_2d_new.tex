@@ -93,7 +93,7 @@ on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numpr
 
 In figure \ref{fig:c4_fd_harmonic} the relative errors for the first $100$ eigenvalues are plotted. This is done for $h = \eta \in \left\{\frac{19}{40}, \frac{19}{60}, \frac{19}{100}\right\}$ and $N_x = N_y \in \left\{ 5, 10, 20, 25 \right\}$. In these graphs a few things can be noted. Unsurprisingly, when $N_x = N_y$ is increased, the results become more accurate. And also, when $h = \eta$ is decreased, that is to say more grid points are used, the results also become more accurate. As is the case with most algorithms for approximating Schrödinger equations, when larger eigenvalues are computed, the accuracy decreases. The corresponding eigenfunctions become more and more oscillatory, and are thus more difficult to approximate accurately.
 
-But most impressively, all these graphs were computed within a minute on a simple laptop. More detailed runtime analysis can be found in section \ref{sec:c4_nm_vs_fd}. Furthermore, the obtained results are also impressive. In the most accurate case $h= \eta = \frac{19}{100}$ and $N_x = N_y = 20$, the first $100$ eigenvalues are found with $45$ bits of precision, which is close to the ideal machine precision of $53$ bits.
+But most impressively, all these graphs were computed within a minute on a simple laptop. More detailed runtime analysis can be found in section \ref{sec:c4_nm_runtime}. Furthermore, the obtained results are also impressive. In the most accurate case $h= \eta = \frac{19}{100}$ and $N_x = N_y = 20$, the first $100$ eigenvalues are found with $45$ bits of precision, which is close to the ideal machine precision of $53$ bits.
 
 To get a deeper understanding of this finite difference method it may be beneficial to study the asymptotic behavior of the error, with respect to the number of discretization points and the index of the eigenvalue. The finite difference approximation error can be used as a jumping point. Assume $N = N_x = N_y$, then the finite difference approximation of the second derivative of a function $f : \RR \to \RR$ is of the form:
 $$
@@ -609,11 +609,11 @@ These ten functions can now be used as an interpolation basis. For this we choos
 
 \todo{Non-rectangular domains}
 
-\subsection{Numerical experiments}
+\subsection{Numerical experiments}\label{sec:c4_numerical_experiments}
 
 When developing a new method it is instrumental these are well tested. This inescapably means that the program should be run on many problems with a wide variety of settings. Doing this thoroughly and consistently after code changes can be a cumbersome task. Knowing this, we have from the very first versions onwards included many automatic tests. On every code change, these tests would run on all supported platforms (Linux, Windows and macOS) to verify that our changes still produce sufficiently accurate results for the considered problems. For the development of this new method we continuously test the harmonic oscillator, the Hénon-Heiles potential and the quartic oscillator (\ref{sec:c4_numerical_harmonic} and \ref{sec:c4_numerical_henon_heiles}) on simple rectangular domains, the zero potential (\ref{sec:c4_numerical_zero}) on a rectangular and circular domain and Ixaru's potential on a rectangular, circular and a $45\degree$ rotated rectangle. All tests are conducted in \texttt{double}-precision and most problems are also tested in de extended \texttt{long double} datatype.
 
-These automated tests are extremely valuable during development to quickly notice regressions. But for a thorough mathematical analysis more work is required. In this section we will provide many graphs and figures to evaluate the accuracy of our method. The evaluation of the runtime performance is another can of worms which will be treated in section \ref{sec:c4_nm_vs_fd}.
+These automated tests are extremely valuable during development to quickly notice regressions. But for a thorough mathematical analysis more work is required. In this section we will provide many graphs and figures to evaluate the accuracy of our method. The evaluation of the runtime performance is another can of worms which will be treated in section \ref{sec:c4_nm_runtime}.
 
 \subsubsection{Harmonic oscillator}\label{sec:c4_numerical_harmonic}
 
@@ -635,7 +635,7 @@ In our algorithm there are two main variables to experiment with. The first, mos
 
 The second parameter we can tweak is the number of basis functions on each of the grid lines. On each grid line, in both directions, \matslise needs to compute these basis functions. This computation requires, of course, a part of the runtime. In a very crude analysis we can take a look at the computational complexity of both operations. Assume there are $N$ grid lines in both directions. This yields $N^2$ grid points, and $2N$ grid lines. On each of these lines we compute $K \leq N$ basis functions, thus the computational overhead of the many one-dimensional problems is $\OO(K N)$. For the computation of the eigenvalues of the two-dimensional problem, the analysis is more nuanced. Finding accurate and reliable complexity estimates is a more difficult than one would expect. The restarted Arnoldi procedure (without shift-Invert), has a complexity of $\OO(k^2 n)$ when $k$ eigenvalues are requested for a sufficiently sparse $n \times n$ matrix\cite{lee_k2n_2009}. If the linear operator has a dense operation, this dominates the complexity $\OO(k n^2)$. In our case, we support a shift-invert scheme. In this scheme solving the sparse system is definitely something to take into account. \Eigen's built-in methods are based upon techniques from \superlu{}\cite{demmel_supernodal_1999,li_overview_2005}. In the performance analysis of this software, the authors provide a detailed overview of which properties have an impact on performance. An important property which contribute to the runtime is the structure of the matrix. If the non-zero elements of the involved matrix are so situated that the algorithm can exploit it, it helps the computational cost. It is not known whether our matrix has an exploitable structure or not. It would be surprising if our matrix had the perfect structure, independent of the size and shape of the domain.
 
-In summary, a first complexity analysis of our method indicates that the one-dimensional problems have a complexity of $\OO(K N)$ and solving the matrix eigenvalue problem has a complexity of at least $\OO(k N^2)$. One has to be wary to only rely on a theoretical analysis to conclude that solving the one-dimensional problems has a negligible computational cost. In section \ref{sec:c4_nm_vs_fd} we will conduct a thorough analysis of the runtime of our method. For now, we will focus on numerical accuracy.
+In summary, a first complexity analysis of our method indicates that the one-dimensional problems have a complexity of $\OO(K N)$ and solving the matrix eigenvalue problem has a complexity of at least $\OO(k N^2)$. One has to be wary to only rely on a theoretical analysis to conclude that solving the one-dimensional problems has a negligible computational cost. In section \ref{sec:c4_nm_runtime} we will conduct a thorough analysis of the runtime of our method. For now, we will focus on numerical accuracy.
 
 Figure \ref{fig:c4_nm_harmonic_rectangle} contains three graphs illustrating how the two main variables (grid size and basis size) work together to obtain accurate results. For this figure three different basis sizes were considered $K = 16$, $K = 32$ and $K = 48$. As grid sizes we have chosen $N = 32$, $N = 48$ and $N=64$. Notice that $N = 32$ and $K = 48$ was omitted from the figure as these give exactly the same results as $N = 32$ and $K = 32$, due to the limitation that the number of basis functions can never exceed the number of grid points on the relevant grid line.
 
@@ -728,13 +728,41 @@ Ignoring these special cases allows us to interpret the graphs from figure \ref{
 
 \subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
 
-\subsection{Comparing run time with the finite difference method}\label{sec:c4_nm_vs_fd}
+\subsection{Runtime analysis}\label{sec:c4_nm_runtime}
 
-\input{img/chapter4/benchmark/profile_constructor.tex}
+Throughout the development of this new method we have focussed upon keeping the matrices small. The idea is that finding eigenvalues of a (sparse) matrix is quite expensive, definitely more expensive than all other steps. But it would be careless to take this assumption at face value without more thorough analysis. In section \ref{sec:c4_numerical_experiments} we have already seen that our method can reach the same accuracy as a finite difference scheme with a smaller sparse matrix in the end. So, if all steps to construct the sparse problem are almost negligible in comparison to finding eigenvalues of that sparse system, then our method will be faster for the same accuracies.
 
-\input{img/chapter4/benchmark/profile_select_min.tex}
+As a first experiment, we will take a look at the Hénon-Heiles problem from section \ref{sec:c4_numerical_henon_heiles} on the square domain $[-6 , 6]\times [-6, 6]$ on a $64\times 64$ grid and a maximum basis size of $48$. We have run a profiler on our program to solve this problem. Our program consists of two main parts. First, the grid is constructed and the basis functions on each grid line are computed. Secondly, we employ \spectra to find the eigenvalues of the resulting sparse matrix. For the second part, we have two options. We can find the largest eigenvalues of the shifted inverse matrix. Or, with the implicitly started Arnoldi method we can select only the smallest eigenvalues while converging. The first technique has much better convergence, but is more expensive because in each step a linear system has to be solved. For many problems the second technique also converges to the true smallest eigenvalues, but the convergence is less reliable and slower. But the final runtime may be faster because no systems have to be solved.
 
+To evaluate these differences we have solved this problem 20 times with each of the techniques (selecting the smallest eigenvalues versus using the shifted inverse matrix). With the first technique, our program had an average total runtime of $\numprint[s]{3.295}$ and with the second technique the total runtime rose to $\numprint[s]{8.700}$. Using only these numbers to draw conclusions may be a little premature.
+
+In both cases, the construction of the grid and the determining of the basis functions are identical. In the following table we have summarized the averaged results from the profiler. All reported times are the average of 20 runs, with no deviation of more than $5\%$ between runs.
+
+\begin{center}
+    \input{img/chapter4/benchmark/profile_constructor.tex}    
+\end{center}
+
+The `calls' column contains the total number of times that function was executed, the `runtime' column contains the total time that was spent inside this function. So the construction of the grid took $\numprint[ms]{531}$ and was executed once (per run). On each grid line, the basis functions had to be found. Because we have chosen a $64 \times 64$ grid, this function was called $128 = 64 + 64$ times. In this function our program constructs a \matslise object to find the first $48$ eigenvalues, for each of these eigenvalues the eigenfunction is also calculated, but not yet evaluated. The evaluation of these functions is done a few moments later when constructing the relevant $\vb{B_x}$ and $\vb{B_y}$ matrices. A total of $\numprint{6144} = 48 \cdot 128$ eigenfunctions were evaluated with a total runtime of $\numprint[ms]{89}$. The other steps within this construction (such as determining the boundaries of the domain, allocating matrices or keeping track of grid points) only took on average $\numprint[ms]{6}$. So this table contains the most expensive functions in the construction of the problem.
+
+To compute the eigenvalues themselves, we will first study the technique of the implicitly restarted Arnoldi iteration with selection of the lowest $100$ eigenvalues. For this Hénon-Heiles problem the correct results are found. But, we expect that the convergence may be slow. The following table contains the profiler's summary.
+\begin{center}
+    \input{img/chapter4/benchmark/profile_select_min.tex}
+\end{center}
+We see that the computation for this part took \numprint[s]{2.772}. Together with the construction, this gives the total runtime of $\numprint[s]{3.295}$. We also see that SPECTRA called our matrix-free operation procedure \numprint{1316} times. The computation of this procedure took less than half the total time, the other time is spent inside the implicitly restarted Arnoldi iteration algorithm of \spectra.
+
+Comparing this to the following table where the summary of the profiler is displayed when the eigenvalue algorithm is applied to the shifted inverse matrix.
+\begin{center}
 \input{img/chapter4/benchmark/profile_shift_invert.tex}
+\end{center}
+Here we see that the convergence is faster as counted in number of operations. But the runtime \numprint[s]{8.289} is much higher. The cause is twofold. First we see that before calling the eigenvalue routine we have to compute the sparse LU-decomposition of the involved matrix. This alone takes more time than the computation without inverse matrix. But even though almost four times fewer operations are needed to reach convergence, each operation is almost 14 times slower. This negates all benefits of the `faster' convergence.
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/benchmark/benchmark_timings.pdf}
+    \end{center}
+    \caption{\todo{Text and caption}}
+\end{figure}
 
 \subsection{The name Strands}
 
