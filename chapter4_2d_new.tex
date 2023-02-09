@@ -720,13 +720,15 @@ For a detailed analysis of this potential we refer back to section \ref{sec:c3_e
     \label{fig:c4_nm_henon_test}
 \end{figure}
 
-In \cite{wang_new_2009}, the authors remark to take care when choosing the size of the domain. This should not be too small to allow the eigenfunctions to converge to zero on the boundary. But it should neither be too large, because this can generate some physically nonsensical eigenvalues. They take as domain $[-10, 10] \times [-10, 10]$ and leave it at that. Looking at the available literature about this problem we find for example \cite{davis_semiclassical_1979}. Here, the proposed method does not use a clear defined boundary, but uses infinite basis functions. But, the interesting regions of these basis functions are only present in a radius, much smaller than $10$, around zero. \cite{braun_efficient_1996} limits their grid to a $[-6, 6] \times [-6, 6]$ domain. And in \cite{baeyens_improvements_2022}, we follow \cite{braun_efficient_1996}. For this experiment we will also take a $[-10, 10] \times [-10, 10]$ domain.
+In \cite{wang_new_2009}, the authors remark to take care when choosing the size of the domain. This should not be too small to allow the eigenfunctions to converge to zero on the boundary. But it should neither be too large, because this can generate some physically nonsensical eigenvalues. They take as domain $[-10, 10] \times [-10, 10]$ and leave it at that. Looking at the available literature about this problem we find for example \cite{davis_semiclassical_1979}. Here, the proposed method does not use a clear defined boundary, but uses infinite basis functions. But, the interesting regions of these basis functions are only present in a radius, much smaller than $10$, around zero. \cite{braun_efficient_1996} limits their grid to a $[-6, 6] \times [-6, 6]$ domain. And in \cite{baeyens_improvements_2022}, the authors follow \cite{braun_efficient_1996}. For this experiment we will also take a $[-10, 10] \times [-10, 10]$ domain.
 
 In figure \ref{fig:c4_nm_henon_test} the relative errors obtained with our method our displayed for this experiment. We used the results from \cite{wang_new_2009} as reference. Before analyzing these results we need to mention that for $N = K = 32$ and $N = K = 48$ our method found many nonsensical small eigenvalues. We know that they have no physical meaning because the corresponding eigenfunctions are only non-zero inside the valleys at the boundary. These unwanted eigenvalues disappear if the domain would be a little smaller, such that it no longer contains any valleys at the boundary.
 
 Ignoring these special cases allows us to interpret the graphs from figure \ref{fig:c4_nm_henon_test}. Even on a small grid $N = 48$ we are able to accurately determine the eigenvalues. We also see that for the high eigenvalues increasing the grid size or basis size seems to have no effect. This is unexpected and seems to indicate that maybe the reference values are not perfect. The relative error for these high eigenvalues is $< 2^{-32} \approx 10^{-10}$ which is nonetheless extremely accurate.
 
 \subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
+
+\todo{Ixaru's}
 
 \subsection{Runtime analysis}\label{sec:c4_nm_runtime}
 
@@ -754,15 +756,24 @@ Comparing this to the following table where the summary of the profiler is displ
 \begin{center}
 \input{img/chapter4/benchmark/profile_shift_invert.tex}
 \end{center}
-Here we see that the convergence is faster as counted in number of operations. But the runtime \numprint[s]{8.289} is much higher. The cause is twofold. First we see that before calling the eigenvalue routine we have to compute the sparse LU-decomposition of the involved matrix. This alone takes more time than the computation without inverse matrix. But even though almost four times fewer operations are needed to reach convergence, each operation is almost 14 times slower. This negates all benefits of the `faster' convergence.
+Here we see that the convergence is faster, it is to say fewer operations are needed. But the runtime \numprint[s]{8.289} is much higher. The cause is twofold. First we see that before calling the eigenvalue routine we have to compute the sparse LU-decomposition of the involved matrix. This alone takes more time than the computation without inverse matrix. But even though almost four times fewer operations are needed to reach convergence, each operation is almost 14 times slower. This negates all benefits of the `faster' convergence.
 
+The main take-away from these tables is that the construction time is dwarfed by the time effectively converging to the requested eigenvalues, regardless of the used method. But only looking at fixed parameters may be misleading. In figure \ref{fig:c4_benchmark_timings} we have plotted the true runtime of the construction time and the computation of the eigenvalues (with both techniques) for different parameters $N \in \{32,48,64,80,96,112\}$ and $K = \frac{3}{4}N$.
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/benchmark/benchmark_timings.pdf}
     \end{center}
-    \caption{\todo{Text and caption}}
+    \caption{The Hénon-Heiles problem on a $[-6,6] \times [-6,6]$ square domain is solved for parameters $N \in \{32,48,64,80,96,112\}$ and $K = \frac{3}{4}N$. The average runtime (over five runs) of the construction of the grid (with solving all one-dimensional subproblems) and of the computation of the eigenvalues with and without inverting the matrix are reported.\label{fig:c4_benchmark_timings}}
 \end{figure}
+
+In this figure we see that the construction of the grid (with solving all one-dimensional problems) has an experimental time complexity of $\OO(N^2)$. This is in line with our expectation. We have $2 N$ one-dimensional problems to solve, and for each of these problems $\frac{3}{4}N$ eigenvalues are requested. Now, in principle we have a $\OO(N^3)$ runtime complexity, because we will evaluate each of the $\frac{3}{2} N^2$ eigenfunctions in $N$ points. But, as seen from the detailed profiler results from before, this evaluation is quite efficient and as such this theoretic cubic complexity will not be present in practice. 
+
+When we are using the shifted inverse matrix to find eigenvalues, we can see an experimental runtime of $\OO(N^5)$. A dense LU-decomposition has a cubic complexity in the size of the involved matrix. In our case a sparse LU-decomposition is calculated of the $N^2 \times N^2$ sparse matrix. This decomposition is able to exploit some sparsity and as such we hope (and expect) a speed-up. This is what we see with the measured $\OO(N^5)$ complexity.
+
+When the eigenvalues are found by selecting the smallest values during convergence a theoretical analysis is more difficult. In a single step our matrix-free operation computes deflated vectors and a matrix-vector product. The former is computed with sparse basis vectors, the latter is computed with a sparse matrix. Let us focus on the main matrix-vector product. This matrix is given in the right-hand side of equation \eqref{equ:c4_nm_sparse_system}. The first term is a block diagonal-matrix with $N$ $K\times K$-blocks. The second term has a similar but permuted structure. Therefor, each row contains at most $2K - 1$ non-zero entries, for a total of $\OO(N K^2) = \OO(N^3)$ non-zero entries. The bases of the deflation spaces are similarly sparse. For determining the total time complexity, `only' an estimate for the number of operations is needed. But, in most analyses of this eigenvalue solver it is assumed that the outer boundary of the spectrum is selected in each step, not the smallest values. So finding reliable estimates is quite difficult. Using the experiment from figure \ref{fig:c4_benchmark_timings} we can suspect that the number of steps before convergence is $\OO(N)$, which is the square root of the matrix size.
+
+But in any case, our focus on reducing the matrix-size has been worthwhile. The main bottleneck is still the computation of the eigenvalues for which many well-tested extremely-efficient and even parallelly distributed algorithms exist. In comparison to \cite{wang_new_2009}, our method is able to reach the same or higher accuracies (as discussed in section \ref{sec:c4_numerical_experiments}) with smaller grid sizes, and thus matrix sizes, which in turn reduces the total runtime.
 
 \subsection{The name Strands}
 
