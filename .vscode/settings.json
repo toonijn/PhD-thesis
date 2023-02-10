@@ -18,5 +18,8 @@
     "org",
     "restructuredtext",
     "rsweave"
-  ]
+  ],
+  "ltex.latex.environments": {
+    "python": "ignore"
+  }
 }
