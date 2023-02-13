@@ -175,6 +175,7 @@ The main idea underlying this method is that we want to represent the eigenfunct
     \end{center}
 \end{figure}
 
+\todo{Intervals are connected, not continuous.}
 We are now going to construct a new method in which we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid does not need to be equidistant. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not have to be a rectangle, the number of intersections per grid line is not necessarily constant. Even worse, because we do not even require $\Omega$ to be convex, the intersection of a grid line with $\Omega$ may not be continuous. Upon formulating and implementing this new method, this varying number of intersections and these noncontinuous grid lines are some example of difficulties that arise by explicitly allowing more flexibility.
 
 After placing the grid on $\Omega$, the next step is to approximate the unknown eigenfunction $\psi$ as a linear combination of basis functions on each of the grid lines. On the vertical line $x = x_i$, we denote these basis functions as $\beta_k^{(x_i)}(y)$, for each value of $k$. This yields the expression
