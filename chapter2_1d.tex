@@ -526,15 +526,15 @@ CP methods have already been described extensively, see e.g.\ \cite{ixaru_numeri
 
 The one dimensional time independent Schrödinger equation is of the form
 \[
-  -\psi''(x) + V(x)\psi = E\psi\text{.}
+    -\psi''(x) + V(x)\psi = E\psi\text{.}
 \] The function $V(x)$ is called the potential function.
 This eigenvalue problem is mostly considered as a boundary value problem on
 the interval \([x_\text{min}, x_\text{max}]\). We further assume that the boundary
 conditions are separate, i.e.\ they can be expressed as
 \[
-  a_\text{min} \psi(x_\text{min}) + b_\text{min}\psi'(x_\text{min}) = 0
-  \quad \mbox{and} \quad
-  a_\text{max} \psi(x_\text{max}) + b_\text{max}\psi'(x_\text{max}) = 0\,
+    a_\text{min} \psi(x_\text{min}) + b_\text{min}\psi'(x_\text{min}) = 0
+    \quad \mbox{and} \quad
+    a_\text{max} \psi(x_\text{max}) + b_\text{max}\psi'(x_\text{max}) = 0\,
 \]
 with not both $a_\text{min}$ and $b_\text{min}$ zero (analogous for $a_\text{max}$ and $b_\text{max}$).
 
@@ -551,27 +551,27 @@ intervals. The \(k^\text{th}\) interval can be written as
 mesh points. Generically we can write such an interval as \(I = [X, X+h]\).
 The solution \(\psi\) can now be expressed as:
 \begin{equation}
-  \begin{pmatrix}\psi(X+\delta) \\ \psi'(X+\delta)\end{pmatrix}
-  = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} \psi(X) \\ \psi'(X) \end{pmatrix} \,, \qquad %\text{ with } 
-  0 \leq \delta \leq h \,. \label{eq:propmatrix}
+    \begin{pmatrix}\psi(X+\delta) \\ \psi'(X+\delta)\end{pmatrix}
+    = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} \psi(X) \\ \psi'(X) \end{pmatrix} \,, \qquad %\text{ with } 
+    0 \leq \delta \leq h \,. \label{eq:propmatrix}
 \end{equation}
 
 The functions \(u(\delta)\) and \(v(\delta)\), called propagators,
 satisfy the local Schrödinger equation (analogous for \(v(\delta)\)):
 \begin{equation}
-  - u''(\delta) + V(X+\delta) u(\delta) = E u(\delta) \label{eq:loc}
+    - u''(\delta) + V(X+\delta) u(\delta) = E u(\delta) \label{eq:loc}
 \end{equation}
 with the initial conditions \(u(0) = 1, u'(0)=0\) and
 \(v(0) = 0, v'(0)=1\). The one step propagation matrix \[
-  \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}
+    \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}
 \] has determinant \(1\), so the inverse matrix can be easily
 constructed. Knowledge of this propagation matrix (and its inverse) is sufficient to
 advance the solution in both directions along the interval.
 
 Perturbation theory is then used to construct sufficiently accurate propagators
 \begin{align*}
-  u(\delta) & = u_0(\delta) + u_1(\delta) + u_2(\delta) + \dots \\
-  v(\delta) & = v_0(\delta) + v_1(\delta) + v_2(\delta) + \dots
+    u(\delta) & = u_0(\delta) + u_1(\delta) + u_2(\delta) + \dots \\
+    v(\delta) & = v_0(\delta) + v_1(\delta) + v_2(\delta) + \dots
 \end{align*}
 
 %\(u(\delta)\) and \(v(\delta)\). 
@@ -601,19 +601,19 @@ respectively corresponding to the initial conditions
 %\end{align*}
 These solutions can be computed as
 \begin{align*}
-  u_0(\delta) & = \eta_{-1}\left(Z(\delta)\right)      \\
-  v_0(\delta) & = \delta\eta_{0}\left(Z(\delta)\right)
+    u_0(\delta) & = \eta_{-1}\left(Z(\delta)\right)      \\
+    v_0(\delta) & = \delta\eta_{0}\left(Z(\delta)\right)
 \end{align*} with \(Z(\delta) = (V_0-E)\delta^2\) and
 \begin{align*}
-  \eta_{-1}(Z) & = \begin{cases}
-    \cos(\sqrt{-Z}) & \text{if } Z \leq 0 \\
-    \cosh(\sqrt{Z}) & \text{if } Z > 0\,, \\
-  \end{cases} \qquad
-  \eta_{0}(Z)  & = \begin{cases}
-    \frac{\sin(\sqrt{-Z})}{\sqrt{-Z}} & \text{if } Z < 0    \\
-    1                                 & \text{if } Z = 0    \\
-    \frac{\sinh(\sqrt{Z})}{\sqrt{Z}}  & \text{if } Z > 0\,. \\
-  \end{cases}
+    \eta_{-1}(Z) & = \begin{cases}
+        \cos(\sqrt{-Z}) & \text{if } Z \leq 0 \\
+        \cosh(\sqrt{Z}) & \text{if } Z > 0\,, \\
+    \end{cases} \qquad
+    \eta_{0}(Z)  & = \begin{cases}
+        \frac{\sin(\sqrt{-Z})}{\sqrt{-Z}} & \text{if } Z < 0    \\
+        1                                 & \text{if } Z = 0    \\
+        \frac{\sinh(\sqrt{Z})}{\sqrt{Z}}  & \text{if } Z > 0\,. \\
+    \end{cases}
 \end{align*}
 
 These two functions are the first of a family $\{ \eta_m(Z)\,|\,m=-1,0,1,\ldots\}$ of functions that make the analytical computation of the perturbation terms \(u_1(\delta),\, u_2(\delta), \dots\) and \(v_1(\delta),\, v_2(\delta), \dots\) possible.
@@ -641,24 +641,24 @@ The propagators \(u(\delta)\) and \(v(\delta)\) are generically denoted as \(p(\
 %\]
 
 \begin{theorem}\label{theorem:perturbation-terms}
-  If $V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
+    If $V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
 
-  \begin{align*}
-    p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
-    \intertext{with derivative:}
-    p_q'(\delta) & = \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z) + \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
-  \end{align*}
-  The functions \(C^{(q)}_i\) satisfy the following recursive relation: \begin{align*}
-    C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
-    C_{i-1}^{(q-1)}(\varepsilon) \Delta V(X+\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
-    \right)\dd\varepsilon                                                                 \\
-    C_{i}^{(0)}(\delta)  & = \begin{cases}
-      \delta & \text{if $p = u$ and $i = -1$} \\
-      1      & \text{if $p = v$ and $i = 0$}  \\
-      0      & \text{otherwise}
-    \end{cases}                                   \\
-    C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
-  \end{align*}
+    \begin{align*}
+        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
+        \intertext{with derivative:}
+        p_q'(\delta) & = \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z) + \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
+    \end{align*}
+    The functions \(C^{(q)}_i\) satisfy the following recursive relation: \begin{align*}
+        C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
+        C_{i-1}^{(q-1)}(\varepsilon) \Delta V(X+\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
+        \right)\dd\varepsilon                                                                 \\
+        C_{i}^{(0)}(\delta)  & = \begin{cases}
+            \delta & \text{if $p = u$ and $i = -1$} \\
+            1      & \text{if $p = v$ and $i = 0$}  \\
+            0      & \text{otherwise}
+        \end{cases}                                   \\
+        C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
+    \end{align*}
 
 \end{theorem}
 
@@ -676,11 +676,11 @@ Gauss quadrature rules (of sufficient high degree) are used to compute these int
 Let us then denote the CP method with given choices for the degree $N$ and the number of correction terms $Q$ as CPM$[N,Q]$, we have the  following result \cite{ixaru_cp_1998}
 
 \begin{theorem}\label{theorem:error-estimate}
-  If $\text{CPM}[N,Q]$ is applied to propagate the solution on an equidistant partition with mesh size $h$ then
-  \begin{itemize}
-    \item for small values of $E$ (i.e.\ if $Z$ remains sufficiently small), the error in the mesh points is bounded by $C_N h^{2\,N+2}$ (for some constant $C_N$) provided that $Q \geq \left\lfloor \frac{2\,N}{3} \right\rfloor +1$ if $N \geq 1$ and $Q=0$ if $N=0$.
-    \item if $E$ is such that $Z(h)\ll 0$ in all intervals, the error in the mesh points is bounded by $C^*_N h^{N}/ \sqrt{E}$  (for some constant $C^*_N$) provided that $Q \geq 1$  if $N \geq 1$ and $Q=0$ if $N=0$.
-  \end{itemize}
+    If $\text{CPM}[N,Q]$ is applied to propagate the solution on an equidistant partition with mesh size $h$ then
+    \begin{itemize}
+        \item for small values of $E$ (i.e.\ if $Z$ remains sufficiently small), the error in the mesh points is bounded by $C_N h^{2\,N+2}$ (for some constant $C_N$) provided that $Q \geq \left\lfloor \frac{2\,N}{3} \right\rfloor +1$ if $N \geq 1$ and $Q=0$ if $N=0$.
+        \item if $E$ is such that $Z(h)\ll 0$ in all intervals, the error in the mesh points is bounded by $C^*_N h^{N}/ \sqrt{E}$  (for some constant $C^*_N$) provided that $Q \geq 1$  if $N \geq 1$ and $Q=0$ if $N=0$.
+    \end{itemize}
 \end{theorem}
 
 Finally, one can simplify the expressions for the coefficients of the perturbation terms \(C^{(q)}_i\) by taking into account the orders $P_0$ (for small $Z$) and $P_{ass}$ (for negative $Z$ with $|Z| \gg 0$) that can be attained by the CPM$[N,Q]$ method. Some of the terms will contribute to the solution in higher orders of $h$, and so they do not need to be computed. This pruning then finally results in a method which was generically denoted as CPM$\{P_0, P_{ass}\}$. In section 3 we will prove that $P_{ass} = P_0$, thus we will denote our method as CPM$\{P_0\}$.
@@ -692,16 +692,16 @@ In Matslise 2.0 only CPM$\{18,16\}$ and CPM$\{16,14\}$ are implemented. The CPM$
 
 In section \ref{the-method} we have provided an overview of the CP method to solve the one-dimensional Schrödinger equation. This method can be summarized in the following steps:
 \begin{itemize}
-  \item Split the domain $[a, b]$ in intervals $(a=x_0, x_1, x_2, \dots, x_k, \dots, x_n = b)$.
-  \item For each interval $k$ write $X = x_{k-1}$ and $h = x_k - x_{k-1}$. \begin{itemize}
-          \item Construct propagators $u(\delta)$ and $v(\delta)$ for $\delta \in [0, h]$, according to the formulae from Theorem \ref{theorem:perturbation-terms}.
-          \item A solution $\psi(x)$ can be calculated on the $k^\text{th}$ interval if $\psi(X)$ is known:
-                \begin{align*}
-                  \psi(X+\delta)  & = u(\delta)\psi(X) + v(\delta)\psi'(X)   \\
-                  \psi'(X+\delta) & = u'(\delta)\psi(X) + v'(\delta)\psi'(X)
-                \end{align*}
-        \end{itemize}
-  \item Employ multiple shooting to find solutions to the boundary value problem.
+    \item Split the domain $[a, b]$ in intervals $(a=x_0, x_1, x_2, \dots, x_k, \dots, x_n = b)$.
+    \item For each interval $k$ write $X = x_{k-1}$ and $h = x_k - x_{k-1}$. \begin{itemize}
+              \item Construct propagators $u(\delta)$ and $v(\delta)$ for $\delta \in [0, h]$, according to the formulae from Theorem \ref{theorem:perturbation-terms}.
+              \item A solution $\psi(x)$ can be calculated on the $k^\text{th}$ interval if $\psi(X)$ is known:
+                    \begin{align*}
+                        \psi(X+\delta)  & = u(\delta)\psi(X) + v(\delta)\psi'(X)   \\
+                        \psi'(X+\delta) & = u'(\delta)\psi(X) + v'(\delta)\psi'(X)
+                    \end{align*}
+          \end{itemize}
+    \item Employ multiple shooting to find solutions to the boundary value problem.
 \end{itemize}
 
 Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{theorem:perturbation-terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{theorem:error-estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these 'simplified' formulae are daunting to work with.
@@ -718,157 +718,157 @@ For the efficient calculation of eigenfunctions in arbitrary points of the domai
 
 Functions of $\theta$ will be denoted with a bar, like $\bar{C}(\theta) = C(\theta h)= C(\delta)$ and $\bar{u}_{q}(\theta) = {u}_{q}(\theta h) =u_{q}(\delta)$. Again $\bar{p}$ generically denotes  the functions $\bar{u}$ or $\bar{v}$. The CP-correction terms are now given by:
 \begin{align}
-   & \bar{p}_q(\theta) = \sum_{i=-1}^\infty h^{2i+1}\theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta))
-  \intertext{with derivative:}
-   & \begin{aligned}
-    \bar{p}_q'(\theta) & = \sum_{i=-1}^\infty \left(\bar{C}_{i}^{(q)\prime}(\theta) + h^2 \theta \bar{C}_{i+1}^{(q)}(\theta)\right) h^{2i + 1} \theta^{2i + 1}\eta_{i}(Z) \\
-                       & \quad \quad + \frac{\bar{C}_{-1}^{(q)}(\theta)}{\theta^2 h}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
-  \end{aligned}
+     & \bar{p}_q(\theta) = \sum_{i=-1}^\infty h^{2i+1}\theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta))
+    \intertext{with derivative:}
+     & \begin{aligned}
+        \bar{p}_q'(\theta) & = \sum_{i=-1}^\infty \left(\bar{C}_{i}^{(q)\prime}(\theta) + h^2 \theta \bar{C}_{i+1}^{(q)}(\theta)\right) h^{2i + 1} \theta^{2i + 1}\eta_{i}(Z) \\
+                           & \quad \quad + \frac{\bar{C}_{-1}^{(q)}(\theta)}{\theta^2 h}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
+    \end{aligned}
 \end{align}
 The functions \(\bar{C}^{(q)}_i\) satisfy the following recursive relation: \begin{align}
-  \bar{C}_i^{(q)}(\theta)    & = \frac{\theta^{-i}}{2} \int_0^\theta \sigma^{i-1} \left(
-  \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) -  h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
-  \right)\dd\sigma \nonumber                                                             \\
-  \bar{C}_{i}^{(0)}(\theta)  & = \begin{cases}
-    h\theta & \text{if $p = u$ and $i = -1$} \\
-    1       & \text{if $p = v$ and $i = 0$}  \\
-    0       & \text{otherwise}
-  \end{cases}                              \\
-  \bar{C}_{-1}^{(q)}(\theta) & = 0 \quad \text{if $q > 0$}\,.\nonumber
+    \bar{C}_i^{(q)}(\theta)    & = \frac{\theta^{-i}}{2} \int_0^\theta \sigma^{i-1} \left(
+    \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) -  h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
+    \right)\dd\sigma \nonumber                                                             \\
+    \bar{C}_{i}^{(0)}(\theta)  & = \begin{cases}
+        h\theta & \text{if $p = u$ and $i = -1$} \\
+        1       & \text{if $p = v$ and $i = 0$}  \\
+        0       & \text{otherwise}
+    \end{cases}                              \\
+    \bar{C}_{-1}^{(q)}(\theta) & = 0 \quad \text{if $q > 0$}\,.\nonumber
 \end{align}
 
 
 Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref{eq:propmatrix}) can be rewritten
 
 \begin{equation}
-  \begin{pmatrix}\bar{\psi}(\theta)\\ \bar{\psi}'(\theta)\end{pmatrix}
-  = \begin{pmatrix} \bar{u}(\theta) & \bar{v}(\theta)/h \\ \bar{u}'(\theta) & \bar{v}'(\theta)/h \end{pmatrix} \begin{pmatrix} \bar{\psi}(0) \\ \bar{\psi}'(0) \end{pmatrix} \,, \qquad %\text{ with } 
-  0 \leq \theta \leq 1 \,. \label{eq:propmatrix2}
+    \begin{pmatrix}\bar{\psi}(\theta)\\ \bar{\psi}'(\theta)\end{pmatrix}
+    = \begin{pmatrix} \bar{u}(\theta) & \bar{v}(\theta)/h \\ \bar{u}'(\theta) & \bar{v}'(\theta)/h \end{pmatrix} \begin{pmatrix} \bar{\psi}(0) \\ \bar{\psi}'(0) \end{pmatrix} \,, \qquad %\text{ with } 
+    0 \leq \theta \leq 1 \,. \label{eq:propmatrix2}
 \end{equation}
 
 \begin{theorem}\label{theorem:delta-formulae}
-  Assume, for $h$ sufficiently small, that an approximation of the propagation matrix % in $\theta = \frac{\delta}{h} \in [0, 1]$
-  $$
-    \begin{pmatrix}
-      \bar{u}(\theta)  & \bar{v}(\theta)/h  \\
-      \bar{u}'(\theta) & \bar{v}'(\theta)/h
-    \end{pmatrix}
-  $$
-  is desired to be accurate to at least $\mathcal{O}(h^r)$. % , i.e. the error has to be a multiple of $h^{r+1}$.
-  Then the number of correction terms $Q$ has to be at least $\lfloor\frac{r}{3} \rfloor$
-  and $V$ can be approximated by a polynomial of degree $N=r-2$.
+    Assume, for $h$ sufficiently small, that an approximation of the propagation matrix % in $\theta = \frac{\delta}{h} \in [0, 1]$
+    $$
+        \begin{pmatrix}
+            \bar{u}(\theta)  & \bar{v}(\theta)/h  \\
+            \bar{u}'(\theta) & \bar{v}'(\theta)/h
+        \end{pmatrix}
+    $$
+    is desired to be accurate to at least $\mathcal{O}(h^r)$. % , i.e. the error has to be a multiple of $h^{r+1}$.
+    Then the number of correction terms $Q$ has to be at least $\lfloor\frac{r}{3} \rfloor$
+    and $V$ can be approximated by a polynomial of degree $N=r-2$.
 
 \end{theorem}
 \begin{proof}
-  This theorem is heavily inspired by \cite{ixaru_cp_1998}. There an error estimate is calculated and Theorem~\ref{theorem:perturbation-terms} and Theorem~\ref{theorem:error-estimate} are proved. These proofs give a useful framework for providing a result for the $\delta$-dependent formulae.
+    This theorem is heavily inspired by \cite{ixaru_cp_1998}. There an error estimate is calculated and Theorem~\ref{theorem:perturbation-terms} and Theorem~\ref{theorem:error-estimate} are proved. These proofs give a useful framework for providing a result for the $\delta$-dependent formulae.
 
-  %Firstly $V(X+h\theta)$ is approximated for $\theta \in [0, 1]$ on an interval $[X, X+h]$ in terms of shifted Legendre polynomials $P_n^*(\theta)$:
-  %$$
-  %V(X + h\theta) = \sum_{n=0} V_n h^n P_n^*(\theta)
-  %$$
-  %{\color{red}
-  %We choose $V_0$ as the constant approximation on this interval, giving rise to the function $\Delta V^{(N)}$:
-  %$$
-  %\Delta V^{(N)}(X + h\theta) = \sum^N_{n=1} V_n h^n P_n^*(\theta)
-  %$$
-  %This series will be truncated to the minimal number of terms $N$ to assure the desired accuracy. The optimal bound will be given later.
-  %}
-  %
-  %The second stage of the algorithm is the calculation of the propagator functions $\bar{u}(\theta)$, $\bar{u}'(\theta)$, $\bar{v}(\theta)$ and $\bar{v}'(\theta)$.
-  %
-  %{\color{red}
+    %Firstly $V(X+h\theta)$ is approximated for $\theta \in [0, 1]$ on an interval $[X, X+h]$ in terms of shifted Legendre polynomials $P_n^*(\theta)$:
+    %$$
+    %V(X + h\theta) = \sum_{n=0} V_n h^n P_n^*(\theta)
+    %$$
+    %{\color{red}
+    %We choose $V_0$ as the constant approximation on this interval, giving rise to the function $\Delta V^{(N)}$:
+    %$$
+    %\Delta V^{(N)}(X + h\theta) = \sum^N_{n=1} V_n h^n P_n^*(\theta)
+    %$$
+    %This series will be truncated to the minimal number of terms $N$ to assure the desired accuracy. The optimal bound will be given later.
+    %}
+    %
+    %The second stage of the algorithm is the calculation of the propagator functions $\bar{u}(\theta)$, $\bar{u}'(\theta)$, $\bar{v}(\theta)$ and $\bar{v}'(\theta)$.
+    %
+    %{\color{red}
 
-  First we show by induction on $q$ and $i$ that $\bar{C}_{i}^{(q)}$ is a polynomial in both $\theta$ and $h$ whereby for each term the power in $h$ is not smaller than the power in $\theta$. This indeed holds for all $i$ when $q=0$ and for all $q$ when $i=-1$.
-  Assuming that this also holds for $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i}^{(q-1)}$, we will show that it also holds for $\bar{C}_{i}^{(q)}$. Indeed,
-  $h^{-2}\bar{C}_{i-1}^{(q)\prime\prime}(\sigma)$ is a polynomial satisfying the same property and
-  $$
-    \sigma^{i-1} \left(
-    \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) - h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
-    \right)
-  $$
-  is a polynomial of degree at least $i-1$ in $\sigma$. After integrating w.r.t.\ $\sigma$ between $0$ and $\theta$ and multiplying by $\theta^{-i}$
-  it follows that $\bar{C}_{i}^{(q)}(\theta)$ is a new polynomial in which no terms have gained factors in $\theta$ nor has any lost factors of $h$, i.e.\
-  the result is a polynomial in $\theta$ and $h$ with in each term at least as many factors in $h$ as in $\theta$.
-  %}
+    First we show by induction on $q$ and $i$ that $\bar{C}_{i}^{(q)}$ is a polynomial in both $\theta$ and $h$ whereby for each term the power in $h$ is not smaller than the power in $\theta$. This indeed holds for all $i$ when $q=0$ and for all $q$ when $i=-1$.
+    Assuming that this also holds for $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i}^{(q-1)}$, we will show that it also holds for $\bar{C}_{i}^{(q)}$. Indeed,
+    $h^{-2}\bar{C}_{i-1}^{(q)\prime\prime}(\sigma)$ is a polynomial satisfying the same property and
+    $$
+        \sigma^{i-1} \left(
+        \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) - h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
+        \right)
+    $$
+    is a polynomial of degree at least $i-1$ in $\sigma$. After integrating w.r.t.\ $\sigma$ between $0$ and $\theta$ and multiplying by $\theta^{-i}$
+    it follows that $\bar{C}_{i}^{(q)}(\theta)$ is a new polynomial in which no terms have gained factors in $\theta$ nor has any lost factors of $h$, i.e.\
+    the result is a polynomial in $\theta$ and $h$ with in each term at least as many factors in $h$ as in $\theta$.
+    %}
 
-  Further, one notices that if both $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$ are zero, so is $\bar{C}_{i}^{(q)}$. With the given conditions,
-  it is easy to verify that
-  %$\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$ 
-  \[ \bar{C}_{i}^{(q)}(\theta)   =  \begin{cases}
-      \text{$0$ for $i <q -1$,} & \text{if $\bar{p} = \bar{u}$,} \\
-      \text{$0$ for $i <q$,}    & \text{if $\bar{p} = \bar{v}$.}
-    \end{cases} \]
-  %is dependent on $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$, in the sense that if both of them are $0$, then $\bar{C}_{i}^{(q)}$ will be as well. This means that for $\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$.
-  In case $\bar{C}_{i}^{(q)}(\theta)$ is not zero, we investigate the common degree in $h$ of all its terms. Let us denote this common degree in $d_h(\bar{C}_{i}^{(q)})$.  Since $\Delta V$ does not contain a constant term, $d_h\left(\bar{C}_{q-1}^{(q)}\right) = d_h\left(\bar{C}_{q-2}^{(q-1)}\right)+1$.
-  On the other hand $d_h\left(\bar{C}_{i}^{(q)}\right)=d_h\left(\bar{C}_{i-1}^{(q)}\right)-2$.
+    Further, one notices that if both $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$ are zero, so is $\bar{C}_{i}^{(q)}$. With the given conditions,
+    it is easy to verify that
+    %$\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$ 
+    \[ \bar{C}_{i}^{(q)}(\theta)   =  \begin{cases}
+            \text{$0$ for $i <q -1$,} & \text{if $\bar{p} = \bar{u}$,} \\
+            \text{$0$ for $i <q$,}    & \text{if $\bar{p} = \bar{v}$.}
+        \end{cases} \]
+    %is dependent on $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$, in the sense that if both of them are $0$, then $\bar{C}_{i}^{(q)}$ will be as well. This means that for $\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$.
+    In case $\bar{C}_{i}^{(q)}(\theta)$ is not zero, we investigate the common degree in $h$ of all its terms. Let us denote this common degree in $d_h(\bar{C}_{i}^{(q)})$.  Since $\Delta V$ does not contain a constant term, $d_h\left(\bar{C}_{q-1}^{(q)}\right) = d_h\left(\bar{C}_{q-2}^{(q-1)}\right)+1$.
+    On the other hand $d_h\left(\bar{C}_{i}^{(q)}\right)=d_h\left(\bar{C}_{i-1}^{(q)}\right)-2$.
 
-  For $\bar{p}=\bar{u}$, we have $d_h\left(\bar{C}_{-1}^{(0)}\right)=1$ such that $d_h\left(\bar{C}_{q-1}^{(q)}\right)=q+1$ and $d_h\left(\bar{C}_{i}^{(q)}\right) = q+1-2(i-(q-1))=3q-2i-1$ for $i \geq q-1$.
+    For $\bar{p}=\bar{u}$, we have $d_h\left(\bar{C}_{-1}^{(0)}\right)=1$ such that $d_h\left(\bar{C}_{q-1}^{(q)}\right)=q+1$ and $d_h\left(\bar{C}_{i}^{(q)}\right) = q+1-2(i-(q-1))=3q-2i-1$ for $i \geq q-1$.
 
-  For $\bar{p}=\bar{v}$, we similarly have $d_h\left(\bar{C}_{0}^{(0)}\right)=0$ such that $d_h\left(\bar{C}_{q}^{(q)}\right)=q$ and $d_h\left(\bar{C}_{i}^{(q)}\right) = q-2(i-q)=3q-2i$ for $i \geq q$.
-  %For $\bar{p} = \bar{v}$ and $d_h(\bar{C}_{i}^{(q)})=3q-2i$ for $\bar{p} = \bar{v}$.
+    For $\bar{p}=\bar{v}$, we similarly have $d_h\left(\bar{C}_{0}^{(0)}\right)=0$ such that $d_h\left(\bar{C}_{q}^{(q)}\right)=q$ and $d_h\left(\bar{C}_{i}^{(q)}\right) = q-2(i-q)=3q-2i$ for $i \geq q$.
+    %For $\bar{p} = \bar{v}$ and $d_h(\bar{C}_{i}^{(q)})=3q-2i$ for $\bar{p} = \bar{v}$.
 
-  Combining these results and assuming all $\eta_i(Z(h\theta))$ are bounded we get:
-  % {\color{red}
-  \begin{align*}
-    \bar{u}_{q}(\theta)   & =  \sum_{i=q-1} h^{2i+1} \theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta)) = \mathcal{O}(h^{3q})     \\
-    \bar{v}_{q}(\theta)/h & = h^{-1} \sum_{i=q} h^{2i+1} \theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta)) = \mathcal{O}(h^{3q})
-  \end{align*}
-  % }
+    Combining these results and assuming all $\eta_i(Z(h\theta))$ are bounded we get:
+    % {\color{red}
+    \begin{align*}
+        \bar{u}_{q}(\theta)   & =  \sum_{i=q-1} h^{2i+1} \theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta)) = \mathcal{O}(h^{3q})     \\
+        \bar{v}_{q}(\theta)/h & = h^{-1} \sum_{i=q} h^{2i+1} \theta^{2i+1} \bar{C}^{(q)}_i(\theta) \eta_{i}(Z(h\theta)) = \mathcal{O}(h^{3q})
+    \end{align*}
+    % }
 
-  Using the expression for the derivative $\bar{p}'_{q}(\theta)$, one can similarly prove
+    Using the expression for the derivative $\bar{p}'_{q}(\theta)$, one can similarly prove
 
-  \begin{align*}
-    \bar{u}'_{q}(\theta)   & =  \mathcal{O}(h^{3q}) \\
-    \bar{v}'_{q}(\theta)/h & = \mathcal{O}(h^{3q})
-  \end{align*}
+    \begin{align*}
+        \bar{u}'_{q}(\theta)   & =  \mathcal{O}(h^{3q}) \\
+        \bar{v}'_{q}(\theta)/h & = \mathcal{O}(h^{3q})
+    \end{align*}
 
-  We can thus indeed conclude that, in order to be accurate up to order $r$ in $h$, we need to consider all terms $\bar{p}_q(\theta)$, $q=0,1,2,\ldots$ for which $3q \leq r$, i.e. $Q= \lfloor \frac{r}{3} \rfloor$.
+    We can thus indeed conclude that, in order to be accurate up to order $r$ in $h$, we need to consider all terms $\bar{p}_q(\theta)$, $q=0,1,2,\ldots$ for which $3q \leq r$, i.e. $Q= \lfloor \frac{r}{3} \rfloor$.
 
-  Next we determine the minimal value of $N$, the degree of the polynomial approximation $V^{N}(x)$ of $V$, to obtain a given accuracy. \\
-  We first consider the case $p=u$ and we will show that for $i \geq q-1$ each term in $\bar{C}_i^{(q)}$ contains a factor of the form
-  $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+1 - 2 (i-(q-1))}$.
-  For $\bar{C}_0^{(1)}$ all terms indeed contain an expression $V_j h^{j+1}$ and by induction we find for $i>0$, since $\bar{C}_i^{(0)}(\theta)=0$, that all terms in $\bar{C}_i^{(1)}$ have a factor of the form $V_j h^{j+1-2i}$.
-  Assuming this results holds for all $\bar{C}_i^{(q-1)}$ with $i\geq q - 1$, one first verifies that the result also holds for
-  $\bar{C}_{q-1}^{(q)}$ and by induction on $i$,  also for $\bar{C}_{i}^{(q)}$ with $i>q-1$.\\
-  This property of $\bar{C}_i^{(q)}$ can now be used to determine the lowest degree $N$ that leads to the $\mathcal{O}(h^r)$ approximation. Since $\bar{C}_i^{(q)}$ is multiplied with $h^{2i+1}$, it follows that  $\bar{u}_q(\theta)$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q }$ with
-  $1 \leq j_k \leq N$, $k=1,\ldots, q$. For $q=1$ we have $V_{j} h^{j+2} $, which can only be discarded when $j>r-2$. Thus choosing $N=r-2$ will only discard these terms. The choice $N=r-2$ is also sufficient when $q>1$. We can thus conclude that, in order to obtain accuracy up to order $h^r$ in $\bar{u}(\theta)$ it suffices to take $N=r-2$.
+    Next we determine the minimal value of $N$, the degree of the polynomial approximation $V^{N}(x)$ of $V$, to obtain a given accuracy. \\
+    We first consider the case $p=u$ and we will show that for $i \geq q-1$ each term in $\bar{C}_i^{(q)}$ contains a factor of the form
+    $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+1 - 2 (i-(q-1))}$.
+    For $\bar{C}_0^{(1)}$ all terms indeed contain an expression $V_j h^{j+1}$ and by induction we find for $i>0$, since $\bar{C}_i^{(0)}(\theta)=0$, that all terms in $\bar{C}_i^{(1)}$ have a factor of the form $V_j h^{j+1-2i}$.
+    Assuming this results holds for all $\bar{C}_i^{(q-1)}$ with $i\geq q - 1$, one first verifies that the result also holds for
+    $\bar{C}_{q-1}^{(q)}$ and by induction on $i$,  also for $\bar{C}_{i}^{(q)}$ with $i>q-1$.\\
+    This property of $\bar{C}_i^{(q)}$ can now be used to determine the lowest degree $N$ that leads to the $\mathcal{O}(h^r)$ approximation. Since $\bar{C}_i^{(q)}$ is multiplied with $h^{2i+1}$, it follows that  $\bar{u}_q(\theta)$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q }$ with
+    $1 \leq j_k \leq N$, $k=1,\ldots, q$. For $q=1$ we have $V_{j} h^{j+2} $, which can only be discarded when $j>r-2$. Thus choosing $N=r-2$ will only discard these terms. The choice $N=r-2$ is also sufficient when $q>1$. We can thus conclude that, in order to obtain accuracy up to order $h^r$ in $\bar{u}(\theta)$ it suffices to take $N=r-2$.
 
 
-  For $p=v$, one similarly shows that all terms in $\bar{C}_i^{(q)}$ contain expressions of the form $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q - 2 (i-q)}$ for $i \geq q$. Then $\bar{v}_q(\theta)/h$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q}$ and all necessary terms will be generated when $N = r-2$.
+    For $p=v$, one similarly shows that all terms in $\bar{C}_i^{(q)}$ contain expressions of the form $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q - 2 (i-q)}$ for $i \geq q$. Then $\bar{v}_q(\theta)/h$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q}$ and all necessary terms will be generated when $N = r-2$.
 
-  For the expressions of the derivatives $\bar{u}'(\theta)$ and $\bar{v}'(\theta)/h$ no extra term is needed. So in summary, $\Delta V$ can be truncated to a degree of $r - 2$.
-  % }
+    For the expressions of the derivatives $\bar{u}'(\theta)$ and $\bar{v}'(\theta)/h$ no extra term is needed. So in summary, $\Delta V$ can be truncated to a degree of $r - 2$.
+    % }
 
 \end{proof}
 
 To illustrate this theorem we give the first terms in the error $\Delta \bar{p}_{(Q)} = \bar{p}(\theta) - \displaystyle\sum_{i=0}^{Q} \bar{p}_{i}(\theta)$  of the propagation formulae.
 
 \begin{align*}
-  \intertext{Zero correction terms}
-  \Delta \bar{u}_{(Q=0)}    & = h^{3}\left(\left(\frac{1}{2} \theta^{3} - \frac{1}{2} \theta^{2}\right) V_{1} \eta_{0} -\frac{1}{2} \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                              \\
-  \Delta \bar{v}_{(Q=0)}/h  & = h^{3}\left(\left(\frac{1}{2} \theta^{4} - \frac{1}{2} \theta^{3}\right) V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                                                                     \\
-  \Delta \bar{u}'_{(Q=0)}   & = h^{3}\left(\left(\frac{1}{2} \theta^{2} - \frac{1}{2} \theta\right) V_{1} \eta_{-1} + \left(\frac{1}{2} \theta^{2} - \frac{1}{2} \theta\right) V_{1} \eta_{0}\right) + \mathcal{O}(h^{4})                                              \\
-  \Delta \bar{v}'_{(Q=0)}/h & = h^{3}\left(\left(\frac{1}{2} \theta^{3} - \frac{1}{2} \theta^{2}\right) V_{1} \eta_{0} + \frac{1}{2} \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                             \\
-  \intertext{One correction term}
-  \Delta \bar{u}_{(Q=1)}    & = h^{6}\left(\left(\frac{1}{8} \theta^{6} - \frac{1}{4} \theta^{5} + \frac{1}{8} \theta^{4}\right) V_{1}^{2} \eta_{1} + \left(-\frac{7}{24} \theta^{6} + \frac{1}{4} \theta^{5}\right) V_{1}^{2} \eta_{2}\right)                         \\
-                            & \qquad\qquad + \mathcal{O}(h^{7})                                                                                                                                                                                                        \\
-  \Delta\bar{v}_{(Q=1)}/h   & = h^{6}\left(\left(\frac{1}{8} \theta^{7} - \frac{1}{4} \theta^{6} + \frac{1}{8} \theta^{5}\right) V_{1}^{2} \eta_{2} -\frac{1}{24} \theta^{7} V_{1}^{2} \eta_{3}\right) + \mathcal{O}(h^{7})                                            \\
-  \Delta \bar{u}'_{(Q=1)}   & = h^{6}\left(\left(\frac{1}{8} \theta^{5} - \frac{1}{4} \theta^{4} + \frac{1}{8} \theta^{3}\right) V_{1}^{2} \eta_{0} + \left(\frac{1}{12} \theta^{5} - \frac{1}{4} \theta^{4} + \frac{1}{8} \theta^{3}\right) V_{1}^{2} \eta_{1}\right. \\
-                            & \qquad\qquad \left. -\frac{7}{24} \theta^{5} V_{1}^{2} \eta_{2}\right) + \mathcal{O}(h^{7})                                                                                                                                              \\
-  \Delta \bar{v}'_{(Q=1)}/h & = h^{6}\left(\left(\frac{1}{8} \theta^{6} - \frac{1}{4} \theta^{5} + \frac{1}{8} \theta^{4}\right) V_{1}^{2} \eta_{1} + \left(\frac{5}{24} \theta^{6} - \frac{1}{4} \theta^{5}\right) V_{1}^{2} \eta_{2}\right) + \mathcal{O}(h^{7})     \\
-  \intertext{Two correction terms}
-  \Delta \bar{u}_{(Q=2)}    & = h^{9}\left(\left(\frac{1}{48} \theta^{9} - \frac{1}{16} \theta^{8} + \frac{1}{16} \theta^{7} - \frac{1}{48} \theta^{6}\right) V_{1}^{3} \eta_{2} \right.                                                                               \\
-                            & \qquad\qquad \left.
-  + \left(-\frac{1}{12} \theta^{9} + \frac{7}{48} \theta^{8} - \frac{1}{16} \theta^{7}\right) V_{1}^{3} \eta_{3} 											%\right.     \\
-  %& \qquad\qquad \left. 
-  +\frac{1}{48} \theta^{9} V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                                                                                                                                                                             \\
-  \Delta \bar{v}_{(Q=2)}/h  & = h^{9}\left(\left(\frac{1}{48} \theta^{10} - \frac{1}{16} \theta^{9} + \frac{1}{16} \theta^{8} - \frac{1}{48} \theta^{7}\right) V_{1}^{3} \eta_{3} \right.                                                                              \\
-                            & \qquad\qquad \left. + \left(-\frac{1}{48} \theta^{10} + \frac{1}{48} \theta^{9}\right) V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                                                                                   \\
-  \Delta \bar{u}'_{(Q=2)}   & = h^{9}\left(\left(\frac{1}{48} \theta^{8} - \frac{1}{16} \theta^{7} + \frac{1}{16} \theta^{6} - \frac{1}{48} \theta^{5}\right) V_{1}^{3} \eta_{1} \right.                                                                               \\
-                            & \qquad\qquad \left. + \left(-\frac{1}{24} \theta^{7} + \frac{1}{16} \theta^{6} - \frac{1}{48} \theta^{5}\right) V_{1}^{3} \eta_{2} \right.                                                                                               \\
-                            & \qquad\qquad \left. + \left(-\frac{7}{48} \theta^{8} + \frac{7}{48} \theta^{7}\right) V_{1}^{3} \eta_{3}\right) + \mathcal{O}(h^{10})                                                                                                    \\
-  \Delta \bar{v}'_{(Q=2)}/h & = h^{9}\left(\left(\frac{1}{48} \theta^{9} - \frac{1}{16} \theta^{8} + \frac{1}{16} \theta^{7} - \frac{1}{48} \theta^{6}\right) V_{1}^{3} \eta_{2} + \right.                                                                             \\
-                            & \qquad\qquad \left. \left(\frac{1}{24} \theta^{9} - \frac{5}{48} \theta^{8} + \frac{1}{16} \theta^{7}\right) V_{1}^{3} \eta_{3} -\frac{1}{48} \theta^{9} V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                 \\
+    \intertext{Zero correction terms}
+    \Delta \bar{u}_{(Q=0)}    & = h^{3}\left(\left(\frac{1}{2} \theta^{3} - \frac{1}{2} \theta^{2}\right) V_{1} \eta_{0} -\frac{1}{2} \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                              \\
+    \Delta \bar{v}_{(Q=0)}/h  & = h^{3}\left(\left(\frac{1}{2} \theta^{4} - \frac{1}{2} \theta^{3}\right) V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                                                                     \\
+    \Delta \bar{u}'_{(Q=0)}   & = h^{3}\left(\left(\frac{1}{2} \theta^{2} - \frac{1}{2} \theta\right) V_{1} \eta_{-1} + \left(\frac{1}{2} \theta^{2} - \frac{1}{2} \theta\right) V_{1} \eta_{0}\right) + \mathcal{O}(h^{4})                                              \\
+    \Delta \bar{v}'_{(Q=0)}/h & = h^{3}\left(\left(\frac{1}{2} \theta^{3} - \frac{1}{2} \theta^{2}\right) V_{1} \eta_{0} + \frac{1}{2} \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                             \\
+    \intertext{One correction term}
+    \Delta \bar{u}_{(Q=1)}    & = h^{6}\left(\left(\frac{1}{8} \theta^{6} - \frac{1}{4} \theta^{5} + \frac{1}{8} \theta^{4}\right) V_{1}^{2} \eta_{1} + \left(-\frac{7}{24} \theta^{6} + \frac{1}{4} \theta^{5}\right) V_{1}^{2} \eta_{2}\right)                         \\
+                              & \qquad\qquad + \mathcal{O}(h^{7})                                                                                                                                                                                                        \\
+    \Delta\bar{v}_{(Q=1)}/h   & = h^{6}\left(\left(\frac{1}{8} \theta^{7} - \frac{1}{4} \theta^{6} + \frac{1}{8} \theta^{5}\right) V_{1}^{2} \eta_{2} -\frac{1}{24} \theta^{7} V_{1}^{2} \eta_{3}\right) + \mathcal{O}(h^{7})                                            \\
+    \Delta \bar{u}'_{(Q=1)}   & = h^{6}\left(\left(\frac{1}{8} \theta^{5} - \frac{1}{4} \theta^{4} + \frac{1}{8} \theta^{3}\right) V_{1}^{2} \eta_{0} + \left(\frac{1}{12} \theta^{5} - \frac{1}{4} \theta^{4} + \frac{1}{8} \theta^{3}\right) V_{1}^{2} \eta_{1}\right. \\
+                              & \qquad\qquad \left. -\frac{7}{24} \theta^{5} V_{1}^{2} \eta_{2}\right) + \mathcal{O}(h^{7})                                                                                                                                              \\
+    \Delta \bar{v}'_{(Q=1)}/h & = h^{6}\left(\left(\frac{1}{8} \theta^{6} - \frac{1}{4} \theta^{5} + \frac{1}{8} \theta^{4}\right) V_{1}^{2} \eta_{1} + \left(\frac{5}{24} \theta^{6} - \frac{1}{4} \theta^{5}\right) V_{1}^{2} \eta_{2}\right) + \mathcal{O}(h^{7})     \\
+    \intertext{Two correction terms}
+    \Delta \bar{u}_{(Q=2)}    & = h^{9}\left(\left(\frac{1}{48} \theta^{9} - \frac{1}{16} \theta^{8} + \frac{1}{16} \theta^{7} - \frac{1}{48} \theta^{6}\right) V_{1}^{3} \eta_{2} \right.                                                                               \\
+                              & \qquad\qquad \left.
+    + \left(-\frac{1}{12} \theta^{9} + \frac{7}{48} \theta^{8} - \frac{1}{16} \theta^{7}\right) V_{1}^{3} \eta_{3} 											%\right.     \\
+    %& \qquad\qquad \left. 
+    +\frac{1}{48} \theta^{9} V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                                                                                                                                                                             \\
+    \Delta \bar{v}_{(Q=2)}/h  & = h^{9}\left(\left(\frac{1}{48} \theta^{10} - \frac{1}{16} \theta^{9} + \frac{1}{16} \theta^{8} - \frac{1}{48} \theta^{7}\right) V_{1}^{3} \eta_{3} \right.                                                                              \\
+                              & \qquad\qquad \left. + \left(-\frac{1}{48} \theta^{10} + \frac{1}{48} \theta^{9}\right) V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                                                                                   \\
+    \Delta \bar{u}'_{(Q=2)}   & = h^{9}\left(\left(\frac{1}{48} \theta^{8} - \frac{1}{16} \theta^{7} + \frac{1}{16} \theta^{6} - \frac{1}{48} \theta^{5}\right) V_{1}^{3} \eta_{1} \right.                                                                               \\
+                              & \qquad\qquad \left. + \left(-\frac{1}{24} \theta^{7} + \frac{1}{16} \theta^{6} - \frac{1}{48} \theta^{5}\right) V_{1}^{3} \eta_{2} \right.                                                                                               \\
+                              & \qquad\qquad \left. + \left(-\frac{7}{48} \theta^{8} + \frac{7}{48} \theta^{7}\right) V_{1}^{3} \eta_{3}\right) + \mathcal{O}(h^{10})                                                                                                    \\
+    \Delta \bar{v}'_{(Q=2)}/h & = h^{9}\left(\left(\frac{1}{48} \theta^{9} - \frac{1}{16} \theta^{8} + \frac{1}{16} \theta^{7} - \frac{1}{48} \theta^{6}\right) V_{1}^{3} \eta_{2} + \right.                                                                             \\
+                              & \qquad\qquad \left. \left(\frac{1}{24} \theta^{9} - \frac{5}{48} \theta^{8} + \frac{1}{16} \theta^{7}\right) V_{1}^{3} \eta_{3} -\frac{1}{48} \theta^{9} V_{1}^{3} \eta_{4}\right) + \mathcal{O}(h^{10})                                 \\
 \end{align*}
 
 %{\color{red}
@@ -876,25 +876,25 @@ To illustrate the second part of the theorem, we consider $\Delta \bar{p}_{(N)} 
 $\bar{p}(\theta)$ in which $V_i = 0$ if $i > N$.
 
 \begin{align*}
-  \intertext{Truncation of $\Delta V$ to degree $0$.}
-  2\,\Delta \bar{u}_{(N=0)}          & = h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                    \\
-  \frac{2}{h}\Delta \bar{v}_{(N=0)}  & = h^{3}\left(\left(\theta^{4} - \theta^{3}\right) V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                                               \\
-  2\,\Delta \bar{u}'_{(N=0)}         & = h^{3}\left(\left(\theta^{2} - \theta\right) V_{1} \eta_{-1} + \left(\theta^{2} - \theta\right) V_{1} \eta_{0}\right) + \mathcal{O}(h^{4})                                                \\
-  \frac{2}{h}\Delta \bar{v}'_{(N=0)} & = h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} + \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                   \\
-  \intertext{Truncation of $\Delta V$ to degree $1$.}
-  2\,\Delta \bar{u}_{(N=1)}          & = h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(-3 \theta^{4} + 3 \theta^{3}\right) V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                   \\
-  \frac{2}{h}\Delta \bar{v}_{(N=1)}  & = h^{4}\left(\left(2 \theta^{5} - 3 \theta^{4} + \theta^{3}\right) V_{2} \eta_{1} - \theta^{5} V_{2} \eta_{2}\right) + \mathcal{O}(h^{5})                                    \\
-  2\,\Delta \bar{u}'_{(N=1)}         & = h^{4}\left(\left(2 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{-1} + \left(3 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{0} \right.                                  \\
-                                     & \qquad\qquad \left. - 3 \theta^{3} V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                                                                                                \\
-  \frac{2}{h}\Delta \bar{v}'_{(N=1)} & = h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(3 \theta^{4} - 3 \theta^{3}\right) V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                    \\
-  \intertext{Truncation of $\Delta V$ to degree $2$.}
-  2\,\Delta \bar{u}_{(N=2)}          & = h^{5}\left(\left(5 \theta^{5} - 10 \theta^{4} + 6 \theta^{3} - \theta^{2}\right) V_{3} \eta_{0} + \left(-10 \theta^{5} + 15 \theta^{4} - 6 \theta^{3}\right) V_{3} \eta_{1} \right.      \\
-                                     & \qquad\qquad \left.+5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})                                                                                                                \\
-  \frac{2}{h}\Delta \bar{v}_{(N=2)}  & = h^{5}\left(\left(5 \theta^{6} - 10 \theta^{5} + 6 \theta^{4} - \theta^{3}\right) V_{3} \eta_{1} + \left(-5 \theta^{6} + 5 \theta^{5}\right) V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})   \\
-  2\,\Delta \bar{u}'_{(N=2)}         & = h^{5}\left(\left(5 \theta^{4} - 10 \theta^{3} + 6 \theta^{2} - \theta\right) V_{3} \eta_{-1} + \left(10 \theta^{4} - 15 \theta^{3} + 6 \theta^{2} - \theta\right) V_{3} \eta_{0} \right. \\
-                                     & \qquad\qquad \left. + \left(-15 \theta^{4} + 15 \theta^{3}\right) V_{3} \eta_{1}\right) + \mathcal{O}(h^{6})                                                                               \\
-  \frac{2}{h}\Delta \bar{v}'_{(N=2)} & = h^{5}\left(\left(5 \theta^{5} - 10 \theta^{4} + 6 \theta^{3} - \theta^{2}\right) V_{3} \eta_{0} + \left(10 \theta^{5} - 15 \theta^{4} + 6 \theta^{3}\right) V_{3} \eta_{1} \right.       \\
-                                     & \qquad\qquad \left. -5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})
+    \intertext{Truncation of $\Delta V$ to degree $0$.}
+    2\,\Delta \bar{u}_{(N=0)}          & = h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                    \\
+    \frac{2}{h}\Delta \bar{v}_{(N=0)}  & = h^{3}\left(\left(\theta^{4} - \theta^{3}\right) V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                                               \\
+    2\,\Delta \bar{u}'_{(N=0)}         & = h^{3}\left(\left(\theta^{2} - \theta\right) V_{1} \eta_{-1} + \left(\theta^{2} - \theta\right) V_{1} \eta_{0}\right) + \mathcal{O}(h^{4})                                                \\
+    \frac{2}{h}\Delta \bar{v}'_{(N=0)} & = h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} + \theta^{3} V_{1} \eta_{1}\right) + \mathcal{O}(h^{4})                                                                   \\
+    \intertext{Truncation of $\Delta V$ to degree $1$.}
+    2\,\Delta \bar{u}_{(N=1)}          & = h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(-3 \theta^{4} + 3 \theta^{3}\right) V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                   \\
+    \frac{2}{h}\Delta \bar{v}_{(N=1)}  & = h^{4}\left(\left(2 \theta^{5} - 3 \theta^{4} + \theta^{3}\right) V_{2} \eta_{1} - \theta^{5} V_{2} \eta_{2}\right) + \mathcal{O}(h^{5})                                                  \\
+    2\,\Delta \bar{u}'_{(N=1)}         & = h^{4}\left(\left(2 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{-1} + \left(3 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{0} \right.                                  \\
+                                       & \qquad\qquad \left. - 3 \theta^{3} V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                                                                                                              \\
+    \frac{2}{h}\Delta \bar{v}'_{(N=1)} & = h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(3 \theta^{4} - 3 \theta^{3}\right) V_{2} \eta_{1}\right) + \mathcal{O}(h^{5})                    \\
+    \intertext{Truncation of $\Delta V$ to degree $2$.}
+    2\,\Delta \bar{u}_{(N=2)}          & = h^{5}\left(\left(5 \theta^{5} - 10 \theta^{4} + 6 \theta^{3} - \theta^{2}\right) V_{3} \eta_{0} + \left(-10 \theta^{5} + 15 \theta^{4} - 6 \theta^{3}\right) V_{3} \eta_{1} \right.      \\
+                                       & \qquad\qquad \left.+5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})                                                                                                                \\
+    \frac{2}{h}\Delta \bar{v}_{(N=2)}  & = h^{5}\left(\left(5 \theta^{6} - 10 \theta^{5} + 6 \theta^{4} - \theta^{3}\right) V_{3} \eta_{1} + \left(-5 \theta^{6} + 5 \theta^{5}\right) V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})   \\
+    2\,\Delta \bar{u}'_{(N=2)}         & = h^{5}\left(\left(5 \theta^{4} - 10 \theta^{3} + 6 \theta^{2} - \theta\right) V_{3} \eta_{-1} + \left(10 \theta^{4} - 15 \theta^{3} + 6 \theta^{2} - \theta\right) V_{3} \eta_{0} \right. \\
+                                       & \qquad\qquad \left. + \left(-15 \theta^{4} + 15 \theta^{3}\right) V_{3} \eta_{1}\right) + \mathcal{O}(h^{6})                                                                               \\
+    \frac{2}{h}\Delta \bar{v}'_{(N=2)} & = h^{5}\left(\left(5 \theta^{5} - 10 \theta^{4} + 6 \theta^{3} - \theta^{2}\right) V_{3} \eta_{0} + \left(10 \theta^{5} - 15 \theta^{4} + 6 \theta^{3}\right) V_{3} \eta_{1} \right.       \\
+                                       & \qquad\qquad \left. -5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})
 \end{align*}
 %}
 
@@ -911,13 +911,13 @@ not only in terms of bounded functions $\eta_i(Z)$ but also in terms of the unbo
 Theorem~\ref{theorem:delta-formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{theorem:error-estimate} is sharper than the one given in Theorem~\ref{theorem:delta-formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
 
 \begin{align*}
-  2\bar{u}^{(4)}            & = 2 \eta_{-1} + h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right)                                                                                                 \\
-                            & \quad\quad + h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(-3 \theta^{4} + 3 \theta^{3}\right) V_{2} \eta_{1}\right)                                                   \\
-  \frac{2}{h}\bar{v}^{(4)}  & = 2 \theta \eta_{0} + h^{3}\left(\left(\theta^{4} - \theta^{3}\right) V_{1} \eta_{1}\right) + h^{4}\left(\left(2 \theta^{5} - 3 \theta^{4} + \theta^{3}\right) V_{2} \eta_{1} - \theta^{5} V_{2} \eta_{2}\right) \\
-  2\bar{u'}^{(4)}           & = \frac{2Z}{h\theta} \eta_0 + h^{2}\left(\left(\theta^{2} - \theta\right) V_{1} \eta_{-1} + \left(\theta^{2} - \theta\right) V_{1} \eta_{0}\right)                                                               \\
-                            & \quad\quad+ h^{3}\left(\left(2 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{-1} + \left(3 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{0} - 3 \theta^{3} V_{2} \eta_{1}\right)                 \\
-  \frac{2}{h}\bar{v'}^{(4)} & = \frac{2}{h} \eta_{-1} + h^{2}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} + \theta^{3} V_{1} \eta_{1}\right)                                                                                      \\
-                            & \quad\quad + h^{3}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(3 \theta^{4} - 3 \theta^{3}\right) V_{2} \eta_{1}\right)                                                    \\
+    2\bar{u}^{(4)}            & = 2 \eta_{-1} + h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right)                                                                                                 \\
+                              & \quad\quad + h^{4}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(-3 \theta^{4} + 3 \theta^{3}\right) V_{2} \eta_{1}\right)                                                   \\
+    \frac{2}{h}\bar{v}^{(4)}  & = 2 \theta \eta_{0} + h^{3}\left(\left(\theta^{4} - \theta^{3}\right) V_{1} \eta_{1}\right) + h^{4}\left(\left(2 \theta^{5} - 3 \theta^{4} + \theta^{3}\right) V_{2} \eta_{1} - \theta^{5} V_{2} \eta_{2}\right) \\
+    2\bar{u'}^{(4)}           & = \frac{2Z}{h\theta} \eta_0 + h^{2}\left(\left(\theta^{2} - \theta\right) V_{1} \eta_{-1} + \left(\theta^{2} - \theta\right) V_{1} \eta_{0}\right)                                                               \\
+                              & \quad\quad+ h^{3}\left(\left(2 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{-1} + \left(3 \theta^{3} - 3 \theta^{2} + \theta\right) V_{2} \eta_{0} - 3 \theta^{3} V_{2} \eta_{1}\right)                 \\
+    \frac{2}{h}\bar{v'}^{(4)} & = \frac{2}{h} \eta_{-1} + h^{2}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} + \theta^{3} V_{1} \eta_{1}\right)                                                                                      \\
+                              & \quad\quad + h^{3}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(3 \theta^{4} - 3 \theta^{3}\right) V_{2} \eta_{1}\right)                                                    \\
 \end{align*}%
 
 Further, Theorem~\ref{theorem:delta-formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In Matslise 2.0 $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$, Theorem~\ref{theorem:delta-formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
@@ -962,20 +962,22 @@ and \texttt{Eigen\ v3} \cite{guennebaud_eigen_2010} we have the perfect tools to
 The new implementation, which we called Matslise 3.0, can be accessed and executed as follows:
 
 \begin{itemize}
-  %\subsection*{\texttt{C++}}
-  \item \texttt{C++}: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found as well.
+    %\subsection*{\texttt{C++}}
+    \item \texttt{C++}: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found as well.
 
-        %\subsection*{\texttt{Python}}
-  \item Python: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \texttt{pyslise}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS 10.15}. Installing pyslise is as easy as simply running:
-        \begin{python}
+          %\subsection*{\texttt{Python}}
+    \item Python: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \texttt{pyslise}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS 10.15}. Installing pyslise is as easy as simply running:
+          % \begin{noindent}
+\begin{python}
 pip install pyslise
 \end{python}
+% \end{noindent}
 
-        A recent \texttt{pip} version ($\geq 19.0$) has to be available. In the next sections, we will present some Python code fragments.
+          A recent \texttt{pip} version ($\geq 19.0$) has to be available. In the next sections, we will present some Python code fragments.
 
-        %\subsection*{In the browser}
-  \item web browser:
-        lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+          %\subsection*{In the browser}
+    \item web browser:
+          lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
 
 \end{itemize}
 
@@ -988,21 +990,21 @@ Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding ei
 To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{eq:propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
 via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{eq:Vn}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
 $$
-  u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
+    u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
 $$
 with $C_i$ a polynomial in $\delta$,
 $$
-  C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
+    C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
 $$
 whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
 
 \begin{eqnarray*}
-  d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
-  &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
-  &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
-  &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
-  &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
-  &  & + h^6 (\,\dots)  + \dots
+    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
+    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
+    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
+    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
+    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
+    &  & + h^6 (\,\dots)  + \dots
 \end{eqnarray*}
 
 
@@ -1093,8 +1095,8 @@ For error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is impl
 
 As a first introductory example, we will take a look at Mathieu's
 equation \cite{pryce_sltstpak_1999}: \begin{equation}
-  \dv[2]{\psi}{x} + 2q\cos(2x)\psi(x) = \lambda\psi(x) \text{.}  \qquad \psi(0) = \psi(\pi) = 0
-  \label{mathieu}
+    \dv[2]{\psi}{x} + 2q\cos(2x)\psi(x) = \lambda\psi(x) \text{.}  \qquad \psi(0) = \psi(\pi) = 0
+    \label{mathieu}
 \end{equation}
 %This eigenvalue problem is defined for \(x \in [0, \pi]\) with zero boundary conditions: \(\psi(0) = \psi(\pi) = 0\). 
 %From the equation we can write the corresponding potential: \[
@@ -1104,6 +1106,7 @@ equation \cite{pryce_sltstpak_1999}: \begin{equation}
 By using Pyslise, it is not difficult to find the eigenvalues of this
 equation:
 
+% \begin{noindent}
 \begin{python}
   from pyslise import Pyslise
   from math import pi, cos
@@ -1115,6 +1118,7 @@ equation:
   mathieu = Pyslise(V, 0, pi, tolerance=1e-8)
   print(mathieu.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
 \end{python}
+% \ebd{noindent}
 
 These few lines allow to solve the eigenvalue problem. The first
 lines import the package \texttt{pyslise} and define the potential of the problem we want to
@@ -1242,17 +1246,19 @@ The Coffey-Evans equation has two interesting features: firstly it's a symmetric
 
 To exploit this symmetry \texttt{PysliseHalf} can be used. Besides this, the few lines of Python needed to find the first eigenvalues are very similar to the ones used for the Mathieu problem.
 
+% \begin{noindent}
 \begin{python}
-  from pyslise import PysliseHalf
-  from math import pi, sin, cos
-  
-  beta = 15
-  def V(x):
+from pyslise import PysliseHalf
+from math import pi, sin, cos
+
+beta = 15
+def V(x):
     return beta**2 * sin(2*x)**2 - 2*beta * cos(2*x)
-  
-  ce = PysliseHalf(V, pi/2, tolerance=1e-8)
-  print(ce.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
+
+ce = PysliseHalf(V, pi/2, tolerance=1e-8)
+print(ce.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
 \end{python}
+% \end{noindent}
 
 In Table~\ref{tab:c2_tab4} we present, for $\beta=5$, $\beta=15$ and $\beta=25$ the computation times for Matslise 2.0 and Pyslise needed to compute the first 10 eigenvalues with a tolerance of $10^{-8}$.
 
@@ -1262,130 +1268,130 @@ In Table~\ref{tab:c2_tab5} the maximum errors in the eigenfunctions are shown. A
 Once again we note the faster and more accurate performance of Pyslise.
 
 \begin{table}
-  \begin{center}
-    \begin{tabular}[]{rrr}
-      \toprule
-      $\beta=5$           & Matslise 2.0     & Pyslise         \\
-      \midrule
-                          & $8.94\text{ms}$  & $0.33\text{ms}$ \\
-      $0.0005463030588$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
-      $17.4201300751401$  & $3.1$ ($-9$)     & $1.4$ ($-11$)   \\
-      $26.8313294875207$  & $8.2$ ($-9$)     & $5.2$ ($-12$)   \\
-      $30.6514597044625$  & $1.1$ ($-9$)     & $-3.2$ ($-12$)  \\
-      $37.9709848127178$  & $-1.6$ ($-8$)    & $9.2$ ($-12$)   \\
-      $49.4100375966783$  & $-6.0$ ($-9$)    & $-1.8$ ($-11$)  \\
-      $62.2115039443358$  & $-6.7$ ($-9$)    & $-3.7$ ($-12$)  \\
-      $76.9997687851650$  & $-3.1$ ($-8$)    & $-4.1$ ($-11$)  \\
-      $93.8923408372478$  & $-1.5$ ($-8$)    & $-4.5$ ($-11$)  \\
-      $112.8190674376863$ & $1.2$ ($-8$)     & $-3.3$ ($-11$)  \\
-                          &                  &                 \\
-      \bottomrule
-      \toprule
-      $\beta=15$          & Matslise 2.0     & Pyslise         \\
-      \midrule
-                          & $9.71\text{ms}$  & $0.54\text{ms}$ \\
-      $0.0000000000035$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
-      $57.8833068486108$  & $3.2$ ($-7$)     & $4.8$ ($-11$)   \\
-      $111.2023333512293$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-      $111.2270694418592$ & $3.1$ ($-7$)     & $4.9$ ($-11$)   \\
-      $111.2518808183127$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-      $159.1826724323144$ & $5.3$ ($-9$)     & $1.7$ ($-10$)   \\
-      $197.3328583631476$ & $6.3$ ($-8$)     & $-7.5$ ($-11$)  \\
-      $199.8690055338356$ & $2.6$ ($-9$)     & $6.3$ ($-13$)   \\
-      $203.2295295020015$ & $2.7$ ($-8$)     & $-2.1$ ($-10$)  \\
-      $232.3601150085893$ & $-4.2$ ($-8$)    & $-1.4$ ($-10$)  \\
-                          &                  &                 \\
-      \bottomrule
-      \toprule
-      $\beta=25$          & Matslise 2.0     & Pyslise         \\
-      \midrule
-                          & $24.36\text{ms}$ & $0.61\text{ms}$ \\
-      $-0.0000000000000$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
-      $97.9345616863637$  & $7.9$ ($-7$)     & $-3.2$ ($-11$)  \\
-      $191.5876270396656$ & $8.3$ ($-7$)     & $4.8$ ($-11$)   \\
-      $191.5876332913999$ & $1.2$ ($-6$)     & $-1.3$ ($-11$)  \\
-      $191.5876395431371$ & $7.2$ ($-7$)     & $4.6$ ($-11$)   \\
-      $280.6142452706786$ & $1.7$ ($-7$)     & $1.7$ ($-10$)   \\
-      $364.5514239171786$ & $6.2$ ($-8$)     & $-4.4$ ($-12$)  \\
-      $364.5556442011433$ & $-8.5$ ($-8$)    & $2.2$ ($-10$)   \\
-      $364.5598657470625$ & $6.1$ ($-8$)     & $2.4$ ($-10$)   \\
-      $442.7565471968548$ & $-5.9$ ($-7$)    & $6.6$ ($-11$)   \\
-                          &                  &                 \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:c2_tab4}The first 10 eigenvalues for the Coffey-Evans problem~(\ref{ce}) for $\beta=5$, $\beta=15$ and $\beta=25$, the execution times and the errors obtained with Matslise 2.0 and Pyslise with a tolerance of $10^{-8}$.}
+    \begin{center}
+        \begin{tabular}[]{rrr}
+            \toprule
+            $\beta=5$           & Matslise 2.0     & Pyslise         \\
+            \midrule
+                                & $8.94\text{ms}$  & $0.33\text{ms}$ \\
+            $0.0005463030588$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
+            $17.4201300751401$  & $3.1$ ($-9$)     & $1.4$ ($-11$)   \\
+            $26.8313294875207$  & $8.2$ ($-9$)     & $5.2$ ($-12$)   \\
+            $30.6514597044625$  & $1.1$ ($-9$)     & $-3.2$ ($-12$)  \\
+            $37.9709848127178$  & $-1.6$ ($-8$)    & $9.2$ ($-12$)   \\
+            $49.4100375966783$  & $-6.0$ ($-9$)    & $-1.8$ ($-11$)  \\
+            $62.2115039443358$  & $-6.7$ ($-9$)    & $-3.7$ ($-12$)  \\
+            $76.9997687851650$  & $-3.1$ ($-8$)    & $-4.1$ ($-11$)  \\
+            $93.8923408372478$  & $-1.5$ ($-8$)    & $-4.5$ ($-11$)  \\
+            $112.8190674376863$ & $1.2$ ($-8$)     & $-3.3$ ($-11$)  \\
+                                &                  &                 \\
+            \bottomrule
+            \toprule
+            $\beta=15$          & Matslise 2.0     & Pyslise         \\
+            \midrule
+                                & $9.71\text{ms}$  & $0.54\text{ms}$ \\
+            $0.0000000000035$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
+            $57.8833068486108$  & $3.2$ ($-7$)     & $4.8$ ($-11$)   \\
+            $111.2023333512293$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
+            $111.2270694418592$ & $3.1$ ($-7$)     & $4.9$ ($-11$)   \\
+            $111.2518808183127$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
+            $159.1826724323144$ & $5.3$ ($-9$)     & $1.7$ ($-10$)   \\
+            $197.3328583631476$ & $6.3$ ($-8$)     & $-7.5$ ($-11$)  \\
+            $199.8690055338356$ & $2.6$ ($-9$)     & $6.3$ ($-13$)   \\
+            $203.2295295020015$ & $2.7$ ($-8$)     & $-2.1$ ($-10$)  \\
+            $232.3601150085893$ & $-4.2$ ($-8$)    & $-1.4$ ($-10$)  \\
+                                &                  &                 \\
+            \bottomrule
+            \toprule
+            $\beta=25$          & Matslise 2.0     & Pyslise         \\
+            \midrule
+                                & $24.36\text{ms}$ & $0.61\text{ms}$ \\
+            $-0.0000000000000$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
+            $97.9345616863637$  & $7.9$ ($-7$)     & $-3.2$ ($-11$)  \\
+            $191.5876270396656$ & $8.3$ ($-7$)     & $4.8$ ($-11$)   \\
+            $191.5876332913999$ & $1.2$ ($-6$)     & $-1.3$ ($-11$)  \\
+            $191.5876395431371$ & $7.2$ ($-7$)     & $4.6$ ($-11$)   \\
+            $280.6142452706786$ & $1.7$ ($-7$)     & $1.7$ ($-10$)   \\
+            $364.5514239171786$ & $6.2$ ($-8$)     & $-4.4$ ($-12$)  \\
+            $364.5556442011433$ & $-8.5$ ($-8$)    & $2.2$ ($-10$)   \\
+            $364.5598657470625$ & $6.1$ ($-8$)     & $2.4$ ($-10$)   \\
+            $442.7565471968548$ & $-5.9$ ($-7$)    & $6.6$ ($-11$)   \\
+                                &                  &                 \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{\label{tab:c2_tab4}The first 10 eigenvalues for the Coffey-Evans problem~(\ref{ce}) for $\beta=5$, $\beta=15$ and $\beta=25$, the execution times and the errors obtained with Matslise 2.0 and Pyslise with a tolerance of $10^{-8}$.}
 \end{table}
 
 \begin{table}
 
-  \begin{center}
-    \begin{tabular}{rrrrrr}
-      \toprule
-      $\beta=5$    & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$       & $E_{4}$       \\
-      \midrule
-      Matslise 2.0 & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
-      Pyslise      & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
-      \midrule
-      \midrule
-      $\beta=5$    & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$       & $E_{9}$       \\
-      \midrule
-      Matslise 2.0 & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
-      Pyslise      & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
+    \begin{center}
+        \begin{tabular}{rrrrrr}
+            \toprule
+            $\beta=5$    & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$       & $E_{4}$       \\
+            \midrule
+            Matslise 2.0 & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
+            Pyslise      & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
+            \midrule
+            \midrule
+            $\beta=5$    & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$       & $E_{9}$       \\
+            \midrule
+            Matslise 2.0 & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
+            Pyslise      & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
 
-  \begin{center}
-    \begin{tabular}{rrrrrr}
-      \toprule
-      $\beta=15$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$      \\
-      \midrule
-      Matslise 2.0 & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
-      Pyslise      & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
-      \midrule
-      \midrule
-      $\beta=15$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$      \\
-      \midrule
-      Matslise 2.0 & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
-      Pyslise      & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
+    \begin{center}
+        \begin{tabular}{rrrrrr}
+            \toprule
+            $\beta=15$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$      \\
+            \midrule
+            Matslise 2.0 & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
+            Pyslise      & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
+            \midrule
+            \midrule
+            $\beta=15$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$      \\
+            \midrule
+            Matslise 2.0 & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
+            Pyslise      & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
 
-  \begin{center}
-    \begin{tabular}{rrrrrr}
-      \toprule
-      $\beta=25$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$       \\
-      \midrule
-      Matslise 2.0 & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
-      Pyslise      & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
-      \midrule
-      \midrule
-      $\beta=25$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$       \\
-      \midrule
-      Matslise 2.0 & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
-      Pyslise      & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:c2_tab5} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{ce}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
+    \begin{center}
+        \begin{tabular}{rrrrrr}
+            \toprule
+            $\beta=25$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$       \\
+            \midrule
+            Matslise 2.0 & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
+            Pyslise      & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
+            \midrule
+            \midrule
+            $\beta=25$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$       \\
+            \midrule
+            Matslise 2.0 & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
+            Pyslise      & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{\label{tab:c2_tab5} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{ce}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
 \end{table}
 
 From the theory we expect that the time it takes to calculate the eigenfunctions in a certain number of points doesn't depend on the difficulties to find eigenvalues of the particular problem. Once eigenvalues are calculated, eigenfunctions should be calculated in constant-time. This is seen when we compare Table~\ref{tab:c2_tab6} to Table~\ref{tab:c2_tab3} for the Mathieu problem (\ref{mathieu}).
 
 \begin{table}
-  \begin{center}
-    \begin{tabular}{rrrr}
-      \toprule
-      $\beta = 15$ & $n=100$          & $n=1000$        & $n=10000$       \\
-      \midrule
-      Matslise 2.0 & $59.9\text{ms}$  & $525\text{ms}$  & $7508\text{ms}$ \\
-      Pyslise      & $0.344\text{ms}$ & $2.58\text{ms}$ & $24.5\text{ms}$ \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:c2_tab6} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{ce}) with $\beta=15$.}
+    \begin{center}
+        \begin{tabular}{rrrr}
+            \toprule
+            $\beta = 15$ & $n=100$          & $n=1000$        & $n=10000$       \\
+            \midrule
+            Matslise 2.0 & $59.9\text{ms}$  & $525\text{ms}$  & $7508\text{ms}$ \\
+            Pyslise      & $0.344\text{ms}$ & $2.58\text{ms}$ & $24.5\text{ms}$ \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{\label{tab:c2_tab6} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{ce}) with $\beta=15$.}
 \end{table}
 
 \paragraph{A small note about the computation of eigenfunctions}
@@ -1397,31 +1403,33 @@ For the sorted points in the bulk algorithm, all points are iterated, together w
 To calculate individual points, the same intermediate values are calculated. To locate the sector in which the queried point is situated a binary search is executed. And again the formulae from before can be used. When evaluating another point (of the same eigenfunction) the intermediate values don't have to be recomputed.
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=1\textwidth]{img/chapter2/pyslise_test/coffey_evans_eigenfunctions.pdf}
-  \end{center}
-  \caption{\label{ce_fig}A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey-Evans problem~(\ref{ce}) with $\beta=25$.}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{img/chapter2/pyslise_test/coffey_evans_eigenfunctions.pdf}
+    \end{center}
+    \caption{\label{ce_fig}A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey-Evans problem~(\ref{ce}) with $\beta=25$.}
 \end{figure}
 
 The second version of this algorithm is useful in combination with other libraries that expect a function as input (in contrast to a list of function evaluations). For example the \texttt{plot}-function available in Sage:
+% \begin{noindent}
 \begin{python}
-  from pyslise import PysliseHalf
+from pyslise import PysliseHalf
 
-  # defining the problem, with half range reduction
-  beta = 25
-  problem = PysliseHalf(
-      lambda x: -2*beta*cos(2*x) + (beta*sin(2*x))^2,
-      pi/2, tolerance=1e-8)
-  
-  # calculating eigenvalues with index 2, 3 and 4
-  # with boundary conditions (y, y') = (0, 1)
-  for i, E in problem.eigenvaluesByIndex(2, 5, (0,1)):
-      # calculating the corresponding eigenfunction
-      f = problem.eigenfunctionCalculator(E, (0, 1))
-  
-      # plotting f
-      plot(lambda x: f(x)[0], (-pi/2, pi/2)).show()
+# defining the problem, with half range reduction
+beta = 25
+problem = PysliseHalf(
+    lambda x: -2*beta*cos(2*x) + (beta*sin(2*x))^2,
+    pi/2, tolerance=1e-8)
+
+# calculating eigenvalues with index 2, 3 and 4
+# with boundary conditions (y, y') = (0, 1)
+for i, E in problem.eigenvaluesByIndex(2, 5, (0,1)):
+    # calculating the corresponding eigenfunction
+    f = problem.eigenfunctionCalculator(E, (0, 1))
+
+    # plotting f
+    plot(lambda x: f(x)[0], (-pi/2, pi/2)).show()
 \end{python}
+% \end{noindent}
 
 The result of this code is given in Figure~\ref{ce_fig}.
 
@@ -1431,50 +1439,85 @@ The result of this code is given in Figure~\ref{ce_fig}.
 Lastly we will take a look at the truncated hydrogen potential \cite{pryce_sltstpak_1999}:
 
 \begin{equation}
-  V(x) = -\frac{1}{x} + \frac{2}{x^2}  \qquad y(0)=y(1000)=0 \,. \label{thp}
+    V(x) = -\frac{1}{x} + \frac{2}{x^2}  \qquad y(0)=y(1000)=0 \,. \label{thp}
 \end{equation}
-The lower eigenvalues are a good approximation for the eigenvalues of the non truncated problem ($x \in \left[0, \infty\right[$). For completeness sake we also provide a code example to find the first eigenvalues. This is very similar to the previous examples.
+The lower eigenvalues are a good approximation for the eigenvalues of the non truncated problem ($x \in \left[0, \infty\right[$). For completeness, we also provide a code example to find the first eigenvalues. This is very similar to the previous examples.
 
+% \begin{noindent}
 \begin{python}
-  from pyslise import Pyslise
+from pyslise import Pyslise
 
-  def V(x):
-    return -1/x + 2/x**2
+def V(x):
+return -1/x + 2/x**2
 
-  hydrogen = Pyslise(V, 0, 1000, tolerance=1e-8)
-  print(hydrogen.eigenvaluesByIndex(
-                      0, 10, (0, 1), (0, 1)))
+hydrogen = Pyslise(V, 0, 1000, tolerance=1e-8)
+print(hydrogen.eigenvaluesByIndex(
+                    0, 10, (0, 1), (0, 1)))
 \end{python}
+% \end{noindent}
 
 The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. Matslise 2.0 is well-suited for singular problems. It contains a lot of routines and checks to identify and work around singularities of the problem. For efficiency reasons Pyslise is not.
 
 Despite these shortcomings Pyslise is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In Table~\ref{tab:c2_tab7} we see that Pyslise is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
 \begin{table}
-  \begin{center}
-    \begin{tabular}[]{rrr}
-      \toprule
-                         & Matslise 2.0     & Pyslise         \\
-      \midrule
-                         & $30.96\text{ms}$ & $7.09\text{ms}$ \\
-      $-0.0625000000000$ & $2.1$ ($-12$)    & $8.9$ ($-15$)   \\
-      $-0.0277777777778$ & $4.9$ ($-12$)    & $-2.2$ ($-15$)  \\
-      $-0.0156250000000$ & $3.4$ ($-12$)    & $-9.0$ ($-16$)  \\
-      $-0.0100000000000$ & $9.4$ ($-13$)    & $-2.7$ ($-15$)  \\
-      $-0.0069444444444$ & $-1.1$ ($-12$)   & $1.2$ ($-13$)   \\
-      $-0.0051020408163$ & $-2.3$ ($-12$)   & $-6.3$ ($-13$)  \\
-      $-0.0039062500000$ & $-2.9$ ($-12$)   & $-2.3$ ($-13$)  \\
-      $-0.0030864197531$ & $-3.0$ ($-12$)   & $1.1$ ($-13$)   \\
-      $-0.0025000000000$ & $-2.7$ ($-12$)   & $-9.6$ ($-14$)  \\
-      $-0.0020661157025$ & $-1.9$ ($-12$)   & $1.6$ ($-14$)   \\
-                         &                  &                 \\
-      \bottomrule
-    \end{tabular}
-    \caption{\label{tab:c2_tab7}The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}),
-      the execution times and the errors obtained with Matslise 2.0 and Pyslise for a tolerance of $10^{-8}$.  }
-  \end{center}
+    \begin{center}
+        \begin{tabular}[]{rrr}
+            \toprule
+                               & Matslise 2.0     & Pyslise         \\
+            \midrule
+                               & $30.96\text{ms}$ & $7.09\text{ms}$ \\
+            $-0.0625000000000$ & $2.1$ ($-12$)    & $8.9$ ($-15$)   \\
+            $-0.0277777777778$ & $4.9$ ($-12$)    & $-2.2$ ($-15$)  \\
+            $-0.0156250000000$ & $3.4$ ($-12$)    & $-9.0$ ($-16$)  \\
+            $-0.0100000000000$ & $9.4$ ($-13$)    & $-2.7$ ($-15$)  \\
+            $-0.0069444444444$ & $-1.1$ ($-12$)   & $1.2$ ($-13$)   \\
+            $-0.0051020408163$ & $-2.3$ ($-12$)   & $-6.3$ ($-13$)  \\
+            $-0.0039062500000$ & $-2.9$ ($-12$)   & $-2.3$ ($-13$)  \\
+            $-0.0030864197531$ & $-3.0$ ($-12$)   & $1.1$ ($-13$)   \\
+            $-0.0025000000000$ & $-2.7$ ($-12$)   & $-9.6$ ($-14$)  \\
+            $-0.0020661157025$ & $-1.9$ ($-12$)   & $1.6$ ($-14$)   \\
+                               &                  &                 \\
+            \bottomrule
+        \end{tabular}
+        \caption{\label{tab:c2_tab7}The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}),
+            the execution times and the errors obtained with Matslise 2.0 and Pyslise for a tolerance of $10^{-8}$.  }
+    \end{center}
 \end{table}
 
 All eigenfunctions are computed in both algorithms with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
+
+\section{Implementation challenges}
+
+\todo{Prose}
+\todo{UML diagram}
+
+\begin{enumerate}
+    \item Template on scalar type.
+    \item Unifying different types of solvers. (Normal, HalfRange, SturmLiouville)
+    \item Generate formula code 
+    \begin{enumerate}
+        \item Symbolic computation
+        \item For systems of equations, non-commutative symbolic computation
+        \item Helping the compiler with intermediates
+        \item Compiler difficulties
+    \end{enumerate}
+    \item Memory management:
+          \begin{enumerate}
+            \item Shared pointers in \cpp{}. 
+            \item Ownership of sectors. 
+              \item Eigenfunctions should keep the original problem alive:
+                    % \begin{noindent}
+\begin{python}
+eigenfunctions = []
+for q in [1,10,100]:
+    mathieu = Pyslise(lambda x: q*x, 0, pi)
+    i, E, f = mathieu.eigenpairs(5,6)[0]
+    eigenfunctions.append(f)
+\end{python}
+% \end{noindent}
+          \end{enumerate}
+          \item Building a Python-package
+\end{enumerate}
 
 \stopchapter
