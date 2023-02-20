@@ -167,22 +167,14 @@ USER student
 
 WORKDIR /home/student/
 RUN git clone --recursive https://github.com/twist-numerical/strands.git \
-    && cd strands && git checkout 412898f89ead9fcc814014c82dd6d7bacbc9e8f0
+    && cd strands && git checkout 706edde61cd5cb3e8b5f98d03b6a7d3b744339a2
 WORKDIR /home/student/strands
 RUN mkdir build-sage && mkdir build-python
 
-WORKDIR /home/student/strands/build-sage
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
-    -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
-RUN cmake --build . --target install_strands_py --config Release -- -j 5
-
-WORKDIR /home/student/strands/build-python
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
-    -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
+WORKDIR /home/student/strands
+RUN sage -pip install .
 USER root
-RUN cmake --build . --target install_strands_py --config Release -- -j 5
+RUN python -m pip install .
 USER student
 
 
