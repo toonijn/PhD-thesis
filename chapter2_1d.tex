@@ -1,6 +1,8 @@
 % !TeX root = chapter2_1d.tex
 \input{util.tex}
 \startchapter{2}
+\undefinedlabel{cha:c3}{3}
+\undefinedlabel{cha:c4}{4}
 
 \longchapter[The \oneD Schrödinger equation]{The one-dimensional time-independent Schrödinger equation}\label{cha:c2}
 
@@ -268,7 +270,7 @@ But still some nuances have to be made. In \cite{pruess_estimating_1973} some nu
 
 \subsubsection{Constant perturbation methods}
 
-In the years since the first article from Canosa and De Oliveira \cite{canosa_new_1970}, the research into these kinds of methods has flourished. One of the first extensions was to consider not only piecewise constant approximations but also linear and quadratic, as in \cite{pruess_estimating_1973}. For constant approximations, the exact solution is given by hyperbolic or trigonometric functions. For linear approximations, the Airy functions $\Ai(x)$ and $\Bi(x)$ are appropriate. As these are well-known special functions, software packages are available to evaluate them. But not unexpectedly, these packages are harder to find, and more difficult to use, than $\sin$, $\cos$ and hyperbolic variants. For quadratic, and higher order, approximations no closed form formula exists for the exact solutions.
+In the years since the first article from Canosa and De Oliveira \cite{canosa_new_1970}, the research into these kinds of methods has flourished. One of the first extensions considered not only piecewise constant approximations but also linear and quadratic approximations, as in \cite{pruess_estimating_1973}. For constant approximations, the exact solution is given by hyperbolic or trigonometric functions. For linear approximations, the Airy functions $\Ai(x)$ and $\Bi(x)$ are appropriate. As these are well-known special functions, software packages are available to evaluate them. But not unexpectedly, these packages are harder to find, and more difficult to use, than $\sin$, $\cos$ and hyperbolic variants. For quadratic, and higher order, approximations no closed form formula exists for the exact solutions.
 
 To improve accuracy and computational efficiency, it is, when developing numerical methods, valuable to construct higher order methods. As we are limited to an order of $\mathcal{O}(h^2)$ for constant approximations, or $\mathcal{O}(h^4)$ when using linear approximations, some alternative improvements were required. In the book \cite{ixaru_numerical_1984}, Ixaru dedicated chapter 3 to the development of the constant perturbation methods. The main idea is to, not directly improve the approximation of $V(x)$. But, starting with a piecewise constant approximation $\bar{V}(x)$, adding correction terms to capture the difference between the reference solution for $\bar{V}(x)$ and the true solution for $V(x)$.
 
@@ -309,7 +311,7 @@ To symbolically compute the expression of $p_q$ Ixaru has introduced some auxili
     When $Z < 0$ the definitions of $\eta_{-1}$ and $\eta_{0}$ should be read as calculations in $\CC$. But, notice that the resulting values will always be real. Furthermore, if $Z = 0$, one should take the limit of $\eta_m$ to zero, this yields\footnote{In this expression $n!!$ is the double factorial: $n!! := n\cdot (n-2) \cdot (n - 4) \cdot ...$, with only strictly positive integers as factors. For our purposes we define $0!! = (-1)!! = 1$.} $\eta_m(0) = \frac{1}{(2m+1)!!}$.
 \end{definition}
 
-When implementing these formulas, it is more efficient to keep all calculations in $\RR$, by using $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
+When implementing these formulas, it is more efficient to keep all calculations in $\RR$. For $Z < 0$ we implement $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
 
 Another interesting property of these $\eta$-functions are its series expansions:\begin{align*}
     \eta_{-1}(Z) & = \sum_{q=0}^{\infty} \frac{Z^q}{(2q + 1)!}                                                      \\
@@ -418,26 +420,88 @@ These expressions, together with $C_{-1}^{(Q)} = 0$, now can be used to simplify
 Due to the definition of $Z = \delta^2(\bar{V} - \lambda)$, this expresses exactly that $p_Q$ is a solution to $p_Q'' = (\bar{V} - \lambda)p_Q + \delta V p_{Q-1}$. Which, in turn, proves the induction step.
 \end{proof}
 
-At first glance, it may not be clear why theorem \ref{the:c2_perturbation_terms} is that important. Still, these rather tedious computations and relatively complicated recursive relation allows us to construct formulae of any order. To calculate such a formula choose values $N$ and $Q$ and compute the values of $C_{i}^{(q)}$ for $q \leq Q$ and $i \leq N$. If $\Delta V$ is assumed to be a polynomial in $\delta$, then $C_{i}^{(q)}$ will be as well. The solution $p(\delta)$ will now take the following form:
+At first glance, it may not be clear why theorem \ref{the:c2_perturbation_terms} is that important. Still, these rather tedious computations and relatively complicated recursive relation allows us to analytically construct formulae of any order. To calculate such a formula choose values $N$ and $Q$ and compute the values of $C_{i}^{(q)}$ for $q \leq Q$ and $i \leq N$. If $\Delta V$ is assumed to be a polynomial in $\delta$, then $C_{i}^{(q)}$ will be as well. The solution $p(\delta)$ will now take the following form:
 $$
     p(\delta) = \sum_{q=0}^{Q} p_q(\delta) \text{ with } p_q(\delta) = \sum_{i=-1}^{N} C_{i}^{(q)}(\delta) \delta^{2i+1} \eta_i(Z) \text{.}
 $$
 
-{\color{red} To do: in practice, this is not sufficient. As $C$ very much depends on $V$.}
 
-    {\color{red} To do: Some history and details about implementing these?}
+\todo{(1)}
+
+However, these formulae only can be calculated in case $V(x)$ is a polynomial. For this, the very first step in the CP-algorithm is to approximate $V(x)$ on each sector by a polynomial $V^{N}(x)$ of sufficient high degree $N$. One possible polynomial representation is by expressing it in terms of the orthogonal family of shifted Legendre polynomials $\widetilde{P}_n(\frac{\delta}{h})$. This family of polynomials satisfy\footnote{Here $\delta_{mn}$ is the Kronecker $\delta$, defined as $\delta_{mn} = 1$ if $m=n$ else $\delta{mn} = 0$.}
+$$
+\int_0^1 \widetilde{P}_m(x) \widetilde{P}_n(x) \dd x = \frac{\delta_{mn}}{2n + 1} \quad\text{ for $m \neq n$,}
+$$
+and are increasing in degree, together with $\widetilde{P}_n(x) = 1$ for any $n$. As a reference we provide the first four.
+\begin{align*}
+    \widetilde{P}_0(x) =& 1 & \widetilde{P}_2(x) =&6x^2 - 6x + 1 \\
+    \widetilde{P}_1(x) =& 2x - 1 & \widetilde{P}_3(x) =&20 x^3 - 30 x^2 +12 x - 1
+\end{align*}
+
+Applying a least squares approximation of $V(\delta)$ with $N + 1$ shifted Legendre polynomials yields
+$$
+V(\delta) \approx \sum_{n=0}^N V_n h^n \widetilde{P}_n(\frac{\delta}{h})
+$$
+where
+\begin{equation}\label{equ:c2_legendre_V}
+    V_n= \frac{2 n + 1}{h^{n+1}} \int_0^h V(\delta) \widetilde{P}_n(\frac{\delta}{h}) d \delta, \quad \text{ with $n \in \{0, 1,\dots, N\}$.}
+\end{equation}
+To implement this, the numerical value of the integral can be computed with Gauss quadrature rules of sufficiently high degree.
+
+Let us denote the constant perturbation method with given choices for the degree $N$ and the number of correction terms $Q$ as CPM$[N,Q]$, we have the following result \cite{ixaru_cp_1998}
+
+\begin{theorem}\label{the:c2_h_error_estimate}
+    If $\text{CPM}[N,Q]$ is applied to propagate the solution on an equidistant partition with mesh size $h$ then
+    \begin{itemize}
+        \item for small values of $E$ (i.e.\ if $Z$ remains sufficiently small), the error in the mesh points is bounded by $C_N h^{2\,N+2}$ (for some constant $C_N$) provided that $Q \geq \left\lfloor \frac{2\,N}{3} \right\rfloor +1$ if $N \geq 1$ and $Q=0$ if $N=0$.
+        \item if $E$ is such that $Z(h)\ll 0$ in all intervals, the error in the mesh points is bounded by $C^*_N h^{N}/ \sqrt{E}$  (for some constant $C^*_N$) provided that $Q \geq 1$  if $N \geq 1$ and $Q=0$ if $N=0$.
+    \end{itemize}
+\end{theorem}
+
+Finally, one can simplify the expressions for the coefficients of the perturbation terms \(C^{(q)}_i\) by taking into account the orders $P_0$ (for small $Z$) and $P_{ass}$ (for negative $Z$ with $|Z| \gg 0$) that can be attained by the CPM$[N,Q]$ method. Some terms will contribute to the solution in higher orders of $h$, and so they do not need to be computed. This pruning then finally results in a method which was generically denoted as CPM$\{P_0, P_{ass}\}$. Later in theorem \ref{the:c2_delta_formulae}, we will prove that $P_{ass} = P_0$, thus we will denote our method as CPM$\{P_0\}$.
+
+The original SLCPM12-code implemented the CPM$\{12,10\}$ algorithm. In the original Matslise package, a user could choose between several algorithms: CPM$\{12,10\}$, CPM$\{14,12\}$, CPM$\{16,14\}$, CPM$\{18,16\}$.
+In Matslise 2.0 only CPM$\{18,16\}$ and CPM$\{16,14\}$ are implemented. The CPM$\{16,14\}$ method is used for propagation and the difference between the two methods is used for error estimation.
+
+The CP methods have also been successfully applied to other types of problems, such as the so-called coupled channel Schrödinger-equations problem. Research in the past lead to the \fortran code \lilix \cite{ixaru_lilix_2002} and the \matlab code \matscs \cite{ledoux_numerical_2007}. These programs made it then possible to construct CP-based methods for solving the two-dimensional Schrödinger problem \cite{ixaru_new_2010} and the time-dependent one-dimensional Schrödinger problem \cite{ledoux_accurate_2014}.
+
+In chapters \ref{cha:c3} and \ref{cha:c4} we will develop methods for the two-dimensional time-independent Schrödinger equation. These new methods are only possible, thanks to the accurate and efficient CP-methods for the one-dimensional problem.
 
 \subsection{Shooting with Prüfer's transformation}\label{sec:c2_shooting_prufer}
+
+\todo{Reread, rework, expand.}
+
+In the CP algorithm, the boundary value problem is reformulated as two initial value problems, for a fixed
+energy \(E\). The left boundary condition is converted into
+\(\psi(x_\text{min}) = b_\text{min} \) and \(\psi'(x_\text{min}) = -a_\text{min}\). By
+employing a multiple shooting method, solutions to the initial value
+problem can be used to solve the eigenvalue problem as well.
+
+At the start of the procedure, the domain \([x_\text{min}, x_\text{max}]\) is partitioned in \(K\) intervals. The $i^\text{th}$ interval can be written as $I_i = [x_{i-1}, x_{i}]$, with \(x_\text{min} = x_0, x_1, \dots, x_{K-1}, x_{K} = x_\text{max}\) the mesh points. Generically we can write such an interval as \(I = [X, X+h]\). The solution \(\psi\) can now be expressed as:
+\begin{equation}
+    \begin{pmatrix}\psi(X+\delta) \\ \psi'(X+\delta)\end{pmatrix}
+    = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} \psi(X) \\ \psi'(X) \end{pmatrix} \,, \qquad %\text{ with } 
+    0 \leq \delta \leq h \,. \label{equ:c2_cpm_propmatrix}
+\end{equation}
+
+The functions \(u(\delta)\) and \(v(\delta)\), called propagators,
+satisfy the local Schrödinger equation (analogous for \(v(\delta)\)):
+\begin{equation}
+    - u''(\delta) + V(X+\delta) u(\delta) = E u(\delta) \label{sequ:c2_local_schrodinger}
+\end{equation}
+with the initial conditions \(u(0) = 1, u'(0)=0\) and
+\(v(0) = 0, v'(0)=1\). The one-step propagation matrix
+$$
+    \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}
+$$
+has determinant \(1\), so the inverse matrix can be easily constructed. Knowledge of this propagation matrix (and its inverse) is sufficient to advance the solution in both directions along the interval.
+
 
 \section{Matslise 3.0}
 
 \todo{Blind copy from published work}
 
 Matslise 3.0 \cite{baeyens_fast_2020}.
-
-\subsection{Introduction}
-
-%\subsection{Matslise}
 
 In 2005 the first version of Matslise \cite{ledoux_matslise_2005}, A \textsc{matlab} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful
 constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP
@@ -458,11 +522,6 @@ the Liouville normal form. Avoiding this normalization also made it possible to 
 Matslise 2.0 has been downloaded over a thousand times. This number proves the need of current research to solve the SLP
 equation.
 
-The CP methods have also been successfully applied to other types of problems, such as the so-called coupled channel Schrödinger-equations problem. Research in the past lead to the Fortran code \textsc{lilix} \cite{ixaru_lilix_2002} and the \textsc{matlab} code Matscs \cite{ledoux_numerical_2007}. These programs made it then possible to construct CP-based methods for solving the two-dimensional Schrödinger problem \cite{ixaru_new_2010} and the time-dependent one-dimensional Schrödinger problem \cite{ledoux_accurate_2014}.
-
-%\hypertarget{why-a-new-matslise}{%
-%\subsection{Why a new Matslise}\label{why-a-new-matslise}}
-
 As the original Matslise modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the Matslise routines to solve the multidimensional Schrödinger equation.
 This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems.
 The current Matslise 2.0 version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction.
@@ -473,54 +532,12 @@ In fact, this illustrates that Matslise 2.0 has not been built as a library of f
 Several other features illustrate this, such as the algorithm that is used to detect whether a given problem is singular and the automatic computation of the error estimates for the eigenvalues.
 The algorithms are very useful for solving a particular SLP, but valuable computation time is lost if this detection or the error estimation is not needed.
 
-
-%Because the one dimensional Schrödinger equation is a special case of
-%the Sturm-Liouville equation Matslise was already able to solve that
-%problem. But it was for Matslise impossible to solve the two dimensional
-%Schrödinger equation.
-%In  Ixaru has proposed a method based on CP methods
-%to solve the two dimensional Schrödinger equation. 
-%
-%By
-%implementing this proposed method with Matslise we encountered some
-%issues.
-
-%This new method relies upon being able to successively calculate
-%eigenfunctions of different one dimensional Schrödinger equations. This
-%repeated usage of Matslise brought to light that matslise is not as
-%efficient as we would like it to.
-
-%
-%This lack in efficiency could be partly explained by the numerous
-%features Matslise 2.0 has. One of these features for example is being
-%able to automatically detect if the considered problem is singular. This
-%detection costs valuable computation time.
-%
-%An other feature is that Matslise always calculates error estimates for
-%eigenvalues. This estimation is useful if one studies the results. But
-%if an algorithm uses Matslise multiple times without the need for those
-%errors estimates, then these are just wasted CPU-cycles.
-
-%On the other hand, Matslise 2.0 also has a few shortcomings.
-%These became apparent when many eigenfunction where calculated in a lot
-%of different points. The way the CP-methods are implemented makes it
-%very difficult to calculate values of the eigenfunctions without knowing
-%them before the calculation is started. On top of that Matslise has
-%difficulties with efficiency when the values of an eigenfunction are
-%requested in a large amount of different points.
-
-%\hypertarget{matslise-3.0}{%
-%\section{Matslise 3.0}\label{matslise-3.0}}
-
 These challenges were the main motivator for a more efficient
 implementation of Matslise. We have considered different ways to
 optimize Matslise, keeping in mind its main features, in particular its user friendliness,
 one of the main reason for the development of the first version of Matslise.
-% This was the reason why initial development of Matslise started, so we needed to be true to that goal.
 
-%\subsection*{This article}
-
-
+\todo{rework}
 This paper is organized as follows. In section 2, we first give an overview of the formulae behind the CP-algorithms. After this summary of previous research and developments, we present in section 3 an extension to these well-established formulae with new convergence results to enable more efficient computation of the eigenfunctions in arbitrary points in the domain.
 In section 4 more details about the new implementation are given.
 %Here some choices are motivated. These choices range from why certain features were omitted to the addition of some new features.
@@ -545,155 +562,7 @@ conditions are separate, i.e.\ they can be expressed as
 \]
 with not both $a_\text{min}$ and $b_\text{min}$ zero (analogous for $a_\text{max}$ and $b_\text{max}$).
 
-In the CP algorithm, the boundary value problem is reformulated as two initial value problems, for a fixed
-energy \(E\). The left boundary condition is converted into
-\(\psi(x_\text{min}) = b_\text{min} \) and \(\psi'(x_\text{min}) = -a_\text{min}\). By
-employing a multiple shooting method, solutions to the initial value
-problem can be used to solve the eigenvalue problem as well.
 
-At the start of the procedure, the domain \([x_\text{min}, x_\text{max}]\) is partitioned in \(K\)
-intervals. The \(k^\text{th}\) interval can be written as
-\(I_k = [x_{k-1}, x_{k}]\), with
-\(x_\text{min} = x_0, x_1, \dots, x_{K-1}, x_{K} = x_\text{max}\) the
-mesh points. Generically we can write such an interval as \(I = [X, X+h]\).
-The solution \(\psi\) can now be expressed as:
-\begin{equation}
-    \begin{pmatrix}\psi(X+\delta) \\ \psi'(X+\delta)\end{pmatrix}
-    = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} \psi(X) \\ \psi'(X) \end{pmatrix} \,, \qquad %\text{ with } 
-    0 \leq \delta \leq h \,. \label{eq:propmatrix}
-\end{equation}
-
-The functions \(u(\delta)\) and \(v(\delta)\), called propagators,
-satisfy the local Schrödinger equation (analogous for \(v(\delta)\)):
-\begin{equation}
-    - u''(\delta) + V(X+\delta) u(\delta) = E u(\delta) \label{eq:loc}
-\end{equation}
-with the initial conditions \(u(0) = 1, u'(0)=0\) and
-\(v(0) = 0, v'(0)=1\). The one step propagation matrix \[
-    \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}
-\] has determinant \(1\), so the inverse matrix can be easily
-constructed. Knowledge of this propagation matrix (and its inverse) is sufficient to
-advance the solution in both directions along the interval.
-
-Perturbation theory is then used to construct sufficiently accurate propagators
-\begin{align*}
-    u(\delta) & = u_0(\delta) + u_1(\delta) + u_2(\delta) + \dots \\
-    v(\delta) & = v_0(\delta) + v_1(\delta) + v_2(\delta) + \dots
-\end{align*}
-
-%\(u(\delta)\) and \(v(\delta)\). 
-
-To calculate the initial estimations $u_0(\delta)$ and $v_0(\delta)$ for
-the propagators, \(V(x)\) is assumed to be constant on \([X, X+h]\).
-We denote this value as \(V_0\) and let \(\Delta V = V(x) - V_0\) be the difference.
-
-%The next step is then to replace the (\ref{eq:loc}) by the reference equation
-
-The reference propagators \(u_0\) and \(v_0\) are the solutions of the reference equation
-\[ -\psi''(\delta) + V_0 \psi(\delta) = E \psi(\delta) \]
-respectively corresponding to the initial conditions
-\(u_0(0) = 1, u_0'(0) = 0\) and
-\(v_0(0) = 0, v_0'(0) = 1\,.\)
-%Write \(u(\delta)\) and
-%\(v(\delta)\) as series: \begin{align*}
-%u(\delta) &= u_0(\delta) + u_1(\delta) + u_2(\delta) + \dots\\
-%v(\delta) &= v_0(\delta) + v_1(\delta) + v_2(\delta) + \dots
-%\end{align*} with %\(u_0(\delta)\) and \(v_0(\delta)\) base solutions and
-%
-%\(u_1(\delta), \dots\) and \(v_1(\delta), \dots\) perturbation terms.
-
-%Let the base terms \(u_0\) and \(v_0\) be solutions of: \begin{align*}
-%u_0''(\delta) &= (V(X+\delta) - E)u_0(\delta) &\text{ with } u_0(0) = 1 \text{ and } u_0'(0) = 0 \\
-%v_0''(\delta) &= (V(X+\delta) - E)v_0(\delta) &\text{ with } v_0(0) = 0 \text{ and } v_0'(0) = 1
-%\end{align*}
-These solutions can be computed as
-\begin{align*}
-    u_0(\delta) & = \eta_{-1}\left(Z(\delta)\right)      \\
-    v_0(\delta) & = \delta\eta_{0}\left(Z(\delta)\right)
-\end{align*} with \(Z(\delta) = (V_0-E)\delta^2\) and
-\begin{align*}
-    \eta_{-1}(Z) & = \begin{cases}
-        \cos(\sqrt{-Z}) & \text{if } Z \leq 0 \\
-        \cosh(\sqrt{Z}) & \text{if } Z > 0\,, \\
-    \end{cases} \qquad
-    \eta_{0}(Z)  & = \begin{cases}
-        \frac{\sin(\sqrt{-Z})}{\sqrt{-Z}} & \text{if } Z < 0    \\
-        1                                 & \text{if } Z = 0    \\
-        \frac{\sinh(\sqrt{Z})}{\sqrt{Z}}  & \text{if } Z > 0\,. \\
-    \end{cases}
-\end{align*}
-
-These two functions are the first of a family $\{ \eta_m(Z)\,|\,m=-1,0,1,\ldots\}$ of functions that make the analytical computation of the perturbation terms \(u_1(\delta),\, u_2(\delta), \dots\) and \(v_1(\delta),\, v_2(\delta), \dots\) possible.
-For $m=1,2,\ldots$ the functions are defined as
-\[ \eta_{m}(Z) = \frac{1}{Z}\left(\eta_{m-2}(Z) - (2m-1)\eta_{m-1}(Z)\right) \]
-
-For small values of $|Z|$ Taylor series expressions for these functions are used.
-
-%\intertext{and later the following will be needed as well:}
-%\eta_{m}(Z) &= \frac{1}{Z}\left(\eta_{m-2}(Z) - (2m-1)\eta_{m-1}(Z)\right)
-%\end{align*} (Note that if \(Z\) is real than \(\eta_{-1}(Z)\) and
-%\(\eta_0(Z)\) will also be real, even though \(\sqrt{Z}\) doesn't have
-%to be.)
-
-%Given these initial estimates for the propagators, the perturbation
-%terms \(u_1(\delta), \dots\) and \(v_1(\delta), \dots\) can be calculated. For details see \cite{Ixaru1984} and \cite{Ixaru2000},
-%we will just present the formulae. 
-
-In Theorem~\ref{theorem:perturbation-terms} the expressions for the correction terms are given. We present these formulae with a minor difference in notation (in comparison to \cite{ixaru_cp_1998}), to make the symbolic calculations more direct.
-The propagators \(u(\delta)\) and \(v(\delta)\) are generically denoted as \(p(\delta)\).
-
-%As earlier stated these will be written as a perturbation
-%series: \[
-%p(\delta) = p_0(\delta) + p_1(\delta) + p_2(\delta) + \dots
-%\]
-
-\begin{theorem}\label{theorem:perturbation-terms}
-    If $V(\delta)$ is a polynomial in $\delta$ then each term \(p_q\) is given by:
-
-    \begin{align*}
-        p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))                                                                                                                                     &
-        \intertext{with derivative:}
-        p_q'(\delta) & = \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z) + \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
-    \end{align*}
-    The functions \(C^{(q)}_i\) satisfy the following recursive relation: \begin{align*}
-        C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
-        C_{i-1}^{(q-1)}(\varepsilon) \Delta V(X+\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
-        \right)\dd\varepsilon                                                                 \\
-        C_{i}^{(0)}(\delta)  & = \begin{cases}
-            \delta & \text{if $p = u$ and $i = -1$} \\
-            1      & \text{if $p = v$ and $i = 0$}  \\
-            0      & \text{otherwise}
-        \end{cases}                                   \\
-        C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
-    \end{align*}
-
-\end{theorem}
-
-
-Theorem \ref{theorem:perturbation-terms} allows the analytical and thus also symbolical computation of all the coefficients that appear in the expressions for the perturbation terms.
-However, as this only holds in case $V(x)$ is a polynomial, the very first step in the CP-algorithm is to approximate $V(x)$ on each sector by a polynomial $V^{N}(x)$ of sufficient high degree $N$.
-Expressing this polynomial in terms of the orthogonal family of shifted Legendre polynomials \(\widetilde{P}_n(\frac{\delta}{h})\),
-one has
-\[ V^{N}(X+\delta) = \sum_{n=0}^N V_n h^n \widetilde{P}_n(\frac{\delta}{h})  \]
-where
-\begin{equation} V_n= \frac{2 n +1}{h^{n+1}} \int_0^h V(X+\delta) \widetilde{P}_n(\frac{\delta}{h}) d \delta, \qquad n=0,\,1,\ldots,N \,. \label{eq:Vn}\end{equation}
-
-Gauss quadrature rules (of sufficient high degree) are used to compute these integrals.
-
-Let us then denote the CP method with given choices for the degree $N$ and the number of correction terms $Q$ as CPM$[N,Q]$, we have the  following result \cite{ixaru_cp_1998}
-
-\begin{theorem}\label{theorem:error-estimate}
-    If $\text{CPM}[N,Q]$ is applied to propagate the solution on an equidistant partition with mesh size $h$ then
-    \begin{itemize}
-        \item for small values of $E$ (i.e.\ if $Z$ remains sufficiently small), the error in the mesh points is bounded by $C_N h^{2\,N+2}$ (for some constant $C_N$) provided that $Q \geq \left\lfloor \frac{2\,N}{3} \right\rfloor +1$ if $N \geq 1$ and $Q=0$ if $N=0$.
-        \item if $E$ is such that $Z(h)\ll 0$ in all intervals, the error in the mesh points is bounded by $C^*_N h^{N}/ \sqrt{E}$  (for some constant $C^*_N$) provided that $Q \geq 1$  if $N \geq 1$ and $Q=0$ if $N=0$.
-    \end{itemize}
-\end{theorem}
-
-Finally, one can simplify the expressions for the coefficients of the perturbation terms \(C^{(q)}_i\) by taking into account the orders $P_0$ (for small $Z$) and $P_{ass}$ (for negative $Z$ with $|Z| \gg 0$) that can be attained by the CPM$[N,Q]$ method. Some of the terms will contribute to the solution in higher orders of $h$, and so they do not need to be computed. This pruning then finally results in a method which was generically denoted as CPM$\{P_0, P_{ass}\}$. In section 3 we will prove that $P_{ass} = P_0$, thus we will denote our method as CPM$\{P_0\}$.
-
-The original SLCPM12-code implemented the CPM$\{12,10\}$ algorithm. In the original Matslise-package, a user could choose between several algorithms: CPM$\{12,10\}$, CPM$\{14,12\}$, CPM$\{16,14\}$, CPM$\{18,16\}$.
-In Matslise 2.0 only CPM$\{18,16\}$ and CPM$\{16,14\}$ are implemented. The CPM$\{16,14\}$ method is used for propagation and the difference between the two methods is used for error estimation.
 
 \subsection{New formulae for the computation of the eigenfunctions}\label{sec:c2_cp_in_delta}
 
@@ -701,7 +570,7 @@ In section \ref{the-method} we have provided an overview of the CP method to sol
 \begin{itemize}
     \item Split the domain $[a, b]$ in intervals $(a=x_0, x_1, x_2, \dots, x_k, \dots, x_n = b)$.
     \item For each interval $k$ write $X = x_{k-1}$ and $h = x_k - x_{k-1}$. \begin{itemize}
-              \item Construct propagators $u(\delta)$ and $v(\delta)$ for $\delta \in [0, h]$, according to the formulae from Theorem \ref{theorem:perturbation-terms}.
+              \item Construct propagators $u(\delta)$ and $v(\delta)$ for $\delta \in [0, h]$, according to the formulae from Theorem \ref{the:c2_perturbation_terms}.
               \item A solution $\psi(x)$ can be calculated on the $k^\text{th}$ interval if $\psi(X)$ is known:
                     \begin{align*}
                         \psi(X+\delta)  & = u(\delta)\psi(X) + v(\delta)\psi'(X)   \\
@@ -711,17 +580,17 @@ In section \ref{the-method} we have provided an overview of the CP method to sol
     \item Employ multiple shooting to find solutions to the boundary value problem.
 \end{itemize}
 
-Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{theorem:perturbation-terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{theorem:error-estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these 'simplified' formulae are daunting to work with.
-%So one can easily understand why theorem \ref{theorem:error-estimate} only gives results in function of $h$.
+Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{the:c2_perturbation_terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{the:c2_h_error_estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these 'simplified' formulae are daunting to work with.
+%So one can easily understand why theorem \ref{the:c2_h_error_estimate} only gives results in function of $h$.
 
 For the efficient calculation of eigenfunctions in arbitrary points of the domain it would however be beneficial if the propagation terms were also implemented in function of $\delta$. To prove the corresponding mathematical results, we reformulate the expressions of the propagators in terms of $\theta=\delta/h$.
 
-%To calculate these extended expressions we need first some mathematical background on how to construct them. Since Theorem \ref{theorem:perturbation-terms} described the perturbation terms as a function of $\delta$. So not substituting this $\delta$ with $h$ gives expressions for the propagators in function of $\delta$.
+%To calculate these extended expressions we need first some mathematical background on how to construct them. Since Theorem \ref{the:c2_perturbation_terms} described the perturbation terms as a function of $\delta$. So not substituting this $\delta$ with $h$ gives expressions for the propagators in function of $\delta$.
 %
 %This extension is given in the appendix.
 %
-%Theorem \ref{theorem:error-estimate} assumes that this substitution did happen, so it is no longer valid for our new extended formulae. We give a new theorem:
-%To construct an error estimate in function of $h$ it is useful to substitute $\delta = h\theta$ in the expressions from theorem \ref{theorem:perturbation-terms}.
+%Theorem \ref{the:c2_h_error_estimate} assumes that this substitution did happen, so it is no longer valid for our new extended formulae. We give a new theorem:
+%To construct an error estimate in function of $h$ it is useful to substitute $\delta = h\theta$ in the expressions from theorem \ref{the:c2_perturbation_terms}.
 
 Functions of $\theta$ will be denoted with a bar, like $\bar{C}(\theta) = C(\theta h)= C(\delta)$ and $\bar{u}_{q}(\theta) = {u}_{q}(\theta h) =u_{q}(\delta)$. Again $\bar{p}$ generically denotes  the functions $\bar{u}$ or $\bar{v}$. The CP-correction terms are now given by:
 \begin{align}
@@ -745,15 +614,15 @@ The functions \(\bar{C}^{(q)}_i\) satisfy the following recursive relation: \beg
 \end{align}
 
 
-Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref{eq:propmatrix}) can be rewritten
+Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref{equ:c2_cpm_propmatrix}) can be rewritten
 
 \begin{equation}
     \begin{pmatrix}\bar{\psi}(\theta)\\ \bar{\psi}'(\theta)\end{pmatrix}
     = \begin{pmatrix} \bar{u}(\theta) & \bar{v}(\theta)/h \\ \bar{u}'(\theta) & \bar{v}'(\theta)/h \end{pmatrix} \begin{pmatrix} \bar{\psi}(0) \\ \bar{\psi}'(0) \end{pmatrix} \,, \qquad %\text{ with } 
-    0 \leq \theta \leq 1 \,. \label{eq:propmatrix2}
+    0 \leq \theta \leq 1 \,. \label{equ:c2_cpm_propmatrix2}
 \end{equation}
 
-\begin{theorem}\label{theorem:delta-formulae}
+\begin{theorem}[Baeyens and Van Daele 2020]\label{the:c2_delta_formulae}
     Assume, for $h$ sufficiently small, that an approximation of the propagation matrix % in $\theta = \frac{\delta}{h} \in [0, 1]$
     $$
         \begin{pmatrix}
@@ -767,7 +636,7 @@ Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref
 
 \end{theorem}
 \begin{proof}
-    This theorem is heavily inspired by \cite{ixaru_cp_1998}. There an error estimate is calculated and Theorem~\ref{theorem:perturbation-terms} and Theorem~\ref{theorem:error-estimate} are proved. These proofs give a useful framework for providing a result for the $\delta$-dependent formulae.
+    This theorem is heavily inspired by \cite{ixaru_cp_1998}. There an error estimate is calculated and Theorem~\ref{the:c2_perturbation_terms} and Theorem~\ref{the:c2_h_error_estimate} are proved. These proofs give a useful framework for providing a result for the $\delta$-dependent formulae.
 
     %Firstly $V(X+h\theta)$ is approximated for $\theta \in [0, 1]$ on an interval $[X, X+h]$ in terms of shifted Legendre polynomials $P_n^*(\theta)$:
     %$$
@@ -906,16 +775,16 @@ $\bar{p}(\theta)$ in which $V_i = 0$ if $i > N$.
 %}
 
 %{\color{red}
-%The difference between Theorem~\ref{theorem:error-estimate} and Theorem~\ref{theorem:delta-formulae} does not seem obvious. We have proven that $Q = \left\lfloor \frac{N}{3} \right\rfloor $ (in contrast to $Q = \left\lfloor \frac{2N}{3} + 1 \right\rfloor$) are a sufficient number of correction terms. Theorem \ref{theorem:error-estimate} needs a higher number of correction terms to provide superconvergence of order $\mathcal{O}(h^{2N+2})$ for small values for $E$. In our case we are not interested in this superconvergence so less correction terms are necessary.
+%The difference between Theorem~\ref{the:c2_h_error_estimate} and Theorem~\ref{the:c2_delta_formulae} does not seem obvious. We have proven that $Q = \left\lfloor \frac{N}{3} \right\rfloor $ (in contrast to $Q = \left\lfloor \frac{2N}{3} + 1 \right\rfloor$) are a sufficient number of correction terms. Theorem \ref{the:c2_h_error_estimate} needs a higher number of correction terms to provide superconvergence of order $\mathcal{O}(h^{2N+2})$ for small values for $E$. In our case we are not interested in this superconvergence so less correction terms are necessary.
 %
-%On the other hand, when $Z(h) \ll 0$, the result provided by Theorem~\ref{theorem:error-estimate} gives an error estimate of $\mathcal{O}(\frac{h^N}{\sqrt{E}})$. While we have proven an estimate of $\mathcal{O}(h^{N+2})$ in any cases. Note that our estimate does not improve if $E$ gets larger.
+%On the other hand, when $Z(h) \ll 0$, the result provided by Theorem~\ref{the:c2_h_error_estimate} gives an error estimate of $\mathcal{O}(\frac{h^N}{\sqrt{E}})$. While we have proven an estimate of $\mathcal{O}(h^{N+2})$ in any cases. Note that our estimate does not improve if $E$ gets larger.
 %}
 
 
 %{\color{blue}
-Remark that in Theorem~\ref{theorem:delta-formulae}, in contrast to Theorem~\ref{theorem:error-estimate}, no assumption is made on the size of $Z=\delta^2 (V_0-E)$. In the proof of Theorem~\ref{theorem:error-estimate} this distinction was necessary because error terms were expressed
+Remark that in Theorem~\ref{the:c2_delta_formulae}, in contrast to Theorem~\ref{the:c2_h_error_estimate}, no assumption is made on the size of $Z=\delta^2 (V_0-E)$. In the proof of Theorem~\ref{the:c2_h_error_estimate} this distinction was necessary because error terms were expressed
 not only in terms of bounded functions $\eta_i(Z)$ but also in terms of the unbounded argument $Z$, whereas in the proof of
-Theorem~\ref{theorem:delta-formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{theorem:error-estimate} is sharper than the one given in Theorem~\ref{theorem:delta-formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
+Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{the:c2_h_error_estimate} is sharper than the one given in Theorem~\ref{the:c2_delta_formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
 
 \begin{align*}
     2\bar{u}^{(4)}            & = 2 \eta_{-1} + h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right)                                                                                                 \\
@@ -927,7 +796,7 @@ Theorem~\ref{theorem:delta-formulae} all error terms were expressed in terms of 
                               & \quad\quad + h^{3}\left(\left(2 \theta^{4} - 3 \theta^{3} + \theta^{2}\right) V_{2} \eta_{0} + \left(3 \theta^{4} - 3 \theta^{3}\right) V_{2} \eta_{1}\right)                                                    \\
 \end{align*}%
 
-Further, Theorem~\ref{theorem:delta-formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In Matslise 2.0 $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$, Theorem~\ref{theorem:delta-formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
+Further, Theorem~\ref{the:c2_delta_formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In Matslise 2.0 $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$, Theorem~\ref{the:c2_delta_formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
 %Approximating $V(x)$ by a piecewise polynomial of degree $N$, $Q= \lfloor \frac{N}{3} \rfloor$ is sufficient to generate a method of order $N+2$. For $N=16$, only $Q=5$ correction terms are needed.
 %}
 
@@ -994,8 +863,8 @@ pip install pyslise
 Let us now consider the computation of eigenfunctions.
 Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor Matslise 2.0 were optimized do to so: In fact, to visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed and all necessary computations are carried out again.
 
-To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{eq:propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
-via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{eq:Vn}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
+To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
+via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
 $$
     u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
 $$
