@@ -165,13 +165,13 @@ for this method applied to problem \eqref{equ:c2_fd_test_problem}. This teaches 
 
 \subsection{CP-methods}
 
-The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm-Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions to the one dimensional time-independent Schrödinger equation. This lays the foundation to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
+The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm-Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions to the one dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
 
 For this, we will only consider the Schrödinger equation
 \begin{equation}\label{equ:c2_cpm_schrodinger}
     - y'' + V(x) y = \lambda y
 \end{equation}
-on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a) + \beta_a y(a) = 0$ and $\alpha_b y(b) + \beta_b y(b) = 0$. But do note, that using Liouville's transformation all Sturm-Liouville problems can be transformed into Schrödinger problems.
+on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a) + \beta_a y(a) = 0$ and $\alpha_b y(b) + \beta_b y(b) = 0$. But do note, that using Liouville's transformation Sturm-Liouville problems can be transformed into Schrödinger problems.
 
 \subsubsection{Piecewise constant approximation of the potential}
 
@@ -183,9 +183,9 @@ on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a)
     \end{center}
 \end{figure}
 
-As a very first step, \cite{canosa_new_1970} simplifies the potential $V(x)$ as a piecewise constant approximation $\bar{V}(x)$. This approximation is visualized in figure \ref{fig:c2_cpm_constant_approx}. Notice that no restrictions are placed upon the size of the pieces. Upon choosing $\bar{V}(x)$, one should keep in mind that the better the piecewise approximation is, the better the resulting eigenvalues will be. And, The computational runtime depends linearly on the number of pieces.
+As a very first step, \cite{canosa_new_1970} simplifies the potential $V(x)$ as a piecewise constant approximation $\bar{V}(x)$. This approximation is visualized in figure \ref{fig:c2_cpm_constant_approx}. Notice that no restrictions are placed upon the size of the pieces. Upon choosing $\bar{V}(x)$, one should keep in mind that the better the piecewise approximation is, the better the resulting eigenvalues will be. And, the computational runtime depends linearly on the number of pieces.
 
-The next step is to fixate the value for $\lambda$. Now, for each of the pieces of $\bar{V}$ the analytical solutions is computed of the problem
+The next step is to fix the value for $\lambda$ for now. Then, for each of the pieces of $\bar{V}$ the analytical solutions is computed of the problem
 $$
     y'' = (V_i - \lambda) y\text{.}
 $$
@@ -202,15 +202,15 @@ To determine the appropriate values for $A_i$ and $B_i$ continuity conditions be
 $$
     \psi_{i-1}(x_i) = \psi_{i}(x_i) \text{ and } \psi_{i-1}'(x_i) = \psi_{i}'(x_i) \text{.}
 $$
-If $n$ pieces are used, this system of equations has $2n$ variables and $2(n-1)$ equations. Together with the two equations from the boundary conditions, this yields a fully determined linear system. To find eigenvalues $\lambda$ for which an eigenfunction exists such \eqref{equ:c2_cpm_schrodinger} is satisfied, the question now becomes: for which values of $\lambda$ does the previously described system of equations has non-zero solutions? Because only these solutions correspond to a non-zero eigenfunction.
+If $n$ pieces are used, this system of equations has $2n$ variables and $2(n-1)$ equations. Together with the two equations from the boundary conditions, this yields a fully determined linear system. Now, we have translated the problem of finding eigenvalues of the Schrödinger equation \eqref{equ:c2_cpm_schrodinger} to finding values for $\lambda$ such that this system of equations has non-zero solutions. Only these solutions correspond to a non-zero eigenfunction.
 
 Finding values for $\lambda$ for which the constructed system becomes singular is not as trivial as one may assume. In \cite{canosa_new_1970}, the authors have provided their own root finding algorithm based upon finding changes in the sign of the determinant. But this algorithm is not without issue. Eigenvalues may be arbitrarily close together, which makes it hard to ensure you have found all requested values. Choosing the appropriate step sizes when eigenvalues become increasingly sparse is a balance between efficiency and not missing any. Later on we will describe a way to reliably and efficiently determine all required eigenvalues.
 
-One of the main benefits of this ``new method for the solution of the Schrödinger equation'' is that its accuracy does not depend on the size of the requested eigenvalue. Because only analytical solutions of the piecewise approximated problem are considered, oscillations can be represented exactly. Even the most extreme oscillations are cleanly captured inside the $\sin$ en $\cos$ of $\psi_i$. The idea of using analytical solutions allowed the development of the CP-methods.
+One of the main benefits of this ``new method for the solution of the Schrödinger equation'' \cite{canosa_new_1970} is that its accuracy does not depend on the size of the requested eigenvalue. Because only analytical solutions of the piecewise approximated problem are considered, oscillations can be represented exactly. Even the most extreme oscillations are cleanly captured inside the $\sin$ en $\cos$ of $\psi_i$. The idea of using analytical solutions allowed the development of the CP-methods.
 
-When building upon this method one can make an observation when looking at figure \ref{fig:c2_cpm_constant_approx}. $\bar{V}(x)$ is a crude approximation of the function $V(x)$. This remark becomes even more important when one realizes that the accuracy of the method solely depends upon the accuracy of this approximation.
+When studying this method one can make the observation when looking at figure \ref{fig:c2_cpm_constant_approx} that $\bar{V}(x)$ is a crude approximation of the function $V(x)$. The importance of this remark becomes even more apparent when one realizes that the accuracy of the method solely depends upon the accuracy of this approximation.
 
-The idea of Canosa and De Oliveira gained traction. In 1971 Ixaru \cite{ixaru_error_1972} has written a note about the error analysis of this new method. And in the same year Pruess \cite{pruess_estimating_1973} has studied this method thoroughly and provided numerical examples of linear piecewise approximations and quadratic piecewise approximations of the potential function. Here we will state the most important theorems, without proof. All details can be found in \cite{pruess_estimating_1973}.
+Nonetheless, the idea of Canosa and De Oliveira gained traction. In 1971 Ixaru \cite{ixaru_error_1972} has written a note about the error analysis of this new method. And in the same year Pruess \cite{pruess_estimating_1973} has studied this method thoroughly and provided numerical examples of linear piecewise approximations and quadratic piecewise approximations of the potential function. Here we will state the most important theorems, without proof. All details can be found in \cite{pruess_estimating_1973}.
 
 \begin{theorem}[Pruess 1973]\label{the:c2_pruess_1973_1}
     Let $\lambda_k$ be the $k^\text{th}$ eigenvalue of the Schrödinger equation
