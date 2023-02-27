@@ -4,63 +4,67 @@
 
 \longchapter[The \oneD Schrödinger equation]{The one-dimensional time-independent Schrödinger equation}\label{cha:c2}
 
-\todo{Find a place for some text about the implementation}
-
 \section{Introduction}
 
-The one-dimensional time-independent Schrödinger equation is an eigenvalue problem with boundary conditions. Solutions are given as an eigenvalue $\lambda \in \RR$ with corresponding eigenfunction $y: \RR \to \RR$. These eigenfunctions are defined over the bounded domain $[a, b] \subseteq \RR$ of the problem. Each solution has to satisfy the following equation
+The one-dimensional time-independent Schrödinger equation is a linear ordinary differential equation posed as an eigenvalue problem on a domain $[a, b] \subseteq \RR$ with specified boundary conditions. Solutions are given as an eigenvalue $\lambda \in \RR$ with corresponding eigenfunction $y: \RR \to \RR$. These eigenfunctions are defined over the bounded domain $[a, b]$ of the problem. Each solution has to satisfy the following equation
 $$
     -y''(x) + V(x)y(x) = \lambda y(x)
 $$
-for each of the values $x\in [a, b]$. In this equation the given function $V: \RR \to \RR$ is the potential of the problem at hand. Note that in general if $y(x)$ is an eigenfunction, $c\,y(x)$ will also be an eigenfunction with the same eigenvalue, for each value of $c \in \RR$. As such, it is not really possible to say ``\emph{the} eigenfunction of corresponding to a certain eigenvalue". Later on we will prove that in many cases the eigenfunction is, up to a constant factor, uniquely defined.
+for each of the values $x\in [a, b]$. In this equation the given function $V: \RR \to \RR$ is the potential of the problem at hand. Note that in general if $y(x)$ is an eigenfunction, $c\,y(x)$ will also be an eigenfunction with the same eigenvalue, for each value of $c \in \RR$. As such, it is not really possible to say ``\emph{the} eigenfunction corresponding to a certain eigenvalue". Later on we will prove that in many cases the eigenfunction is, up to a constant factor, uniquely defined.
 
 Boundary conditions have to be specified before solutions can be found. These conditions pose restrictions on $y(a)$, $y'(a)$, $y(b)$ and $y'(b)$. Boundary conditions come in many flavors. We provide an overview of the most common ones:
 \begin{itemize}
-    \item \emph{Dirichlet boundary conditions} specify which value the solution takes on the boundary of the domain. In our case, eigenfunctions can always be scaled, as such, it is not useful to specify the value of the solution different from zero on the boundary. This type of boundary condition thus simplifies to $y(a) = 0$ and $y(b) = 0$.
-    \item \emph{Neumann boundary conditions} specify which value the derivative of a solution takes on the boundary of the domain. In our case, the same remark as given for the Dirichlet boundary conditions applies. This means that Neumann boundary conditions imply that $y'(a) = 0$ and $y'(b) = 0$.
-    \item \emph{Robin boundary conditions} are a generalization of both previous boundary conditions. When these conditions are imposed on a solution $y(x)$ we imply that a certain weighted average of the function and its derivative are a fixed value. As solutions can always be scaled, Robin boundary conditions can be, in our case, rewritten to
+    \item \emph{Dirichlet boundary conditions} specify which value the solution takes on the boundary of the domain. In our case, eigenfunctions can always be scaled, as such, it is not useful to specify the value of the solution different from zero on the boundary. This type of boundary condition thus simplifies to $y(a) = 0$ and $y(b) = 0$, and is therefor called the homogeneous Dirichlet boundary conditions.
+    \item \emph{Neumann boundary conditions} specify which value the derivative of a solution takes on the boundary of the domain. In our case, the same remark as given for the Dirichlet boundary conditions applies. This means that homogeneous Neumann boundary conditions imply that $y'(a) = 0$ and $y'(b) = 0$.
+    \item \emph{Robin boundary conditions} are a generalization of both previous boundary conditions. When these conditions are imposed on a solution $y(x)$ we imply that a certain weighted average of the function and its derivative are a fixed value. In our case, homogeneous Robin boundary conditions can be imposed. This can be written as
           $$
               \alpha_a y(a) + \beta_a y(a) = 0 \text{ and } \alpha_b y(b) + \beta_b y(b) = 0  \text{.}
           $$
-    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{anti-periodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized to
+    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{anti-periodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized with a $2 \times 2$ matrix $\vb{K}$:
           $$
               \begin{pmatrix} y(a) \\ y'(a) \end{pmatrix} = \vb{K} \begin{pmatrix} y(b) \\ y'(b) \end{pmatrix}\text{.}
           $$
 \end{itemize}
 
-Note that Dirichlet or Neumann boundary conditions can always be written as Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is most general to always consider Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and give rise to more edge cases and subtleties. This case will be later studied in section \ref{sec:1d_periodic}.
+Note that homogeneous Dirichlet or Neumann boundary conditions can always be written as homogeneous Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is more general to consider homogeneous Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and give rise to more edge cases and subtleties. This case will later be studied in section \ref{sec:1d_periodic}.
 
 \subsection{Properties of the Sturm-Liouville equation}
 
-Before developing numerical methods for solving these equations it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
+Before developing numerical methods for solving the one-dimensional time-independent Schrödinger equation, it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
-In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, articles and books cover the more general Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more wildly applicable, and so more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of the Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
+In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
 
-The Sturm-Liouville equation is a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$
+The Sturm-Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$:
 $$
     -(p(x) y'(x))' + q(x) y(x) = E w(x) y(x)\text{.}
 $$
-The continuous and finite functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain. These functions define the problem. A solution consists of an eigenvalue $E$ with corresponding eigenfunction $y(x)$. For now, we will study the Sturm-Liouville equation with Robin boundary conditions:
+The continuous and bounded functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $[a, b]$. These functions define the problem. A solution consists of an eigenvalue $E$ with corresponding eigenfunction $y(x)$. For now, we will study the Sturm-Liouville equation with homogenous Robin boundary conditions:
 $$
     \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 $$
 
-Note that the Schrödinger equation with Robin boundary conditions is a special case of the Sturm-Liouville equation. Namely, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
+Note that the Schrödinger equation with homogeneous Robin boundary conditions is a special case of the Sturm-Liouville equation. Specifically, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
 
     {\color{red}
+        \todo{Prove the following:}
 
-        Following from the mathematical background chapter:
         \begin{itemize}
             \item Eigenvalues are real and ordered.
-            \item Eigenfunctions can be orthonormal
+            \item Eigenfunctions are orthonormal and can be normalized
+            \item The $k^\text{th}$ eigenfunction has $k$ zeros.
         \end{itemize}
 
-        In finite and non-periodic cases: eigenvalues are unique.
+        In the finite and non-periodic cases: eigenvalues are unique.
 
-        \subsection{Liouville's transformation}
-        Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
-
+        Give some real-world examples of this equation.
     }
+
+\subsection{Liouville's transformation}
+\todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
+{\color{red}
+    Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
+}
+
 
 
 
@@ -78,19 +82,22 @@ For ordinary differential equations as \emph{boundary value} problems, such as t
     \label{fig:c2_finite_difference_grid}
 \end{figure}
 
-The idea for these kinds of methods, is to discretize the integration domain $[a, b]$ into an equally spaced grid of points $a = x_0$, $x_1$, $\dots$, $x_i$, $\dots$, $x_{n-1}$, $x_{n} = b$, with $\Delta x$ the distance between two consecutive points. This discretization can be seen in figure \ref{fig:c2_finite_difference_grid}. The differential equation is now approximated by using finite difference expressions of the involved derivatives. This leads to a linear matrix-vector reformulation of the differential equation, which can be solved with classical linear algebra tools.
+The idea for these kinds of methods, is to discretize the integration domain $[a, b]$ into an equally spaced grid of points $a = x_0$, $x_1$, $\dots$, $x_i$, $\dots$, $x_{n-1}$, $x_{n} = b$, with $\Delta x$ the distance between two consecutive points. This discretization can be seen in figure \ref{fig:c2_finite_difference_grid}. The differential equation is now approximated by using finite difference expressions of the involved derivatives. For linear ordinary differential equations, this leads to a linear matrix-vector reformulation of the differential equation, which can be solved with classical linear algebra tools.
 
-\subsubsection{Finite difference approximation of the Sturm-Liouville equation}
+In this general technique constructing higher order methods is mostly as straightforward as using a more accurate finite difference approximation. But these methods become increasingly computationally expensive as more accuracy is required, or higher eigenvalues are requested.
 
-Around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville equation looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After the fact, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae, later they developed highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions.
 
-To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simpler version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general disadvantages of this technique. The Sturm-Liouville equations we will consider are given by
+\subsubsection{Finite difference scheme for the Sturm-Liouville equation}
+
+Until around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville equation looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After the fact, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae, later on highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions were developed.
+
+To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simple version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general advantages but also disadvantages of this technique. The Sturm-Liouville equations we will consider are given by
 \begin{equation}\label{equ:c2_finite_difference_slp}
     -(p(x)y')' + q(x) y = \lambda w(w) y\text{.}
 \end{equation}
 Solutions consist of eigenvalues $\lambda$ and corresponding eigenfunctions $y(x)$ such that \eqref{equ:c2_finite_difference_slp} is satisfied on the domain $[a, b]$ with homogeneous Dirichlet boundary conditions $y(a) = y(b) = 0$.
 
-As a first step we discretize the domain $[a, b]$ with $n+1$ equidistant points, as in figure \ref{fig:c2_finite_difference_grid}. The eigenfunctions $y(x)$ we are looking for, can now be approximated by values in each of the grid points $y(x_i) \approx y_i$. For translating this problem into a linear matrix-vector equation, we are missing one key component. We still need a way to discretize the expression $(p(x) y')'$. For this, we apply the central second order finite difference formula for the first derivative twice, with half the step size. In more detail, the first derivative of a scalar function $f(x)$ can be approximated as:
+As a first step we discretize the domain $[a, b]$ with $n+1$ equidistant points, as in figure \ref{fig:c2_finite_difference_grid}. The eigenfunctions $y(x)$ we are looking for, can now be approximated by values in each of the grid points $y(x_i) \approx y_i$. For translating this problem into a linear matrix-vector equation, we are missing one key component. We need a way to discretize the expression $(p(x) y')'$. For this, we apply the central second order finite difference formula for the first derivative twice, with half the step size. In more detail, the first derivative of a scalar function $f(x)$ can be approximated as:
 $$
     f'(x) \approx \frac{f(x + h) - f(x - h)}{2h}\text{.}
 $$
@@ -115,7 +122,7 @@ To emphasize that this is a linear algebra problem we can rewrite this in matrix
     \left(-\vb{D} + \diag(\vb{q})\right)\vb{y} = \lambda \diag(\vb{w}) \vb{y}\text{.}
 \end{equation}
 
-The $(n-1)$-dimensional vector $\vb{y} = \transpose{\begin{pmatrix}y_1 & y_2 & \dots & y_{n-1}\end{pmatrix}}$ is the unknown approximation of the eigenfunction. The $(n-1)$-dimensional vectors $\vb{q} = \transpose{\begin{pmatrix}q(x_1) & q(x_2) & \dots & q(x_{n-1})\end{pmatrix}}$  and $\vb{w} = \transpose{\begin{pmatrix}w(x_1) & w(x_2) & \dots & w(x_{n-1})\end{pmatrix}}$ are the values of the coefficient functions $q$ and $p$. And lastly, the matrix $\vb{D}$ is the tridiagonal matrix given by:
+The $(n-1)$-dimensional vector $\vb{y} = \transpose{\begin{pmatrix}y_1 & y_2 & \dots & y_{n-1}\end{pmatrix}}$ is the unknown approximation of the eigenfunction. The $(n-1)$-dimensional vectors $\vb{q} = \transpose{\begin{pmatrix}q(x_1) & q(x_2) & \dots & q(x_{n-1})\end{pmatrix}}$  and $\vb{w} = \transpose{\begin{pmatrix}w(x_1) & w(x_2) & \dots & w(x_{n-1})\end{pmatrix}}$ are the values of the coefficient functions $q$ and $w$. And lastly, the matrix $\vb{D}$ is the tridiagonal matrix given by:
 $$
     \vb{D} = \frac{1}{\Delta x^2}\begin{pmatrix}
         -p_{\frac{1}{2}} -p_{\frac{3}{2}} & p_{\frac{3}{2}}                   &                                   &                     &                                            \\
@@ -126,7 +133,7 @@ $$
     \end{pmatrix}{}\text{.}
 $$
 
-To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with our favorite tridiagonal eigenvalue solver. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines: \texttt{?stev} and relatives.
+To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with any of our favorite tridiagonal eigenvalue solver. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines: \texttt{?stev} and relatives.
 
 \begin{figure}
     \begin{center}
@@ -148,13 +155,13 @@ As a numerical experiment of this method we will take a look at the following St
 \begin{equation}\label{equ:c2_fd_test_problem}
     -\left((1+x)^2 y \right)' + (x^2 - 2) y = \lambda e^x y
 \end{equation}
-on the domain $[0, 1]$ with homogeneous Dirichlet boundary conditions. Figure \ref{fig:c2_fd_h_error} shows the relative errors of the 4 lowest eigenvalues in function of the chosen grid size $n$. As $n$ increases, the error decreases, as desired. Notice that as the constructed method is based upon second order finite difference formulae, we expect to see the decrease of error be of second order too, as indicated in the figure with the dotted line. This constructed method is of relatively low order, so to compute very accurate estimations, a large grid size is needed. In the literature one can find many such methods, even with much higher orders. These better methods can reach high accuracy with relatively little computational work, for the first few eigenvalues.
+on the domain $[0, 1]$ with homogeneous Dirichlet boundary conditions. Figure \ref{fig:c2_fd_h_error} shows the relative errors of the 4 lowest eigenvalues in function of the chosen grid size $n$. As $n$ increases, the error decreases, as desired. Notice that as the constructed method is based upon second order finite difference formulae, we expect to see the decrease of error be of second order too, as indicated in the figure with the dotted line. This constructed method is of relatively low order, so to compute very accurate estimations, a dense grid is needed. In the literature one can find many methods base upon finite difference approximations, many of which use (much) higher order formulae. These better methods can reach high accuracy with relatively little computational work, for the first few eigenvalues.
 
-As earlier hinted, this type of method struggles with the computation of higher eigenvalues. Figure \ref{fig:c2_fd_k_error} illustrates this. Here, the relative error of the first 50 eigenvalues is plotted, for different values of $n$. Note that in the case of $n = 32$, only $32$ eigenvalues can be computed. On this figure, the line corresponding to $\mathcal{O}(k^2)$ is drawn. Together with the $\mathcal{O}(\Delta x^2)$ from earlier, this indicates that the relative error of the $k^\text{th}$ eigenvalue is expected to be
+As earlier hinted, methods based upon finite differences struggle with the computation of higher eigenvalues. Figure \ref{fig:c2_fd_k_error} illustrates this. Here, the relative error of the first 50 eigenvalues is plotted, for different values of $n$. Note that in the case of $n = 32$, only $32$ eigenvalues can be computed. On this figure, the line corresponding to $\mathcal{O}(k^2)$ is drawn. Together with the $\mathcal{O}(\Delta x^2)$ from earlier, one expects the relative error of the $k^\text{th}$ eigenvalue to be
 $$
     \mathcal{O}(\Delta x^2 k^2)
 $$
-for this method applied to problem \eqref{equ:c2_fd_test_problem}. This teaches us, for this method in particular, but also applies to all methods of this type, that the larger the eigenvalue, the more difficult it is to compute accurately. In the literature one can find some techniques to mitigate this effect by applying some corrections after the fact. In \cite{andrew_correction_1985} such a correction is analyzed when applied to Numerov's method. Here, the authors are able to bring the error down from $\mathcal{O}(k^6 h^4)$ to $\mathcal{O}(k^3 h^4)$. This is remarkably better. But even with this correction technique, computing large eigenvalues is still computationally difficult.
+for this method applied to problem \eqref{equ:c2_fd_test_problem}. This teaches us for this method in particular, but it is also applicable to most methods of this type, that the larger the eigenvalue, the more difficult it is to compute accurately. In the literature one can find some techniques to mitigate this effect by applying some corrections after the fact. In \cite{andrew_correction_1985} such a correction is analyzed when applied to Numerov's method. Here, the authors are able to bring the error down from $\mathcal{O}(k^6 h^4)$ to $\mathcal{O}(k^3 h^4)$. This is remarkably better. But even with this correction technique, computing large eigenvalues is still computationally difficult.
 
 \subsection{CP-methods}
 
@@ -1495,17 +1502,17 @@ All eigenfunctions are computed in both algorithms with a maximal error of less 
 \begin{enumerate}
     \item Template on scalar type.
     \item Unifying different types of solvers. (Normal, HalfRange, SturmLiouville)
-    \item Generate formula code 
-    \begin{enumerate}
-        \item Symbolic computation
-        \item For systems of equations, non-commutative symbolic computation
-        \item Helping the compiler with intermediates
-        \item Compiler difficulties
-    \end{enumerate}
+    \item Generate formula code
+          \begin{enumerate}
+              \item Symbolic computation
+              \item For systems of equations, non-commutative symbolic computation
+              \item Helping the compiler with intermediates
+              \item Compiler difficulties
+          \end{enumerate}
     \item Memory management:
           \begin{enumerate}
-            \item Shared pointers in \cpp{}. 
-            \item Ownership of sectors. 
+              \item Shared pointers in \cpp{}.
+              \item Ownership of sectors.
               \item Eigenfunctions should keep the original problem alive:
                     % \begin{noindent}
 \begin{python}
@@ -1517,7 +1524,7 @@ for q in [1,10,100]:
 \end{python}
 % \end{noindent}
           \end{enumerate}
-          \item Building a Python-package
+    \item Building a Python-package
 \end{enumerate}
 
 \stopchapter
