@@ -61,6 +61,13 @@ Note that the Schrödinger equation with homogeneous Robin boundary conditions i
         Give some real-world examples of this equation.
     }
 
+\begin{theorem}\label{the:c2_kth_eigen_k_roots}
+    The $k^\text{th}$ eigenfunction has $k$ zeros.
+\end{theorem}
+\begin{proof}
+\todo{}
+\end{proof}
+
 \subsection{Liouville's transformation}
 \todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
 {\color{red}
@@ -425,22 +432,19 @@ $$
     p(\delta) = \sum_{q=0}^{Q} p_q(\delta) \text{ with } p_q(\delta) = \sum_{i=-1}^{N} C_{i}^{(q)}(\delta) \delta^{2i+1} \eta_i(Z) \text{.}
 $$
 
-
-\todo{(1)}
-
 However, these formulae only can be calculated in case $V(x)$ is a polynomial. For this, the very first step in the CP-algorithm is to approximate $V(x)$ on each sector by a polynomial $V^{N}(x)$ of sufficient high degree $N$. One possible polynomial representation is by expressing it in terms of the orthogonal family of shifted Legendre polynomials $\widetilde{P}_n(\frac{\delta}{h})$. This family of polynomials satisfy\footnote{Here $\delta_{mn}$ is the Kronecker $\delta$, defined as $\delta_{mn} = 1$ if $m=n$ else $\delta{mn} = 0$.}
 $$
-\int_0^1 \widetilde{P}_m(x) \widetilde{P}_n(x) \dd x = \frac{\delta_{mn}}{2n + 1} \quad\text{ for $m \neq n$,}
+    \int_0^1 \widetilde{P}_m(x) \widetilde{P}_n(x) \dd x = \frac{\delta_{mn}}{2n + 1} \quad\text{ for $m \neq n$,}
 $$
 and are increasing in degree, together with $\widetilde{P}_n(x) = 1$ for any $n$. As a reference we provide the first four.
 \begin{align*}
-    \widetilde{P}_0(x) =& 1 & \widetilde{P}_2(x) =&6x^2 - 6x + 1 \\
-    \widetilde{P}_1(x) =& 2x - 1 & \widetilde{P}_3(x) =&20 x^3 - 30 x^2 +12 x - 1
+    \widetilde{P}_0(x) = & 1      & \widetilde{P}_2(x) = & 6x^2 - 6x + 1             \\
+    \widetilde{P}_1(x) = & 2x - 1 & \widetilde{P}_3(x) = & 20 x^3 - 30 x^2 +12 x - 1
 \end{align*}
 
 Applying a least squares approximation of $V(\delta)$ with $N + 1$ shifted Legendre polynomials yields
 $$
-V(\delta) \approx \sum_{n=0}^N V_n h^n \widetilde{P}_n(\frac{\delta}{h})
+    V(\delta) \approx \sum_{n=0}^N V_n h^n \widetilde{P}_n(\frac{\delta}{h})
 $$
 where
 \begin{equation}\label{equ:c2_legendre_V}
@@ -469,33 +473,79 @@ In chapters \ref{cha:c3} and \ref{cha:c4} we will develop methods for the two-di
 
 \subsection{Shooting with Prüfer's transformation}\label{sec:c2_shooting_prufer}
 
-\todo{Reread, rework, expand.}
+Going back to the ideas of Canosa and De Oliveira, to find analytical solutions of the piecewise constant approximated problem, the first thing they did was fix the eigenvalue $\lambda$. And, in the developments following these ideas $\lambda$ was always assumed to be a constant. But in reality, this $\lambda$ is unknown.
 
-In the CP algorithm, the boundary value problem is reformulated as two initial value problems, for a fixed
-energy \(E\). The left boundary condition is converted into
-\(\psi(x_\text{min}) = b_\text{min} \) and \(\psi'(x_\text{min}) = -a_\text{min}\). By
-employing a multiple shooting method, solutions to the initial value
-problem can be used to solve the eigenvalue problem as well.
+In \cite{canosa_new_1970} they translated the eigenvalue differential equation into the question: for which values of $\lambda$ does a certain linear system of equations emit non-zero solutions? For the CP-methods no such translation is available. In \cite{ixaru_numerical_1984} Ixaru applies a shooting procedure to solve boundary value problems using constant perturbation techniques.
 
-At the start of the procedure, the domain \([x_\text{min}, x_\text{max}]\) is partitioned in \(K\) intervals. The $i^\text{th}$ interval can be written as $I_i = [x_{i-1}, x_{i}]$, with \(x_\text{min} = x_0, x_1, \dots, x_{K-1}, x_{K} = x_\text{max}\) the mesh points. Generically we can write such an interval as \(I = [X, X+h]\). The solution \(\psi\) can now be expressed as:
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\linewidth]{img/chapter2/shooting_schematic.pdf}
+        \caption{Multiple shooting procedures are applied to a Sturm-Liouville equation with homogeneous Dirichlet boundary conditions. $E^{(0)}$ is a possible first eigenvalue guess, $E^{(1)}$ and $E^{(2)}$ are consecutive adjustments. Notice that $E^{(2)}$ emits a derivable function in the matching point $x_m$.}
+        \label{fig:c2_shooting_schematic}
+    \end{center}
+\end{figure}
+
+The main idea of shooting is, when a method for the initial value problem is available, to `guess' a value $\lambda = E$. With this guess, the forward initial value problem is solved from the left side of the domain up to a point $x_m$, and also, a backward initial value problem is solved from the right side to the same point $x_m$. If the forward solution and the backward solution emit a global continuously derivable solution, then $\lambda = E$ is a valid eigenvalue. If this is not the case, $E$ is adjusted, and the procedure repeats. In figure \ref{fig:c2_shooting_schematic} this is schematically demonstrated.
+
+More concretely, to apply this technique to the Schrödinger equation \eqref{equ:c2_cpm_schrodinger} we again assume $E$ is fixed and convert it to a forward (left) initial value problem:
+$$
+    -y_\text{L}''(x) + V(x) y_\text{L}(x) = E y_\text{L}(x)
+$$
+with the starting condition
+$$
+    y_\text{L}(a) = \beta_a \text{ and } y_\text{L}'(a) = -\alpha_a\text{.}
+$$
+Analogously, we define a backward (right) initial value problem:
+$$
+    -y_\text{R}''(x) + V(x) y_\text{R}(x) = E y_\text{R}(x)
+$$
+with the starting condition
+$$
+    y_\text{R}(b) = \beta_b \text{ and } y_\text{R}'(b) = -\alpha_b\text{.}
+$$
+
+Now, the domain $[x_\text{min}, x_\text{max}]$ is partitioned in $K$ intervals. The $i^\text{th}$ interval can be written as $I_i = [x_{i-1}, x_{i}]$, with $a = x_0, x_1, \dots, x_{K-1}, x_{K} = b$ the grid points. One of these grid points can now be chosen as the matching point $x_m$. Note that numerically it is a little easier if this matching point is not in the exact center of the domain. If the potential happens to be zero, the eigenfunctions will have roots in this center. And, if the matching points coincide with a root, care has to be taken to determine the scaling of the left and right solutions.
+
+Generically we can write such an interval as $I = [X, X+h]$. On $I$, the solution $y$ can now be expressed as:
 \begin{equation}
-    \begin{pmatrix}\psi(X+\delta) \\ \psi'(X+\delta)\end{pmatrix}
-    = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} \psi(X) \\ \psi'(X) \end{pmatrix} \,, \qquad %\text{ with } 
+    \begin{pmatrix}y(X+\delta) \\ y'(X+\delta)\end{pmatrix}
+    = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix} \begin{pmatrix} y(X) \\ y'(X) \end{pmatrix} \,, \qquad %\text{ with } 
     0 \leq \delta \leq h \,. \label{equ:c2_cpm_propmatrix}
 \end{equation}
 
-The functions \(u(\delta)\) and \(v(\delta)\), called propagators,
-satisfy the local Schrödinger equation (analogous for \(v(\delta)\)):
-\begin{equation}
-    - u''(\delta) + V(X+\delta) u(\delta) = E u(\delta) \label{sequ:c2_local_schrodinger}
-\end{equation}
-with the initial conditions \(u(0) = 1, u'(0)=0\) and
-\(v(0) = 0, v'(0)=1\). The one-step propagation matrix
+The functions \(u(\delta)\) and \(v(\delta)\), are the propagators, from theorem \ref{the:c2_perturbation_terms} with the initial conditions \(u(0) = 1, u'(0)=0\) and
+\(v(0) = 0, v'(0)=1\). This matrix is called the one-step propagation matrix:
 $$
-    \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}
+    \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}\text{.}
 $$
-has determinant \(1\), so the inverse matrix can be easily constructed. Knowledge of this propagation matrix (and its inverse) is sufficient to advance the solution in both directions along the interval.
+To execute backward propagation, its inverse can be determined. In $\delta = 0$, due to the initial conditions, the determinant of $\vb{P}(0)$ is one. To determine the determinant throughout the domain we compute its derivative with respect to $\delta$.
+\begin{align*}
+    \dv[]{\det\vb{P}}{\delta} & = \left(u(\delta) v'(\delta) - u'(\delta) v(\delta)\right)' \\
+                          & = u'' v + u'v' - u'' - u'v'                               \\
+                          & =(V(X+\delta) - E) u v - u (V(X+\delta) - E) v            \\
+                          & =0
+\end{align*}
 
+This implies that $\det\vb{P}(\delta) = 1$, for each $0\leq \delta\leq h$. Which allows us to write down $\vb{P}^{-1}(\delta)$:
+$$
+    \vb{P}^{-1}(\delta) = \begin{pmatrix} v'(\delta) & -v(\delta) \\ -u'(\delta) & u(\delta) \end{pmatrix}\text{.}
+$$
+This matrix can now be used for the backward initial value problem.
+
+If we compute on each interval left of $x_m$ the matrix $\vb{P}(h)$ and on each interval to the right of $x_m$ we compute $\vb{P}^{-1}(h)$, then the solution of $y_\text{L}(x_m)$, $y_\text{L}'(x_m)$ and $y_\text{R}(x_m)$, $y_\text{R}'(x_m)$ can be determined.
+
+To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L}$ and $y_\text{R}$ such that $y_\text{L}(x_m) = y_\text{R}(x_m)$ and $y_\text{L}'(x_m) = y_\text{R}'(x_m)$. This can be expressed as a matching error:
+$$
+e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
+$$
+
+The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $\eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the needed derivatives. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence to true eigenvalues $\lambda$ for which $e(\lambda) = 0$.
+
+There still remains one problem: how do we ensure that we have found all eigenvalues?
+
+For this we remember theorem \ref{the:c2_kth_eigen_k_roots}. To know the index of the eigenvalue we can `simply' count the number of roots the corresponding eigenfunction has.
+
+\todo{Formalize Prüfer transformation\cite{pruefer_neue_1926}}
 
 \section{Matslise 3.0}
 
