@@ -9,3 +9,4 @@
 {"rule":"NUMEROUS_DIFFERENT","sentence":"^\\QYet, we have tested this algorithm with many different solvers, without success.\\E$"}
 {"rule":"SOME_OF_THE","sentence":"^\\QThis illustrates some of the challenges when trying to compare or numerically verify eigenfunctions.\\E$"}
 {"rule":"MISSING_GENITIVE","sentence":"^\\QSchrödinger problems with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues.\\E$"}
+{"rule":"COMMA_COMPOUND_SENTENCE","sentence":"^\\QTo compute \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q efficiently and reliably we have to define it with the differential equation: \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}

@@ -37,45 +37,72 @@ Before developing numerical methods for solving the one-dimensional time-indepen
 In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
 
 The Sturm-Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$:
-$$
+\begin{equation}\label{equ:c2_sturm_liovuille_equation}
     -(p(x) y'(x))' + q(x) y(x) = E w(x) y(x)\text{.}
-$$
-The continuous and bounded functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $[a, b]$. These functions define the problem. A solution consists of an eigenvalue $E$ with corresponding eigenfunction $y(x)$. For now, we will study the Sturm-Liouville equation with homogenous Robin boundary conditions:
-$$
+\end{equation}
+The continuous and bounded functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $[a, b]$. These functions define the problem. A solution consists of an eigenvalue $E$ with corresponding eigenfunction $y(x)$. For now, we will study the Sturm-Liouville equation with homogeneous Robin boundary conditions:
+\begin{equation}\label{equ:c2_sturm_liovuille_boundary}
     \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
-$$
+\end{equation}
 
 Note that the Schrödinger equation with homogeneous Robin boundary conditions is a special case of the Sturm-Liouville equation. Specifically, when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
 
-    {\color{red}
-        \todo{Prove the following:}
+Many theorems can be formulated about self-adjoint linear operators. For now, we provide a few specific theorems about Sturm-Liouville equations. The proves for some of these theorems are quite extensive and require a thorough understanding of functional analysis. In this work, we will not provide these proofs.
 
-        \begin{itemize}
-            \item Eigenvalues are real and ordered.
-            \item Eigenfunctions are orthonormal and can be normalized
-            \item The $k^\text{th}$ eigenfunction has $k$ zeros.
-        \end{itemize}
+For implementing methods to find solutions, it is valuable to study what a solution would look like. Since the solutions of a Sturm-Liouville problem are eigenvalues with corresponding eigenfunctions, solutions will consist of a possibly complex number $\lambda \in \CC$ with a corresponding function $u : [a, b] \to \CC$. The fact that these could be complex values impacts our study significantly. So, let us first prove that solutions will only be real.
 
-        In the finite and non-periodic cases: eigenvalues are unique.
+\begin{theorem}\label{the:c2_real_eigenvalues}
+    Let $p(x)$, $q(x)$ and $w(x)$ be continuous real functions on $[a, b]$ and let $p$ also be continuously differentiable.
 
-        Give some real-world examples of this equation.
-    }
+    All eigenvalues of the Sturm-Liouville equation \eqref{equ:c2_sturm_liovuille_equation} on the bounded domain $[a, b]$ with real boundary condition \eqref{equ:c2_sturm_liovuille_boundary} are real.
+\end{theorem}
+
+Knowing we only need to find real solutions simplifies our work. The next theorem allows us to get a grasp on the number of eigenvalues we need to find.
+
+\begin{theorem}\label{the:c2_slp_countable}
+    Under the same assumptions as theorem \ref{the:c2_real_eigenvalues}: the number of eigenvalues are countable. All eigenvalues have a lower bound, no upper bound and are unique. This implies that these can be written as:
+    $$
+        \lambda_0 < \lambda_1 < \lambda_2 < \dots \to \infty \text{.}
+    $$
+
+    We say that the $k^{\text{th}}$ eigenvalue $\lambda_k$ has \emph{index} $k$.
+\end{theorem}
+
+This last theorem is essential. It enables us to formulate questions such as: ``Find all eigenvalues less than $500$.'' or ``Find the first $10$ eigenvalues.'' Besides an eigenvalue, a solution also consists out of an eigenfunction.
+
+\begin{theorem}
+    With each eigenvalue $\lambda_k$ is an, up to scaling, unique eigenfunction $y_k : [a, b] \to \RR$ associated. Eigenfunctions corresponding to different eigenvalues are orthogonal with respect to the weight function $w(x)$:
+    $$
+        \int_a^b y_m(x) y_n(x) w(x) \, \dd x = 0 \quad \text{ if $m \neq n$.}
+    $$
+\end{theorem}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/slp_count_roots.pdf}
+    \end{center}
+    \caption{The first four eigenfunctions of the Sturm-Liouville problem with $p(x) = 1$, $q = \sqrt{|x|}$, $w(x) = 1+x^2$ and homogeneous Dirichlet boundary conditions. The roots of each of these functions are indicated.}
+    \label{fig:c2_sturm_liovuille_k_roots}
+\end{figure}
+
+Even stronger: Sturm-Liouville theory provides a way to characterize the index of an eigenvalue by means of only the eigenfunction.
 
 \begin{theorem}\label{the:c2_kth_eigen_k_roots}
-    The $k^\text{th}$ eigenfunction has $k$ zeros.
+    The eigenfunction $y_k(x)$ corresponding to the eigenvalue $k^{\text{th}}$ eigenvalue $\lambda_k$ has exactly $k$ zeros in the interior of the domain $\left]a, b\right[$.
 \end{theorem}
-\begin{proof}
-\todo{}
-\end{proof}
+
+This theorem is illustrated in figure \ref{fig:c2_sturm_liovuille_k_roots}. Here we see the first few eigenfunctions of a Sturm-Liouville problem. Later on we will use the term ``highly oscillatory eigenfunction'', theorem \ref{the:c2_kth_eigen_k_roots} explains why this is justified. If $k$ becomes large, the eigenfunction will have many roots and therefor will oscillate heavily. This can also already be seen on the last panel of figure \ref{fig:c2_sturm_liovuille_k_roots}.
+
+With these four theorems in the back of our minds we will be able to develop numerical methods for solving Sturm-Liouville and Schrödinger problems. As stated in the beginning of this section, we have given a very brief overview of the for us relevant theorems. If the reader is interested in more details, or a rigorous theoretical framework many textbooks are available, for example \cite{sagan_boundary_1961,al-gwaiz_sturmliouville_2008,zettl_sturmliouville_2012,guenther_sturmliouville_2018}.
+
+Throughout this thesis, and the research preceding it, we have not and will not focus on the applicability of the Sturm-Liouville equation. This is definitely not due to a lack of applications. Rather, the opposite: Sturm-Liouville equations pop up in an innumerable diversity of fields. Many real-world problems can be stated as or reduced to differential equations and in particular the Sturm-Liouville equation.
+
+\todo{Give some real-world examples of this equation.\cite[Chapter~8]{guenther_sturmliouville_2018}}
 
 \subsection{Liouville's transformation}
 \todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
-{\color{red}
-    Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
-}
 
-
-
+Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
 
 \section{Background about Matslise}
 
@@ -521,9 +548,9 @@ $$
 To execute backward propagation, its inverse can be determined. In $\delta = 0$, due to the initial conditions, the determinant of $\vb{P}(0)$ is one. To determine the determinant throughout the domain we compute its derivative with respect to $\delta$.
 \begin{align*}
     \dv[]{\det\vb{P}}{\delta} & = \left(u(\delta) v'(\delta) - u'(\delta) v(\delta)\right)' \\
-                          & = u'' v + u'v' - u'' - u'v'                               \\
-                          & =(V(X+\delta) - E) u v - u (V(X+\delta) - E) v            \\
-                          & =0
+                              & = u'' v + u'v' - u'' - u'v'                                 \\
+                              & =(V(X+\delta) - E) u v - u (V(X+\delta) - E) v              \\
+                              & =0
 \end{align*}
 
 This implies that $\det\vb{P}(\delta) = 1$, for each $0\leq \delta\leq h$. Which allows us to write down $\vb{P}^{-1}(\delta)$:
@@ -536,22 +563,46 @@ If we compute on each interval left of $x_m$ the matrix $\vb{P}(h)$ and on each 
 
 To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L}$ and $y_\text{R}$ such that $y_\text{L}(x_m) = y_\text{R}(x_m)$ and $y_\text{L}'(x_m) = y_\text{R}'(x_m)$. This can be expressed as a matching error:
 $$
-e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
+    e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
 $$
 
 The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $\eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the needed derivatives. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence to true eigenvalues $\lambda$ for which $e(\lambda) = 0$.
 
 There still remains one problem: how do we ensure that we have found all eigenvalues?
 
-For this we remember theorem \ref{the:c2_kth_eigen_k_roots}. To know the index of the eigenvalue we can `simply' count the number of roots the corresponding eigenfunction has.
+For this we remember theorem \ref{the:c2_kth_eigen_k_roots}. To know the index of the eigenvalue we can `simply' count the number of roots the corresponding eigenfunction has. In practice this quite hard, especially for highly oscillatory eigenfunctions. For these it is very easy to miss a few roots.
 
-\todo{Formalize Prüfer transformation\cite{pruefer_neue_1926}}
+To combat this issue and to provide a reliable way to count the roots of even highly oscillatory eigenfunctions Prüfer's scaled transformation can be used \cite{pruefer_neue_1926}.
+
+\begin{theorem}[Prüfer 1926]
+    For a fixed eigenvalue $E$ define $\theta(x)$ and $\rho(x)$ as the continuous functions which satisfy
+    \begin{equation}\label{equ:c2_prufer_theta}
+        y(x) = \frac{1}{\sqrt{S(x)}} \rho(x) \sin(\theta(x)) \quad\text{ and }\quad p(x)y'(x) = \sqrt{S(x)} \rho(x) \cos(\theta(x))
+    \end{equation}
+    with $\theta(a) = \atan\frac{-S(a)\beta_a}{\alpha_a}$ and $S(x)$ a strictly positive scaling function and to ensure numerical stability.
+    Here $y(x)$ is a solution of the Sturm-Liouville equation
+    $$
+        -\dv[]{p(x)y'(x)}{x} + q(x) y(x) = E w(x) y(x)
+    $$
+    on the interval $[a, b]$ with boundary conditions $\alpha_a y(a) + \beta_a p(a) y(a) = 0$ and $\alpha_a y(a) + \beta_a p(a) y(a) = 0$.
+
+    Let  $k$ be defined by
+    $$
+        k\pi = \theta(b) - \atan\frac{-S(b)\beta_b}{\alpha_a} \text{.}
+    $$
+    Then, $k$ is integer, $y(x)$ has $k$ roots in $[a, b]$ and $E$ is the $k^\text{th}$ eigenvalue.
+\end{theorem}
+
+If we compute $\theta(x)$ directly from equation \eqref{equ:c2_prufer_theta} this is only defined up to a multiple of $\pi$. Only when continuity is ensured, this value will be unique. To compute $\theta(x)$ efficiently and reliably we have to define it with the differential equation:
+\begin{equation}\label{equ:c2_prufer_theta_ode}
+    \theta' = \frac{S}{p} \cos^2(\theta) + \frac{Ew - q}{S}\sin^2\theta + \frac{S'}{S}\sin(\theta)\cos(\theta)\text{.}
+\end{equation}
+
+So in the implementation while propagating solutions with equation \eqref{equ:c2_cpm_propmatrix} we also solve \eqref{equ:c2_prufer_theta_ode}. Luckily, this secondary differential equation does not need to be solved accurately, because the very accurate value of $y$ can be used to round $\theta(x)$ to the nearest value computed with \eqref{equ:c2_prufer_theta}.
+
+Much has been written about the best choices for the scaling function $S(x)$, in our implementation we follow Matslise as written in \cite{ledoux_study_2007}.
 
 \section{Matslise 3.0}
-
-\todo{Blind copy from published work}
-
-Matslise 3.0 \cite{baeyens_fast_2020}.
 
 In 2005 the first version of Matslise \cite{ledoux_matslise_2005}, A \textsc{matlab} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful
 constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP
@@ -564,35 +615,15 @@ researchers to effectively solve the
 Sturm--Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve
 a particular SLP, sufficient knowledge of Fortran was needed to implement the problem at hand.
 
-In 2016 a new version, Matslise 2.0 \cite{ledoux_matslise_2016}, was
-released. In this whole new version of Matslise generalized
-CP methods for SLP were implemented. These new methods enabled one to solve the
-SLP without explicitly transforming the equation to
-the Liouville normal form. Avoiding this normalization also made it possible to solve new types of SLPs. As of this writing
-Matslise 2.0 has been downloaded over a thousand times. This number proves the need of current research to solve the SLP
-equation.
+In 2016 a new version, Matslise 2.0 \cite{ledoux_matslise_2016}, was released. In this whole new version of Matslise generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of SLPs. As of this writing Matslise 2.0 has been downloaded over a thousand times. This number proves the need of current research to solve the SLP equation.
 
-As the original Matslise modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the Matslise routines to solve the multidimensional Schrödinger equation.
-This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems.
-The current Matslise 2.0 version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction.
-In Matslise 2.0 the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval).
-The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the current implementation of Matslise 2.0.
+As the original Matslise modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the Matslise routines to solve the multidimensional Schrödinger equation. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The current Matslise 2.0 version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In Matslise 2.0 the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the current implementation of Matslise 2.0.
 
-In fact, this illustrates that Matslise 2.0 has not been built as a library of functions, but as a set of functions around a central GUI to solve SLP (and Schrödinger problems in particular).
-Several other features illustrate this, such as the algorithm that is used to detect whether a given problem is singular and the automatic computation of the error estimates for the eigenvalues.
-The algorithms are very useful for solving a particular SLP, but valuable computation time is lost if this detection or the error estimation is not needed.
+In fact, this illustrates that Matslise 2.0 has not been built as a library of functions, but as a set of functions around a central GUI to solve SLP (and Schrödinger problems in particular). Several other features illustrate this, such as the algorithm that is used to detect whether a given problem is singular and the automatic computation of the error estimates for the eigenvalues. The algorithms are very useful for solving a particular SLP, but valuable computation time is lost if this detection or the error estimation is not needed.
 
-These challenges were the main motivator for a more efficient
-implementation of Matslise. We have considered different ways to
-optimize Matslise, keeping in mind its main features, in particular its user friendliness,
-one of the main reason for the development of the first version of Matslise.
+These challenges were the main motivator for a more efficient implementation of Matslise. We have considered different ways to optimize Matslise, keeping in mind its main features, in particular its user friendliness, one of the main reason for the development of the first version of Matslise.
 
-\todo{rework}
-This paper is organized as follows. In section 2, we first give an overview of the formulae behind the CP-algorithms. After this summary of previous research and developments, we present in section 3 an extension to these well-established formulae with new convergence results to enable more efficient computation of the eigenfunctions in arbitrary points in the domain.
-In section 4 more details about the new implementation are given.
-%Here some choices are motivated. These choices range from why certain features were omitted to the addition of some new features.
-In section 5 numerical experiments are presented. %These examples illustrate that, in comparison to Matslise 2.O, the new implementation allows the faster computation of eigenvalues and eigenfunctions of Schrödinger problems with the same (or even higher) accuracy.
-Finally, in section 6 we make some conclusions and look forward for future developments.
+In this section we give an overview of our theoretical advancements \cite{baeyens_fast_2020} in building a very efficient implementation of the constant perturbation method. Later on, in section \ref{sec:c2_numerical_experiments} we will perform some numerical experiments and some run-time analysis. In section \ref{sec:c2_the_implementation} we will take the time to take a look at the challenges we faced and the choices we made when building our new implemention.
 
 \subsection{The CP method for Schrödinger problems}\label{the-method}
 
@@ -601,10 +632,7 @@ CP methods have already been described extensively, see e.g.\ \cite{ixaru_numeri
 The one dimensional time independent Schrödinger equation is of the form
 \[
     -\psi''(x) + V(x)\psi = E\psi\text{.}
-\] The function $V(x)$ is called the potential function.
-This eigenvalue problem is mostly considered as a boundary value problem on
-the interval \([x_\text{min}, x_\text{max}]\). We further assume that the boundary
-conditions are separate, i.e.\ they can be expressed as
+\] The function $V(x)$ is called the potential function. This eigenvalue problem is mostly considered as a boundary value problem on the interval \([x_\text{min}, x_\text{max}]\). We further assume that the boundary conditions are separate, i.e.\ they can be expressed as
 \[
     a_\text{min} \psi(x_\text{min}) + b_\text{min}\psi'(x_\text{min}) = 0
     \quad \mbox{and} \quad
@@ -631,16 +659,8 @@ In section \ref{the-method} we have provided an overview of the CP method to sol
 \end{itemize}
 
 Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{the:c2_perturbation_terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{the:c2_h_error_estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these 'simplified' formulae are daunting to work with.
-%So one can easily understand why theorem \ref{the:c2_h_error_estimate} only gives results in function of $h$.
 
 For the efficient calculation of eigenfunctions in arbitrary points of the domain it would however be beneficial if the propagation terms were also implemented in function of $\delta$. To prove the corresponding mathematical results, we reformulate the expressions of the propagators in terms of $\theta=\delta/h$.
-
-%To calculate these extended expressions we need first some mathematical background on how to construct them. Since Theorem \ref{the:c2_perturbation_terms} described the perturbation terms as a function of $\delta$. So not substituting this $\delta$ with $h$ gives expressions for the propagators in function of $\delta$.
-%
-%This extension is given in the appendix.
-%
-%Theorem \ref{the:c2_h_error_estimate} assumes that this substitution did happen, so it is no longer valid for our new extended formulae. We give a new theorem:
-%To construct an error estimate in function of $h$ it is useful to substitute $\delta = h\theta$ in the expressions from theorem \ref{the:c2_perturbation_terms}.
 
 Functions of $\theta$ will be denoted with a bar, like $\bar{C}(\theta) = C(\theta h)= C(\delta)$ and $\bar{u}_{q}(\theta) = {u}_{q}(\theta h) =u_{q}(\delta)$. Again $\bar{p}$ generically denotes  the functions $\bar{u}$ or $\bar{v}$. The CP-correction terms are now given by:
 \begin{align}
@@ -651,7 +671,8 @@ Functions of $\theta$ will be denoted with a bar, like $\bar{C}(\theta) = C(\the
                            & \quad \quad + \frac{\bar{C}_{-1}^{(q)}(\theta)}{\theta^2 h}\left(\eta_{-1}(Z)+Z\eta_{0}(Z)\right) \text{.}
     \end{aligned}
 \end{align}
-The functions \(\bar{C}^{(q)}_i\) satisfy the following recursive relation: \begin{align}
+The functions $\bar{C}^{(q)}_i$ satisfy the following recursive relation:
+\begin{align}
     \bar{C}_i^{(q)}(\theta)    & = \frac{\theta^{-i}}{2} \int_0^\theta \sigma^{i-1} \left(
     \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) -  h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
     \right)\dd\sigma \nonumber                                                             \\
@@ -688,43 +709,21 @@ Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref
 \begin{proof}
     This theorem is heavily inspired by \cite{ixaru_cp_1998}. There an error estimate is calculated and Theorem~\ref{the:c2_perturbation_terms} and Theorem~\ref{the:c2_h_error_estimate} are proved. These proofs give a useful framework for providing a result for the $\delta$-dependent formulae.
 
-    %Firstly $V(X+h\theta)$ is approximated for $\theta \in [0, 1]$ on an interval $[X, X+h]$ in terms of shifted Legendre polynomials $P_n^*(\theta)$:
-    %$$
-    %V(X + h\theta) = \sum_{n=0} V_n h^n P_n^*(\theta)
-    %$$
-    %{\color{red}
-    %We choose $V_0$ as the constant approximation on this interval, giving rise to the function $\Delta V^{(N)}$:
-    %$$
-    %\Delta V^{(N)}(X + h\theta) = \sum^N_{n=1} V_n h^n P_n^*(\theta)
-    %$$
-    %This series will be truncated to the minimal number of terms $N$ to assure the desired accuracy. The optimal bound will be given later.
-    %}
-    %
-    %The second stage of the algorithm is the calculation of the propagator functions $\bar{u}(\theta)$, $\bar{u}'(\theta)$, $\bar{v}(\theta)$ and $\bar{v}'(\theta)$.
-    %
-    %{\color{red}
-
-    First we show by induction on $q$ and $i$ that $\bar{C}_{i}^{(q)}$ is a polynomial in both $\theta$ and $h$ whereby for each term the power in $h$ is not smaller than the power in $\theta$. This indeed holds for all $i$ when $q=0$ and for all $q$ when $i=-1$.
-    Assuming that this also holds for $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i}^{(q-1)}$, we will show that it also holds for $\bar{C}_{i}^{(q)}$. Indeed,
-    $h^{-2}\bar{C}_{i-1}^{(q)\prime\prime}(\sigma)$ is a polynomial satisfying the same property and
+    First we show by induction on $q$ and $i$ that $\bar{C}_{i}^{(q)}$ is a polynomial in both $\theta$ and $h$ whereby for each term the power in $h$ is not smaller than the power in $\theta$. This indeed holds for all $i$ when $q=0$ and for all $q$ when $i=-1$. Assuming that this also holds for $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i}^{(q-1)}$, we will show that it also holds for $\bar{C}_{i}^{(q)}$. Indeed, $h^{-2}\bar{C}_{i-1}^{(q)\prime\prime}(\sigma)$ is a polynomial satisfying the same property and
     $$
         \sigma^{i-1} \left(
         \bar{C}_{i-1}^{(q-1)}(\sigma) \Delta V(X+h\sigma) - h^{-2} \bar{C}_{i-1}^{(q)\prime\prime}(\sigma)
         \right)
     $$
-    is a polynomial of degree at least $i-1$ in $\sigma$. After integrating w.r.t.\ $\sigma$ between $0$ and $\theta$ and multiplying by $\theta^{-i}$
-    it follows that $\bar{C}_{i}^{(q)}(\theta)$ is a new polynomial in which no terms have gained factors in $\theta$ nor has any lost factors of $h$, i.e.\
-    the result is a polynomial in $\theta$ and $h$ with in each term at least as many factors in $h$ as in $\theta$.
-    %}
+    is a polynomial of degree at least $i-1$ in $\sigma$. After integrating w.r.t.\ $\sigma$ between $0$ and $\theta$ and multiplying by $\theta^{-i}$, it follows that $\bar{C}_{i}^{(q)}(\theta)$ is a new polynomial in which no terms have gained factors in $\theta$ nor has any lost factors of $h$, i.e.\ the result is a polynomial in $\theta$ and $h$ with in each term at least as many factors in $h$ as in $\theta$.
 
-    Further, one notices that if both $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$ are zero, so is $\bar{C}_{i}^{(q)}$. With the given conditions,
-    it is easy to verify that
-    %$\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$ 
-    \[ \bar{C}_{i}^{(q)}(\theta)   =  \begin{cases}
+    Further, one notices that if both $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$ are zero, so is $\bar{C}_{i}^{(q)}$. With the given conditions, it is easy to verify that
+    $$
+        \bar{C}_{i}^{(q)}(\theta) =  \begin{cases}
             \text{$0$ for $i <q -1$,} & \text{if $\bar{p} = \bar{u}$,} \\
             \text{$0$ for $i <q$,}    & \text{if $\bar{p} = \bar{v}$.}
-        \end{cases} \]
-    %is dependent on $\bar{C}_{i-1}^{(q-1)}$ and $\bar{C}_{i-1}^{(q)}$, in the sense that if both of them are $0$, then $\bar{C}_{i}^{(q)}$ will be as well. This means that for $\bar{p}=\bar{u}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q-1$ and for $\bar{p}=\bar{v}$ all $\bar{C}_{i}^{(q)}=0$ with $i < q$.
+        \end{cases}
+    $$
     In case $\bar{C}_{i}^{(q)}(\theta)$ is not zero, we investigate the common degree in $h$ of all its terms. Let us denote this common degree in $d_h(\bar{C}_{i}^{(q)})$.  Since $\Delta V$ does not contain a constant term, $d_h\left(\bar{C}_{q-1}^{(q)}\right) = d_h\left(\bar{C}_{q-2}^{(q-1)}\right)+1$.
     On the other hand $d_h\left(\bar{C}_{i}^{(q)}\right)=d_h\left(\bar{C}_{i-1}^{(q)}\right)-2$.
 
@@ -750,20 +749,15 @@ Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref
 
     We can thus indeed conclude that, in order to be accurate up to order $r$ in $h$, we need to consider all terms $\bar{p}_q(\theta)$, $q=0,1,2,\ldots$ for which $3q \leq r$, i.e. $Q= \lfloor \frac{r}{3} \rfloor$.
 
-    Next we determine the minimal value of $N$, the degree of the polynomial approximation $V^{N}(x)$ of $V$, to obtain a given accuracy. \\
-    We first consider the case $p=u$ and we will show that for $i \geq q-1$ each term in $\bar{C}_i^{(q)}$ contains a factor of the form
-    $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+1 - 2 (i-(q-1))}$.
-    For $\bar{C}_0^{(1)}$ all terms indeed contain an expression $V_j h^{j+1}$ and by induction we find for $i>0$, since $\bar{C}_i^{(0)}(\theta)=0$, that all terms in $\bar{C}_i^{(1)}$ have a factor of the form $V_j h^{j+1-2i}$.
-    Assuming this results holds for all $\bar{C}_i^{(q-1)}$ with $i\geq q - 1$, one first verifies that the result also holds for
-    $\bar{C}_{q-1}^{(q)}$ and by induction on $i$,  also for $\bar{C}_{i}^{(q)}$ with $i>q-1$.\\
-    This property of $\bar{C}_i^{(q)}$ can now be used to determine the lowest degree $N$ that leads to the $\mathcal{O}(h^r)$ approximation. Since $\bar{C}_i^{(q)}$ is multiplied with $h^{2i+1}$, it follows that  $\bar{u}_q(\theta)$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q }$ with
-    $1 \leq j_k \leq N$, $k=1,\ldots, q$. For $q=1$ we have $V_{j} h^{j+2} $, which can only be discarded when $j>r-2$. Thus choosing $N=r-2$ will only discard these terms. The choice $N=r-2$ is also sufficient when $q>1$. We can thus conclude that, in order to obtain accuracy up to order $h^r$ in $\bar{u}(\theta)$ it suffices to take $N=r-2$.
+    Next we determine the minimal value of $N$, the degree of the polynomial approximation $V^{N}(x)$ of $V$, to obtain a given accuracy.
 
+    We first consider the case $p=u$, and we will show that for $i \geq q-1$ each term in $\bar{C}_i^{(q)}$ contains a factor of the form $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+1 - 2 (i-(q-1))}$. For $\bar{C}_0^{(1)}$ all terms indeed contain an expression $V_j h^{j+1}$ and by induction we find for $i>0$, since $\bar{C}_i^{(0)}(\theta)=0$, that all terms in $\bar{C}_i^{(1)}$ have a factor of the form $V_j h^{j+1-2i}$. Assuming this results holds for all $\bar{C}_i^{(q-1)}$ with $i\geq q - 1$, one first verifies that the result also holds for $\bar{C}_{q-1}^{(q)}$ and by induction on $i$,  also for $\bar{C}_{i}^{(q)}$ with $i>q-1$.
+
+    This property of $\bar{C}_i^{(q)}$ can now be used to determine the lowest degree $N$ that leads to the $\mathcal{O}(h^r)$ approximation. Since $\bar{C}_i^{(q)}$ is multiplied with $h^{2i+1}$, it follows that  $\bar{u}_q(\theta)$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q }$ with $1 \leq j_k \leq N$, $k=1,\ldots, q$. For $q=1$ we have $V_{j} h^{j+2} $, which can only be discarded when $j>r-2$. Thus choosing $N=r-2$ will only discard these terms. The choice $N=r-2$ is also sufficient when $q>1$. We can thus conclude that, in order to obtain accuracy up to order $h^r$ in $\bar{u}(\theta)$ it suffices to take $N=r-2$.
 
     For $p=v$, one similarly shows that all terms in $\bar{C}_i^{(q)}$ contain expressions of the form $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q - 2 (i-q)}$ for $i \geq q$. Then $\bar{v}_q(\theta)/h$ contains terms with factors $ V_{j_1} V_{j_2} \cdots V_{j_q} h^{j_1+j_2+\ldots+j_q+ 2 q}$ and all necessary terms will be generated when $N = r-2$.
 
     For the expressions of the derivatives $\bar{u}'(\theta)$ and $\bar{v}'(\theta)/h$ no extra term is needed. So in summary, $\Delta V$ can be truncated to a degree of $r - 2$.
-    % }
 
 \end{proof}
 
@@ -822,16 +816,7 @@ $\bar{p}(\theta)$ in which $V_i = 0$ if $i > N$.
     \frac{2}{h}\Delta \bar{v}'_{(N=2)} & = h^{5}\left(\left(5 \theta^{5} - 10 \theta^{4} + 6 \theta^{3} - \theta^{2}\right) V_{3} \eta_{0} + \left(10 \theta^{5} - 15 \theta^{4} + 6 \theta^{3}\right) V_{3} \eta_{1} \right.       \\
                                        & \qquad\qquad \left. -5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})
 \end{align*}
-%}
 
-%{\color{red}
-%The difference between Theorem~\ref{the:c2_h_error_estimate} and Theorem~\ref{the:c2_delta_formulae} does not seem obvious. We have proven that $Q = \left\lfloor \frac{N}{3} \right\rfloor $ (in contrast to $Q = \left\lfloor \frac{2N}{3} + 1 \right\rfloor$) are a sufficient number of correction terms. Theorem \ref{the:c2_h_error_estimate} needs a higher number of correction terms to provide superconvergence of order $\mathcal{O}(h^{2N+2})$ for small values for $E$. In our case we are not interested in this superconvergence so less correction terms are necessary.
-%
-%On the other hand, when $Z(h) \ll 0$, the result provided by Theorem~\ref{the:c2_h_error_estimate} gives an error estimate of $\mathcal{O}(\frac{h^N}{\sqrt{E}})$. While we have proven an estimate of $\mathcal{O}(h^{N+2})$ in any cases. Note that our estimate does not improve if $E$ gets larger.
-%}
-
-
-%{\color{blue}
 Remark that in Theorem~\ref{the:c2_delta_formulae}, in contrast to Theorem~\ref{the:c2_h_error_estimate}, no assumption is made on the size of $Z=\delta^2 (V_0-E)$. In the proof of Theorem~\ref{the:c2_h_error_estimate} this distinction was necessary because error terms were expressed
 not only in terms of bounded functions $\eta_i(Z)$ but also in terms of the unbounded argument $Z$, whereas in the proof of
 Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{the:c2_h_error_estimate} is sharper than the one given in Theorem~\ref{the:c2_delta_formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
@@ -847,164 +832,7 @@ Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $
 \end{align*}%
 
 Further, Theorem~\ref{the:c2_delta_formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In Matslise 2.0 $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$, Theorem~\ref{the:c2_delta_formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
-%Approximating $V(x)$ by a piecewise polynomial of degree $N$, $Q= \lfloor \frac{N}{3} \rfloor$ is sufficient to generate a method of order $N+2$. For $N=16$, only $Q=5$ correction terms are needed.
-%}
 
-
-
-\subsection{Matslise 3.0 -- A new implementation}\label{a-new-implementation}
-
-As already stated, our main aim is to build a new package for the accurate and efficient solution of 2D and 3D time-independent and time-dependent Schrödinger-problems.
-In order to do so, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular 1D Schrödinger-problems.
-We thus investigated possible bottlenecks of performance of the Matslise 2.0 package and its routines. In this analysis, we will discuss the computation of eigenvalues and eigenfunctions separately.
-
-%\subsection{Computation of eigenvalues}
-
-Let us start with the computation of the eigenvalues.
-The original Matslise package as well as its successor Matslise 2.0 are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of Schrödinger and
-Sturm-Liouville problems as efficiently as possible. For regular problems e.g., only one coarse mesh, typically consisting of only a few mesh points, is determined and this mesh is then used for all eigenvalue computations. This means that all evaluations of the SLP coefficient functions are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \textsc{matlab}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of Matslise 2.0 is \textsc{matlab}. This environment creates an interpreted language which is inherently slower than a compiled one (like Fortran or
-\texttt{C}). However, keeping in mind our primary goals (efficiency as well as user friendliness) we were hesitant to use these languages and we have chosen for another approach.
-
-%have not chosen for a different approach: we   
-%
-%In our attempt to modernize Matslise we were hesitant to use \texttt{fortran} or \texttt{C} because these language aren't user
-%friendly at all. 
-
-
-In the current day and age one of the more popular languages, with a larger community than Fortran's or \textsc{matlab}'s is Python.
-Like \textsc{matlab}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, unlike \textsc{matlab}, in Python it is not hard to add native packages.
-These packages are not written in Python but in some other, more low-level,
-language. This other language is compiled to native machine code, and nicely packaged to be called from within Python.
-
-These native packages are the answer to the efficiency versus user-friendliness problem we are faced with. The high performing part can be efficiently
-implemented in a compiled language, but the code that the user will use can be written in the more approachable Python The last
-question before we can build our new implementation of Matslise is: ``Which compiled language?''. This language has to be able to support
-the building of Python packages, it has to have support for linear algebra, preferably with optimized BLAS libraries and it has to
-support code architecture for numerical libraries. All of these requests makes \texttt{C++} a prime candidate. In combination with \texttt{pybind11} \cite{jakob_pybind11_2017}
-and \texttt{Eigen\ v3} \cite{guennebaud_eigen_2010} we have the perfect tools to satisfy all our needs.
-
-%\section{How to get pyslise}
-
-The new implementation, which we called Matslise 3.0, can be accessed and executed as follows:
-
-\begin{itemize}
-    %\subsection*{\texttt{C++}}
-    \item \texttt{C++}: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found as well.
-
-          %\subsection*{\texttt{Python}}
-    \item Python: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \texttt{pyslise}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS 10.15}. Installing pyslise is as easy as simply running:
-          % \begin{noindent}
-\begin{python}
-pip install pyslise
-\end{python}
-% \end{noindent}
-
-          A recent \texttt{pip} version ($\geq 19.0$) has to be available. In the next sections, we will present some Python code fragments.
-
-          %\subsection*{In the browser}
-    \item web browser:
-          lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
-
-\end{itemize}
-
-%\subsection{Computation of eigenfunctions}
-
-%For the accurate computation and visualization of the eigenfunctions however, things are different. 
-Let us now consider the computation of eigenfunctions.
-Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor Matslise 2.0 were optimized do to so: In fact, to visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed and all necessary computations are carried out again.
-
-To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
-via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
-$$
-    u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
-$$
-with $C_i$ a polynomial in $\delta$,
-$$
-    C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
-$$
-whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
-
-\begin{eqnarray*}
-    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
-    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
-    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
-    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
-    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
-    &  & + h^6 (\,\dots)  + \dots
-\end{eqnarray*}
-
-
-Although these coefficients can all be computed analytically, it was far from practical/desirable to implement these very long formulae in software. Since one was mainly interested in the computation of
-the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
-
-For the applications we have in mind, this approach is too time consuming and so we decided to develop a new algorithm that is able to reuse all the data that was previously calculated.
-Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order.
-The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) %that is obtained after setting $\delta=h$, 
-that was also used in Matslise and Matslise 2.0 for error estimation, but now it is used for propagation.
-For error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points.
-
-
-% h is propagated with CPM{18,16}.
-% delta is propagated with CPM{16,14}.
-% for h:
-%- P: 18
-%- N: 16
-%- Q: floor(2/3*N) + 1 = 11
-%
-% for delta:
-%- P: 16
-%- N: 14
-%- Q: floor(2/3*N) + 1 = 10
-
-%
-%
-%
-% 
-%\hypertarget{additions}{%
-%\subsection{Additions}\label{additions}}
-%
-%\hypertarget{propagation-matrices}{%
-%\subsubsection{Propagation matrices}\label{propagation-matrices}}
-%
-%\textbf{\emph{TO-DO rewrite}}
-%
-%Reimplementing an algorithm always provide some opportunities to take
-%some learned lessons in to account. In software the early chooses often
-%have an impact on code written in a later stage. Thus by starting over
-%from scratch in a different language invites the programmer to rethink
-%the whole algorithm.
-%
-%One of the biggest changes made is the way eigenfunctions are computed.
-%Matslise was developed for solving the eigenvalue problem. If it was
-%asked to calculate corresponding eigenfunctions in a certain set of
-%points it has to recompute everything. In the new version we developed
-%an algorithm that is able to reuse all the data that was previously
-%calculated.
-%
-
-% ----------------
-
-%\hypertarget{backward-sectors}{%
-%\subsubsection{Backward sectors}\label{backward-sectors}}
-%
-%Because Matslise uses a multiple shooting procedure it has to be able to
-%also propagate solutions from right to left. In this multiple shooting
-%procedure a fixed matching point is determined at the begin of the
-%calculations. An initial condition from the left of the domain is
-%propagated forward to this matching point. As well as an initial
-%condition on the right of the domain, which is propagated backward to
-%the matching point. Matslise 2.0 efficiently inverts the two by two
-%propagation matrix. In the new version we can make this a bit more
-%elegant.
-%
-%We noted that most of the time, if not all, the same sectors are
-%propagated backward, namely those sectors right from the matching point.
-%On these sectors it would be more elegant if we calculated the
-%propagation matrices immediately from right to left. This can be done by
-%flipping the potential around the center of those sectors and applying
-%the same formulae.
-
-\cite{baeyens_fast_2020}
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}
 \label{sec:1d_periodic}
@@ -1413,7 +1241,8 @@ Despite these shortcomings Pyslise is still faster and more accurate. We do note
 
 All eigenfunctions are computed in both algorithms with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
 
-\section{Implementation challenges}
+
+\section{Implementation challenges}\label{sec:c2_the_implementation}
 
 \todo{Prose}
 \todo{UML diagram}
@@ -1445,5 +1274,95 @@ for q in [1,10,100]:
           \end{enumerate}
     \item Building a Python-package
 \end{enumerate}
+\subsection{Matslise 3.0 -- A new implementation}\label{a-new-implementation}
 
+As already stated, our main aim is to build a new package for the accurate and efficient solution of 2D and 3D time-independent and time-dependent Schrödinger-problems.
+In order to do so, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular 1D Schrödinger-problems.
+We thus investigated possible bottlenecks of performance of the Matslise 2.0 package and its routines. In this analysis, we will discuss the computation of eigenvalues and eigenfunctions separately.
+
+%\subsection{Computation of eigenvalues}
+
+Let us start with the computation of the eigenvalues.
+The original Matslise package as well as its successor Matslise 2.0 are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of Schrödinger and
+Sturm-Liouville problems as efficiently as possible. For regular problems e.g., only one coarse mesh, typically consisting of only a few mesh points, is determined and this mesh is then used for all eigenvalue computations. This means that all evaluations of the SLP coefficient functions are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \textsc{matlab}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of Matslise 2.0 is \textsc{matlab}. This environment creates an interpreted language which is inherently slower than a compiled one (like Fortran or
+\texttt{C}). However, keeping in mind our primary goals (efficiency as well as user friendliness) we were hesitant to use these languages and we have chosen for another approach.
+
+%have not chosen for a different approach: we   
+%
+%In our attempt to modernize Matslise we were hesitant to use \texttt{fortran} or \texttt{C} because these language aren't user
+%friendly at all. 
+
+
+In the current day and age one of the more popular languages, with a larger community than Fortran's or \textsc{matlab}'s is Python.
+Like \textsc{matlab}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, unlike \textsc{matlab}, in Python it is not hard to add native packages.
+These packages are not written in Python but in some other, more low-level,
+language. This other language is compiled to native machine code, and nicely packaged to be called from within Python.
+
+These native packages are the answer to the efficiency versus user-friendliness problem we are faced with. The high performing part can be efficiently
+implemented in a compiled language, but the code that the user will use can be written in the more approachable Python The last
+question before we can build our new implementation of Matslise is: ``Which compiled language?''. This language has to be able to support
+the building of Python packages, it has to have support for linear algebra, preferably with optimized BLAS libraries and it has to
+support code architecture for numerical libraries. All of these requests makes \texttt{C++} a prime candidate. In combination with \texttt{pybind11} \cite{jakob_pybind11_2017}
+and \texttt{Eigen\ v3} \cite{guennebaud_eigen_2010} we have the perfect tools to satisfy all our needs.
+
+%\section{How to get pyslise}
+
+The new implementation, which we called Matslise 3.0, can be accessed and executed as follows:
+
+\begin{itemize}
+    %\subsection*{\texttt{C++}}
+    \item \texttt{C++}: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found as well.
+
+          %\subsection*{\texttt{Python}}
+    \item Python: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \texttt{pyslise}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS 10.15}. Installing pyslise is as easy as simply running:
+          % \begin{noindent}
+\begin{python}
+pip install pyslise
+\end{python}
+% \end{noindent}
+
+          A recent \texttt{pip} version ($\geq 19.0$) has to be available. In the next sections, we will present some Python code fragments.
+
+          %\subsection*{In the browser}
+    \item web browser:
+          lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+
+\end{itemize}
+
+\todo{This is a copy from our article: rework}
+%\subsection{Computation of eigenfunctions}
+
+%For the accurate computation and visualization of the eigenfunctions however, things are different. 
+Let us now consider the computation of eigenfunctions.
+Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor Matslise 2.0 were optimized do to so: In fact, to visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed and all necessary computations are carried out again.
+
+To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
+via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
+$$
+    u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
+$$
+with $C_i$ a polynomial in $\delta$,
+$$
+    C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
+$$
+whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
+
+\begin{eqnarray*}
+    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
+    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
+    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
+    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
+    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
+    &  & + h^6 (\,\dots)  + \dots
+\end{eqnarray*}
+
+
+Although these coefficients can all be computed analytically, it was far from practical/desirable to implement these very long formulae in software. Since one was mainly interested in the computation of
+the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
+
+For the applications we have in mind, this approach is too time consuming and so we decided to develop a new algorithm that is able to reuse all the data that was previously calculated.
+Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order.
+The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) %that is obtained after setting $\delta=h$, 
+that was also used in Matslise and Matslise 2.0 for error estimation, but now it is used for propagation.
+For error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points.
 \stopchapter
