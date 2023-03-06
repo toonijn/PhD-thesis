@@ -494,7 +494,7 @@ Finally, one can simplify the expressions for the coefficients of the perturbati
 The original SLCPM12-code implemented the CPM$\{12,10\}$ algorithm. In the original Matslise package, a user could choose between several algorithms: CPM$\{12,10\}$, CPM$\{14,12\}$, CPM$\{16,14\}$, CPM$\{18,16\}$.
 In Matslise 2.0 only CPM$\{18,16\}$ and CPM$\{16,14\}$ are implemented. The CPM$\{16,14\}$ method is used for propagation and the difference between the two methods is used for error estimation.
 
-The CP methods have also been successfully applied to other types of problems, such as the so-called coupled channel Schrödinger-equations problem. Research in the past lead to the \fortran code \lilix \cite{ixaru_lilix_2002} and the \matlab code \matscs \cite{ledoux_numerical_2007}. These programs made it then possible to construct CP-based methods for solving the two-dimensional Schrödinger problem \cite{ixaru_new_2010} and the time-dependent one-dimensional Schrödinger problem \cite{ledoux_accurate_2014}.
+The CP methods have also been successfully applied to other types of problems, such as the so-called coupled channel Schrödinger-equations problem. Research in the past lead to the \fortran{} code \lilix{} \cite{ixaru_lilix_2002} and the \matlab{} code \matscs{} \cite{ledoux_numerical_2007}. These programs made it then possible to construct CP-based methods for solving the two-dimensional Schrödinger problem \cite{ixaru_new_2010} and the time-dependent one-dimensional Schrödinger problem \cite{ledoux_accurate_2014}.
 
 In chapters \ref{cha:c3} and \ref{cha:c4} we will develop methods for the two-dimensional time-independent Schrödinger equation. These new methods are only possible, thanks to the accurate and efficient CP-methods for the one-dimensional problem.
 
@@ -834,6 +834,34 @@ Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $
 Further, Theorem~\ref{the:c2_delta_formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In Matslise 2.0 $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$, Theorem~\ref{the:c2_delta_formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
 
 
+\paragraph{Evaluating eigenvalues}
+Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor Matslise 2.0 were optimized do to so. To visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed, and all necessary computations are carried out once again.
+
+To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From theorem \ref{the:c2_perturbation_terms}, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
+via $Z=(V_0-E) \delta^2$ on the functions $\eta_i$ and $\delta$-dependent polynomials $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
+$$
+    u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
+$$
+with $C_i$ a polynomial in $\delta$,
+$$
+    C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
+$$
+whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
+
+\begin{eqnarray*}
+    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
+    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
+    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
+    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
+    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
+    &  & + h^6 (\,\dots)  + \dots
+\end{eqnarray*}
+
+
+Although these coefficients can all be computed analytically, it was far from practical to implement these very long formulae in software. Since one was mainly interested in the computation of the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
+
+For the applications we have in mind, this approach is too time-consuming. We decided to develop a new algorithm that is able to reuse all the data that was previously calculated. Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order. The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) that was also used in Matslise and Matslise 2.0. For our error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points. In section \ref{sec:c2_numerical_experiments} we will present some numerical experiments in which eigenfunctions are computed as well.
+
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}
 \label{sec:1d_periodic}
 
@@ -845,7 +873,7 @@ Further, Theorem~\ref{the:c2_delta_formulae} also gives more insight in the numb
 
 \section{Numerical experiments}\label{sec:c2_numerical_experiments}
 
-\subsection{Mathieu equation}\label{mathieu-equation}
+\subsection{Mathieu equation}\label{sec:c2_numerical_experiments_mathieu}
 
 As a first introductory example, we will take a look at Mathieu's
 equation \cite{pryce_sltstpak_1999}: \begin{equation}
@@ -857,11 +885,11 @@ equation \cite{pryce_sltstpak_1999}: \begin{equation}
 %  V(x) = 2q\cos(2x) \text{.}
 %\]
 
-By using Pyslise, it is not difficult to find the eigenvalues of this
+By using \pyslise{}, it is not difficult to find the eigenvalues of this
 equation:
 
 % \begin{noindent}
-\begin{python}
+\begin{minted}{python}
   from pyslise import Pyslise
   from math import pi, cos
   
@@ -871,7 +899,7 @@ equation:
   
   mathieu = Pyslise(V, 0, pi, tolerance=1e-8)
   print(mathieu.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
-\end{python}
+\end{minted}
 % \ebd{noindent}
 
 These few lines allow to solve the eigenvalue problem. The first
@@ -884,15 +912,15 @@ The results of this computation can be compared with the results from
 Matslise 2.0. For different values of the parameter \(q\) (\(q = 1\) and
 \(q = 10\)), the true eigenvalues (calculated with Matslise 2.0 and a
 tolerance of \(10^{-14}\)) are used to calculate the error of the
-eigenvalues obtained from Matslise 2.0 and Pyslise, both with a
+eigenvalues obtained from \matslise{} 2.0 and \pyslise{}, both with a
 tolerance of \(10^{-8}\). The execution times are reported as well.
-These were calculated using \textsc{matlab}'s \texttt{timeit} function or Python's \texttt{timeit} function. Both execute the code multiple times to account for fluctuations caused by other system load. These comparisons where run on an Intel i7-8700K.
+These were calculated using \matlab{}'s \texttt{timeit} function or Python's \texttt{timeit} function. Both execute the code multiple times to account for fluctuations caused by other system load. These comparisons where run on an Intel i7-8700K.
 
 \begin{table}
   \begin{center}
     \begin{tabular}[]{rrr}
       \toprule
-      $q=1$               & Matslise 2.0    & Pyslise         \\
+      $q=1$               & \matslise{} 2.0    & \pyslise{}         \\
       \midrule
                           & $5.33\text{ms}$ & $0.21\text{ms}$ \\
       $-0.1102488169921$  & $6.3$ ($-10$)   & $-2.6$ ($-12$)  \\
@@ -914,7 +942,7 @@ These were calculated using \textsc{matlab}'s \texttt{timeit} function or Python
   \begin{center}
     \begin{tabular}[]{rrr}
       \toprule
-      $q=10$              & Matslise 2.0    & Pyslise         \\
+      $q=10$              & \matslise{} 2.0    & \pyslise{}         \\
       \midrule
                           & $6.74\text{ms}$ & $0.30\text{ms}$ \\
       $-13.9365524792501$ & $5.8$ ($-9$)    & $-5.4$ ($-12$)  \\
@@ -931,16 +959,16 @@ These were calculated using \textsc{matlab}'s \texttt{timeit} function or Python
       \bottomrule
     \end{tabular}
   \end{center}
-  \caption{\label{tab:c2_tab1}The first 10 eigenvalues for the Mathieu problem~(\ref{mathieu}) for $q=1$ and $q=10$, the execution times and the errors obtained with Matslise 2.0 and Pyslise with a tolerance of $10^{-8}$.  }
+  \caption{\label{tab:c2_tab1}The first 10 eigenvalues for the Mathieu problem~(\ref{mathieu}) for $q=1$ and $q=10$, the execution times and the errors obtained with \matslise{} 2.0 and \pyslise{} with a tolerance of $10^{-8}$.  }
 \end{table}
 
-From Table~\ref{tab:c2_tab1} there are two things to note. Firstly Pyslise is
+From Table~\ref{tab:c2_tab1} there are two things to note. Firstly \pyslise{} is
 more than 20 times faster than Matslise 2.0. This means that our efforts to
 improve efficiency are definitely worth it.
 
-Secondly the accuracy of Pyslise is a lot higher. This can be explained
-by the fact that Pyslise's error estimates are very conservative. The
-error estimation is used by choosing the mesh to use. Because Pyslise's
+Secondly the accuracy of \pyslise{} is a lot higher. This can be explained
+by the fact that \pyslise{}'s error estimates are very conservative. The
+error estimation is used by choosing the mesh to use. Because \pyslise{}'s
 errors are lower bounds, it tends to use more sectors than Matslise 2.0.
 These extra sectors lead to more accurate results.
 
@@ -956,15 +984,15 @@ Matslise 2.0 was for better algorithms for the computation of eigenfunctions. In
       \toprule
       $q = 1$      & $n=100$          & $n=1000$        & $n=10000$        \\
       \midrule
-      Matslise 2.0 & $65.3\text{ms}$  & $647\text{ms}$  & $10180\text{ms}$ \\
-      Pyslise      & $0.387\text{ms}$ & $3.05\text{ms}$ & $29.3\text{ms}$  \\
+      \matslise{} 2.0 & $65.3\text{ms}$  & $647\text{ms}$  & $10180\text{ms}$ \\
+      \pyslise{}      & $0.387\text{ms}$ & $3.05\text{ms}$ & $29.3\text{ms}$  \\
       \bottomrule
     \end{tabular}
   \end{center}
   \caption{\label{tab:c2_tab2} Execution times needed to compute the first 10 eigenfunctions of the Mathieu problem~(\ref{mathieu}) in $n$ equidistant points.}
 \end{table}
 
-In this scenario the difference in efficiency becomes apparent. Pyslise is two orders of magnitude faster than Matslise 2.0. On top of that, this extreme speedup is achieved without losing accuracy. Table~\ref{tab:c2_tab3} illustrates this by showing the maximum error of the eigenfunction for each eigenvalue.
+In this scenario the difference in efficiency becomes apparent. \pyslise{} is two orders of magnitude faster than Matslise 2.0. On top of that, this extreme speedup is achieved without losing accuracy. Table~\ref{tab:c2_tab3} illustrates this by showing the maximum error of the eigenfunction for each eigenvalue.
 
 \begin{table}
   \begin{center}
@@ -972,14 +1000,14 @@ In this scenario the difference in efficiency becomes apparent. Pyslise is two o
       \toprule
                    & $E_{0}$       & $E_{1}$       & $E_{2}$       & $E_{3}$       & $E_{4}$       \\
       \midrule
-      Matslise 2.0 & $1.0$ ($-10$) & $6.2$ ($-9$)  & $1.7$ ($-10$) & $1.4$ ($-9$)  & $4.0$ ($-11$) \\
-      Pyslise      & $4.7$ ($-9$)  & $5.9$ ($-9$)  & $2.8$ ($-9$)  & $1.9$ ($-9$)  & $3.9$ ($-9$)  \\
+      \matslise{} 2.0 & $1.0$ ($-10$) & $6.2$ ($-9$)  & $1.7$ ($-10$) & $1.4$ ($-9$)  & $4.0$ ($-11$) \\
+      \pyslise{}      & $4.7$ ($-9$)  & $5.9$ ($-9$)  & $2.8$ ($-9$)  & $1.9$ ($-9$)  & $3.9$ ($-9$)  \\
       \midrule
       \midrule
                    & $E_{5}$       & $E_{6}$       & $E_{7}$       & $E_{8}$       & $E_{9}$       \\
       \midrule
-      Matslise 2.0 & $5.7$ ($-10$) & $8.2$ ($-11$) & $8.6$ ($-10$) & $3.0$ ($-11$) & $3.4$ ($-10$) \\
-      Pyslise      & $2.6$ ($-9$)  & $1.4$ ($-9$)  & $1.3$ ($-9$)  & $1.1$ ($-9$)  & $6.6$ ($-10$) \\
+      \matslise{} 2.0 & $5.7$ ($-10$) & $8.2$ ($-11$) & $8.6$ ($-10$) & $3.0$ ($-11$) & $3.4$ ($-10$) \\
+      \pyslise{}      & $2.6$ ($-9$)  & $1.4$ ($-9$)  & $1.3$ ($-9$)  & $1.1$ ($-9$)  & $6.6$ ($-10$) \\
       \bottomrule
     \end{tabular}
   \end{center}
@@ -1001,7 +1029,7 @@ The Coffey-Evans equation has two interesting features: firstly it's a symmetric
 To exploit this symmetry \texttt{PysliseHalf} can be used. Besides this, the few lines of Python needed to find the first eigenvalues are very similar to the ones used for the Mathieu problem.
 
 % \begin{noindent}
-\begin{python}
+\begin{minted}{python}
 from pyslise import PysliseHalf
 from math import pi, sin, cos
 
@@ -1011,21 +1039,21 @@ def V(x):
 
 ce = PysliseHalf(V, pi/2, tolerance=1e-8)
 print(ce.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
-\end{python}
+\end{minted}
 % \end{noindent}
 
-In Table~\ref{tab:c2_tab4} we present, for $\beta=5$, $\beta=15$ and $\beta=25$ the computation times for Matslise 2.0 and Pyslise needed to compute the first 10 eigenvalues with a tolerance of $10^{-8}$.
+In Table~\ref{tab:c2_tab4} we present, for $\beta=5$, $\beta=15$ and $\beta=25$ the computation times for \matslise{} 2.0 and \pyslise{} needed to compute the first 10 eigenvalues with a tolerance of $10^{-8}$.
 
 
 
-In Table~\ref{tab:c2_tab5} the maximum errors in the eigenfunctions are shown. Again, we have used Matslise 2.0 with a tolerance of $10^{-14}$ to obtain accurate results to compare with.
-Once again we note the faster and more accurate performance of Pyslise.
+In Table~\ref{tab:c2_tab5} the maximum errors in the eigenfunctions are shown. Again, we have used \matslise{} 2.0 with a tolerance of $10^{-14}$ to obtain accurate results to compare with.
+Once again we note the faster and more accurate performance of \pyslise{}.
 
 \begin{table}
     \begin{center}
         \begin{tabular}[]{rrr}
             \toprule
-            $\beta=5$           & Matslise 2.0     & Pyslise         \\
+            $\beta=5$           & \matslise{} 2.0  & \pyslise{}      \\
             \midrule
                                 & $8.94\text{ms}$  & $0.33\text{ms}$ \\
             $0.0005463030588$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
@@ -1041,7 +1069,7 @@ Once again we note the faster and more accurate performance of Pyslise.
                                 &                  &                 \\
             \bottomrule
             \toprule
-            $\beta=15$          & Matslise 2.0     & Pyslise         \\
+            $\beta=15$          & \matslise{} 2.0  & \pyslise{}      \\
             \midrule
                                 & $9.71\text{ms}$  & $0.54\text{ms}$ \\
             $0.0000000000035$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
@@ -1057,7 +1085,7 @@ Once again we note the faster and more accurate performance of Pyslise.
                                 &                  &                 \\
             \bottomrule
             \toprule
-            $\beta=25$          & Matslise 2.0     & Pyslise         \\
+            $\beta=25$          & \matslise{} 2.0  & \pyslise{}      \\
             \midrule
                                 & $24.36\text{ms}$ & $0.61\text{ms}$ \\
             $-0.0000000000000$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
@@ -1074,7 +1102,7 @@ Once again we note the faster and more accurate performance of Pyslise.
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_tab4}The first 10 eigenvalues for the Coffey-Evans problem~(\ref{ce}) for $\beta=5$, $\beta=15$ and $\beta=25$, the execution times and the errors obtained with Matslise 2.0 and Pyslise with a tolerance of $10^{-8}$.}
+    \caption{\label{tab:c2_tab4}The first 10 eigenvalues for the Coffey-Evans problem~(\ref{ce}) for $\beta=5$, $\beta=15$ and $\beta=25$, the execution times and the errors obtained with \matslise{} 2.0 and \pyslise{} with a tolerance of $10^{-8}$.}
 \end{table}
 
 \begin{table}
@@ -1082,16 +1110,16 @@ Once again we note the faster and more accurate performance of Pyslise.
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=5$    & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$       & $E_{4}$       \\
+            $\beta=5$       & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$       & $E_{4}$       \\
             \midrule
-            Matslise 2.0 & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
-            Pyslise      & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
+            \matslise{} 2.0 & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
+            \pyslise{}      & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
             \midrule
             \midrule
-            $\beta=5$    & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$       & $E_{9}$       \\
+            $\beta=5$       & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$       & $E_{9}$       \\
             \midrule
-            Matslise 2.0 & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
-            Pyslise      & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
+            \matslise{} 2.0 & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
+            \pyslise{}      & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1099,16 +1127,16 @@ Once again we note the faster and more accurate performance of Pyslise.
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=15$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$      \\
+            $\beta=15$      & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$      \\
             \midrule
-            Matslise 2.0 & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
-            Pyslise      & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
+            \matslise{} 2.0 & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
+            \pyslise{}      & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
             \midrule
             \midrule
-            $\beta=15$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$      \\
+            $\beta=15$      & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$      \\
             \midrule
-            Matslise 2.0 & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
-            Pyslise      & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
+            \matslise{} 2.0 & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
+            \pyslise{}      & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1116,16 +1144,16 @@ Once again we note the faster and more accurate performance of Pyslise.
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=25$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$       \\
+            $\beta=25$      & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$       \\
             \midrule
-            Matslise 2.0 & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
-            Pyslise      & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
+            \matslise{} 2.0 & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
+            \pyslise{}      & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
             \midrule
             \midrule
-            $\beta=25$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$       \\
+            $\beta=25$      & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$       \\
             \midrule
-            Matslise 2.0 & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
-            Pyslise      & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
+            \matslise{} 2.0 & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
+            \pyslise{}      & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1138,10 +1166,10 @@ From the theory we expect that the time it takes to calculate the eigenfunctions
     \begin{center}
         \begin{tabular}{rrrr}
             \toprule
-            $\beta = 15$ & $n=100$          & $n=1000$        & $n=10000$       \\
+            $\beta = 15$    & $n=100$          & $n=1000$        & $n=10000$       \\
             \midrule
-            Matslise 2.0 & $59.9\text{ms}$  & $525\text{ms}$  & $7508\text{ms}$ \\
-            Pyslise      & $0.344\text{ms}$ & $2.58\text{ms}$ & $24.5\text{ms}$ \\
+            \matslise{} 2.0 & $59.9\text{ms}$  & $525\text{ms}$  & $7508\text{ms}$ \\
+            \pyslise{}      & $0.344\text{ms}$ & $2.58\text{ms}$ & $24.5\text{ms}$ \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1150,7 +1178,7 @@ From the theory we expect that the time it takes to calculate the eigenfunctions
 
 \paragraph{A small note about the computation of eigenfunctions}
 
-In Matslise 3.0, there are two algorithms provided to calculate the eigenfunctions. A bulk algorithm for a list of sorted points and an algorithm to calculate single points. These two algorithms share some computation. To get the eigenfunction corresponding to a given eigenvalue $E$, first, a solution is propagate from left to right and another is propagated from right to left. These two solutions are compared in the matching point and a scaling for both halves is determined. While propagating, the intermediate values were stored and are now scaled by the determined factor.
+In \matslise{} 3.0, there are two algorithms provided to calculate the eigenfunctions. A bulk algorithm for a list of sorted points and an algorithm to calculate single points. These two algorithms share some computation. To get the eigenfunction corresponding to a given eigenvalue $E$, first, a solution is propagate from left to right and another is propagated from right to left. These two solutions are compared in the matching point and a scaling for both halves is determined. While propagating, the intermediate values were stored and are now scaled by the determined factor.
 
 For the sorted points in the bulk algorithm, all points are iterated, together with the corresponding sector. Now it is simply a case of calling the formulae in function of $\delta$ to get the value of the eigenfunction in the points in question.
 
@@ -1165,7 +1193,7 @@ To calculate individual points, the same intermediate values are calculated. To 
 
 The second version of this algorithm is useful in combination with other libraries that expect a function as input (in contrast to a list of function evaluations). For example the \texttt{plot}-function available in Sage:
 % \begin{noindent}
-\begin{python}
+\begin{minted}{python}
 from pyslise import PysliseHalf
 
 # defining the problem, with half range reduction
@@ -1182,7 +1210,7 @@ for i, E in problem.eigenvaluesByIndex(2, 5, (0,1)):
 
     # plotting f
     plot(lambda x: f(x)[0], (-pi/2, pi/2)).show()
-\end{python}
+\end{minted}
 % \end{noindent}
 
 The result of this code is given in Figure~\ref{ce_fig}.
@@ -1198,7 +1226,7 @@ Lastly we will take a look at the truncated hydrogen potential \cite{pryce_sltst
 The lower eigenvalues are a good approximation for the eigenvalues of the non truncated problem ($x \in \left[0, \infty\right[$). For completeness, we also provide a code example to find the first eigenvalues. This is very similar to the previous examples.
 
 % \begin{noindent}
-\begin{python}
+\begin{minted}{python}
 from pyslise import Pyslise
 
 def V(x):
@@ -1207,18 +1235,18 @@ return -1/x + 2/x**2
 hydrogen = Pyslise(V, 0, 1000, tolerance=1e-8)
 print(hydrogen.eigenvaluesByIndex(
                     0, 10, (0, 1), (0, 1)))
-\end{python}
+\end{minted}
 % \end{noindent}
 
-The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. Matslise 2.0 is well-suited for singular problems. It contains a lot of routines and checks to identify and work around singularities of the problem. For efficiency reasons Pyslise is not.
+The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. Matslise 2.0 is well-suited for singular problems. It contains a lot of routines and checks to identify and work around singularities of the problem. For efficiency reasons \pyslise{} is not.
 
-Despite these shortcomings Pyslise is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In Table~\ref{tab:c2_tab7} we see that Pyslise is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
+Despite these shortcomings \pyslise{} is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In Table~\ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
 \begin{table}
     \begin{center}
         \begin{tabular}[]{rrr}
             \toprule
-                               & Matslise 2.0     & Pyslise         \\
+                               & \matslise{} 2.0  & \pyslise{}      \\
             \midrule
                                & $30.96\text{ms}$ & $7.09\text{ms}$ \\
             $-0.0625000000000$ & $2.1$ ($-12$)    & $8.9$ ($-15$)   \\
@@ -1234,58 +1262,306 @@ Despite these shortcomings Pyslise is still faster and more accurate. We do note
                                &                  &                 \\
             \bottomrule
         \end{tabular}
-        \caption{\label{tab:c2_tab7}The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}),
-            the execution times and the errors obtained with Matslise 2.0 and Pyslise for a tolerance of $10^{-8}$.  }
+        \caption{\label{tab:c2_tab7}The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}), the execution times and the errors obtained with Matslise 2.0 and Pyslise for a tolerance of $10^{-8}$.  }
     \end{center}
 \end{table}
 
 All eigenfunctions are computed in both algorithms with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
 
 
-\section{Implementation challenges}\label{sec:c2_the_implementation}
+\section{Matslise 3.0 -- A new implementation}\label{sec:c2_the_implementation}
 
-\todo{Prose}
+Later on in chapters \ref{cha:c3} and chapter \ref{cha:c3} we develop methods to solve time-independent two-dimensional Schrödinger problems. These methods will depend upon our ability to solve the one-dimensional problem accurately and efficiently. Not only eigenvalues will be required, but evaluating eigenfunctions will be essential.
+
+This need for speed drove us away from \matslise{} or \matslise{} 2.0. These are efficient and accurate packages which mainly focus on the computation of the eigenvalues with automatic regularity detection. In our case, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular one-dimensional Schrödinger-problems. We investigate possible bottlenecks of performance of the \matslise{} 2.0 package and its routines.
+
+Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{} 2.0 are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. This mesh is then used for all eigenvalue computations. Which means that all evaluations of the coefficient functions from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{} 2.0 is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily express their Sturm-Liouville problem. In \matslise{} 2.0, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
+
+Because we want to decide to reimplement \matslise{} into a faster compiled language, we have to consider what we gain but also what we lose. Speed and efficiency only goes so far if it is implemented in a prohibitively difficult package to use. As stated, one of the great strengths of \matslise{} 2.0 is its ease of use. We were hesitant to use compiled languages for this reason.
+
+In the current day and age one of the more popular languages, with a larger community than \fortran{}'s or \matlab{}'s is \lpython{}. Like \matlab{}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, in \lpython{} it is not hard to add native packages. These packages are not written in \lpython{} but in some other, more low-level, language. This other language is compiled to native machine code, and nicely packaged to be called from within \lpython{}.
+
+These native packages are the answer to the efficiency versus user-friendliness problem we are faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will use can be written in the more approachable \lpython{} The last question before we can build our new implementation of Matslise is: ``Which compiled language?''. This language has to be able to support the building of \lpython{} packages, it has to have support for linear algebra, preferably with optimized BLAS libraries, and it has to support code architecture for numerical libraries. All of these requests makes \cpp a prime candidate. In combination with \pybind \cite{jakob_pybind11_2017} for the \lpython compatibility and \Eigen v3 \cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
+
+\paragraph{Try it out!} The new implementation, which we called Matslise 3.0, can be accessed and executed in three different ways.
+
+\begin{itemize}
+    \item As a \cpp program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found.
+    \item As a \lpython{}-package: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \pyslise{}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS}. Installing \pyslise{} is as easy as simply running:
+          % \begin{noindent}
+\begin{minted}{python}
+pip install pyslise
+\end{minted}
+% \end{noindent}
+    \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+\end{itemize}
+
+\subsection{Implementation challenges}
+
+Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admitted I simplified some code for \matslise 2.0 to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
+
+In this section we want to highlight some challenges we encountered while building the new implementation. Some of these are a consequence of the choice for language we have made, some are some inherent challenges of the constant perturbation method and others are self-inflicted by the ambitious goals we set out for ourselves.
+
+\todo{About the code-architecture, overview of parts}
+
 \todo{UML diagram}
 
+\subsubsection{Computation of the perturbation term formulae}
+
+In theorem \ref{the:c2_perturbation_terms} a nice procedure is outlined to determine each of the propagators $u(\delta)$ and $v(\delta)$. In short both propagators are written as :
+$$
+    u(\delta) = \sum_{i = -1}^{Q} C_i(\delta) \eta_{i}(\delta)
+$$
+with $C_i$ a polynomial in $\delta$,
+\begin{equation}\label{equ:c2_symbolic_propagators}
+    C_i  = \sum_{j=0}^{N} d_{i, j} \delta^j\text{,}
+\end{equation}
+and $d_{i, j}$ is a polynomial in $h$ with coefficients in $V_1, \dots, V_{N}$.
+
+Once a mesh is constructed and $V_1, \dots, V_{N}$ are determined, the values for $d_{i, j}$or fixed on each subinterval. Which means that these values can be computed once and be reused for each guess for $\lambda$. In practice, the formulae for the values of $d_{i, j}$ are quite complicated. For small values of $N$ and $Q$ it would be feasible to implement these values by hand, for the large $N$ and $Q$ we are using here, this is intractable.
+
+We could compute these formulae each time we construct a mesh by implementing some symbolic computation in \cpp{}. This could work, but it is less than ideal. Not only would this include a large computational burden, it would also be quite labor-intensive to implement the symbolic tools needed to pull this off. A better strategy is to use a symbolic toolbox like \maple{}, \mathematica{}, or \sage{} and let it generate the necessary \cpp{}-code only once before compiling the program. Computing the formulae once and generating code for them  also has the added benefit that the \cpp{} compiler can optimize them and generate the best possible machine-code.
+
+In the appendices of \cite{ledoux_study_2007} some \maple{} programs are present which are able to determine the necessary values if $h = \delta$. For our case, because we want to have these formulae for general $\delta$, a new program needs to be written. In the next chapter, the method we develop also uses constant perturbation formulae for coupled systems of Schrödinger equations, therefor it would also be valuable if this new program is also able to compute these. And lastly, it would be a nice to have if these formulae could be generated in a matter of minutes instead of weeks, for example.
+
+We have implemented this in \sage{} \cite{sagemath}. Here it is possible to precisely specify what type each variable is. Mathematically, all expressions are polynomials in $h$, $\delta$ and $V_0, \dots, V_N$, as such, all computations will be executed in the following polynomial ring:
+$$
+    \QQ[V_0, \dots, V_n][h][\delta]\text{.}
+$$
+This means that all expressions in sage will have the following structure with coefficients $c \in \QQ$:
+$$
+    \sum_i \left(\sum_j \left( \sum_{k_0,\dots, k_N} c_{i,j,k_0,\dots,k_N} V_0^{k_0} \cdots V_N^{k_N}  \right)h^j \right) \delta^i\text{.}
+$$
+This structure allows \sage{} to optimize each expression, in contrast to working with general symbolic expressions, which would also allow other operations such as division or $\sin$ for example.
+
+As an example, the \sage{} program starts with defining the variables $V_0, \dots, V_N$, $h$ and $\delta$.
+%\begin{noindent}
+\begin{minted}{python}
+pr_V = QQ["V0", "V1", "V2"]
+pr_h = pr_V["h"]
+pr_delta = pr_h["delta"]
+
+V0, V1, V2 = pr_V.gens()
+h = pr_h.gen()
+detla = pr_delta.gen()
+\end{minted}
+%\end{noindent}
+
+Now we can write an expression such as $V_1 (\delta + h)^2 V_0$, which \sage{} would immediately translate to the expanded and  much more efficient expression:
+$$
+    V_{0} V_{1} \delta^{2} + 2 V_{0} V_{1} h \delta + V_{0} V_{1} h^{2}\text{.}
+$$
+
+Besides the computational benefit, we also have the ability to easily specify that $V_0, \dots, V_N$ are matrices when generating formulae for the constant perturbation method on coupled systems of equations. We do not specify $V_0, \dots, V_N$ to be in a polynomial ring, but a general free algebra without commutation rules.
+%\begin{noindent}
+\begin{minted}{python}
+FreeAlgebra(QQ, ['V0', 'V1', 'V2'])
+\end{minted}
+%\end{noindent}
+An expression such as $(V_1 + V_0)^2$ will now internally be stored as:
+$$
+    V_{0}^{2} + V_{0} V_{1} + V_{1} V_{0} + V_{1}^{2}\text{.}
+$$
+
+Using these polynomial rings it is straightforward to implement the formulae from theorem \ref{the:c2_perturbation_terms}. The last thing to do is generating the \cpp{}-code to compute the values. For this we generate for each propagator $u(\delta)$, $v(\delta)$, $u'(\delta)$ and $v'(\delta)$, the $(Q+1)\times N$ matrix $T_p$ of formulae for $d_{i,j}$ from equation \eqref{equ:c2_symbolic_propagators}. For example:
+$$
+    (T_v)_{1, 3} = h\cdot\left(-0.5 V_1 + h\cdot\left(0.5 V_2 + h\cdot\left(-0.5 V_3 + h\cdot\left(\dots\right)\right)\right)\right)\text{.}
+$$
+
+As one may expect, this generates a huge file of code. To aid the compiler, before generating the code, we implement a crude common subexpression elimination in \sage{}. Because we are working in a multivariate polynomial ring (or a free algebra in the case of coupled systems), expressions which are the product of some $V_i$'s such as  $V_1^2 V_2$ will be common. And, many of them will be present in more than one formula. We can start the code generation by adding extracting some of these products in their own variables. For example:
+%\begin{noindent}
+\begin{minted}{python}
+...
+v1_v2 = v1 * v2
+v1_v1_v2 = v1 * v1_v2
+...
+\end{minted}
+%\end{noindent}
+
+In the scalar case, this works wonderfully. All tested compilers are able to process this generated file without many difficulties. For coupled systems this generated file is much harder on the compiler because $V_0, \dots, V_N$ are no longer simple scalars. They have become matrices from the \Eigen{} library. \Eigen{} relies upon inlining and other compiler optimizations to generate the best possible machine-code, for some compilers (most notably for the Microsoft Visual Studio compiler) this becomes too much, and they run out of available system memory. To combat this issue partially, we introduce more temporaries and split the giant formulas into more manageable simpler expressions.
+
+\subsubsection{Generalizing the scalar-type}
+
+One of the very cool features of the linear algebra library \Eigen is that it does not care what kind of scalars you are working with. All their algorithms are implemented agnostic of the scalar type. This is achieved by using \cpp{}-templates. For readers unfamiliar with this concept we will provide a very brief summary of this concept. For a thorough description see \cite[Chapter~23]{stroustrup_programming_2013}.
+
+First, let us take a look at the \texttt{C}-functions to compute the square root of a floating point number.
+% \begin{noindent}
+\begin{minted}{C}
+float sqrtf(float arg);
+double sqrt(double arg);
+long double sqrtl(long double arg);
+\end{minted}
+% \end{noindent}
+
+The \texttt{C}-standard has to provide three different functions for three different floating point types: \texttt{float} is $32$ bits wide, \texttt{double} is $64$ bits wide and \texttt{long double} is commonly\footnote{The \texttt{C} and \cpp-standards give surprisingly vague definitions of numeric types. For example: the \texttt{int}-type is guaranteed to be \emph{at least} $16$ bits wide. The two floating point types \texttt{float} and \texttt{double} are atypical in the sense that they are guaranteed to be the IEEE-754 binary32 and binary64 formats respectively. For the \texttt{long double} type, the specification is less strict: \emph{``extended precision floating-point type. Matches IEEE-754 binary128 format if supported, otherwise matches IEEE-754 binary64-extended format if supported, otherwise matches some non-IEEE-754 extended floating-point format as long as its precision is better than binary64 and range is at least as good as binary64, otherwise matches IEEE-754 binary64 format.''} On x86 systems, this is an $80$ bit wide floating point type with a 15 bits exponent and 64 bits significand.} $80$ bits wide.
+
+It is cumbersome to have to differentiate between which function to call, depending on which argument types are used. In \cpp{} this is solved more elegantly, by allowing function overloads depending on the supplied arguments. But \cpp{} goes even further, a programmer can build a function for different types with the same code. For example, the following code implements the simple operations $x^2 + y^2$, for all possible types all at once.
+% \begin{noindent}
+\begin{minted}{c++}
+template<typename Number>
+Number squared_norm(Number x, Number y) {
+    Number a = x * x;
+    Number b = y * y;
+    return a + b;
+}
+\end{minted}
+% \end{noindent}
+This function can now be called with different numeric types.
+% \begin{noindent}
+\begin{minted}{c++}
+squared_norm<int>(3, 4);
+squared_norm<float>(3.0f, 4.0f);
+squared_norm<double>(3.0, 4.0);
+\end{minted}
+% \end{noindent}
+
+The library \Eigen{} is implemented by using these templates extensively. This library provides the \texttt{Eigen::Matrix<Scalar, rows, cols>} type which can be used to build for example the following matrices.
+% \begin{noindent}
+\begin{minted}{c++}
+// A 3 by 3 integer matrix
+Eigen::Matrix<int, 3, 3>
+\end{minted}
+\begin{minted}{c++}
+// A double-type column vector with a dynamic number of rows
+Eigen::Matrix<double, Eigen::Dynamic, 1>
+\end{minted}
+\begin{minted}{c++}
+// A complex 10 by 5 matrix, the real and imaginary part of
+// each entry is saved in a long double format.
+Eigen::Matrix<std::complex<long double>, 10, 5> 
+\end{minted}
+% \end{noindent}
+
+\begin{figure}
+% \begin{noindent}
+\begin{minted}{c++}
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/math/constants/constants.hpp>
+#include <boost/multiprecision/float128.hpp>
+#include <matslise/matslise.h>
+
+using boost::math::constants::pi;
+using boost::multiprecision::float128;
+
+float128 mathieuPotential(float128 x) {
+    return 2 * cos(2 * x);
+}
+
+int main() {
+    matslise::Matslise<float128> problem(
+            &mathieuPotential, 0, pi<float128>(), 1e-25q);
+
+    auto boundary = matslise::Y<float128>::Dirichlet();
+    auto eigs = problem.eigenvaluesByIndex(0, 7, boundary);
+    for (auto [i, E]: eigs) {
+        float128 error = problem.eigenvalueError(E, boundary, i);
+        std::cout << boost::format(
+                "Eigenvalue %1$d:%2$30.25f  (error: %3$.1e)")
+                        % i % E % error << std::endl;
+    }
+    return 0;
+}
+\end{minted}
+% \end{noindent}
+\vspace{8mm}
+% \begin{noindent}
+\begin{minted}{text}
+Eigenvalue 0:  -0.1102488169920951699065478  (error: 1.7e-25)
+Eigenvalue 1:   3.9170247729984711867034169  (error: 1.6e-25)
+Eigenvalue 2:   9.0477392598093749823749465  (error: 1.9e-25)
+Eigenvalue 3:  16.0329700814057944092457252  (error: 4.3e-25)
+Eigenvalue 4:  25.0208408232897663652258825  (error: 4.8e-25)
+Eigenvalue 5:  36.0142899106282223466625724  (error: 7.7e-25)
+Eigenvalue 6:  49.0104182494238719005911294  (error: 9.8e-25)
+\end{minted}
+% \end{noindent}
+\caption{A sample program to compute the first 8 eigenvalues of the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} in $128$ bits wide floating point precision, and the output generated.}
+\label{fig:c2_mathieu_quad_code}
+\end{figure}
+
+In our implementation we have also adopted this philosophy by using templates to allow for any scalar type. This means that \matslise{} 3.0 is not only able to solve Sturm-Liouville equations in \texttt{double}-precision (like \matslise{} 2.0) but also in the more accurate \texttt{long double}-precision. We even have enabled support for a $128$ bits floating point  numeric type by using Boost's \cite{boost_float128_} \texttt{boost::multiprecision::float128} type.
+
+Unfortunately, \lpython{} only has support for the double type. So, if we want to leverage this higher precision, we will have to write a \cpp{} program. As an example, in figure \ref{fig:c2_mathieu_quad_code} we provide the code to find the first few eigenvalues of the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} in quadruple precision ($128$ bit).
+
+\subsubsection{Memory management}
+
+In computer sciences is a garbage collector a method to do automatic memory management. The idea here is to automatically detect if allocated memory (for an array or object for example) is no longer used. If such memory is found, this can be returned to the operating system, for later use by our own or another program. Detecting unused memory is essential to ensure a reliable working of the system. If one program hoards memory, without returning it to the operating system, then sooner or later the operating system runs out of memory and programs need to be unexpectedly aborted.
+
+To avoid this, many interpreted languages (for example \lpython{}, \javascript{}, \matlab{}\dots) have such a garbage collector build in. Even some compiled languages (such as \java{} or \csharp{}) do memory management with a garbage collector. But this is not the only way to do memory management, \rust{} for example, keeps track of which memory is used, at compile time with what they call \emph{lifetimes}. \texttt{C} and \cpp on the other hand, have no memory management build in, these languages rely on the programmer to clean up after themselves.
+
+In theory, cleaning up after yourself is easy. When you allocate data, just make sure you deallocate it once you no longer need it. In practice, this view is too simple. In \cpp{} some memory management is handled automatically by constructors and destructors. But other, more complicated scenarios, still have to be handled by the programmer. The situation that gave us trouble was the interoperability with \lpython{}. We had to very carefully specify whose responsibility it was to clean up objects. Was it an object that was managed on the \cpp{} side by us, the programmer, or could we let the garbage collector of \lpython{} do the work. Luckily, \pybind{} supports \texttt{std::shared\_ptr<...>}, using this solves the responsibility issue in most cases.
+
+The only case left, is when the lifetime of one object depends upon another object. For example consider the following \lpython{} code, which computes and stores the sixth eigenfunction of three different Schrödinger problems.
+% \begin{noindent}
+\begin{minted}{python3}
+from pyslise import Pyslise
+
+some_functions = []
+for q in [1, 10, 100]:
+    problem = Pyslise(lambda x: q*x, 0, 1)
+    i, E, f = problem.eigenpairsByIndex(5, 6, (0, 1))[0]
+    some_functions.append(f)
+\end{minted}
+% \end{noindent}
+Here, in the body of the loop, the eigenfunction object \texttt{f} assumes that the original \texttt{Pyslise} object \texttt{problem} exists. If \texttt{problem} were destroyed, evaluating the eigenfunction \texttt{f} would trigger undefined behavior. In the best case, this would crash the program, in the worst case wrong results would be returned. To ensure \texttt{problem} not to be destroyed to early we have to explicitly mark a dependence of each of the returned eigenfunctions on the original problem.
+
+In hindsight, these issues and fixes may seem obvious. But, they highlight some difficulties in getting \lpython{} and \cpp{} to play nicely together.
+
+\subsubsection{Automatic testing}
+
+Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
+
+We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, implemented $40$ test scenarios with over \todo{$\numprint{2e6}$} conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration test where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
+
+\begin{itemize}
+    \item Least squares approximations with Legendre polynomials
+    \item Sturm-Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise 2.0 was used to provide more accurate values.
+    \begin{enumerate}
+        \item $p(x)=1$, $q(x)=0$ and $w(x)=(1+x)^{-2}$ with homogeneous Dirichlet boundary conditions on $[0, 1]$.
+        \item $p=(1+x)^1$, $q(x) = x^2-2$ and $w(x) = \exp(x)$ on $[0, 1]$ with homogeneous Dirichlet boundary conditions left and homogeneous Neumann conditions on the right.
+        \item $p(x) = 2+\sin(2 \pi x)$, $q(x) = -10$ and $w(x) = 1+\sqrt{x}$ on $[0, 1]$ with boundary conditions $y(0) = 0$ and $10 y(1) + p(1) y'(1) = 0$. The first three eigenfunctions are also compared to values computed with \matslise 2.0.
+    \end{enumerate}
+
+    \todo{Describe more tests}
+\end{itemize}
+
+
+\subsubsection{Building of \texorpdfstring{\lpython}{Python} package}
+
+\todo{About the package}
+
+\subsubsection{The plan}
+
+\todo{Prose}
+
 \begin{enumerate}
-    \item Template on scalar type.
     \item Unifying different types of solvers. (Normal, HalfRange, SturmLiouville)
-    \item Generate formula code
-          \begin{enumerate}
-              \item Symbolic computation
-              \item For systems of equations, non-commutative symbolic computation
-              \item Helping the compiler with intermediates
-              \item Compiler difficulties
-          \end{enumerate}
     \item Memory management:
           \begin{enumerate}
               \item Shared pointers in \cpp{}.
               \item Ownership of sectors.
               \item Eigenfunctions should keep the original problem alive:
                     % \begin{noindent}
-\begin{python}
+\begin{minted}{python}
 eigenfunctions = []
 for q in [1,10,100]:
     mathieu = Pyslise(lambda x: q*x, 0, pi)
     i, E, f = mathieu.eigenpairs(5,6)[0]
     eigenfunctions.append(f)
-\end{python}
+\end{minted}
 % \end{noindent}
           \end{enumerate}
     \item Building a Python-package
 \end{enumerate}
-\subsection{Matslise 3.0 -- A new implementation}\label{a-new-implementation}
 
-As already stated, our main aim is to build a new package for the accurate and efficient solution of 2D and 3D time-independent and time-dependent Schrödinger-problems.
-In order to do so, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular 1D Schrödinger-problems.
-We thus investigated possible bottlenecks of performance of the Matslise 2.0 package and its routines. In this analysis, we will discuss the computation of eigenvalues and eigenfunctions separately.
+
+\subsection{}\label{a-new-implementation}
+
+As already stated,
 
 %\subsection{Computation of eigenvalues}
 
-Let us start with the computation of the eigenvalues.
-The original Matslise package as well as its successor Matslise 2.0 are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of Schrödinger and
-Sturm-Liouville problems as efficiently as possible. For regular problems e.g., only one coarse mesh, typically consisting of only a few mesh points, is determined and this mesh is then used for all eigenvalue computations. This means that all evaluations of the SLP coefficient functions are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \textsc{matlab}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of Matslise 2.0 is \textsc{matlab}. This environment creates an interpreted language which is inherently slower than a compiled one (like Fortran or
-\texttt{C}). However, keeping in mind our primary goals (efficiency as well as user friendliness) we were hesitant to use these languages and we have chosen for another approach.
 
 %have not chosen for a different approach: we   
 %
@@ -1293,76 +1569,15 @@ Sturm-Liouville problems as efficiently as possible. For regular problems e.g., 
 %friendly at all. 
 
 
-In the current day and age one of the more popular languages, with a larger community than Fortran's or \textsc{matlab}'s is Python.
-Like \textsc{matlab}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, unlike \textsc{matlab}, in Python it is not hard to add native packages.
-These packages are not written in Python but in some other, more low-level,
-language. This other language is compiled to native machine code, and nicely packaged to be called from within Python.
 
-These native packages are the answer to the efficiency versus user-friendliness problem we are faced with. The high performing part can be efficiently
-implemented in a compiled language, but the code that the user will use can be written in the more approachable Python The last
-question before we can build our new implementation of Matslise is: ``Which compiled language?''. This language has to be able to support
-the building of Python packages, it has to have support for linear algebra, preferably with optimized BLAS libraries and it has to
-support code architecture for numerical libraries. All of these requests makes \texttt{C++} a prime candidate. In combination with \texttt{pybind11} \cite{jakob_pybind11_2017}
-and \texttt{Eigen\ v3} \cite{guennebaud_eigen_2010} we have the perfect tools to satisfy all our needs.
 
 %\section{How to get pyslise}
 
-The new implementation, which we called Matslise 3.0, can be accessed and executed as follows:
-
-\begin{itemize}
-    %\subsection*{\texttt{C++}}
-    \item \texttt{C++}: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found as well.
-
-          %\subsection*{\texttt{Python}}
-    \item Python: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \texttt{pyslise}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS 10.15}. Installing pyslise is as easy as simply running:
-          % \begin{noindent}
-\begin{python}
-pip install pyslise
-\end{python}
-% \end{noindent}
-
-          A recent \texttt{pip} version ($\geq 19.0$) has to be available. In the next sections, we will present some Python code fragments.
-
-          %\subsection*{In the browser}
-    \item web browser:
-          lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
-
-\end{itemize}
 
 \todo{This is a copy from our article: rework}
 %\subsection{Computation of eigenfunctions}
 
 %For the accurate computation and visualization of the eigenfunctions however, things are different. 
 Let us now consider the computation of eigenfunctions.
-Once an eigenvalue is computed in Matslise or Matslise 2.0, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor Matslise 2.0 were optimized do to so: In fact, to visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed and all necessary computations are carried out again.
 
-To explain why this approach was chosen in Matslise and Matslise 2.0, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From Theorem 1, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
-via $Z=(V_0-E) \delta^2$ on $\delta$-dependent functions $\eta_i$ and $\delta$-dependent functions $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
-$$
-    u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
-$$
-with $C_i$ a polynomial in $\delta$,
-$$
-    C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
-$$
-whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
-
-\begin{eqnarray*}
-    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
-    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
-    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
-    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
-    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
-    &  & + h^6 (\,\dots)  + \dots
-\end{eqnarray*}
-
-
-Although these coefficients can all be computed analytically, it was far from practical/desirable to implement these very long formulae in software. Since one was mainly interested in the computation of
-the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
-
-For the applications we have in mind, this approach is too time consuming and so we decided to develop a new algorithm that is able to reuse all the data that was previously calculated.
-Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order.
-The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) %that is obtained after setting $\delta=h$, 
-that was also used in Matslise and Matslise 2.0 for error estimation, but now it is used for propagation.
-For error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points.
 \stopchapter

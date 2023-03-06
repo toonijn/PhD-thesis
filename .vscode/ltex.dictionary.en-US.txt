@@ -31,3 +31,10 @@ quartic
 Arnoldi
 backronym
 subproblems
+subinterval
+subexpression
+inlining
+significand
+multiprecision
+deallocate
+Pyslise
