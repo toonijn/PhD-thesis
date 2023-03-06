@@ -10,7 +10,7 @@ jobs:
         with:
           root_file: |
             thesis.tex
-          args: "-outdir=build -shell-escape"
+          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -outdir=build -shell-escape"
       - name: Upload thesis.pdf
         run: |
           curl -F pdf=@build/thesis.pdf -F token=${{ secrets.UPLOAD_TOKEN }} ${{ secrets.UPLOAD_URL }}
