@@ -293,9 +293,9 @@ This last theorem does not only say that the error does not become larger if $k$
     \label{fig:c2_pruess_k_error}
 \end{figure}
 
-As a numerical experiment we have applied the method with constant piecewise approximations ($m=0$) to the Mathieu problem
+As a numerical experiment we have applied the method with constant piecewise approximations ($m=0$) to the problem
 \begin{equation}\label{equ:c2_pruess_test_problem}
-    -y'' + 100 \cos(x)^2 y = \lambda y
+    -y'' + 100 \cos^2(x) \,y = \lambda y
 \end{equation}
 on the domain $[0, \pi]$ with homogeneous Dirichlet boundary conditions. In figure \ref{fig:c2_pruess_h_error} the relative error of the application of the method is illustrated. We see that the error follows indeed the predicted line of $\mathcal{O}(h^2)$. In figure \ref{fig:c2_pruess_k_error} we see the dramatic increase in accuracy when $k$ becomes larger. The predicted order of $\mathcal{O}(k^{-4})$ seems to be reached once $k$ is sufficiently large.
 
@@ -873,7 +873,136 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 \section{Numerical experiments}\label{sec:c2_numerical_experiments}
 
+As a first numerical experiment, let us verify the order in $h$ and make an estimate for the order in $k$. For this, we use the same problem as in figures \ref{fig:c2_pruess_h_error} and \ref{fig:c2_pruess_k_error}.
+
+\subsection{Order estimation}
+
+Consider the Schrödinger problem with equation
+\begin{equation}\label{equ:c2_matslise_order_test_problem}
+    -y'' + 100\cos^2(x)\,y = \lambda y
+\end{equation}
+on the domain $[a, b] = [0, \pi]$ and homogeneous Dirichlet boundary conditions.
+
+Before jumping into the graphs, we have to note that \matslise{} 3.0 has automatic step size selection build in. This allows the algorithm to generate its own piecewise approximation of the potential. But, this also implies that a user is not directly able to control the number of subintervals used, which makes generating a figure like \ref{fig:c2_pruess_k_error} or \ref{fig:c2_pruess_h_error} more difficult.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/matslise_h_error.pdf}
+    \end{center}
+    \caption{Relative error of the found eigenvalues of problem \eqref{equ:c2_matslise_order_test_problem} by using \matslise{} 3.0.}
+    \label{fig:c2_matslise_h_error}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/matslise_k_error.pdf}
+    \end{center}
+    \caption{Relative error of the found eigenvalues of problem \eqref{equ:c2_matslise_order_test_problem} by using \matslise{} 3.0. The graphs are in function of the index of the eigenvalue.}
+    \label{fig:c2_matslise_k_error}
+\end{figure}
+
+To generate figures \ref{fig:c2_matslise_h_error} and \ref{fig:c2_matslise_k_error} we have solved $100$ times the test problem with different tolerances between $2^{-10} \approx 10^{-3}$ and $2^{-30} \approx 10^{-9}$, we have grouped the errors of each of these solves by the number of subintervals \matslise{} used, and averaged them for each eigenvalue.
+
+In figure \ref{fig:c2_matslise_h_error} we see that the number of subintervals varied between $4$ and $10$. Unsurprisingly, if \matslise{} used more subintervals, the results were more accurate. From the theory, we know that the propagation error from the constant perturbation method $\text{CPM}\{18\}$ is of the order $\OO(h^{18})$. We notice this same order in the error on the eigenvalue.
+
+From the theory we know little about the error estimate with respect to $k$. In theorem \ref{the:c2_pruess_1973_2} we learned that for the Pruess method this order was $\OO(k^{-4})$. With \matslise{} we observe a much more dramatic value, visualize we suspect this to be $\OO(k^{-9})$ or $\OO(k^{-10})$.
+
+These numerical experiments may serve as a kind of tutorial to get to known \pyslise{}. So we will provide the code each time to solve the problem at hand. Here, to generate the first fifty eigenvalues the following code can be used.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise import Pyslise
+from math import pi, cos
+
+V = lambda x: 100*cos(x)**2
+
+problem = Pyslise(V, 0, pi, tolerance=1e-12)
+print(problem.eigenvaluesByIndex(0, 50, (0, 1), (0, 1)))
+\end{minted}
+% \end{noindent}
+
+The first few lines imports the necessary functions. The next line defines the potential $V(x)$. Then, a \texttt{Pyslise} object is constructed. Here the user needs to provide the potential $V(x)$, and the left ($0$) and right ($\pi$) boundaries of the domain. Optionally a tolerance may be specified. Because we are working in \texttt{double} precision in \lpython{}, anything less than approximately $10^{-16}$ is nonsensical.
+
+Next, we find the eigenvalues. For this we use \texttt{.eigenvaluesByIndex}, a function defined on \texttt{Pyslise} objects. This function expects four arguments: $i_\text{min}$, $i_\text{max}$, $\vb{y_a}$ and $\vb{y_b}$. It will return all eigenvalues $\lambda_i$ for which $i_\text{min} \leq i < i_\text{max}$ of the problem with boundary conditions
+$$
+    \begin{pmatrix}y(a) \\ y'(a)\end{pmatrix} = s_a \vb{y_a} \quad\text{and}\quad \begin{pmatrix}y(b) \\ y'(b)\end{pmatrix} = s_b \vb{y_b}\text{.}
+$$
+In this expression are $s_a$ and $s_b$ some scaling factors. Note that providing boundary conditions like this is different from the more mathematical notation
+$$
+    \alpha_a y(a) + \beta_a y'(a) = 0\text{.}
+$$
+Our program expects a vector $\vb{y_a} = \begin{pmatrix}\beta_a & - \alpha_a\end{pmatrix}^\transposesign{}$, and analogous for $\vb{y_b}$. We have chosen for these types of arguments to be more in line with how propagation is executed in the constant perturbation method.
+
+\subsection{A potential with jumps}
+
+In the next numerical experiment we demonstrate another feature of constant perturbation methods. Because the potential function is piecewise approximated, the potential may be discontinuous as long as the jumps are situated on the boundary between two consecutive subintervals.
+
+Consider the Schrödinger problem with homogeneous Dirichlet boundary conditions on the interval $[-2, 2]$ with potential function
+\begin{equation}\label{equ:c2_matslise_jumps_well}
+    V(x) = \begin{cases}
+        0  & \text{if $|x| \leq 1$} \\
+        30 & \text{otherwise.}
+    \end{cases}
+\end{equation}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/matslise_jumps_without.pdf}
+    \end{center}
+    \caption{Visualization of the subintervals chosen by \matslise{} 3.0 for the problem with potential \eqref{equ:c2_matslise_jumps_well}, \emph{without} specifying jumps.}
+    \label{fig:c2_matslise_jumps_without}
+\vspace{8mm}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/matslise_jumps_with.pdf}
+    \end{center}
+    \caption{Visualization of the subintervals chosen by \matslise{} 3.0 for the problem with potential \eqref{equ:c2_matslise_jumps_well}, \emph{with} specifying jumps.}
+    \label{fig:c2_matslise_jumps_with}
+\end{figure}
+
+If we use a similar program as before this may look like the following.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise import Pyslise
+
+def V(x):
+    return 0 if abs(x) < 1 else 30
+
+problem = Pyslise(V, -2, 2, tolerance=1e-12)
+print(problem.eigenvaluesByIndex(0, 5, (0, 1), (0, 1)))
+\end{minted}
+% \end{noindent}
+This program gives the correct results, but it used $15$ subintervals. Those intervals are visualized in figure \ref{fig:c2_matslise_jumps_without}. If we change the line with the construction of the \texttt{Pyslise} object to
+% \begin{noindent}
+\begin{minted}{python}
+problem = Pyslise(V, -2, 2, tolerance=1e-12, jumps=[-1, 1])
+\end{minted}
+% \end{noindent}
+only $3$ subintervals are used. For completeness, we have visualized these 3 subintervals in figure \ref{fig:c2_matslise_jumps_with}. As one may expect, using fewer intervals speeds up the method significantly.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/matslise_jumps_eigenfunctions.pdf}
+    \end{center}
+    \caption{These are the first five eigenfunctions of the Schrödinger problem with potential \eqref{equ:c2_matslise_jumps_well}.}
+    \label{fig:c2_matslise_jumps_eigenfunctions}
+\end{figure}
+
+In any case, the first five eigenfunctions of this Schrödinger problem can be visualized with the following code.
+% \begin{noindent}
+\begin{minted}{python}
+import numpy as np
+
+x = np.linspace(-2, 2, 200)
+
+plt.plot(x, np.vectorize(V)(x))
+for i, E, f in problem.eigenpairsByIndex(0, 5, (0, 1), (0, 1)):
+    plt.plot(x, E + f(x)[0,:])
+\end{minted}
+% \end{noindent}
+This yields a similar image to figure \ref{fig:c2_matslise_jumps_eigenfunctions}. In this code, \texttt{.eigenpairsByIndex} is a function which expects the same arguments as \texttt{.eigenvaluesByIndex}. But this function returns a list with for each found eigenvalue a tuple with three elements: the index \texttt{i}, the eigenvalue \texttt{E} and the eigenfunction \texttt{f}. This \texttt{f} can be treated as any \lpython{} function, and be evaluated in any value $x$ inside the domain to get the value of the eigenfunction $f(x)$ and its derivative $f'(x)$.
+
 \subsection{Mathieu equation}\label{sec:c2_numerical_experiments_mathieu}
+
+\todo{From here on out: rework}
 
 As a first introductory example, we will take a look at Mathieu's
 equation \cite{pryce_sltstpak_1999}: \begin{equation}
@@ -1298,7 +1427,7 @@ pip install pyslise
 
 \subsection{Implementation challenges}
 
-Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admitted I simplified some code for \matslise 2.0 to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
+Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admitted I simplified some code for \matslise{} 2.0 to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
 
 In this section we want to highlight some challenges we encountered while building the new implementation. Some of these are a consequence of the choice for language we have made, some are some inherent challenges of the constant perturbation method and others are self-inflicted by the ambitious goals we set out for ourselves.
 
@@ -1488,7 +1617,7 @@ Unfortunately, \lpython{} only has support for the double type. So, if we want t
 
 In computer sciences is a garbage collector a method to do automatic memory management. The idea here is to automatically detect if allocated memory (for an array or object for example) is no longer used. If such memory is found, this can be returned to the operating system, for later use by our own or another program. Detecting unused memory is essential to ensure a reliable working of the system. If one program hoards memory, without returning it to the operating system, then sooner or later the operating system runs out of memory and programs need to be unexpectedly aborted.
 
-To avoid this, many interpreted languages (for example \lpython{}, \javascript{}, \matlab{}\dots) have such a garbage collector build in. Even some compiled languages (such as \java{} or \csharp{}) do memory management with a garbage collector. But this is not the only way to do memory management, \rust{} for example, keeps track of which memory is used, at compile time with what they call \emph{lifetimes}. \texttt{C} and \cpp on the other hand, have no memory management build in, these languages rely on the programmer to clean up after themselves.
+To avoid this, many interpreted languages (for example \lpython{}, \javascript{}, \matlab{}\dots) have such a garbage collector build in. Even some compiled languages (such as \java{} or \csharp{}) do memory management with a garbage collector. But this is not the only way to manage memory, \rust{} for example, keeps track of which memory is used, at compile time with what they call \emph{lifetimes}. \texttt{C} and \cpp on the other hand, have no memory management build in, these languages rely on the programmer to clean up after themselves.
 
 In theory, cleaning up after yourself is easy. When you allocate data, just make sure you deallocate it once you no longer need it. In practice, this view is too simple. In \cpp{} some memory management is handled automatically by constructors and destructors. But other, more complicated scenarios, still have to be handled by the programmer. The situation that gave us trouble was the interoperability with \lpython{}. We had to very carefully specify whose responsibility it was to clean up objects. Was it an object that was managed on the \cpp{} side by us, the programmer, or could we let the garbage collector of \lpython{} do the work. Luckily, \pybind{} supports \texttt{std::shared\_ptr<...>}, using this solves the responsibility issue in most cases.
 
@@ -1528,7 +1657,7 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, i
     \item Some Schrödinger problems with eigenvalues found in the literature and with \matslise{} 2.0\begin{itemize}
               \item The Mathieu problem: $V(x)= 2\cos(2x)$ on $[0, \pi]$. The first $200$ eigenvalues and the orthonormality of the eigenfunctions are checked, in \texttt{double}, \texttt{long double} and \texttt{float128}. The first and fourth eigenfunctions are compared in different values computed with \matslise{} 2.0.
               \item Marletta's problem: $V(x) = 3\frac{x-31}{4(x+1)(x+4)^2}$ on $[0,12]$ with $y(0) = 0$ and $5 y(12) + 8 y'(12) = 0$.
-              \item The Coffey-Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types. 
+              \item The Coffey-Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types.
           \end{itemize}
     \item Sturm-Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise{} 2.0 was used to provide more accurate values.
           \begin{itemize}

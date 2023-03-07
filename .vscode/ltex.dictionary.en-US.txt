@@ -41,3 +41,6 @@ Pyslise
 orthonormality
 Marletta
 Klotter
+subintervals
+eigenvaluesByIndex
+eigenpairsByIndex
