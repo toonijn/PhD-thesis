@@ -1293,7 +1293,7 @@ These native packages are the answer to the efficiency versus user-friendliness 
 pip install pyslise
 \end{minted}
 % \end{noindent}
-    \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+    \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. See section \ref{sec:c2_online_gui}.
 \end{itemize}
 
 \subsection{Implementation challenges}
@@ -1433,7 +1433,7 @@ Eigen::Matrix<std::complex<long double>, 10, 5>
 % \end{noindent}
 
 \begin{figure}
-% \begin{noindent}
+    % \begin{noindent}
 \begin{minted}{c++}
 #include <iostream>
 #include <boost/format.hpp>
@@ -1464,8 +1464,8 @@ int main() {
 }
 \end{minted}
 % \end{noindent}
-\vspace{8mm}
-% \begin{noindent}
+    \vspace{8mm}
+    % \begin{noindent}
 \begin{minted}{text}
 Eigenvalue 0:  -0.1102488169920951699065478  (error: 1.7e-25)
 Eigenvalue 1:   3.9170247729984711867034169  (error: 1.6e-25)
@@ -1476,8 +1476,8 @@ Eigenvalue 5:  36.0142899106282223466625724  (error: 7.7e-25)
 Eigenvalue 6:  49.0104182494238719005911294  (error: 9.8e-25)
 \end{minted}
 % \end{noindent}
-\caption{A sample program to compute the first 8 eigenvalues of the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} in $128$ bits wide floating point precision, and the output generated.}
-\label{fig:c2_mathieu_quad_code}
+    \caption{A sample program to compute the first 8 eigenvalues of the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} in $128$ bits wide floating point precision, and the output generated.}
+    \label{fig:c2_mathieu_quad_code}
 \end{figure}
 
 In our implementation we have also adopted this philosophy by using templates to allow for any scalar type. This means that \matslise{} 3.0 is not only able to solve Sturm-Liouville equations in \texttt{double}-precision (like \matslise{} 2.0) but also in the more accurate \texttt{long double}-precision. We even have enabled support for a $128$ bits floating point  numeric type by using Boost's \cite{boost_float128_} \texttt{boost::multiprecision::float128} type.
@@ -1512,72 +1512,54 @@ In hindsight, these issues and fixes may seem obvious. But, they highlight some 
 
 Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
 
-We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, implemented $40$ test scenarios with over \todo{$\numprint{2e6}$} conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration test where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
+We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration test where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
 
 \begin{itemize}
-    \item Least squares approximations with Legendre polynomials
-    \item Sturm-Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise 2.0 was used to provide more accurate values.
-    \begin{enumerate}
-        \item $p(x)=1$, $q(x)=0$ and $w(x)=(1+x)^{-2}$ with homogeneous Dirichlet boundary conditions on $[0, 1]$.
-        \item $p=(1+x)^1$, $q(x) = x^2-2$ and $w(x) = \exp(x)$ on $[0, 1]$ with homogeneous Dirichlet boundary conditions left and homogeneous Neumann conditions on the right.
-        \item $p(x) = 2+\sin(2 \pi x)$, $q(x) = -10$ and $w(x) = 1+\sqrt{x}$ on $[0, 1]$ with boundary conditions $y(0) = 0$ and $10 y(1) + p(1) y'(1) = 0$. The first three eigenfunctions are also compared to values computed with \matslise 2.0.
-    \end{enumerate}
-
-    \todo{Describe more tests}
+    \item Some simple unit-tests of some auxiliary procedures \begin{itemize}
+              \item Least squares approximations of trigonometric functions with shifted Legendre polynomials
+              \item The evaluation of the $\eta_i$-funtions in many points for all scalar types.
+              \item The domain and the Schrödinger potential after Liouville's transformation applied to $p(x) = \cos(x)$, $q(x) = 0$ and $w(x) = \tan(x) \sin(x)$.
+          \end{itemize}
+    \item Some Sturm-Liouville problems with exact known eigenvalues \begin{itemize}
+              \item The Schrödinger problem with $V(x) = 0$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenfunctions are compared in many points to the analytical solution.
+              \item The Schrödinger problem with $V(x) = x^2$ on $\left[-15, 15\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenvalues and the orthonormality of the eigenfunctions are verified, in \texttt{double}, \texttt{long double} and \texttt{float128}.
+              \item Klotter's problem with $p(x) = 1$, $q(x) = \frac{3}{4x^2}$ and $w(x) = \frac{64\pi^2}{9 x^6}$ on $\left[\frac{8}{7}, 8\right]$.
+          \end{itemize}
+    \item Some Schrödinger problems with eigenvalues found in the literature and with \matslise{} 2.0\begin{itemize}
+              \item The Mathieu problem: $V(x)= 2\cos(2x)$ on $[0, \pi]$. The first $200$ eigenvalues and the orthonormality of the eigenfunctions are checked, in \texttt{double}, \texttt{long double} and \texttt{float128}. The first and fourth eigenfunctions are compared in different values computed with \matslise{} 2.0.
+              \item Marletta's problem: $V(x) = 3\frac{x-31}{4(x+1)(x+4)^2}$ on $[0,12]$ with $y(0) = 0$ and $5 y(12) + 8 y'(12) = 0$.
+              \item The Coffey-Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types. 
+          \end{itemize}
+    \item Sturm-Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise{} 2.0 was used to provide more accurate values.
+          \begin{itemize}
+              \item $p(x)=1$, $q(x)=0$ and $w(x)=(1+x)^{-2}$ with homogeneous Dirichlet boundary conditions on $[0, 1]$.
+              \item $p=(1+x)^1$, $q(x) = x^2-2$ and $w(x) = \exp(x)$ on $[0, 1]$ with homogeneous Dirichlet boundary conditions left and homogeneous Neumann conditions on the right.
+              \item $p(x) = 2+\sin(2 \pi x)$, $q(x) = -10$ and $w(x) = 1+\sqrt{x}$ on $[0, 1]$ with boundary conditions $y(0) = 0$ and $10 y(1) + p(1) y'(1) = 0$. The first three eigenfunctions are also compared to values computed with \matslise{} 2.0.
+          \end{itemize}
 \end{itemize}
+
+All these tests can be easily run during development. They are automatically run on each code change with the help of GitHub Actions. Here the program is compiled, and the tests are executed on a clean test system on GitHub's servers for Linux, macOS and Windows. This also builds and tests the Python-package. Working with GitHub Actions for automated testing allows us to quickly detect code regressions and failing tests on other operating system.
 
 
 \subsubsection{Building of \texorpdfstring{\lpython}{Python} package}
 
-\todo{About the package}
+\todo{Maybe something about the package?}
 
 \subsubsection{The plan}
 
-\todo{Prose}
+\subsection{A graphical user interface}\label{sec:c2_online_gui}
+
+\todo{Expand this section, maybe add a screenshot}
+
+Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+
+\section{Conclusions and future work}
+
+\todo{Write a conclusion}
 
 \begin{enumerate}
-    \item Unifying different types of solvers. (Normal, HalfRange, SturmLiouville)
-    \item Memory management:
-          \begin{enumerate}
-              \item Shared pointers in \cpp{}.
-              \item Ownership of sectors.
-              \item Eigenfunctions should keep the original problem alive:
-                    % \begin{noindent}
-\begin{minted}{python}
-eigenfunctions = []
-for q in [1,10,100]:
-    mathieu = Pyslise(lambda x: q*x, 0, pi)
-    i, E, f = mathieu.eigenpairs(5,6)[0]
-    eigenfunctions.append(f)
-\end{minted}
-% \end{noindent}
-          \end{enumerate}
-    \item Building a Python-package
+    \item What have we added, what is new?
+    \item Dynamically expanding domains.
 \end{enumerate}
-
-
-\subsection{}\label{a-new-implementation}
-
-As already stated,
-
-%\subsection{Computation of eigenvalues}
-
-
-%have not chosen for a different approach: we   
-%
-%In our attempt to modernize Matslise we were hesitant to use \texttt{fortran} or \texttt{C} because these language aren't user
-%friendly at all. 
-
-
-
-
-%\section{How to get pyslise}
-
-
-\todo{This is a copy from our article: rework}
-%\subsection{Computation of eigenfunctions}
-
-%For the accurate computation and visualization of the eigenfunctions however, things are different. 
-Let us now consider the computation of eigenfunctions.
 
 \stopchapter
