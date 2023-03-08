@@ -46,6 +46,7 @@
 \usepackage{tikz}
 \usepackage{booktabs}
 \usepackage{gensymb}
+\usepackage{etoolbox}
 \usepackage[outputdir=build]{minted} % Code highlighting
 
 % format numbers
@@ -123,11 +124,11 @@
 \newcommand{\csharp}{\texttt{C\#}}
 \newcommand{\rust}{\texttt{rust}}
 \newcommand{\fortran}{\texttt{Fortran}}
-\newcommand{\matslise}{\texttt{Matslise}}
 \newcommand{\matscs}{\texttt{MatSCS}}
 \newcommand{\pyslise}{\texttt{Pyslise}}
 \newcommand{\lilix}{\texttt{LILIX}}
 \newcommand{\pybind}{\texttt{pybind}}
+\newcommand{\matslise}[1]{\texttt{Matslise\ifstrempty{#1}{}{ {#1}.0}}}
 
 \newcommand{\hamiltonian}{\mathcal{H}}
 

@@ -44,3 +44,4 @@ Klotter
 subintervals
 eigenvaluesByIndex
 eigenpairsByIndex
+pyslise
