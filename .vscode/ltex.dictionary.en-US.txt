@@ -45,3 +45,4 @@ subintervals
 eigenvaluesByIndex
 eigenpairsByIndex
 pyslise
+PyslisePeriodic

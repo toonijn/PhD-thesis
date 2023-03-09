@@ -3,6 +3,7 @@
 \startchapter{2}
 \undefinedlabel{cha:c3}{3}
 \undefinedlabel{cha:c4}{4}
+\undefinedlabel{sec:c3_calculate_vk}{3.x.x}
 
 \longchapter[The \oneD Schrödinger equation]{The one-dimensional time-independent Schrödinger equation}\label{cha:c2}
 
@@ -862,8 +863,7 @@ Although these coefficients can all be computed analytically, it was far from pr
 
 For the applications we have in mind, this approach is too time-consuming. We decided to develop a new algorithm that is able to reuse all the data that was previously calculated. Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order. The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) that was also used in Matslise and \matslise{2}. For our error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points. In section \ref{sec:c2_numerical_experiments} we will present some numerical experiments in which eigenfunctions are computed as well.
 
-\section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}
-\label{sec:1d_periodic}
+\section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:1d_periodic}
 
 \begin{theorem}
 
@@ -1002,7 +1002,7 @@ This yields a similar image to figure \ref{fig:c2_matslise_jumps_eigenfunctions}
 
 \subsection{Mathieu's equation}\label{sec:c2_numerical_experiments_mathieu}
 
-In the next examples we will compare the numerical accuracy of our new implementation \matslise{3} (with the \lpython{} package \pyslise{}) in comparison to the original well-tested \matslise{2}.
+In the next examples we will compare the numerical accuracy of our new implementation \matslise{3} (and the \lpython{} package \pyslise{}) with the original well-tested \matslise{2}.
 
 As a first direct comparison, we will take a look at Mathieu's equation \cite{pryce_sltstpak_1999} on $[0, \pi]$ with homogeneous Dirichlet boundary conditions: \begin{equation}
     \dv[2]{\psi}{x} + 2q\cos(2x)\psi(x) = \lambda\psi(x) \text{.}\label{equ:c2_mathieu_equation}
@@ -1072,12 +1072,18 @@ The results of this computation can be compared with the results from \matslise{
 
 From Table~\ref{tab:c2_tab1} there are two things to note. Firstly \pyslise{} is more than 20 times faster than \matslise{2}. This means that our efforts to improve efficiency are definitely worth it.
 
-Secondly the accuracy of \pyslise{} is a lot higher. This can be explained by the fact that \pyslise{}'s error estimates are very conservative. The error estimation is used by choosing the mesh to use. Because \pyslise{}'s errors are lower bounds, it tends to use more sectors than \matslise{2}. These extra sectors lead to more accurate results.
+Secondly the accuracy of \pyslise{} is a lot higher. This can be explained by the fact that \pyslise{}'s error estimates are very conservative. The error estimation is used to choose the mesh to use. Because \pyslise{}'s errors are less sharp, it tends to use more subintervals than \matslise{2}. These extra intervals lead to more accurate results. These more accurate results may seem like a benefit, in reality, it is not. We requested an accuracy for both programs of $10^{-8}$, and \matslise{2} respects this beautifully. In other words \matslise{2} is able to use the lowest number of subintervals possible, while staying as accurate as possible. \pyslise{} on the other hand, goes above and beyond to ensure the requested accuracy and overshoots it with quite a lot. This means that it uses more subintervals than necessary, and is therefor a little less efficient than it could be.
 
+In practice, and for our use cases in the following chapters, we have found \matslise{3} and \pyslise{} to be plenty fast. Knowing this we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
 
-%\subsubsection{Eigenfunctions}\label{eigenfunctions}
+\paragraph{Eigenfunctions} As explained in section \ref{sec:c2_cp_in_delta} one of the reasons we developed more complicated formulae and build a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
 
-As told in the introduction, one of the main motivators of reworking \matslise{2} was for better algorithms for the computation of eigenfunctions. In both programs the first $10$ eigenfunctions are calculated in $n$ equidistant points. The total computation times are reported in Table~\ref{tab:c2_tab2}.
+Assume\footnote{Or take a look at section \ref{sec:c3_calculate_vk}, where we need to do exactly this.} we want to compute an orthogonal projection of a function $f(x)$ to the truncated basis of the eigenfunctions $y_i$: $ f(x) = \sum_{i = 0} c_i y_i(x)$.
+To compute these numerically we need to approximate the following integrals for all necessary values for $i$:
+$$
+\int_a^b f(x) y_i(x)\,\dd x\text{.}
+$$
+In \matslise{2.0}, one would choose a fixed grid beforehand and evaluate all eigenfunctions in exactly these grid points. To approximate the integral, any quadrature rule can be used, as long as it only uses the values in exactly these grid points. If a large basis is used, or $f(x)$ is unpredictable with some steep regions for example, this approach will only be accurate if a prohibitively dense grid is used. Ideally some adaptive quadrature rule should be used. These numerical integration techniques evaluate the integrand in as many values as needed to ensure accuracy. When the integrand becomes `difficult', more evaluations points are dynamically chosen. In the regions where the integrand is `easy', much fewer evaluations are used. But, these methods, of course, need a way to evaluate the integrand dynamically, and do not work with a fixed grid. With this application in mind, our new implementation already has the benefit of being able to do this, with relatively little computational cost. But to see the true power of this \matslise{3}, we compare the computation time for the evaluation of eigenfunctions with \matslise{2}. These results are reported in Table~\ref{tab:c2_tab2}.
 
 \begin{table}
   \begin{center}
@@ -1092,8 +1098,6 @@ As told in the introduction, one of the main motivators of reworking \matslise{2
   \end{center}
   \caption{\label{tab:c2_tab2} Execution times needed to compute the first 10 eigenfunctions of the Mathieu problem~(\ref{equ:c2_mathieu_equation}) in $n$ equidistant points.}
 \end{table}
-
-In this scenario the difference in efficiency becomes apparent. \pyslise{} is two orders of magnitude faster than \matslise{2}. On top of that, this extreme speedup is achieved without losing accuracy. Table~\ref{tab:c2_tab3} illustrates this by showing the maximum error of the eigenfunction for each eigenvalue.
 
 \begin{table}
   \begin{center}
@@ -1114,6 +1118,10 @@ In this scenario the difference in efficiency becomes apparent. \pyslise{} is tw
   \end{center}
   \caption{\label{tab:c2_tab3} Maximum error in $n=100$ equidistant points of the eigenfunction $y_n$ for the Mathieu problem (\ref{equ:c2_mathieu_equation}) with $q=1$.}
 \end{table}
+
+In this scenario the difference in efficiency becomes apparent. \pyslise{} is two orders of magnitude faster than \matslise{2}. On top of that, this extreme speedup is achieved without dropping below the requested accuracy. In table~\ref{tab:c2_tab3} the maximum error of the eigenfunction for each eigenvalue is tabulated. One notices that \matslise{2} is more accurate, but remember that the requested accuracy in this experiment was for both programs $10^{-8}$. As long as the results are more accurate than $10^{-8}$, they are successful.
+
+It is remarkable that for the eigenvalues $\pyslise{}$ was more accurate than required. For the eigenfunctions, the situation is reversed. This reversion can be explained by the fact that \pyslise{} is able to reuse the same grid (which was accurate to the required tolerance), but \matslise{2} computes a new partition with the grid points used for the computation of the eigenvalue together with all requested evaluation points of the eigenfunction. This grid is much denser, and thus unnecessarily more accurate.
 
 \subsection{Coffey-Evans}\label{coffey-evans}
 
@@ -1356,12 +1364,82 @@ Despite these shortcomings \pyslise{} is still faster and more accurate. We do n
                                &                  &                 \\
             \bottomrule
         \end{tabular}
-        \caption{\label{tab:c2_tab7}The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}), the execution times and the errors obtained with \matslise{2} and Pyslise for a tolerance of $10^{-8}$.  }
+        \caption{The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}), the execution times and the errors obtained with \matslise{2} and \pyslise{} for a tolerance of $10^{-8}$.}\label{tab:c2_tab7}
     \end{center}
 \end{table}
 
 All eigenfunctions are computed in both algorithms with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
 
+\subsection{Periodic problem with an asymmetric potential}\label{sec:c2_experiments_andrew_periodic}
+
+As described in section \ref{sec:1d_periodic}, \matslise{3} is able to solve Schrödinger problems with periodic boundary conditions. To demonstrate this we will solve a problem also found in \cite{andrew_correction_1989}. Consider the Schrödinger equation
+$$
+    -y''(x) + x^2(\pi-x) y(x) = \lambda y(x)
+$$
+on the domain $[0, \pi]$ with periodic boundary conditions: $y(0) = y(\pi)$ and $y'(0) = y'(pi)$.
+
+To solve this with \pyslise{} we need to import a different solver, but most of the code is similar.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise import PyslisePeriodic
+from math import pi
+
+def V(x):
+    return x*x*(pi-x)
+
+problem = PyslisePeriodic(V, 0, pi, tolerance=1e-8)
+
+print(problem.eigenvaluesByIndex(0, 20))
+\end{minted}
+% \end{noindent}
+
+In this code there are two notable differences to previous examples. First, \texttt{PyslisePeriodic} is used as solver. And second, no boundary conditions are provided to the \texttt{.eigenvaluesByIndex} function. These are unnecessary because periodic boundary conditions are implied by \texttt{PyslisePeriodic}.
+
+Another difference can be found in the output:
+% \begin{noindent}
+\begin{minted}{python}
+[
+    (0, 2.0294161514952878, 1), (1, 6.500490696092834, 1),
+    ...,
+    (18, 326.5881759903209, 1), (19, 402.5834632545595, 1)
+]
+\end{minted}
+% \end{noindent}
+
+The function \texttt{.eigenvaluesByIndex} returns a list of all found eigenvalues. Now for each eigenvalue the tuple has three elements: the index, the eigenvalue and the multiplicity. From the theory we know that for periodic problems eigenvalues must no longer be unique. An eigenvalue can have a double multiplicity, if \pyslise{} detects this, a multiplicity of $2$ is returned. For example, if we request much higher eigenvalues with the line
+% \begin{noindent}
+\begin{minted}{python}
+print(problem.eigenvaluesByIndex(1000, 1005))
+\end{minted}
+% \end{noindent}
+then the following output is generated.
+% \begin{noindent}
+\begin{minted}{python}
+[
+    (999, 1000002.5873939216, 2), (1001, 1004006.5873655227, 2),
+    (1003, 1008018.5849614257, 2), (1005, 1012038.5812170412, 2)
+]
+\end{minted}
+% \end{noindent}
+These higher eigenvalues are degenerate, so \pyslise{} returns multiplicity $2$. This can also be seen in the index of the returned eigenvalues.
+
+\begin{table}
+    \begin{center}
+    \input{img/chapter2/matslise_periodic_andrew.tex}
+    \end{center}
+    \caption{The first 20 eigenvalues for the periodic problem from section \ref{sec:c2_experiments_andrew_periodic}.}\label{tab:c2_andrew_periodic}
+\end{table}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{img/chapter2/matslise_periodic_eigenfunctions.pdf}
+    \end{center}
+    \caption{A plot of the first three eigenfunctions $y_0$, $y_1$ and $y_2$ with eigenvalues $\lambda_0\approx\numprint{2.029}$, $\lambda_1\approx\numprint{6.500}$ and $\lambda_0\approx\numprint{7.015}$ of  the periodic problem from section \ref{sec:c2_experiments_andrew_periodic}.}\label{fig:c2_periodic_eigenfunctions}
+\end{figure}
+
+In \cite{andrew_correction_1989} the first twenty eigenvalues are computed to four digits behind the decimal point. In \cite{vandenberghe_modified_1995} an extra fifth digit is computed. \matslise{3} can be much more accurate. In table \ref{tab:c2_andrew_periodic} we have tabulated the results from \cite{andrew_correction_1989}, from \cite{vandenberghe_modified_1995} and the results obtained with \pyslise{} and a tolerance of $10^{-12}$. Our computed values agree with the literature up to all five digits, except for the last eigenvalue where we have found a different rounding.
+
+As an illustration we present the graph of the first three eigenfunctions in figure \ref{fig:c2_periodic_eigenfunctions}.
 
 \section{Matslise 3.0 -- A new implementation}\label{sec:c2_the_implementation}
 
