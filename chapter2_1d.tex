@@ -865,6 +865,7 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:1d_periodic}
 
+\todo{Still to write...}
 \begin{theorem}
 
 \end{theorem}
@@ -1067,7 +1068,7 @@ The results of this computation can be compared with the results from \matslise{
       \bottomrule
     \end{tabular}
   \end{center}
-  \caption{The first 10 eigenvalues for the Mathieu problem~(\ref{equ:c2_mathieu_equation}) for $q=1$ and $q=10$, the execution times and the errors obtained with \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab1}
+  \caption{The first 10 eigenvalues for the Mathieu problem~(\ref{equ:c2_mathieu_equation}) for $q=1$ and $q=10$, the execution times and the absolute errors obtained with \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab1}
 \end{table}
 
 From Table~\ref{tab:c2_tab1} there are two things to note. Firstly \pyslise{} is more than 20 times faster than \matslise{2}. This means that our efforts to improve efficiency are definitely worth it.
@@ -1116,7 +1117,7 @@ In \matslise{2.0}, one would choose a fixed grid beforehand and evaluate all eig
       \bottomrule
     \end{tabular}
   \end{center}
-  \caption{\label{tab:c2_tab3} Maximum error in $n=100$ equidistant points of the eigenfunction $y_n$ for the Mathieu problem (\ref{equ:c2_mathieu_equation}) with $q=1$.}
+  \caption{\label{tab:c2_tab3} Maximum absolute error in $n=100$ equidistant points of the eigenfunction $y_n$ for the Mathieu problem (\ref{equ:c2_mathieu_equation}) with $q=1$.}
 \end{table}
 
 In this scenario the difference in efficiency becomes apparent. \pyslise{} is two orders of magnitude faster than \matslise{2}. On top of that, this extreme speedup is achieved without dropping below the requested accuracy. In table~\ref{tab:c2_tab3} the maximum error of the eigenfunction for each eigenvalue is tabulated. One notices that \matslise{2} is more accurate, but remember that the requested accuracy in this experiment was for both programs $10^{-8}$. As long as the results are more accurate than $10^{-8}$, they are successful.
@@ -1125,19 +1126,15 @@ It is remarkable that for the eigenvalues $\pyslise{}$ was more accurate than re
 
 \subsection{Coffey-Evans}\label{coffey-evans}
 
-\todo{From here on out: rework}
-
-%The Mathieu equation is fairly easy to solve. 
-
 Another, more challenging problem is the Coffey-Evans equation \cite{pryce_error_1986}.
 \begin{equation}
   -\psi''(x) + (\beta^2\sin^2(2x)-2\beta\cos(2x))\psi(x) = E\psi(x)\text{,}\label{equ:c2_coffey_evans}
 \end{equation}
 with $x \in [-\frac{\pi}{2}, \frac{\pi}{2}]$ and homogeneous Dirichlet boundary condition.
 
-The Coffey-Evans equation has two interesting features: firstly it's a symmetric problem, secondly it has triplets of close eigenvalues and the closeness increases at least exponentially as the parameter $\beta$ increases. Accurately discriminating these close but different eigenvalues is an interesting challenge.
+The Coffey-Evans equation has two interesting features: firstly it is a symmetric problem, secondly it has triplets of close eigenvalues and the closeness increases dramatically as the parameter $\beta$ increases. Accurately discriminating these close but different eigenvalues is a challenge.
 
-To exploit this symmetry \texttt{PysliseHalf} can be used. Besides this, the few lines of Python needed to find the first eigenvalues are very similar to the ones used for the Mathieu problem.
+To exploit this symmetry \texttt{PysliseHalf} can be used. Besides this, the few lines of Python needed to find the first eigenvalues are very similar to the other examples.
 
 % \begin{noindent}
 \begin{minted}{python}
@@ -1148,121 +1145,142 @@ beta = 15
 def V(x):
     return beta**2 * sin(2*x)**2 - 2*beta * cos(2*x)
 
-ce = PysliseHalf(V, pi/2, tolerance=1e-8)
-print(ce.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
+coffey_evans = PysliseHalf(V, pi/2, tolerance=1e-8)
+print(coffey_evans.eigenvaluesByIndex(0, 10, (0,1)))
 \end{minted}
 % \end{noindent}
 
-In Table~\ref{tab:c2_tab4} we present, for $\beta=5$, $\beta=15$ and $\beta=25$ the computation times for \matslise{2} and \pyslise{} needed to compute the first 10 eigenvalues with a tolerance of $10^{-8}$.
+In the last line we notice that supplying only one boundary condition is sufficient; symmetric boundary conditions are expected when using a half-range reduction. In table \ref{tab:c2_tab4} we present, for $\beta=5$, $\beta=15$ and $\beta=25$ the results of our experiment. Here the reference values of the first nine eigenvalues are computed with \matslise{2} with a tolerance of $10^{-14}$. In the next column the errors obtained with \matslise{2} and a tolerance of $10^{-8}$ are given. And in the last column, the errors of \pyslise{} with the same tolerance of $10^{-8}$ are presented.
 
-In Table~\ref{tab:c2_tab5} the maximum errors in the eigenfunctions are shown. Again, we have used \matslise{2} with a tolerance of $10^{-14}$ to obtain accurate results to compare with. Once again we note the faster and more accurate performance of \pyslise{}.
+Besides the numerical results, also the computational running time is reported in table \ref{tab:c2_tab4}. Similarly to the results from the Mathieu problem, \pyslise{} was significantly faster and more accurate. But in contrast to the previous example, now one could argue that \matslise{2} no longer respects the requested accuracy of $10^{-8}$ for $\beta = 25$. However, the relative error is sufficiently small.
 
 \begin{table}
     \begin{center}
-        \begin{tabular}[]{rrr}
+        \begin{tabular}[]{rrrr}
             \toprule
-            $\beta=5$           & \matslise{2}     & \pyslise{}      \\
+              & $\beta=5$                      & \matslise{2}     & \pyslise{}      \\
             \midrule
-                                & $8.94\text{ms}$  & $0.33\text{ms}$ \\
-            $0.0005463030588$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
-            $17.4201300751401$  & $3.1$ ($-9$)     & $1.4$ ($-11$)   \\
-            $26.8313294875207$  & $8.2$ ($-9$)     & $5.2$ ($-12$)   \\
-            $30.6514597044625$  & $1.1$ ($-9$)     & $-3.2$ ($-12$)  \\
-            $37.9709848127178$  & $-1.6$ ($-8$)    & $9.2$ ($-12$)   \\
-            $49.4100375966783$  & $-6.0$ ($-9$)    & $-1.8$ ($-11$)  \\
-            $62.2115039443358$  & $-6.7$ ($-9$)    & $-3.7$ ($-12$)  \\
-            $76.9997687851650$  & $-3.1$ ($-8$)    & $-4.1$ ($-11$)  \\
-            $93.8923408372478$  & $-1.5$ ($-8$)    & $-4.5$ ($-11$)  \\
+              &                                & $8.94\text{ms}$  & $0.33\text{ms}$ \\
+            0 & $\numprint{0.0005463030588}$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
+            1 & $\numprint{17.4201300751401}$  & $3.1$ ($-9$)     & $1.4$ ($-11$)   \\
+            2 & $\numprint{26.8313294875207}$  & $8.2$ ($-9$)     & $5.2$ ($-12$)   \\
+            3 & $\numprint{30.6514597044625}$  & $1.1$ ($-9$)     & $-3.2$ ($-12$)  \\
+            4 & $\numprint{37.9709848127178}$  & $-1.6$ ($-8$)    & $9.2$ ($-12$)   \\
+            5 & $\numprint{49.4100375966783}$  & $-6.0$ ($-9$)    & $-1.8$ ($-11$)  \\
+            6 & $\numprint{62.2115039443358}$  & $-6.7$ ($-9$)    & $-3.7$ ($-12$)  \\
+            7 & $\numprint{76.9997687851650}$  & $-3.1$ ($-8$)    & $-4.1$ ($-11$)  \\
+            8 & $\numprint{93.8923408372478}$  & $-1.5$ ($-8$)    & $-4.5$ ($-11$)  \\
             \bottomrule
             \toprule
-            $\beta=15$          & \matslise{2}     & \pyslise{}      \\
+              & $\beta=15$                     & \matslise{2}     & \pyslise{}      \\
             \midrule
-                                & $9.71\text{ms}$  & $0.54\text{ms}$ \\
-            $0.0000000000035$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
-            $57.8833068486108$  & $3.2$ ($-7$)     & $4.8$ ($-11$)   \\
-            $111.2023333512293$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-            $111.2270694418592$ & $3.1$ ($-7$)     & $4.9$ ($-11$)   \\
-            $111.2518808183127$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-            $159.1826724323144$ & $5.3$ ($-9$)     & $1.7$ ($-10$)   \\
-            $197.3328583631476$ & $6.3$ ($-8$)     & $-7.5$ ($-11$)  \\
-            $199.8690055338356$ & $2.6$ ($-9$)     & $6.3$ ($-13$)   \\
-            $203.2295295020015$ & $2.7$ ($-8$)     & $-2.1$ ($-10$)  \\
+              &                                & $9.71\text{ms}$  & $0.54\text{ms}$ \\
+            0 & $\numprint{0.0000000000035}$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
+            1 & $\numprint{57.8833068486108}$  & $3.2$ ($-7$)     & $4.8$ ($-11$)   \\
+            2 & $\numprint{111.2023333512293}$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
+            3 & $\numprint{111.2270694418592}$ & $3.1$ ($-7$)     & $4.9$ ($-11$)   \\
+            4 & $\numprint{111.2518808183127}$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
+            5 & $\numprint{159.1826724323144}$ & $5.3$ ($-9$)     & $1.7$ ($-10$)   \\
+            6 & $\numprint{197.3328583631476}$ & $6.3$ ($-8$)     & $-7.5$ ($-11$)  \\
+            7 & $\numprint{199.8690055338356}$ & $2.6$ ($-9$)     & $6.3$ ($-13$)   \\
+            8 & $\numprint{203.2295295020015}$ & $2.7$ ($-8$)     & $-2.1$ ($-10$)  \\
             \bottomrule
             \toprule
-            $\beta=25$          & \matslise{2}     & \pyslise{}      \\
+              & $\beta=25$                     & \matslise{2}     & \pyslise{}      \\
             \midrule
-                                & $24.36\text{ms}$ & $0.61\text{ms}$ \\
-            $-0.0000000000000$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
-            $97.9345616863637$  & $7.9$ ($-7$)     & $-3.2$ ($-11$)  \\
-            $191.5876270396656$ & $8.3$ ($-7$)     & $4.8$ ($-11$)   \\
-            $191.5876332913999$ & $1.2$ ($-6$)     & $-1.3$ ($-11$)  \\
-            $191.5876395431371$ & $7.2$ ($-7$)     & $4.6$ ($-11$)   \\
-            $280.6142452706786$ & $1.7$ ($-7$)     & $1.7$ ($-10$)   \\
-            $364.5514239171786$ & $6.2$ ($-8$)     & $-4.4$ ($-12$)  \\
-            $364.5556442011433$ & $-8.5$ ($-8$)    & $2.2$ ($-10$)   \\
-            $364.5598657470625$ & $6.1$ ($-8$)     & $2.4$ ($-10$)   \\
+              &                                & $24.36\text{ms}$ & $0.61\text{ms}$ \\
+            0 & $\numprint{-0.0000000000000}$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
+            1 & $\numprint{97.9345616863637}$  & $7.9$ ($-7$)     & $-3.2$ ($-11$)  \\
+            2 & $\numprint{191.5876270396656}$ & $8.3$ ($-7$)     & $4.8$ ($-11$)   \\
+            3 & $\numprint{191.5876332913999}$ & $1.2$ ($-6$)     & $-1.3$ ($-11$)  \\
+            4 & $\numprint{191.5876395431371}$ & $7.2$ ($-7$)     & $4.6$ ($-11$)   \\
+            5 & $\numprint{280.6142452706786}$ & $1.7$ ($-7$)     & $1.7$ ($-10$)   \\
+            6 & $\numprint{364.5514239171786}$ & $6.2$ ($-8$)     & $-4.4$ ($-12$)  \\
+            7 & $\numprint{364.5556442011433}$ & $-8.5$ ($-8$)    & $2.2$ ($-10$)   \\
+            8 & $\numprint{364.5598657470625}$ & $6.1$ ($-8$)     & $2.4$ ($-10$)   \\
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_tab4}The first 9 eigenvalues for the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}), with the errors obtained by \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}
+    \caption{Eigenvalues for the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}), with absolute errors obtained by \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab4}
 \end{table}
 
 \begin{table}
-
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=5$    & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$       & $E_{4}$       \\
+            $\beta=5$    & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$       & $\lambda_{4}$       \\
             \midrule
             \matslise{2} & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
             \pyslise{}   & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
             \midrule
             \midrule
-            $\beta=5$    & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$       & $E_{9}$       \\
+            $\beta=5$    & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$       & $\lambda_{9}$       \\
             \midrule
             \matslise{2} & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
             \pyslise{}   & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
             \bottomrule
         \end{tabular}
     \end{center}
-
+    \vspace{8mm}
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=15$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$      \\
+            $\beta=15$   & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$      & $\lambda_{4}$      \\
             \midrule
             \matslise{2} & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
             \pyslise{}   & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
             \midrule
             \midrule
-            $\beta=15$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$      \\
+            $\beta=15$   & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$      & $\lambda_{9}$      \\
             \midrule
             \matslise{2} & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
             \pyslise{}   & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
             \bottomrule
         \end{tabular}
     \end{center}
-
+    \vspace{8mm}
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=25$   & $E_{0}$       & $E_{1}$       & $E_{2}$      & $E_{3}$      & $E_{4}$       \\
+            $\beta=25$   & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$      & $\lambda_{4}$       \\
             \midrule
             \matslise{2} & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
             \pyslise{}   & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
             \midrule
             \midrule
-            $\beta=25$   & $E_{5}$       & $E_{6}$       & $E_{7}$      & $E_{8}$      & $E_{9}$       \\
+            $\beta=25$   & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$      & $\lambda_{9}$       \\
             \midrule
             \matslise{2} & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
             \pyslise{}   & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_tab5} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
+    \caption{\label{tab:c2_ce_eigenfunctions} Maximum error in $100$ equidistant points of the eigenfunction corresponding to each of the ten first eigenvalues for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
 \end{table}
 
-From the theory we expect that the time it takes to calculate the eigenfunctions in a certain number of points doesn't depend on the difficulties to find eigenvalues of the particular problem. Once eigenvalues are calculated, eigenfunctions should be calculated in constant-time. This is seen when we compare Table~\ref{tab:c2_tab6} to Table~\ref{tab:c2_tab3} for the Mathieu problem (\ref{equ:c2_mathieu_equation}).
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{img/chapter2/pyslise_test/coffey_evans_eigenfunctions.pdf}
+    \end{center}
+    \caption{A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}) with $\beta=25$.}\label{fig:coffey_evans_eigenfunctions}
+\end{figure}
+
+As seen previously, eigenfunctions can be visualized. If we want to recreate graphs similar to figure \ref{fig:coffey_evans_eigenfunctions}, the following code can be used.
+% \begin{noindent}
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(-pi/2, pi/2, 200)
+
+for i, E, f in coffey_evans.eigenpairsByIndex(2, 5, (0, 1)):
+    plt.plot(x, f(x)[0,:])
+    plt.show()
+\end{minted}
+% \end{noindent}
+Notice here, that by providing the arguments \texttt{2} and \texttt{5} to \texttt{.eigenpairsByIndex}, we only request the eigenvalues and eigenfunctions with index $2$, $3$ and $4$. Visually these graphs look convincing. But, as a more rigorous verification we have provided table \ref{tab:c2_ce_eigenfunctions}. Here the maximum absolute errors in the eigenfunctions are tabulated. Again, we have used \matslise{2} with a tolerance of $10^{-14}$ to obtain accurate results to compare with.
+
+From the theory we expect that the time needed to evaluate the eigenfunction does not depend on the difficulties to find eigenvalues for that particular problem. Once an eigenvalue is found, the corresponding eigenfunction should be easily calculated. The computation time to evaluate an eigenfunction for an equidistant grid of $n$ points is reported in table \ref{tab:c2_tab6}. The remarkable speed-up we were able to achieve with our new implementation can be observed.
 
 \begin{table}
     \begin{center}
@@ -1278,71 +1296,29 @@ From the theory we expect that the time it takes to calculate the eigenfunctions
     \caption{\label{tab:c2_tab6} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=15$.}
 \end{table}
 
-\paragraph{A small note about the computation of eigenfunctions}
-
-In \matslise{3}, there are two algorithms provided to calculate the eigenfunctions. A bulk algorithm for a list of sorted points and an algorithm to calculate single points. These two algorithms share some computation. To get the eigenfunction corresponding to a given eigenvalue $E$, first, a solution is propagated from left to right and another is propagated from right to left. These two solutions are compared in the matching point and a scaling for both halves is determined. While propagating, the intermediate values were stored and are now scaled by the determined factor.
-
-For the sorted points in the bulk algorithm, all points are iterated, together with the corresponding sector. Now it is simply a case of calling the formulae in function of $\delta$ to get the value of the eigenfunction in the points in question.
-
-To calculate individual points, the same intermediate values are calculated. To locate the sector in which the queried point is situated a binary search is executed. And again the formulae from before can be used. When evaluating another point (of the same eigenfunction) the intermediate values don't have to be recomputed.
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=1\textwidth]{img/chapter2/pyslise_test/coffey_evans_eigenfunctions.pdf}
-    \end{center}
-    \caption{\label{ce_fig}A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}) with $\beta=25$.}
-\end{figure}
-
-The second version of this algorithm is useful in combination with other libraries that expect a function as input (in contrast to a list of function evaluations). For example the \texttt{plot}-function available in Sage:
-% \begin{noindent}
-\begin{minted}{python}
-from pyslise import PysliseHalf
-
-# defining the problem, with half range reduction
-beta = 25
-problem = PysliseHalf(
-    lambda x: -2*beta*cos(2*x) + (beta*sin(2*x))^2,
-    pi/2, tolerance=1e-8)
-
-# calculating eigenvalues with index 2, 3 and 4
-# with boundary conditions (y, y') = (0, 1)
-for i, E in problem.eigenvaluesByIndex(2, 5, (0,1)):
-    # calculating the corresponding eigenfunction
-    f = problem.eigenfunctionCalculator(E, (0, 1))
-
-    # plotting f
-    plot(lambda x: f(x)[0], (-pi/2, pi/2)).show()
-\end{minted}
-% \end{noindent}
-
-The result of this code is given in Figure~\ref{ce_fig}.
-
-
 \subsection{Truncated hydrogen potential}
 
-Lastly we will take a look at the truncated hydrogen potential \cite{pryce_sltstpak_1999}:
-
+As a next example we will take a look at the truncated hydrogen potential \cite{pryce_sltstpak_1999}:
 \begin{equation}
-    V(x) = -\frac{1}{x} + \frac{2}{x^2}  \qquad y(0)=y(1000)=0 \,. \label{thp}
+    V(x) = -\frac{1}{x} + \frac{2}{x^2}\text{,} \label{equ:c2_truncated_hydrogen}
 \end{equation}
-The lower eigenvalues are a good approximation for the eigenvalues of the non truncated problem ($x \in \left[0, \infty\right[$). For completeness, we also provide a code example to find the first eigenvalues. This is very similar to the previous examples.
+on the domain $[0, 1000]$ with homogeneous Dirichlet boundary conditions. The lower eigenvalues are a good approximation for the eigenvalues of the non-truncated problem (on the domain $x \in \left[0, \infty\right[$). By now, the code to solve this problem may seem very familiar.
 
 % \begin{noindent}
 \begin{minted}{python}
 from pyslise import Pyslise
 
 def V(x):
-return -1/x + 2/x**2
+    return -1/x + 2/x**2
 
 hydrogen = Pyslise(V, 0, 1000, tolerance=1e-8)
-print(hydrogen.eigenvaluesByIndex(
-                    0, 10, (0, 1), (0, 1)))
+print(hydrogen.eigenvaluesByIndex(0, 10, (0, 1), (0, 1)))
 \end{minted}
 % \end{noindent}
 
-The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. \matslise{2} is well-suited for singular problems. It contains a lot of routines and checks to identify and work around singularities of the problem. For efficiency reasons \pyslise{} is not.
+The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. \matslise{2} is well-suited for singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
 
-Despite these shortcomings \pyslise{} is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In Table~\ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
+Despite these shortcomings, \pyslise{} is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
 \begin{table}
     \begin{center}
@@ -1364,11 +1340,11 @@ Despite these shortcomings \pyslise{} is still faster and more accurate. We do n
                                &                  &                 \\
             \bottomrule
         \end{tabular}
-        \caption{The first 10 eigenvalues for the truncated hydrogen problem~(\ref{thp}), the execution times and the errors obtained with \matslise{2} and \pyslise{} for a tolerance of $10^{-8}$.}\label{tab:c2_tab7}
+        \caption{The first 10 eigenvalues for the truncated hydrogen problem~(\ref{equ:c2_truncated_hydrogen}), the execution times and the errors obtained with \matslise{2} and \pyslise{} for a tolerance of $10^{-8}$.}\label{tab:c2_tab7}
     \end{center}
 \end{table}
 
-All eigenfunctions are computed in both algorithms with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
+For the evaluation of the eigenfunctions, this singularity does not matter. The eigenfunctions are evaluated with a maximal error of less than $10^{-9}$, with timings similar to the previous test problems.
 
 \subsection{Periodic problem with an asymmetric potential}\label{sec:c2_experiments_andrew_periodic}
 
@@ -1425,7 +1401,7 @@ These higher eigenvalues are degenerate, so \pyslise{} returns multiplicity $2$.
 
 \begin{table}
     \begin{center}
-    \input{img/chapter2/matslise_periodic_andrew.tex}
+        \input{img/chapter2/matslise_periodic_andrew.tex}
     \end{center}
     \caption{The first 20 eigenvalues for the periodic problem from section \ref{sec:c2_experiments_andrew_periodic}.}\label{tab:c2_andrew_periodic}
 \end{table}
@@ -1708,16 +1684,14 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, i
               \item $p=(1+x)^1$, $q(x) = x^2-2$ and $w(x) = \exp(x)$ on $[0, 1]$ with homogeneous Dirichlet boundary conditions left and homogeneous Neumann conditions on the right.
               \item $p(x) = 2+\sin(2 \pi x)$, $q(x) = -10$ and $w(x) = 1+\sqrt{x}$ on $[0, 1]$ with boundary conditions $y(0) = 0$ and $10 y(1) + p(1) y'(1) = 0$. The first three eigenfunctions are also compared to values computed with \matslise{2}.
           \end{itemize}
+    \item The following Schrödinger problems with periodic boundary conditions from \cite{andrew_correction_1989}.
+          \begin{itemize}
+              \item The first $20$ eigenvalues of the periodic problem with potential $V(x) = x^2(\pi - x)$.
+              \item For $V(x) = x^2(\pi - x)$ a selection of eigenvalues with index up to $40$.
+          \end{itemize}
 \end{itemize}
 
 All these tests can be easily run during development. They are automatically run on each code change with the help of GitHub Actions. Here the program is compiled, and the tests are executed on a clean test system on GitHub's servers for Linux, macOS and Windows. This also builds and tests the Python-package. Working with GitHub Actions for automated testing allows us to quickly detect code regressions and failing tests on other operating system.
-
-
-\subsubsection{Building of \texorpdfstring{\lpython}{Python} package}
-
-\todo{Maybe something about the package?}
-
-\subsubsection{The plan}
 
 \subsection{A graphical user interface}\label{sec:c2_online_gui}
 
