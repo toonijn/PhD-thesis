@@ -100,7 +100,7 @@ Throughout this thesis, and the research preceding it, we have not and will not 
 
 \todo{Give some real-world examples of this equation.\cite[Chapter~8]{guenther_sturmliouville_2018}}
 
-\subsection{Liouville's transformation}
+\subsection{Liouville's transformation}\label{sec:c2_liouville_transformation}
 \todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
 
 Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
@@ -1208,16 +1208,16 @@ Besides the numerical results, also the computational running time is reported i
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=5$    & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$       & $\lambda_{4}$       \\
+            $\beta=5$    & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
             \midrule
-            \matslise{2} & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$) & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
-            \pyslise{}   & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$) & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
+            \matslise{2} & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$)  & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
+            \pyslise{}   & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$)  & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
             \midrule
             \midrule
-            $\beta=5$    & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$       & $\lambda_{9}$       \\
+            $\beta=5$    & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
             \midrule
-            \matslise{2} & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$) & $9.3$ ($-10$) & $6.7$ ($-10$) \\
-            \pyslise{}   & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$) & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
+            \matslise{2} & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$)  & $9.3$ ($-10$) & $6.7$ ($-10$) \\
+            \pyslise{}   & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$)  & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1225,16 +1225,16 @@ Besides the numerical results, also the computational running time is reported i
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=15$   & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$      & $\lambda_{4}$      \\
+            $\beta=15$   & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
             \midrule
-            \matslise{2} & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$) & $1.7$ ($-5$) & $4.0$ ($-6$) \\
-            \pyslise{}   & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$) & $5.7$ ($-9$) & $3.5$ ($-9$) \\
+            \matslise{2} & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$)  & $1.7$ ($-5$)  & $4.0$ ($-6$)  \\
+            \pyslise{}   & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$)  & $5.7$ ($-9$)  & $3.5$ ($-9$)  \\
             \midrule
             \midrule
-            $\beta=15$   & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$      & $\lambda_{9}$      \\
+            $\beta=15$   & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
             \midrule
-            \matslise{2} & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$) & $3.3$ ($-9$) & $1.8$ ($-9$) \\
-            \pyslise{}   & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$) & $2.4$ ($-9$) & $1.1$ ($-9$) \\
+            \matslise{2} & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$)  & $3.3$ ($-9$)  & $1.8$ ($-9$)  \\
+            \pyslise{}   & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$)  & $2.4$ ($-9$)  & $1.1$ ($-9$)  \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1242,16 +1242,16 @@ Besides the numerical results, also the computational running time is reported i
     \begin{center}
         \begin{tabular}{rrrrrr}
             \toprule
-            $\beta=25$   & $\lambda_{0}$       & $\lambda_{1}$       & $\lambda_{2}$      & $\lambda_{3}$      & $\lambda_{4}$       \\
+            $\beta=25$   & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
             \midrule
-            \matslise{2} & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$) & $3.1$ ($-1$) & $6.5$ ($-2$)  \\
-            \pyslise{}   & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$) & $6.5$ ($-6$) & $7.0$ ($-6$)  \\
+            \matslise{2} & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$)  & $3.1$ ($-1$)  & $6.5$ ($-2$)  \\
+            \pyslise{}   & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$)  & $6.5$ ($-6$)  & $7.0$ ($-6$)  \\
             \midrule
             \midrule
-            $\beta=25$   & $\lambda_{5}$       & $\lambda_{6}$       & $\lambda_{7}$      & $\lambda_{8}$      & $\lambda_{9}$       \\
+            $\beta=25$   & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
             \midrule
-            \matslise{2} & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$) & $7.7$ ($-6$) & $1.2$ ($-8$)  \\
-            \pyslise{}   & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$) & $2.0$ ($-9$) & $9.9$ ($-10$) \\
+            \matslise{2} & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$)  & $7.7$ ($-6$)  & $1.2$ ($-8$)  \\
+            \pyslise{}   & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$)  & $2.0$ ($-9$)  & $9.9$ ($-10$) \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1417,9 +1417,63 @@ In \cite{andrew_correction_1989} the first twenty eigenvalues are computed to fo
 
 As an illustration we present the graph of the first three eigenfunctions in figure \ref{fig:c2_periodic_eigenfunctions}.
 
+
+\subsection{Sturm-Liouville problems}\label{sec:c2_experiment_sturm_liouville}
+
+As a last example we present the following Sturm-Liouville problem from \cite{siedlecki_sturmliouville_2016}:
+$$
+    -\left((1+x)^2 y'(x)\right)' + \left(x^2 - 2\right) y(x) = \lambda e^x y(x)
+$$
+on the domain $[0, 1]$ with a homogeneous Dirichlet boundary condition on the left and a homogeneous Neumann boundary condition on the right: $y(0) = 0$ and $y'(1) = 0$.
+
+Solving this in \pyslise{} can be achieved with the following program.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise import SturmLiouville
+from math import exp
+
+def p(x):
+    return (1 + x)**2
+
+def q(x):
+    return x * x - 2
+
+def w(x):
+    return exp(x)
+    
+sturm_liouville = SturmLiouville(p, q, w, 0, 1, tolerance=1e-8)
+print(sturm_liouville.eigenvaluesByIndex(0, 10, (0, 1), (1, 0)))
+\end{minted}
+% \end{noindent}
+
+Here we are using the \texttt{SturmLiouville} solver. And, we have to specify the three defining functions $p(x)$, $q(y)$ and $w(x)$. Notice that the in the last line we have specified $y(0) = 0$ and $y'(0) = 1$ to mark the left boundary condition, and $y(1) = 1$ and $y'(1) = 0$ to mark the right boundary conditions. Remember that solutions will only satisfy these boundary conditions after some scaling factor.
+
+Under the hood, the \texttt{SturmLiouville} solver will compute Liouville's transformation as in section \ref{sec:c2_liouville_transformation}. This yields a Schrödinger problem for which \matslise{3} will use the constant perturbation method, just as for the \texttt{Pyslise} solver.
+
+\begin{table}
+    \begin{center}
+        \begin{tabular}{rrr}
+            Siedlecki \cite{siedlecki_sturmliouville_2016} & \matslise{2}                  & \pyslise{} error \\
+            \midrule
+            $\numprint{1.17049262}$                        & $\numprint{1.170492759902}$   & $2.2$ $(-12)$    \\
+            $\numprint{26.8633617}$                        & $\numprint{26.863367646410}$  & $8.3$ $(-12)$    \\
+            $\numprint{78.5490026}$                        & $\numprint{78.549045264140}$  & $2.4$ $(-12)$    \\
+            $\numprint{156.079996}$                        & $\numprint{156.080156224823}$ & $7.2$ $(-12)$    \\
+            $\numprint{259.455041}$                        & $\numprint{259.455476210930}$ & $4.7$ $(-12)$    \\
+            $\numprint{388.673823}$                        & $\numprint{388.674790600773}$ & $5.7$ $(-12)$    \\
+            $\numprint{543.736155}$                        & $\numprint{543.738037129327}$ & $5.2$ $(-12)$    \\
+            $\numprint{724.641861}$                        & $\numprint{724.645192282213}$ & $4.5$ $(-13)$
+        \end{tabular}
+    \end{center}
+    \caption{Comparing numerical results for the problem from section \ref{sec:c2_experiment_sturm_liouville}. In the right most column the absolute error of our implementation with a specified tolerance of $10^{-8}$ are reported.}\label{tab:c2_pyslise_sturm_liouville_errors}
+\end{table}
+
+In table \ref{tab:c2_pyslise_sturm_liouville_errors} we have compared the accurate values from \matslise{2} to the reported values in \cite{siedlecki_sturmliouville_2016} and our new implementation. Note that for our implementation the absolute errors are reported, which means that the relative error is close to machine precision.
+
+
 \section{Matslise 3.0 -- A new implementation}\label{sec:c2_the_implementation}
 
-Later on in chapters \ref{cha:c3} and chapter \ref{cha:c3} we develop methods to solve time-independent two-dimensional Schrödinger problems. These methods will depend upon our ability to solve the one-dimensional problem accurately and efficiently. Not only eigenvalues will be required, but evaluating eigenfunctions will be essential.
+Later on in chapters \ref{cha:c3} and \ref{cha:c4} we develop methods to solve time-independent two-dimensional Schrödinger problems. These methods will depend upon our ability to solve the one-dimensional problem accurately and efficiently. Not only eigenvalues will be required, but evaluating eigenfunctions will be essential.
 
 This need for speed drove us away from \matslise{} or \matslise{2}. These are efficient and accurate packages which mainly focus on the computation of the eigenvalues with automatic regularity detection. In our case, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular one-dimensional Schrödinger-problems. We investigate possible bottlenecks of performance of the \matslise{2} package and its routines.
 

@@ -47,3 +47,5 @@ eigenpairsByIndex
 pyslise
 PyslisePeriodic
 PysliseHalf
+SturmLiouville
+Siedlecki
