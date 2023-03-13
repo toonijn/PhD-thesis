@@ -49,3 +49,6 @@ PyslisePeriodic
 PysliseHalf
 SturmLiouville
 Siedlecki
+remodernize
+implemention
+implemention
