@@ -239,9 +239,9 @@ The next step is to fix the value for $\lambda$ for now. Then, for each subinter
 $$
     y'' = (V_i - \lambda) y\text{.}
 $$
-These analytical solutions $\psi_i(x)$ have the following structure.
+These analytical solutions $y_i(x)$ have the following structure.
 $$
-    \psi_i(x) = \begin{cases}
+    y_i(x) = \begin{cases}
         A_i + B_i x                                                         & \text{ if $V_i = \lambda$} \\
         A_i \cos(x\sqrt{\lambda - V_i}) + B_i \sin(x\sqrt{\lambda - V_i})   & \text{ if $V_i < \lambda$} \\
         A_i \cosh(x\sqrt{V_i - \lambda}) + B_i \sinh(x\sqrt{V_i - \lambda}) & \text{ if $V_i > \lambda$}
@@ -250,13 +250,13 @@ $$
 
 To determine the appropriate values for $A_i$ and $B_i$ continuity conditions at the grid points are applied:
 $$
-    \psi_{i-1}(x_i) = \psi_{i}(x_i) \text{ and } \psi_{i-1}'(x_i) = \psi_{i}'(x_i) \text{.}
+    y_{i-1}(x_i) = y_{i}(x_i) \text{ and } y_{i-1}'(x_i) = y_{i}'(x_i) \text{.}
 $$
 If $n$ subintervals are used, this system of equations has $2n$ variables and $2(n-1)$ equations. Together with the two equations from the boundary conditions, this yields a fully determined linear system. Now, we have translated the problem of finding eigenvalues of the Schrödinger equation \eqref{equ:c2_cpm_schrodinger} to finding values for $\lambda$ such that this system of equations has non-zero solutions. Only these solutions correspond to a non-zero eigenfunction.
 
 Finding values for $\lambda$ for which the constructed system becomes singular is not as trivial as one may assume. In \cite{canosa_new_1970}, the authors have provided their own root finding algorithm based upon finding changes in the sign of the determinant. But this algorithm is not without issue. Eigenvalues may be arbitrarily close together, which makes it hard to ensure you have found all requested values. Choosing the appropriate step sizes when eigenvalues become increasingly sparse is a balance between efficiency and not missing any. Later on we will describe a way to reliably and efficiently determine all required eigenvalues.
 
-One of the main benefits of this ``new method for the solution of the Schrödinger equation'' \cite{canosa_new_1970} is that its accuracy does not depend on the size of the requested eigenvalue. Because only analytical solutions of the piecewise approximated problem are considered, oscillations can be represented exactly. Even the most extreme oscillations are cleanly captured inside the $\sin$ en $\cos$ of $\psi_i$. The idea of using analytical solutions allowed the development of the CP-methods.
+One of the main benefits of this ``new method for the solution of the Schrödinger equation'' \cite{canosa_new_1970} is that its accuracy does not depend on the size of the requested eigenvalue. Because only analytical solutions of the piecewise approximated problem are considered, oscillations can be represented exactly. Even the most extreme oscillations are cleanly captured inside the $\sin$ en $\cos$ of $y_i$. The idea of using analytical solutions allowed the development of the CP-methods.
 
 When studying this method one can make the observation when looking at figure \ref{fig:c2_cpm_constant_approx} that $\bar{V}(x)$ is a crude approximation of the function $V(x)$. The importance of this remark becomes even more apparent when one realizes that the accuracy of the method solely depends upon the accuracy of this approximation.
 
@@ -720,11 +720,11 @@ The functions $\bar{C}^{(q)}_i$ satisfy the following recursive relation:
 \end{align}
 
 
-Denoting $\bar{\psi}(\theta) =\psi(X+\theta\,h)$, the propagation relation (\ref{equ:c2_cpm_propmatrix}) can be rewritten
+Denoting $\bar{y}(\theta) = y(X+\theta\,h)$, the propagation relation (\ref{equ:c2_cpm_propmatrix}) can be rewritten
 
 \begin{equation}
-    \begin{pmatrix}\bar{\psi}(\theta)\\ \bar{\psi}'(\theta)\end{pmatrix}
-    = \begin{pmatrix} \bar{u}(\theta) & \bar{v}(\theta)/h \\ \bar{u}'(\theta) & \bar{v}'(\theta)/h \end{pmatrix} \begin{pmatrix} \bar{\psi}(0) \\ \bar{\psi}'(0) \end{pmatrix} \,, \qquad %\text{ with } 
+    \begin{pmatrix}\bar{y}(\theta)\\ \bar{y}'(\theta)\end{pmatrix}
+    = \begin{pmatrix} \bar{u}(\theta) & \bar{v}(\theta)/h \\ \bar{u}'(\theta) & \bar{v}'(\theta)/h \end{pmatrix} \begin{pmatrix} \bar{y}(0) \\ \bar{y}'(0) \end{pmatrix} \,, \qquad %\text{ with } 
     0 \leq \theta \leq 1 \,. \label{equ:c2_cpm_propmatrix2}
 \end{equation}
 
@@ -910,7 +910,7 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 As a first numerical experiment, let us verify the order in $h$ and make an estimate for the order in $k$. For this, we use the same problem as in figures \ref{fig:c2_pruess_h_error} and \ref{fig:c2_pruess_k_error}.
 
-\subsection{Order estimation}
+\subsection{A first example}
 
 Consider the Schrödinger problem with equation
 \begin{equation}\label{equ:c2_matslise_order_test_problem}
@@ -936,11 +936,11 @@ Before jumping into the graphs, we have to note that \matslise{3} has automatic 
     \label{fig:c2_matslise_k_error}
 \end{figure}
 
-To generate figures \ref{fig:c2_matslise_h_error} and \ref{fig:c2_matslise_k_error} we have solved $100$ times the test problem with different tolerances between $2^{-10} \approx 10^{-3}$ and $2^{-30} \approx 10^{-9}$, we have grouped the errors of each of these solves by the number of subintervals \matslise{} used, and averaged them for each eigenvalue.
+To generate figures \ref{fig:c2_matslise_h_error} and \ref{fig:c2_matslise_k_error} we have solved $100$ times the test problem with different tolerances between $2^{-10} \approx 10^{-3}$ and $2^{-30} \approx 10^{-9}$, we have grouped the errors of each of these solves by the number of subintervals \matslise{3} used, and averaged them for each eigenvalue.
 
 In figure \ref{fig:c2_matslise_h_error} we see that the number of subintervals varied between $4$ and $10$. Unsurprisingly, if \matslise{} used more subintervals, the results were more accurate. From the theory, we know that the propagation error from the constant perturbation method $\text{CPM}\{18\}$ is of the order $\OO(h^{18})$. We notice this same order in the error on the eigenvalue.
 
-From the theory we know little about the error estimate with respect to $k$. In theorem \ref{the:c2_pruess_1973_2} we learned that for the Pruess method this order was $\OO(k^{-4})$. With \matslise{} we observe a much more dramatic value, visually we suspect this to be $\OO(k^{-9})$ or $\OO(k^{-10})$.
+From the theory we know little about the error estimate with respect to $k$. In theorem \ref{the:c2_pruess_1973_2} we learned that for the Pruess method this order was $\OO(k^{-4})$. With \matslise{} we observe a much more considerable value, visually we suspect this to be $\OO(k^{-9})$ or $\OO(k^{-10})$.
 
 These numerical experiments may serve as a kind of tutorial to get to know \pyslise{}. So we will provide the code each time to solve the problem at hand. Here, to generate the first fifty eigenvalues the following code can be used.
 % \begin{noindent}
@@ -969,7 +969,7 @@ Our program expects a vector $\vb{y_a} = \begin{pmatrix}\beta_a & - \alpha_a\end
 
 \subsection{A potential with jumps}
 
-In the next numerical experiment we demonstrate another feature of constant perturbation methods. Because the potential function is piecewise approximated, the potential may be discontinuous as long as the jumps are situated on the boundary between two consecutive subintervals.
+In the next numerical experiment we demonstrate another feature of constant perturbation methods. Since the potential function is piecewisely approximated, the potential may be discontinuous as long as the jumps are situated on the boundary between two consecutive subintervals.
 
 Consider the Schrödinger problem with homogeneous Dirichlet boundary conditions on the interval $[-2, 2]$ with potential function
 \begin{equation}\label{equ:c2_matslise_jumps_well}
@@ -1037,10 +1037,10 @@ This yields a similar image to figure \ref{fig:c2_matslise_jumps_eigenfunctions}
 
 \subsection{Mathieu's equation}\label{sec:c2_numerical_experiments_mathieu}
 
-In the next examples we will compare the numerical accuracy of our new implementation \matslise{3} (and the \lpython{} package \pyslise{}) with the original well-tested \matslise{2}.
+In the next examples we will compare the numerical accuracy of our new implementation \matslise{3} (and the \lpython{} package \pyslise{}) with the original well-established \matslise{2}.
 
 As a first direct comparison, we will take a look at Mathieu's equation \cite{pryce_sltstpak_1999} on $[0, \pi]$ with homogeneous Dirichlet boundary conditions: \begin{equation}
-    \dv[2]{\psi}{x} + 2q\cos(2x)\psi(x) = \lambda\psi(x) \text{.}\label{equ:c2_mathieu_equation}
+    \dv[2]{y}{x} + 2q\cos(2x)y(x) = \lambda y(x) \text{.}\label{equ:c2_mathieu_equation}
 \end{equation}
 In this expression $q$ is a parameter, in these experiments we will consider $q=1$ and $q=10$.
 
@@ -1063,53 +1063,53 @@ print(mathieu.eigenvaluesByIndex(0, 10, (0,1), (0,1)))
 The results of this computation can be compared with the results from \matslise{2}. For different values of the parameter $q$ ($q = 1$ and $q = 10$), the true eigenvalues (calculated with \matslise{2} and a tolerance of $10^{-14}$) are used to calculate the error of the eigenvalues obtained from \matslise{2} and \pyslise{}, both with a tolerance of $10^{-8}$. The execution times are reported as well. These were calculated using \matlab{}'s \texttt{timeit} function or Python's \texttt{timeit} function. Both execute the code multiple times to account for fluctuations caused by other system load. These comparisons where run on an Intel i7-8700K.
 
 \begin{table}
-  \begin{center}
-    \begin{tabular}[]{rrr}
-      \toprule
-      $q=1$               & \matslise{2}    & \pyslise{}         \\
-      \midrule
-                          & $5.33\text{ms}$ & $0.21\text{ms}$ \\
-      $-0.1102488169921$  & $6.3$ ($-10$)   & $-2.6$ ($-12$)  \\
-      $3.9170247729985$   & $-8.5$ ($-10$)  & $4.2$ ($-12$)   \\
-      $9.0477392598094$   & $-1.1$ ($-9$)   & $-4.1$ ($-12$)  \\
-      $16.0329700814058$  & $-6.1$ ($-10$)  & $-1.6$ ($-11$)  \\
-      $25.0208408232898$  & $3.9$ ($-10$)   & $-2.6$ ($-12$)  \\
-      $36.0142899106282$  & $5.3$ ($-10$)   & $-4.0$ ($-12$)  \\
-      $49.0104182494239$  & $1.1$ ($-9$)    & $1.8$ ($-11$)   \\
-      $64.0079371892498$  & $1.4$ ($-9$)    & $1.6$ ($-11$)   \\
-      $81.0062503266325$  & $-4.8$ ($-10$)  & $4.5$ ($-12$)   \\
-      $100.0050506751594$ & $-8.7$ ($-10$)  & $-9.3$ ($-13$)  \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-\vspace{5mm}
-  \begin{center}
-    \begin{tabular}[]{rrr}
-      \toprule
-      $q=10$              & \matslise{2}    & \pyslise{}         \\
-      \midrule
-                          & $6.74\text{ms}$ & $0.30\text{ms}$ \\
-      $-13.9365524792501$ & $5.8$ ($-9$)    & $-5.4$ ($-12$)  \\
-      $-2.3821582359569$  & $2.2$ ($-8$)    & $2.9$ ($-12$)   \\
-      $7.9860691446817$   & $4.7$ ($-10$)   & $1.4$ ($-11$)   \\
-      $17.3813806786230$  & $-3.4$ ($-8$)   & $6.4$ ($-12$)   \\
-      $26.7664263604801$  & $-3.1$ ($-8$)   & $-8.2$ ($-12$)  \\
-      $37.4198587767242$  & $-4.7$ ($-8$)   & $-5.1$ ($-12$)  \\
-      $50.0541572135572$  & $-2.9$ ($-8$)   & $1.1$ ($-12$)   \\
-      $64.8004402930215$  & $2.7$ ($-8$)    & $4.1$ ($-12$)   \\
-      $81.6283131843831$  & $2.7$ ($-8$)    & $-3.1$ ($-11$)  \\
-      $100.5067694628784$ & $4.0$ ($-8$)    & $-7.1$ ($-12$)  \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
+    \begin{center}
+        \begin{tabular}[]{n{3}{13}n{2}{1}n{2}{1}}
+          \toprule
+          $q=1$               & {\matslise{2}}    & {\pyslise{}}         \\
+          \midrule
+                              & \multicolumn{1}{c}{$5.33\text{ms}$} & \multicolumn{1}{c}{$0.21\text{ms}$} \\
+          -0.1102488169921  & 6.3e-10   & -2.6e-12  \\
+          3.9170247729985   & -8.5e-10  & 4.2e-12   \\
+          9.0477392598094   & -1.1e-9   & -4.1e-12  \\
+          16.0329700814058  & -6.1e-10  & -1.6e-11  \\
+          25.0208408232898  & 3.9e-10   & -2.6e-12  \\
+          36.0142899106282  & 5.3e-10   & -4.0e-12  \\
+          49.0104182494239  & 1.1e-9    & 1.8e-11   \\
+          64.0079371892498  & 1.4e-9    & 1.6e-11   \\
+          81.0062503266325  & -4.8e-10  & 4.5e-12   \\
+          100.0050506751594 & -8.7e-10  & -9.3e-13  \\
+          \bottomrule
+        \end{tabular}
+      \end{center}
+    \vspace{5mm}
+      \begin{center}
+        \begin{tabular}[]{n{3}{13}n{2}{1}n{2}{1}}
+          \toprule
+          $q=10$              & {\matslise{2}}    & {\pyslise{}}         \\
+          \midrule
+                              & \multicolumn{1}{c}{$6.74\text{ms}$} & \multicolumn{1}{c}{$0.30\text{ms}$} \\
+          -13.9365524792501 & 5.8e-9    & -5.4e-12  \\
+          -2.3821582359569  & 2.2e-8    & 2.9e-12   \\
+          7.9860691446817   & 4.7e-10   & 1.4e-11   \\
+          17.3813806786230  & -3.4e-8   & 6.4e-12   \\
+          26.7664263604801  & -3.1e-8   & -8.2e-12  \\
+          37.4198587767242  & -4.7e-8   & -5.1e-12  \\
+          50.0541572135572  & -2.9e-8   & 1.1e-12   \\
+          64.8004402930215  & 2.7e-8    & 4.1e-12   \\
+          81.6283131843831  & 2.7e-8    & -3.1e-11  \\
+          100.5067694628784 & 4.0e-8    & -7.1e-12  \\
+          \bottomrule
+        \end{tabular}
+      \end{center}
   \caption{The first 10 eigenvalues for the Mathieu problem~(\ref{equ:c2_mathieu_equation}) for $q=1$ and $q=10$, the execution times and the absolute errors obtained with \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab1}
 \end{table}
 
 From Table~\ref{tab:c2_tab1} there are two things to note. Firstly \pyslise{} is more than 20 times faster than \matslise{2}. This means that our efforts to improve efficiency are definitely worth it.
 
-Secondly the accuracy of \pyslise{} is a lot higher. This can be explained by the fact that \pyslise{}'s error estimates are very conservative. The error estimation is used to choose the mesh to use. Because \pyslise{}'s errors are less sharp, it tends to use more subintervals than \matslise{2}. These extra intervals lead to more accurate results. These more accurate results may seem like a benefit, in reality, it is not. We requested an accuracy for both programs of $10^{-8}$, and \matslise{2} respects this beautifully. In other words \matslise{2} is able to use the lowest number of subintervals possible, while staying as accurate as possible. \pyslise{} on the other hand, goes above and beyond to ensure the requested accuracy and overshoots it with quite a lot. This means that it uses more subintervals than necessary, and is therefor a little less efficient than it could be.
+Secondly the accuracy of \pyslise{} is a lot higher. This can be explained by the fact that \pyslise{}'s error estimates are very conservative. The error estimation is used to choose the mesh to use. Because \pyslise{}'s errors are less sharp, it tends to use more subintervals than \matslise{2}. These extra intervals lead to more accurate results. These more accurate results may seem like a benefit, in reality, it is not. We requested an accuracy for both programs of $10^{-8}$, and \matslise{2} respects this beautifully. In other words \matslise{2} is able to use the lowest number of subintervals possible, while respecting the requested accuracy. \pyslise{} on the other hand, goes above and beyond to ensure the requested accuracy and overshoots it with quite a lot. This means that it uses more subintervals than necessary, and is therefor a little less efficient than it could be.
 
-In practice, and for our use cases in the following chapters, we have found \matslise{3} and \pyslise{} to be plenty fast. Knowing this we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
+In practice, and for our use-cases in the following chapters, we have found \matslise{3} and \pyslise{} to be sufficiently fast. Knowing this we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
 
 \paragraph{Eigenfunctions} As explained in section \ref{sec:c2_cp_in_delta} one of the reasons we developed more complicated formulae and build a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
 
@@ -1118,7 +1118,7 @@ To compute these numerically we need to approximate the following integrals for 
 $$
 \int_a^b f(x) y_i(x)\,\dd x\text{.}
 $$
-In \matslise{2.0}, one would choose a fixed grid beforehand and evaluate all eigenfunctions in exactly these grid points. To approximate the integral, any quadrature rule can be used, as long as it only uses the values in exactly these grid points. If a large basis is used, or $f(x)$ is unpredictable with some steep regions for example, this approach will only be accurate if a prohibitively dense grid is used. Ideally some adaptive quadrature rule should be used. These numerical integration techniques evaluate the integrand in as many values as needed to ensure accuracy. When the integrand becomes `difficult', more evaluations points are dynamically chosen. In the regions where the integrand is `easy', much fewer evaluations are used. But, these methods, of course, need a way to evaluate the integrand dynamically, and do not work with a fixed grid. With this application in mind, our new implementation already has the benefit of being able to do this, with relatively little computational cost. But to see the true power of this \matslise{3}, we compare the computation time for the evaluation of eigenfunctions with \matslise{2}. These results are reported in Table~\ref{tab:c2_tab2}.
+In \matslise{2.0}, one would choose a fixed grid beforehand and evaluate all eigenfunctions in exactly these grid points. To approximate the integral, any quadrature rule can be used, as long as it only uses the values in exactly these grid points. If a large basis is used, or $f(x)$ is unpredictable with some steep regions for example, this approach will only be accurate if a prohibitively dense grid is used. Ideally some adaptive quadrature rule should be used. These numerical integration techniques evaluate the integrand in as many values as needed to ensure accuracy. When the integrand becomes `difficult', more evaluations points are dynamically chosen. In the regions where the integrand is `easy', much fewer evaluations are used. But, these methods, of course, need a way to evaluate the integrand dynamically, and do not work with a fixed grid. With this application in mind, our new implementation already has the benefit of being able to do this, with relatively little computational cost. But to see the true power of \matslise{3}, we compare the computation time for the evaluation of eigenfunctions with \matslise{2}. These results are reported in Table~\ref{tab:c2_tab2}.
 
 \begin{table}
   \begin{center}
@@ -1135,34 +1135,34 @@ In \matslise{2.0}, one would choose a fixed grid beforehand and evaluate all eig
 \end{table}
 
 \begin{table}
-  \begin{center}
-    \begin{tabular}{rrrrrr}
-      \toprule
-                   & $E_{0}$       & $E_{1}$       & $E_{2}$       & $E_{3}$       & $E_{4}$       \\
-      \midrule
-      \matslise{2} & $1.0$ ($-10$) & $6.2$ ($-9$)  & $1.7$ ($-10$) & $1.4$ ($-9$)  & $4.0$ ($-11$) \\
-      \pyslise{}      & $4.7$ ($-9$)  & $5.9$ ($-9$)  & $2.8$ ($-9$)  & $1.9$ ($-9$)  & $3.9$ ($-9$)  \\
-      \midrule
-      \midrule
-                   & $E_{5}$       & $E_{6}$       & $E_{7}$       & $E_{8}$       & $E_{9}$       \\
-      \midrule
-      \matslise{2} & $5.7$ ($-10$) & $8.2$ ($-11$) & $8.6$ ($-10$) & $3.0$ ($-11$) & $3.4$ ($-10$) \\
-      \pyslise{}      & $2.6$ ($-9$)  & $1.4$ ($-9$)  & $1.3$ ($-9$)  & $1.1$ ($-9$)  & $6.6$ ($-10$) \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:c2_tab3} Maximum absolute error in $n=100$ equidistant points of the eigenfunction $y_n$ for the Mathieu problem (\ref{equ:c2_mathieu_equation}) with $q=1$.}
+    \begin{center}
+        \begin{tabular}{rn{2}{1}n{2}{1}n{2}{1}n{2}{1}}
+          \toprule
+                & \multicolumn{1}{c}{$y_{0}$} & \multicolumn{1}{c}{$y_{1}$} & \multicolumn{1}{c}{$y_{2}$} & \multicolumn{1}{c}{$y_{3}$} \\
+          \midrule  
+          \matslise{2}    & 1.0e-10 & 6.2e-9 & 1.7e-10 & 1.4e-9   \\
+          \pyslise{}      & 4.7e-9 & 5.9e-9 & 2.8e-9 & 1.9e-9   \\
+          \midrule
+          \midrule
+            &\multicolumn{1}{c}{$y_{4}$}    & \multicolumn{1}{c}{$y_{5}$} & \multicolumn{1}{c}{$y_{6}$} & \multicolumn{1}{c}{$y_{7}$} \\
+          \midrule
+          \matslise{2}    & 4.0e-11 & 5.7e-10 & 8.2e-11 & 8.6e-10  \\
+          \pyslise{}      & 3.9e-9 & 2.6e-9 & 1.4e-9 & 1.3e-9   \\
+          \bottomrule
+        \end{tabular}
+      \end{center}
+  \caption{\label{tab:c2_tab3} Maximum absolute error in $n=100$ equidistant points of the eigenfunction $y_n$ corresponding to $\lambda_n$ for the Mathieu problem (\ref{equ:c2_mathieu_equation}) with $q=1$.}
 \end{table}
 
 In this scenario the difference in efficiency becomes apparent. \pyslise{} is two orders of magnitude faster than \matslise{2}. On top of that, this extreme speedup is achieved without dropping below the requested accuracy. In table~\ref{tab:c2_tab3} the maximum error of the eigenfunction for each eigenvalue is tabulated. One notices that \matslise{2} is more accurate, but remember that the requested accuracy in this experiment was for both programs $10^{-8}$. As long as the results are more accurate than $10^{-8}$, they are successful.
 
 It is remarkable that for the eigenvalues $\pyslise{}$ was more accurate than required. For the eigenfunctions, the situation is reversed. This reversion can be explained by the fact that \pyslise{} is able to reuse the same grid (which was accurate to the required tolerance), but \matslise{2} computes a new partition with the grid points used for the computation of the eigenvalue together with all requested evaluation points of the eigenfunction. This grid is much denser, and thus unnecessarily more accurate.
 
-\subsection{Coffey-Evans}\label{sec:c2_numerical_experiments_coffey_evans}
+\subsection{Coffey-Evans problem}\label{sec:c2_numerical_experiments_coffey_evans}
 
 Another, more challenging problem is the Coffey-Evans equation \cite{pryce_error_1986}.
 \begin{equation}
-  -\psi''(x) + (\beta^2\sin^2(2x)-2\beta\cos(2x))\psi(x) = E\psi(x)\text{,}\label{equ:c2_coffey_evans}
+  -y''(x) + (\beta^2\sin^2(2x)-2\beta\cos(2x))y(x) = \lambda y(x)\text{,}\label{equ:c2_coffey_evans}
 \end{equation}
 with $x \in [-\frac{\pi}{2}, \frac{\pi}{2}]$ and homogeneous Dirichlet boundary condition.
 
@@ -1190,48 +1190,48 @@ Besides the numerical results, also the computational running time is reported i
 
 \begin{table}
     \begin{center}
-        \begin{tabular}[]{rrrr}
+        \begin{tabular}[]{n{1}{0}n{3}{13}n{2}{1}n{2}{1}}
             \toprule
-              & $\beta=5$                      & \matslise{2}     & \pyslise{}      \\
+              & {$\beta=5$}       & {\matslise{2}}                       & {\pyslise{}}                        \\
             \midrule
-              &                                & $8.94\text{ms}$  & $0.33\text{ms}$ \\
-            0 & $\numprint{0.0005463030588}$   & $4.5$ ($-10$)    & $2.4$ ($-10$)   \\
-            1 & $\numprint{17.4201300751401}$  & $3.1$ ($-9$)     & $1.4$ ($-11$)   \\
-            2 & $\numprint{26.8313294875207}$  & $8.2$ ($-9$)     & $5.2$ ($-12$)   \\
-            3 & $\numprint{30.6514597044625}$  & $1.1$ ($-9$)     & $-3.2$ ($-12$)  \\
-            4 & $\numprint{37.9709848127178}$  & $-1.6$ ($-8$)    & $9.2$ ($-12$)   \\
-            5 & $\numprint{49.4100375966783}$  & $-6.0$ ($-9$)    & $-1.8$ ($-11$)  \\
-            6 & $\numprint{62.2115039443358}$  & $-6.7$ ($-9$)    & $-3.7$ ($-12$)  \\
-            7 & $\numprint{76.9997687851650}$  & $-3.1$ ($-8$)    & $-4.1$ ($-11$)  \\
-            8 & $\numprint{93.8923408372478}$  & $-1.5$ ($-8$)    & $-4.5$ ($-11$)  \\
+              &                   & \multicolumn{1}{c}{$8.94\text{ms}$}  & \multicolumn{1}{c}{$0.33\text{ms}$} \\
+            0 & 0.0005463030588   & 4.5e-1                               & 2.4e-10                             \\
+            1 & 17.4201300751401  & 3.1e-9                               & 1.4e-11                             \\
+            2 & 26.8313294875207  & 8.2e-9                               & 5.2e-12                             \\
+            3 & 30.6514597044625  & 1.1e-9                               & -3.2e-12                            \\
+            4 & 37.9709848127178  & -1.6e-8                              & 9.2e-12                             \\
+            5 & 49.4100375966783  & -6.0e-9                              & -1.8e-11                            \\
+            6 & 62.2115039443358  & -6.7e-9                              & -3.7e-12                            \\
+            7 & 76.9997687851650  & -3.1e-8                              & -4.1e-11                            \\
+            8 & 93.8923408372478  & -1.5e-8                              & -4.5e-11                            \\
             \bottomrule
             \toprule
-              & $\beta=15$                     & \matslise{2}     & \pyslise{}      \\
+              & {$\beta=15$}      & {\matslise{2}}                       & {\pyslise{}}                        \\
             \midrule
-              &                                & $9.71\text{ms}$  & $0.54\text{ms}$ \\
-            0 & $\numprint{0.0000000000035}$   & $-1.7$ ($-7$)    & $-1.1$ ($-11$)  \\
-            1 & $\numprint{57.8833068486108}$  & $3.2$ ($-7$)     & $4.8$ ($-11$)   \\
-            2 & $\numprint{111.2023333512293}$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-            3 & $\numprint{111.2270694418592}$ & $3.1$ ($-7$)     & $4.9$ ($-11$)   \\
-            4 & $\numprint{111.2518808183127}$ & $1.9$ ($-7$)     & $1.1$ ($-10$)   \\
-            5 & $\numprint{159.1826724323144}$ & $5.3$ ($-9$)     & $1.7$ ($-10$)   \\
-            6 & $\numprint{197.3328583631476}$ & $6.3$ ($-8$)     & $-7.5$ ($-11$)  \\
-            7 & $\numprint{199.8690055338356}$ & $2.6$ ($-9$)     & $6.3$ ($-13$)   \\
-            8 & $\numprint{203.2295295020015}$ & $2.7$ ($-8$)     & $-2.1$ ($-10$)  \\
+              &                   & \multicolumn{1}{c}{$9.71\text{ms}$}  & \multicolumn{1}{c}{$0.54\text{ms}$} \\
+            0 & 0.0000000000035   & -1.7e-7                              & -1.1e-11                            \\
+            1 & 57.8833068486108  & 3.2e-7                               & 4.8e-11                             \\
+            2 & 111.2023333512293 & 1.9e-7                               & 1.1e-10                             \\
+            3 & 111.2270694418592 & 3.1e-7                               & 4.9e-11                             \\
+            4 & 111.2518808183127 & 1.9e-7                               & 1.1e-10                             \\
+            5 & 159.1826724323144 & 5.3e-9                               & 1.7e-10                             \\
+            6 & 197.3328583631476 & 6.3e-8                               & -7.5e-11                            \\
+            7 & 199.8690055338356 & 2.6e-9                               & 6.3e-13                             \\
+            8 & 203.2295295020015 & 2.7e-8                               & -2.1e-10                            \\
             \bottomrule
             \toprule
-              & $\beta=25$                     & \matslise{2}     & \pyslise{}      \\
+              & {$\beta=25$}      & {\matslise{2}}                       & {\pyslise{}}                        \\
             \midrule
-              &                                & $24.36\text{ms}$ & $0.61\text{ms}$ \\
-            0 & $\numprint{-0.0000000000000}$  & $-4.4$ ($-7$)    & $-2.4$ ($-11$)  \\
-            1 & $\numprint{97.9345616863637}$  & $7.9$ ($-7$)     & $-3.2$ ($-11$)  \\
-            2 & $\numprint{191.5876270396656}$ & $8.3$ ($-7$)     & $4.8$ ($-11$)   \\
-            3 & $\numprint{191.5876332913999}$ & $1.2$ ($-6$)     & $-1.3$ ($-11$)  \\
-            4 & $\numprint{191.5876395431371}$ & $7.2$ ($-7$)     & $4.6$ ($-11$)   \\
-            5 & $\numprint{280.6142452706786}$ & $1.7$ ($-7$)     & $1.7$ ($-10$)   \\
-            6 & $\numprint{364.5514239171786}$ & $6.2$ ($-8$)     & $-4.4$ ($-12$)  \\
-            7 & $\numprint{364.5556442011433}$ & $-8.5$ ($-8$)    & $2.2$ ($-10$)   \\
-            8 & $\numprint{364.5598657470625}$ & $6.1$ ($-8$)     & $2.4$ ($-10$)   \\
+              &                   & \multicolumn{1}{c}{$24.36\text{ms}$} & \multicolumn{1}{c}{$0.61\text{ms}$} \\
+            0 & -0.0000000000000  & -4.4e-7                              & -2.4e-11                            \\
+            1 & 97.9345616863637  & 7.9e-7                               & -3.2e-11                            \\
+            2 & 191.5876270396656 & 8.3e-7                               & 4.8e-11                             \\
+            3 & 191.5876332913999 & 1.2e-6                               & -1.3e-11                            \\
+            4 & 191.5876395431371 & 7.2e-7                               & 4.6e-11                             \\
+            5 & 280.6142452706786 & 1.7e-7                               & 1.7e-10                             \\
+            6 & 364.5514239171786 & 6.2e-8                               & -4.4e-12                            \\
+            7 & 364.5556442011433 & -8.5e-8                              & 2.2e-10                             \\
+            8 & 364.5598657470625 & 6.1e-8                               & 2.4e-10                             \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1240,56 +1240,56 @@ Besides the numerical results, also the computational running time is reported i
 
 \begin{table}
     \begin{center}
-        \begin{tabular}{rrrrrr}
+        \begin{tabular}{rn{2}{1}n{2}{1}n{2}{1}n{2}{1}}
             \toprule
-            $\beta=5$    & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
+            {$\beta=5$}    & \multicolumn{1}{c}{$y_{0}$} & \multicolumn{1}{c}{$y_{1}$} & \multicolumn{1}{c}{$y_{2}$} & \multicolumn{1}{c}{$y_{3}$} \\
             \midrule
-            \matslise{2} & $2.0$ ($-11$) & $3.2$ ($-10$) & $1.5$ ($-9$)  & $2.1$ ($-10$) & $1.5$ ($-9$)  \\
-            \pyslise{}   & $4.2$ ($-9$)  & $8.5$ ($-10$) & $1.4$ ($-9$)  & $1.4$ ($-9$)  & $1.9$ ($-9$)  \\
+            {\matslise{2}} & 2.0e-11                     & 3.2e-10                     & 1.5e-9                      & 2.1e-10                     \\
+            {\pyslise{}}   & 4.2e-9                      & 8.5e-10                     & 1.4e-9                      & 1.4e-9                      \\
             \midrule
             \midrule
-            $\beta=5$    & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
+            {$\beta=5$}    & \multicolumn{1}{c}{$y_{4}$} & \multicolumn{1}{c}{$y_{5}$} & \multicolumn{1}{c}{$y_{6}$} & \multicolumn{1}{c}{$y_{7}$} \\
             \midrule
-            \matslise{2} & $5.4$ ($-10$) & $5.0$ ($-10$) & $2.2$ ($-9$)  & $9.3$ ($-10$) & $6.7$ ($-10$) \\
-            \pyslise{}   & $1.4$ ($-9$)  & $1.8$ ($-9$)  & $1.8$ ($-9$)  & $2.5$ ($-9$)  & $1.6$ ($-9$)  \\
+            {\matslise{2}} & 1.5e-9                      & 5.4e-10                     & 5.0e-10                     & 2.2e-9                      \\
+            {\pyslise{}}   & 1.9e-9                      & 1.4e-9                      & 1.8e-9                      & 1.8e-9                      \\
             \bottomrule
         \end{tabular}
     \end{center}
     \vspace{8mm}
     \begin{center}
-        \begin{tabular}{rrrrrr}
+        \begin{tabular}{rn{2}{1}n{2}{1}n{2}{1}n{2}{1}}
             \toprule
-            $\beta=15$   & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
+            {$\beta=15$}   & \multicolumn{1}{c}{$y_{0}$} & \multicolumn{1}{c}{$y_{1}$} & \multicolumn{1}{c}{$y_{2}$} & \multicolumn{1}{c}{$y_{3}$} \\
             \midrule
-            \matslise{2} & $2.8$ ($-9$)  & $1.2$ ($-8$)  & $4.0$ ($-6$)  & $1.7$ ($-5$)  & $4.0$ ($-6$)  \\
-            \pyslise{}   & $2.0$ ($-10$) & $7.3$ ($-10$) & $4.6$ ($-9$)  & $5.7$ ($-9$)  & $3.5$ ($-9$)  \\
+            {\matslise{2}} & 2.8e-9                      & 1.2e-8                      & 4.0e-6                      & 1.7e-5                      \\
+            {\pyslise{}}   & 2.0e-10                     & 7.3e-10                     & 4.6e-9                      & 5.7e-9                      \\
             \midrule
             \midrule
-            $\beta=15$   & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
+            {$\beta=15$}   & \multicolumn{1}{c}{$y_{4}$} & \multicolumn{1}{c}{$y_{5}$} & \multicolumn{1}{c}{$y_{6}$} & \multicolumn{1}{c}{$y_{7}$} \\
             \midrule
-            \matslise{2} & $1.8$ ($-10$) & $1.2$ ($-8$)  & $1.1$ ($-9$)  & $3.3$ ($-9$)  & $1.8$ ($-9$)  \\
-            \pyslise{}   & $2.3$ ($-9$)  & $2.2$ ($-9$)  & $3.3$ ($-9$)  & $2.4$ ($-9$)  & $1.1$ ($-9$)  \\
+            {\matslise{2}} & 4.0e-6                      & 1.8e-10                     & 1.2e-8                      & 1.1e-9                      \\
+            {\pyslise{}}   & 3.5e-9                      & 2.3e-9                      & 2.2e-9                      & 3.3e-9                      \\
             \bottomrule
         \end{tabular}
     \end{center}
     \vspace{8mm}
     \begin{center}
-        \begin{tabular}{rrrrrr}
+        \begin{tabular}{rn{2}{1}n{2}{1}n{2}{1}n{2}{1}}
             \toprule
-            $\beta=25$   & $\lambda_{0}$ & $\lambda_{1}$ & $\lambda_{2}$ & $\lambda_{3}$ & $\lambda_{4}$ \\
+            {$\beta=25$}   & \multicolumn{1}{c}{$y_{0}$} & \multicolumn{1}{c}{$y_{1}$} & \multicolumn{1}{c}{$y_{2}$} & \multicolumn{1}{c}{$y_{3}$} \\
             \midrule
-            \matslise{2} & $4.6$ ($-9$)  & $1.9$ ($-8$)  & $8.2$ ($-2$)  & $3.1$ ($-1$)  & $6.5$ ($-2$)  \\
-            \pyslise{}   & $2.0$ ($-10$) & $6.9$ ($-10$) & $7.0$ ($-6$)  & $6.5$ ($-6$)  & $7.0$ ($-6$)  \\
+            {\matslise{2}} & 4.6e-9                      & 1.9e-8                      & 8.2e-2                      & 3.1e-1                      \\
+            {\pyslise{}}   & 2.0e-10                     & 6.9e-10                     & 7.0e-6                      & 6.5e-6                      \\
             \midrule
             \midrule
-            $\beta=25$   & $\lambda_{5}$ & $\lambda_{6}$ & $\lambda_{7}$ & $\lambda_{8}$ & $\lambda_{9}$ \\
+            {$\beta=25$}   & \multicolumn{1}{c}{$y_{4}$} & \multicolumn{1}{c}{$y_{5}$} & \multicolumn{1}{c}{$y_{6}$} & \multicolumn{1}{c}{$y_{7}$} \\
             \midrule
-            \matslise{2} & $3.7$ ($-9$)  & $7.8$ ($-6$)  & $2.9$ ($-5$)  & $7.7$ ($-6$)  & $1.2$ ($-8$)  \\
-            \pyslise{}   & $2.2$ ($-9$)  & $2.8$ ($-8$)  & $2.7$ ($-9$)  & $2.0$ ($-9$)  & $9.9$ ($-10$) \\
+            {\matslise{2}} & 6.5e-2                      & 3.7e-9                      & 7.8e-6                      & 2.9e-5                      \\
+            {\pyslise{}}   & 7.0e-6                      & 2.2e-9                      & 2.8e-8                      & 2.7e-9                      \\
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_ce_eigenfunctions} Maximum error in $100$ equidistant points of the eigenfunction corresponding to each of the ten first eigenvalues for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
+    \caption{\label{tab:c2_ce_eigenfunctions} Maximum error in $100$ equidistant points of the eigenfunction corresponding to each of first eight eigenvalues for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
 \end{table}
 
 \begin{figure}
@@ -1312,7 +1312,9 @@ for i, E, f in coffey_evans.eigenpairsByIndex(2, 5, (0, 1)):
     plt.show()
 \end{minted}
 % \end{noindent}
-Notice here, that by providing the arguments \texttt{2} and \texttt{5} to \texttt{.eigenpairsByIndex}, we only request the eigenvalues and eigenfunctions with index $2$, $3$ and $4$. Visually these graphs look convincing. But, as a more rigorous verification we have provided table \ref{tab:c2_ce_eigenfunctions}. Here the maximum absolute errors in the eigenfunctions are tabulated. Again, we have used \matslise{2} with a tolerance of $10^{-14}$ to obtain accurate results to compare with.
+Notice here that by providing the arguments \texttt{2} and \texttt{5} to \texttt{.eigenpairsByIndex}, we only request the eigenvalues and eigenfunctions with index $2$, $3$ and $4$. Visually these graphs look convincing. But, as a more rigorous verification we have provided table \ref{tab:c2_ce_eigenfunctions}. Here the maximum absolute errors in the eigenfunctions are tabulated. Again, we have used \matslise{2} with a tolerance of $10^{-14}$ to obtain reference results to compare with.
+
+\todo{Maybe something about orthogonality}
 
 From the theory we expect that the time needed to evaluate the eigenfunction does not depend on the difficulties to find eigenvalues for that particular problem. Once an eigenvalue is found, the corresponding eigenfunction should be easily calculated. The computation time to evaluate an eigenfunction for an equidistant grid of $n$ points is reported in table \ref{tab:c2_tab6}. The remarkable speed-up we were able to achieve with our new implementation can be observed.
 
@@ -1352,29 +1354,28 @@ print(hydrogen.eigenvaluesByIndex(0, 10, (0, 1), (0, 1)))
 
 The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. \matslise{2} is well-suited for singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
 
-Despite these shortcomings, \pyslise{} is still faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
+Despite these missing features, \pyslise{} can still solve the problem. And, it is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
 \begin{table}
     \begin{center}
-        \begin{tabular}[]{rrr}
+        \begin{tabular}[]{n{2}{13}n{2}{1}n{2}{1}}
             \toprule
-                               & \matslise{2}     & \pyslise{}      \\
+                             & \matslise{2}       & \pyslise{}        \\
             \midrule
-                               & $30.96\text{ms}$ & $7.09\text{ms}$ \\
-            $-0.0625000000000$ & $2.1$ ($-12$)    & $8.9$ ($-15$)   \\
-            $-0.0277777777778$ & $4.9$ ($-12$)    & $-2.2$ ($-15$)  \\
-            $-0.0156250000000$ & $3.4$ ($-12$)    & $-9.0$ ($-16$)  \\
-            $-0.0100000000000$ & $9.4$ ($-13$)    & $-2.7$ ($-15$)  \\
-            $-0.0069444444444$ & $-1.1$ ($-12$)   & $1.2$ ($-13$)   \\
-            $-0.0051020408163$ & $-2.3$ ($-12$)   & $-6.3$ ($-13$)  \\
-            $-0.0039062500000$ & $-2.9$ ($-12$)   & $-2.3$ ($-13$)  \\
-            $-0.0030864197531$ & $-3.0$ ($-12$)   & $1.1$ ($-13$)   \\
-            $-0.0025000000000$ & $-2.7$ ($-12$)   & $-9.6$ ($-14$)  \\
-            $-0.0020661157025$ & $-1.9$ ($-12$)   & $1.6$ ($-14$)   \\
-                               &                  &                 \\
+                             & {$30.96\text{ms}$} & {$7.09\text{ms}$} \\
+            -0.0625000000000 & 2.1e-12            & 8.9e-15           \\
+            -0.0277777777778 & 4.9e-12            & -2.2e-15          \\
+            -0.0156250000000 & 3.4e-12            & -9.0e-16          \\
+            -0.0100000000000 & 9.4e-13            & -2.7e-15          \\
+            -0.0069444444444 & -1.1e-12           & 1.2e-13           \\
+            -0.0051020408163 & -2.3e-12           & -6.3e-13          \\
+            -0.0039062500000 & -2.9e-12           & -2.3e-13          \\
+            -0.0030864197531 & -3.0e-12           & 1.1e-13           \\
+            -0.0025000000000 & -2.7e-12           & -9.6e-14          \\
+            -0.0020661157025 & -1.9e-12           & 1.6e-14           \\
             \bottomrule
         \end{tabular}
-        \caption{The first 10 eigenvalues for the truncated hydrogen problem~(\ref{equ:c2_truncated_hydrogen}), the execution times and the errors obtained with \matslise{2} and \pyslise{} for a tolerance of $10^{-8}$.}\label{tab:c2_tab7}
+        \caption{The first ten eigenvalues for the truncated hydrogen problem~(\ref{equ:c2_truncated_hydrogen}), the execution times and the errors obtained with \matslise{2} and \pyslise{} for a tolerance of $10^{-8}$.}\label{tab:c2_tab7}
     \end{center}
 \end{table}
 
@@ -1386,7 +1387,7 @@ As described in section \ref{sec:c2_periodic}, \matslise{3} is able to solve Sch
 $$
     -y''(x) + x^2(\pi-x) y(x) = \lambda y(x)
 $$
-on the domain $[0, \pi]$ with periodic boundary conditions: $y(0) = y(\pi)$ and $y'(0) = y'(pi)$.
+on the domain $[0, \pi]$ with periodic boundary conditions: $y(0) = y(\pi)$ and $y'(0) = y'(\pi)$.
 
 To solve this with \pyslise{} we need to import a different solver, but most of the code is similar.
 % \begin{noindent}
@@ -1480,23 +1481,25 @@ print(sturm_liouville.eigenvaluesByIndex(0, 10, (0, 1), (1, 0)))
 \end{minted}
 % \end{noindent}
 
-Here we are using the \texttt{SturmLiouville} solver. And, we have to specify the three defining functions $p(x)$, $q(y)$ and $w(x)$. Notice that the in the last line we have specified $y(0) = 0$ and $y'(0) = 1$ to mark the left boundary condition, and $y(1) = 1$ and $y'(1) = 0$ to mark the right boundary conditions. Remember that solutions will only satisfy these boundary conditions after some scaling factor.
+Here we are using the \texttt{SturmLiouville} solver. We now have to specify the three defining functions $p(x)$, $q(y)$ and $w(x)$. Notice that in the last line we have specified $y(0) = 0$ and $y'(0) = 1$ to mark the left boundary condition, and $y(1) = 1$ and $y'(1) = 0$ to mark the right boundary conditions. Remember that solutions will only satisfy these boundary conditions after some scaling factor.
 
 Under the hood, the \texttt{SturmLiouville} solver will compute Liouville's transformation as in section \ref{sec:c2_liouville_transformation}. This yields a Schrödinger problem for which \matslise{3} will use the constant perturbation method, just as for the \texttt{Pyslise} solver.
 
 \begin{table}
     \begin{center}
-        \begin{tabular}{rrr}
-            Siedlecki \cite{siedlecki_sturmliouville_2016} & \matslise{2}                  & \pyslise{} error \\
+        \begin{tabular}{n{3}{8}n{3}{12}n{2}{1}}
+            \toprule
+            {Siedlecki \cite{siedlecki_sturmliouville_2016}} & {\matslise{2}}   & {\pyslise{} error} \\
             \midrule
-            $\numprint{1.17049262}$                        & $\numprint{1.170492759902}$   & $2.2$ $(-12)$    \\
-            $\numprint{26.8633617}$                        & $\numprint{26.863367646410}$  & $8.3$ $(-12)$    \\
-            $\numprint{78.5490026}$                        & $\numprint{78.549045264140}$  & $2.4$ $(-12)$    \\
-            $\numprint{156.079996}$                        & $\numprint{156.080156224823}$ & $7.2$ $(-12)$    \\
-            $\numprint{259.455041}$                        & $\numprint{259.455476210930}$ & $4.7$ $(-12)$    \\
-            $\numprint{388.673823}$                        & $\numprint{388.674790600773}$ & $5.7$ $(-12)$    \\
-            $\numprint{543.736155}$                        & $\numprint{543.738037129327}$ & $5.2$ $(-12)$    \\
-            $\numprint{724.641861}$                        & $\numprint{724.645192282213}$ & $4.5$ $(-13)$
+            1.17049262                                       & 1.170492759902   & 2.2e-12            \\
+            26.8633617                                       & 26.863367646410  & 8.3e-12            \\
+            78.5490026                                       & 78.549045264140  & 2.4e-12            \\
+            156.079996                                       & 156.080156224823 & 7.2e-12            \\
+            259.455041                                       & 259.455476210930 & 4.7e-12            \\
+            388.673823                                       & 388.674790600773 & 5.7e-12            \\
+            543.736155                                       & 543.738037129327 & 5.2e-12            \\
+            724.641861                                       & 724.645192282213 & 4.5e-13            \\
+            \bottomrule
         \end{tabular}
     \end{center}
     \caption{Comparing numerical results for the problem from section \ref{sec:c2_experiment_sturm_liouville}. In the right most column the absolute error of our implementation with a specified tolerance of $10^{-8}$ are reported.}\label{tab:c2_pyslise_sturm_liouville_errors}
@@ -1511,18 +1514,18 @@ Later on in chapters \ref{cha:c3} and \ref{cha:c4} we develop methods to solve t
 
 This need for speed drove us away from \matslise{} or \matslise{2}. These are efficient and accurate packages which mainly focus on the computation of the eigenvalues with automatic regularity detection. In our case, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular one-dimensional Schrödinger-problems. We investigate possible bottlenecks of performance of the \matslise{2} package and its routines.
 
-Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. This mesh is then used for all eigenvalue computations. Which means that all evaluations of the coefficient functions from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily express their Sturm-Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
+Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. The mesh is then used for all eigenvalue computations. This means that all evaluations of the coefficient functions $C_i^(q)$ from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily implement their Sturm-Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
 
-Because we want to decide to reimplement \matslise{} into a faster compiled language, we have to consider what we gain but also what we lose. Speed and efficiency only goes so far if it is implemented in a prohibitively difficult package to use. As stated, one of the great strengths of \matslise{2} is its ease of use. We were hesitant to use compiled languages for this reason.
+Since we wanted to reimplement \matslise{} into a faster compiled language, we had to consider what we would gain but also what we would lose. Speed and efficiency only goes so far if it is implemented in a prohibitively difficult package to use. As stated, one of the great strengths of \matslise{2} is its ease of use. We were hesitant to use compiled languages for this reason.
 
 In the current day and age one of the more popular languages, with a larger community than \fortran{}'s or \matlab{}'s is \lpython{}. Like \matlab{}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, in \lpython{} it is not hard to add native packages. These packages are not written in \lpython{} but in some other, more low-level, language. This other language is compiled to native machine code, and nicely packaged to be called from within \lpython{}.
 
-These native packages are the answer to the efficiency versus user-friendliness problem we are faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will use can be written in the more approachable \lpython{} The last question before we can build our new implementation of Matslise is: ``Which compiled language?''. This language has to be able to support the building of \lpython{} packages, it has to have support for linear algebra, preferably with optimized BLAS libraries, and it has to support code architecture for numerical libraries. All of these requests makes \cpp a prime candidate. In combination with \pybind \cite{jakob_pybind11_2017} for the \lpython compatibility and \Eigen v3 \cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
+These native packages are the answer to the efficiency versus user-friendliness problem we were faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will use can be written in the more approachable \lpython{} The last question before we could build our new implementation of Matslise was: ``Which compiled language?''. This language has to be able to support the building of \lpython{} packages, it has to have support for linear algebra, preferably with optimized BLAS libraries, and it has to support code architecture for numerical libraries. All of these requests makes \cpp{} a prime candidate. In combination with \pybind{} \cite{jakob_pybind11_2017} for the \lpython{} compatibility and \Eigen{} v3 \cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
 
 \paragraph{Try it out!} The new implementation, which we called Matslise 3.0, can be accessed and executed in three different ways.
 
 \begin{itemize}
-    \item As a \cpp program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There instruction to compile it can be found.
+    \item As a \cpp{} program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There, instructions to compile it can be found.
     \item As a \lpython{}-package: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \pyslise{}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS}. Installing \pyslise{} is as easy as simply running:
           % \begin{noindent}
 \begin{minted}{python}
@@ -1534,7 +1537,7 @@ pip install pyslise
 
 \subsection{Implementation challenges}
 
-Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admitted I simplified some code for \matslise{2} to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
+Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admit, I simplified some code for \matslise{2} to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
 
 In this section we want to highlight some challenges we encountered while building the new implementation. Some of these are a consequence of the choice for language we have made, some are some inherent challenges of the constant perturbation method and others are self-inflicted by the ambitious goals we set out for ourselves.
 
@@ -1544,17 +1547,17 @@ In this section we want to highlight some challenges we encountered while buildi
 
 \subsubsection{Computation of the perturbation term formulae}
 
-In theorem \ref{the:c2_perturbation_terms} a nice procedure is outlined to determine each of the propagators $u(\delta)$ and $v(\delta)$. In short both propagators are written as :
+In theorem \ref{the:c2_perturbation_terms} a nice procedure is outlined to determine each of the propagators $u(\delta)$ and $v(\delta)$. In short both propagators are written in the following form:
 $$
-    u(\delta) = \sum_{i = -1}^{Q} C_i(\delta) \eta_{i}(\delta)
+    u(\delta) = \sum_{q = -1}^{Q} c_q(\delta) \eta_{q}(\delta)
 $$
-with $C_i$ a polynomial in $\delta$,
+with $c_i$ a polynomial in $\delta$,
 \begin{equation}\label{equ:c2_symbolic_propagators}
-    C_i  = \sum_{j=0}^{N} d_{i, j} \delta^j\text{,}
+    c_q(\delta)  = \sum_{i=0}^{N} d_{q, i} \delta^i\text{,}
 \end{equation}
-and $d_{i, j}$ is a polynomial in $h$ with coefficients in $V_1, \dots, V_{N}$.
+and $d_{q, i}$ is a polynomial in $h$ with coefficients in $V_1, \dots, V_{N}$.
 
-Once a mesh is constructed and $V_1, \dots, V_{N}$ are determined, the values for $d_{i, j}$or fixed on each subinterval. Which means that these values can be computed once and be reused for each guess for $\lambda$. In practice, the formulae for the values of $d_{i, j}$ are quite complicated. For small values of $N$ and $Q$ it would be feasible to implement these values by hand, for the large $N$ and $Q$ we are using here, this is intractable.
+Once a mesh is constructed and $V_1, \dots, V_{N}$ are determined, the values for $d_{q, i}$ are fixed on each subinterval. This means that these values can be computed once and be reused for each guess for $\lambda$. In practice, the formulae for the values of $d_{i, j}$ are quite complicated. For small values of $N$ and $Q$ it would be feasible to implement these values by hand, for the large $N$ and $Q$ we are using here, this is intractable.
 
 We could compute these formulae each time we construct a mesh by implementing some symbolic computation in \cpp{}. This could work, but it is less than ideal. Not only would this include a large computational burden, it would also be quite labor-intensive to implement the symbolic tools needed to pull this off. A better strategy is to use a symbolic toolbox like \maple{}, \mathematica{}, or \sage{} and let it generate the necessary \cpp{}-code only once before compiling the program. Computing the formulae once and generating code for them  also has the added benefit that the \cpp{} compiler can optimize them and generate the best possible machine-code.
 
@@ -1564,9 +1567,9 @@ We have implemented this in \sage{} \cite{sagemath}. Here it is possible to prec
 $$
     \QQ[V_0, \dots, V_n][h][\delta]\text{.}
 $$
-This means that all expressions in sage will have the following structure with coefficients $c \in \QQ$:
+This means that all expressions in \sage{} will have the following structure with coefficients $r \in \QQ$:
 $$
-    \sum_i \left(\sum_j \left( \sum_{k_0,\dots, k_N} c_{i,j,k_0,\dots,k_N} V_0^{k_0} \cdots V_N^{k_N}  \right)h^j \right) \delta^i\text{.}
+    \sum_i \left(\sum_j \left( \sum_{k_0,\dots, k_N} r_{i,j,k_0,\dots,k_N} V_0^{k_0} \cdots V_N^{k_N}  \right)h^j \right) \delta^i\text{.}
 $$
 This structure allows \sage{} to optimize each expression, in contrast to working with general symbolic expressions, which would also allow other operations such as division or $\sin$ for example.
 
@@ -1583,10 +1586,18 @@ detla = pr_delta.gen()
 \end{minted}
 %\end{noindent}
 
-Now we can write an expression such as $V_1 (\delta + h)^2 V_0$, which \sage{} would immediately translate to the expanded and  much more efficient expression:
+\begin{figure}
+    \begin{center}
+        \includegraphics{img/chapter2/sage_operations/tree.pdf}    
+    \end{center}
+    \caption{A possible tree of operations for $V_1 (\delta+h)^2 V_0$.}\label{fig:c2_operations_tree}
+\end{figure}
+
+Now we can write an expression such as $V_1 (\delta + h)^2 V_0$, which \sage{} would immediately translate to the expanded expression:
 $$
     V_{0} V_{1} \delta^{2} + 2 V_{0} V_{1} h \delta + V_{0} V_{1} h^{2}\text{.}
 $$
+This expression is much more efficient to work with. For the first expression, a computer algebra system has to save this as a tree of operations, see figure \ref{fig:c2_operations_tree}. This tree is cumbersome and relatively slow to work with. By specifying all variables to be polynomials, \sage{} can save these much more efficiently as a few simple arrays. For small expressions the difference may be negligible. But for the giant expressions we are working with, the difference is very significant.
 
 Besides the computational benefit, we also have the ability to easily specify that $V_0, \dots, V_N$ are matrices when generating formulae for the constant perturbation method on coupled systems of equations. We do not specify $V_0, \dots, V_N$ to be in a polynomial ring, but a general free algebra without commutation rules.
 %\begin{noindent}
@@ -1599,12 +1610,52 @@ $$
     V_{0}^{2} + V_{0} V_{1} + V_{1} V_{0} + V_{1}^{2}\text{.}
 $$
 
-Using these polynomial rings it is straightforward to implement the formulae from theorem \ref{the:c2_perturbation_terms}. The last thing to do is generating the \cpp{}-code to compute the values. For this we generate for each propagator $u(\delta)$, $v(\delta)$, $u'(\delta)$ and $v'(\delta)$, the $(Q+1)\times N$ matrix $T_p$ of formulae for $d_{i,j}$ from equation \eqref{equ:c2_symbolic_propagators}. For example:
+Using these polynomial rings it is straightforward to implement the formulae from theorem \ref{the:c2_perturbation_terms}. The last thing to do is generating the \cpp{}-code to compute the values $d_{q,i}$ from \eqref{equ:c2_symbolic_propagators}. For this we generate for each element of the propagation matrix $u(\delta)$, $v(\delta)$, $u'(\delta)$ and $v'(\delta)$ the $(Q+2)\times (N+1)$ matrix $T_p$ of formulae for $d_{q,i}$. For example:
 $$
     (T_v)_{1, 3} = h\cdot\left(-0.5 V_1 + h\cdot\left(0.5 V_2 + h\cdot\left(-0.5 V_3 + h\cdot\left(\dots\right)\right)\right)\right)\text{.}
 $$
 
-As one may expect, this generates a huge file of code. To aid the compiler, before generating the code, we implement a crude common subexpression elimination in \sage{}. Because we are working in a multivariate polynomial ring (or a free algebra in the case of coupled systems), expressions which are the product of some $V_i$'s such as  $V_1^2 V_2$ will be common. And, many of them will be present in more than one formula. We can start the code generation by adding extracting some of these products in their own variables. For example:
+As one may expect, this generates a huge file of code. In figure \ref{fig:c2_generated_code} we have provided the cleaned-up\footnote{In practice, we have to ensure all scalars have the right type, see section \ref{sec:c2_generalizing_scalar}. So a simple fraction like $\frac{37}{80}$ has to be implemented as \mintinline{c++}{Scalar(37LL)/Scalar(80LL)}, here is \texttt{Scalar} a template type variable.} generated code for $(T_u)_{4, 10}$. This expression is one example of the over $300$ complicated terms needed to generate the propagation matrix.
+
+\begin{figure}
+%\begin{noindent}
+\begin{minted}{python}
+Tu[4, 10] = (
+  37/80*v1*v1*v2 - 1065/56*v3*v3 - 165/4*v2*v4 - 261/4*v1*v5
+  + 19305/2*v8
+  + h*(-279/80*v1*v2*v2 - 69/16*v1*v1*v3
+  + 945/2*v3*v4 + 567*v2*v5 + 891*v1*v6 - 328185/2*v9
+  + h*(-7/192*v1*v1*v1*v1 + 39/8*v2*v2*v2 + 691/20*v1*v2*v3
+  + 185/8*v1*v1*v4 - 12405/8*v4*v4 - 13251/4*v3*v5
+  - 16731/4*v2*v6 - 26235/4*v1*v7 + 2953665/2*v10
+  + h*(31/96*v1*v1*v1*v2 - 513/10*v2*v2*v3 - 953/16*v1*v3*v3
+  - 1061/8*v1*v2*v4 - 735/8*v1*v1*v5 + 15120*v4*v5
+  + 16956*v3*v6 + 21978*v2*v7 + 137709/4*v1*v8 - 18706545/2*v11
+  + h*(-43/48*v1*v1*v2*v2 - 2/3*v1*v1*v1*v3 + 11427/80*v2*v3*v3
+  + 12517/80*v2*v2*v4 + 1443/4*v1*v3*v4 + 1697/4*v1*v2*v5
+  + 4781/16*v1*v1*v6 - 57765/2*v5*v5 - 60447*v4*v6 - 70110*v3*v7
+  - 92169*v2*v8 - 144144*v1*v9 + 93532725/2*v12
+  + h*(-1/3840*v1*v1*v1*v1*v1 + 31/32*v1*v2*v2*v2
+  + 313/96*v1*v1*v2*v3 + 61/48*v1*v1*v1*v4 - 1809/16*v3*v3*v3
+  - 2943/4*v2*v3*v4 - 7319/16*v1*v4*v4 - 34047/80*v2*v2*v5
+  - 7811/8*v1*v3*v5 - 11823/10*v1*v2*v6 - 67137/80*v1*v1*v7
+  + 192726*v5*v6 + 208521*v4*v7 + 247401*v3*v8 + 1311453/4*v2*v9
+  + 2045043/4*v1*v10 - 392837445/2*v13
+  + h*(1/768*v1*v1*v1*v1*v2
+  - 23/64*v2*v2*v2*v2 - 77/16*v1*v2*v2*v3 - 517/192*v1*v1*v3*v3
+  - 181/32*v1*v1*v2*v4 - 217/96*v1*v1*v1*v5 + 6161/8*v3*v3*v4
+  + 13289/16*v2*v4*v4 + 14079/8*v2*v3*v5 + 8655/4*v1*v4*v5
+  + 21051/20*v2*v2*v6 + 9605/4*v1*v3*v6 + 118279/40*v1*v2*v7
+  + 33663/16*v1*v1*v8 - 558747/2*v6*v6 - 577323*v5*v7
+  - 640332*v4*v8 - 771309*v3*v9 - 1027026*v2*v10
+  - 1594593*v1*v11
+)))))))
+\end{minted}
+%\end{noindent}
+\caption{The $\delta$-dependent formula for term $(T_u)_{4, 10}$, with $Q = 7$ and $N = 16$ as used by \matslise{3}. In reality this is only one of the over $300$ terms needed to compute the propagation matrix, with each term just as complicated as this one.}\label{fig:c2_generated_code}
+\end{figure}
+
+To aid the compiler, before generating the code, we implement a crude common subexpression elimination in \sage{}. Because we are working in a multivariate polynomial ring (or a free algebra in the case of coupled systems), expressions which are the product of some $V_i$'s such as  $V_1^2 V_2$ will be common. And, many of them will be present in more than one formula. We can start the code generation by extracting some of these products in their own variables. For example:
 %\begin{noindent}
 \begin{minted}{python}
 ...
@@ -1616,7 +1667,7 @@ v1_v1_v2 = v1 * v1_v2
 
 In the scalar case, this works wonderfully. All tested compilers are able to process this generated file without many difficulties. For coupled systems this generated file is much harder on the compiler because $V_0, \dots, V_N$ are no longer simple scalars. They have become matrices from the \Eigen{} library. \Eigen{} relies upon inlining and other compiler optimizations to generate the best possible machine-code, for some compilers (most notably for the Microsoft Visual Studio compiler) this becomes too much, and they run out of available system memory. To combat this issue partially, we introduce more temporaries and split the giant formulas into more manageable simpler expressions.
 
-\subsubsection{Generalizing the scalar-type}
+\subsubsection{Generalizing the scalar-type}\label{sec:c2_generalizing_scalar}
 
 One of the very cool features of the linear algebra library \Eigen is that it does not care what kind of scalars you are working with. All their algorithms are implemented agnostic of the scalar type. This is achieved by using \cpp{}-templates. For readers unfamiliar with this concept we will provide a very brief summary of this concept. For a thorough description see \cite[Chapter~23]{stroustrup_programming_2013}.
 
@@ -1722,13 +1773,13 @@ Unfortunately, \lpython{} only has support for the double type. So, if we want t
 
 \subsubsection{Memory management}
 
-In computer sciences is a garbage collector a method to do automatic memory management. The idea here is to automatically detect if allocated memory (for an array or object for example) is no longer used. If such memory is found, this can be returned to the operating system, for later use by our own or another program. Detecting unused memory is essential to ensure a reliable working of the system. If one program hoards memory, without returning it to the operating system, then sooner or later the operating system runs out of memory and programs need to be unexpectedly aborted.
+In computer science, a garbage collector is a method to do automatic memory management. The idea here is to automatically detect if allocated memory (for an array or object for example) is no longer used. If such memory is found, this can be returned to the operating system, for later use by our own or another program. Detecting unused memory is essential to ensure a reliable working of the system. If one program hoards memory, without returning it to the operating system, then sooner or later the operating system runs out of memory and programs need to be unexpectedly aborted.
 
-To avoid this, many interpreted languages (for example \lpython{}, \javascript{}, \matlab{}\dots) have such a garbage collector build in. Even some compiled languages (such as \java{} or \csharp{}) do memory management with a garbage collector. But this is not the only way to manage memory, \rust{} for example, keeps track of which memory is used, at compile time with what they call \emph{lifetimes}. \texttt{C} and \cpp on the other hand, have no memory management build in, these languages rely on the programmer to clean up after themselves.
+To avoid this, many interpreted languages (for example \lpython{}, \javascript{}, \matlab{}\dots) have such a garbage collector build in. Even some compiled languages (such as \java{} or \csharp{}) do memory management with a garbage collector. But this is not the only way to manage memory, \rust{} for example, keeps track of which memory is used at compile time with what they call \emph{lifetimes}. \texttt{C} and \cpp{} on the other hand, have no memory management build in, these languages rely on the programmer to clean up after themselves.
 
-In theory, cleaning up after yourself is easy. When you allocate data, just make sure you deallocate it once you no longer need it. In practice, this view is too simple. In \cpp{} some memory management is handled automatically by constructors and destructors. But other, more complicated scenarios, still have to be handled by the programmer. The situation that gave us trouble was the interoperability with \lpython{}. We had to very carefully specify whose responsibility it was to clean up objects. Was it an object that was managed on the \cpp{} side by us, the programmer, or could we let the garbage collector of \lpython{} do the work. Luckily, \pybind{} supports \texttt{std::shared\_ptr<...>}, using this solves the responsibility issue in most cases.
+In theory, cleaning up after yourself is easy. When you allocate data, just make sure you deallocate it once you no longer need it. In practice, this view is too simple. In \cpp{} some memory management is handled automatically by constructors and destructors. But other, more complicated scenarios, still have to be handled by the programmer. The situation that caused problems was the interoperability with \lpython{}. We had to very carefully specify whose responsibility it was to clean up objects. Was it an object that was managed on the \cpp{} side by us, the programmer, or could we let the garbage collector of \lpython{} do the work? Luckily, \pybind{} supports \texttt{std::shared\_ptr<...>}, using this solves the responsibility issue in most cases.
 
-The only case left, is when the lifetime of one object depends upon another object. For example consider the following \lpython{} code, which computes and stores the sixth eigenfunction of three different Schrödinger problems.
+The only problematic case left, is when the lifetime of one object depends upon another object. For example consider the following \lpython{} code, which computes and stores the sixth eigenfunction of three different Schrödinger problems.
 % \begin{noindent}
 \begin{minted}{python3}
 from pyslise import Pyslise
@@ -1748,7 +1799,7 @@ In hindsight, these issues and fixes may seem obvious. But, they highlight some 
 
 Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
 
-We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration test where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
+We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration tests where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
 
 \begin{itemize}
     \item Some simple unit-tests of some auxiliary procedures \begin{itemize}
@@ -1759,10 +1810,10 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, i
     \item Some Sturm-Liouville problems with exact known eigenvalues \begin{itemize}
               \item The Schrödinger problem with $V(x) = 0$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenfunctions are compared in many points to the analytical solution.
               \item The Schrödinger problem with $V(x) = x^2$ on $\left[-15, 15\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenvalues and the orthonormality of the eigenfunctions are verified, in \texttt{double}, \texttt{long double} and \texttt{float128}.
-              \item Klotter's problem with $p(x) = 1$, $q(x) = \frac{3}{4x^2}$ and $w(x) = \frac{64\pi^2}{9 x^6}$ on $\left[\frac{8}{7}, 8\right]$.
+              \item Klotter's problem\cite{klotter_technische_1978} with $p(x) = 1$, $q(x) = \frac{3}{4x^2}$ and $w(x) = \frac{64\pi^2}{9 x^6}$ on $\left[\frac{8}{7}, 8\right]$.
           \end{itemize}
     \item Some Schrödinger problems with eigenvalues found in the literature and with \matslise{2}\begin{itemize}
-              \item The Mathieu problem: $V(x)= 2\cos(2x)$ on $[0, \pi]$. The first $200$ eigenvalues and the orthonormality of the eigenfunctions are checked, in \texttt{double}, \texttt{long double} and \texttt{float128}. The first and fourth eigenfunctions are compared in different values computed with \matslise{2}.
+              \item The Mathieu problem $V(x)= 2\cos(2x)$ on $[0, \pi]$. The first $200$ eigenvalues and the orthonormality of the eigenfunctions are checked, in \texttt{double}, \texttt{long double} and \texttt{float128}. The first and fourth eigenfunctions are compared in different values computed with \matslise{2}.
               \item Marletta's problem: $V(x) = 3\frac{x-31}{4(x+1)(x+4)^2}$ on $[0,12]$ with $y(0) = 0$ and $5 y(12) + 8 y'(12) = 0$.
               \item The Coffey-Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types.
           \end{itemize}

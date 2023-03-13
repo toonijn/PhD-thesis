@@ -1,0 +1,18 @@
+% pdflatex -shell-escape tree.tex
+\documentclass{standalone}
+\usepackage{auto-pst-pdf}
+\usepackage{pst-tree}
+\usepackage{amsmath,amssymb}
+\setlength{\parindent}{0cm}
+\pagestyle{empty}
+
+\begin{document}
+
+  \small
+  \def\psedge#1#2{\ncdiagg[nodesep=3pt,angleA=180,armA=0]{#2}{#1}}
+  \pstree[treemode=R,levelsep=*2cm]{\Tr{product}}{%
+    \Tr{$V_1$}%
+    \pstree{\Tr{power}}{\pstree{\Tr{sum}}{\Tr{$\delta$} \Tr{$h$}} \Tr{$2$}}
+    \Tr{$V_0$}}
+
+\end{document}
