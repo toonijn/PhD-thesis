@@ -12,3 +12,4 @@
 {"rule":"COMMA_COMPOUND_SENTENCE","sentence":"^\\QTo compute \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q efficiently and reliably we have to define it with the differential equation: \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QIn this code, .eigenpairsByIndex is a function which expects the same arguments as .eigenvaluesByIndex.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QAnd second, no boundary conditions are provided to the .eigenvaluesByIndex function.\\E$"}
+{"rule":"THE_SUPERLATIVE","sentence":"^\\QA nodal domain is defined as a largest connected set of the domain on which the eigenfunction \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q does not become zero.\\E$"}

@@ -56,3 +56,12 @@ piecewisely
 BLAS
 self-adjointness
 Orthonormalization
+Gauss-Kronrod
+Vernaeve
+Courant
+Sobolev
+Fubini
+diffeomorphic
+Gårding
+Friedrichs
+unboundedly

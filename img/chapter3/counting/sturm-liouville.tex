@@ -1,0 +1,45 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage{pgfplots}
+\usepackage{xcolor}
+
+\usetikzlibrary{calc}
+
+\definecolor{ugent-blue}{HTML}{1E64C8}
+
+\pgfplotsset{compat=1.16}
+
+\def\axisdefaultwidth{12cm}
+\def\axisdefaultheight{6cm}
+
+\begin{document}
+
+\def\subinterval[#1][#2][#3][#4]{
+    \begin{scope}
+        \draw [-] (0, #2) -- (#1, #2) node[midway, #3] {#4};
+        \draw[dash pattern=on 4pt off 4pt] ($ (#1, #2)!-2pt!(#1, 0) $) -- (#1, 0);
+    \end{scope}
+}
+
+\begin{tikzpicture}
+    \begin{axis}
+        [
+            axis x line=center,
+            axis y line=center,
+            xmin=-0.05,xmax=1.05,
+            ymin=-6.5,ymax=5,
+            xtick={0,0.5,...,1},
+            ytick={0}
+        ]
+        \addplot [ugent-blue, line width=2pt, smooth] table [col sep=comma, x=x, y=y] {sturm-liouville-data.csv};
+
+        \draw (-0.02, 0) node[below] {$0$};
+
+        \subinterval[0.2][-1.6][below][$\Omega_{\epsilon_1}$];
+        \subinterval[0.4][1.6][above][$\Omega_{\epsilon_2}$];
+        \subinterval[0.6][-3.4][below][$\Omega_{\epsilon_3}$];
+        \subinterval[0.8][3.4][above][$\Omega_{\epsilon_4}$];
+        \subinterval[1][-5.2][below][$\Omega_1$];
+    \end{axis}
+\end{tikzpicture}
+\end{document}

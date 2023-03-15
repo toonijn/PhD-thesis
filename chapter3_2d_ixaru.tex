@@ -428,14 +428,14 @@ Secondly we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are qui
 
 In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in Matslise it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
 
-For these reasons we have opted to use classical quadratures to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure accurate enough values, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
+For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure accurate enough values, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
 
 
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
 
-In \cite{ixaru_new_2010}, it is mentioned that the eigenvalues correspond to the values $E$ for which \eqref{equ:c3_psi_e} becomes singular. The suggestion is that the eigenvalues of this matrix are zero in when $E$ is an eigenvalue of \eqref{equ:c3_schrodinger_2d}. Nothing further is present on how these values for $E$ should be found.
+In section \ref{sec:c3_ixarus_method} we have studied a method to determine for a given value $E$ if it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation \eqref{equ:c3_psi_e} becomes singular. In \cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about one would go about finding such values for $E$.
 
-In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by continuously halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different sign on the boundary of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains more than one root, of a root with higher multiplicity.
+In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by continuously halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different sign on the boundary of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
 
 Another well-known technique is Newton's method. Here, the root of a scalar function $f$ can be approximated by iterating the following scheme:
 $$
@@ -491,17 +491,17 @@ $$
     \pdv{\lambda}{E} = \frac{1}{\transpose{\vb{v}}\vb{u}}\transpose{\vb{v}} \pdv{\vb{\Phi}}{E} \vb{u} \text{.}
 $$
 
-With values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
+With the values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
 $$
     \eigs(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
 $$
 
-Now, we define the scalar function $f(E) : \RR \to \RR$ as {\color{red}To do: proof that $\vb{\Phi}(E)$ has only real eigenvalues.}
+Now, we define the scalar function $f(E) : \RR \to \RR$ as 
 \begin{equation}\label{equ:c3_mismatch_newton_function}
     f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
 \end{equation}
 
-On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that in each step the eigenvalue with the closest, possible root will be selected.
+On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that in each step the real eigenvalue with the closest, possible root in a linear approximation will be selected.
 
 \subsubsection{A numerical example}
 
@@ -514,10 +514,19 @@ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$ with homogeneous Dirichlet bounda
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{img/chapter3/mismatch_rainbow.pdf}
-    \caption{\label{fig:c3_mismatch_rainbow} Each of the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem \eqref{equ:c3_mismatch_ixaru} as a function of $E$. The true eigenvalues of this problem are indicated with $E_0$, $E_1$, $\dots$ The lines are colored and continued to aid in the clarity of this illustration. But, do notice that this is only a best guess approximation.}
+    \caption{Each of the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem \eqref{equ:c3_mismatch_ixaru} as a function of $E$. The true eigenvalues of this problem are indicated with $E_0$, $E_1$, $\dots$ The lines are colored and continued to aid in the clarity of this illustration. But, do notice that this is only a best guess approximation.}\label{fig:c3_mismatch_rainbow}
 \end{figure}
 
-Throughout this research, one of the first graphs which we studied can be found in figure \ref{fig:c3_mismatch_rainbow}. Here all eigenvalues of the mismatch matrix $\vb{\Psi}(E)$ are plotted. For each value of $E$, $\vb{\Psi}(E)$ has the same number of eigenvalues ({\color{red}To do: only if the eigenvalues are real.}) as the chosen basis size $N$, as described in \ref{sec:c3_ixarus_method}. Upon seeing this graph, it is easy to say, that one can `follow' the trajectory of a single eigenvalue as $E$ changes. In reality, this is not easy at all. Sometimes two eigenvalue curves intersect, other times they barely avoid each other, and seemingly switch which curve they follow. Following the lowest eigenvalue $\lambda_0$, will  not result in a nice smooth curve, since this value can reach vertical asymptotes.
+Throughout this research, one of the first graphs which we studied can be found in figure \ref{fig:c3_mismatch_rainbow}. Here all eigenvalues of the mismatch matrix $\vb{\Phi}(E)$ are plotted. For each value of $E$, in this problem $\vb{\Phi}(E)$ had $N$ real eigenvalues, with $N$ the size of basis on each sector, as described in \ref{sec:c3_ixarus_method}. Upon seeing this graph, it is easy to say, that one can `follow' the trajectory of a single eigenvalue as $E$ changes. In reality, this is not easy at all. For example, sometimes two eigenvalue curves intersect, other times they barely avoid each other, and seemingly switch which curve they follow. In figure \ref{fig:c3_mismatch_rainbow_zoom} this strange behavior is visible. Also note, that following the lowest eigenvalue $\lambda_0$, will  not result in a nice smooth curve, since this value reaches vertical asymptotes.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=.495\textwidth]{img/chapter3/mismatch_rainbow_zoomed_0.pdf}
+        \hfill
+        \includegraphics[width=.495\textwidth]{img/chapter3/mismatch_rainbow_zoomed_1.pdf}
+    \end{center}
+    \caption{These are zoomed in views of the graph from \ref{fig:c3_mismatch_rainbow}. Some surprising behavior of the eigenvalues of $\vb{\Phi}(E)$ are visible.}\label{fig:c3_mismatch_rainbow_zoom}
+\end{figure}
 
 These difficulties and nuances are hidden away behind the colors and seemingly continuous lines present in figure \ref{fig:c3_mismatch_rainbow}. Practically, this graph is generated from the eigenvalues (and their derivatives) of $\vb{\Phi}(E)$ for $\numprint{10000}$ values of $E$. Two eigenvalues $\lambda^{(i)}_j$, $\lambda^{(i+1)}_k$  for two adjacent values $E_{i}$ and $E_{i+1}$, are determined to correspond to the same curve (and thus get the same color) if
 $$ \lambda^{(i)}_j \approx \lambda^{(i+1)}_k - (E_{i+1} - E_i) \dv[]{\lambda^{(i+1)}_k}{E} $$
@@ -526,20 +535,303 @@ is sufficiently accurate.
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{img/chapter3/mismatch_newton.pdf}
-    \caption{\label{fig:c3_mismatch_newton} The function \eqref{equ:c3_mismatch_newton_function}, derived from problem \eqref{equ:c3_mismatch_ixaru}, is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}
+    \caption{The function \eqref{equ:c3_mismatch_newton_function}, derived from problem \eqref{equ:c3_mismatch_ixaru}, is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}\label{fig:c3_mismatch_newton}
 \end{figure}
 
-In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. The region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\lambda\right|$ was used different, this region would be even smaller. But still, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of an eigenvalue less than the value $E$. This allows us to detect these missing values, and locate them. This technique will be studied in section \ref{sec:c3_index_of_e}.
-
-
+In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. For example, the region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\lambda\right|$ was used, this region would be even smaller. But still, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of an eigenvalue less than the value $E$. This allows us to detect these missing values, and locate them. In the next section (\ref{sec:c3_index_of_e}), we will develop some new theory to locate all eigenvalues reliably.
 
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}
 
-\begin{theorem}[Counting eigenvalues]
-    \label{the:c3_counting_eigenvalues}
+This section is based upon yet unpublished work, in collaboration with professor Hans Vernaeve.
+
+
+Throughout mathematical physics there are many problems dependent on, or consisting of determining eigenvalues of a linear elliptic operator on a given domain with homogeneous Dirichlet boundary conditions. Some examples are the Schrödinger equation, the wave equation, the linear theory of elasticity..., to name a few. There are many methods, analytical as well as numerical, to solve for or to approximate these eigenvalues, e.g. shooting methods\cite{ixaru_numerical_1984,ixaru_new_2010}, finite difference methods\cite{wang_new_2009}, methods for finding the lowest eigenvalues\cite{braun_efficient_1996}, or even the methods discussed in chapters \ref{cha:c2}, \ref{cha:c3} and \ref{cha:c4}, \dots There even exist (numerical) methods that are able to find eigenvalues in the neighborhood of a given value $E$ without the need to compute all lower eigenvalues. For this last group of methods we have developed a theorem to count eigenvalues.
+
+Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one dimensional problems, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
+% Fun fact: Richard Courant maried the daughter of Carl Runge
+
+\begin{table}
+  \newlength{\hoWidth}
+  \setlength{\hoWidth}{.2\linewidth}
+  \begin{center}
+    \begin{tabular}{rlrl|rl|}
+      \multicolumn{2}{|c}{$ \lambda_{0} \approx 2.00$}                                                   & \multicolumn{2}{|c|}{$ \lambda_{1,2} \approx 4.00 $} & \multicolumn{2}{c|}{$ \lambda_{3,4,5} \approx 6.00 $}                                                                                                                                                                                                                       \\ \hline
+      \multicolumn{1}{|c}{\parbox[c]{\hoWidth}{\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/2a.pdf}}} & $ \begin{matrix} \mathbf{u_{1,1}} \vspace{5pt}\\ \scalebox{1.5}{$\mathbf{1}$} \end{matrix} $                        & \multicolumn{1}{|c}{\parbox[c]{\hoWidth}{\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/4a.pdf}}} & $ \begin{matrix} \mathbf{u_{1,2}} \vspace{5pt}\\ \scalebox{1.5}{$\mathbf{2}$} \end{matrix} $ & \parbox[c]{\hoWidth}{\vspace{2pt}\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/6a.pdf}\vspace{2pt}} & $ \begin{matrix} \mathbf{u_{2,2}} \vspace{5pt}\\ \scalebox{1.5}{$\mathbf{4}$} \end{matrix} $  \\
+      \cline{1-6}                                                                                        &                                                      & \multicolumn{1}{|c}{\parbox[c]{\hoWidth}{\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/4b.pdf}}} & $ \begin{matrix} \mathbf{u_{2,1}} \vspace{5pt}\\ \scalebox{1.5}{$\mathbf{2}$} \end{matrix} $ & \parbox[c]{\hoWidth}{\vspace{2pt}\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/6b.pdf}\vspace{2pt}} & $  \begin{matrix} u_{1,3} \vspace{5pt}\\ \scalebox{1.5}{$3$} \end{matrix} $ \\
+      \cline{3-6}                                                                                        &                                                      &                                                                                                    &                               & \parbox[c]{\hoWidth}{\vspace{2pt}\includegraphics[width=\linewidth]{img/chapter3/counting/harmonic/6c.pdf}\vspace{2pt}} & $ \begin{matrix} u_{3,1} \vspace{5pt}\\ \scalebox{1.5}{$3$} \end{matrix} $  \\
+      \cline{5-6}
+    \end{tabular}
+    \caption{\label{tab:courant_harmonic}Density plots (see also figure \ref{fig:harmonic_3d}) of the first six eigenfunctions of the quantum harmonic oscillator, $-\nabla^2 u + (x^2+y^2) u = \lambda u$, on the square $[-5;5]\times [-5;5]$, with homogeneous Dirichlet boundary conditions. For each eigenfunction the number of nodal domains is indicated. The eigenfunctions for which Courant's nodal domain theorem is strict, are highlighted in bold. These four eigenfunctions presented here are the only ones, for the harmonic oscillator, for which this strictness holds. }
+  \end{center}
+\end{table}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\linewidth]{img/chapter3/counting/harmonic_3d.pdf}
+    \caption{\label{fig:harmonic_3d} A three-dimensional graph of the eigenfunction $u_{3,1}$ of the quantum harmonic oscillator, $-\nabla^2 u + (x^2+y^2) u = \lambda u$, on the square $[-5; 5] \times [-5; 5]$, with homogeneous Dirichlet boundary conditions. This graph illustrates how the density plots from table \ref{tab:courant_harmonic} and figure \ref{fig:waves_on_disc} should be interpreted.}
+  \end{center}
+\end{figure}
+
+A practical problem in applying Courant's nodal domain theorem is that it is, numerically, quite difficult to reliably determine the number of nodal domains of a function. This history and our need to determine the number of eigenvalues less than a certain value $E$ have motivated us to formulate theorem \ref{the:c3_counting_eigenvalues}.
+
+Before stating the main theorem some definitions are needed. These will simplify the notation and proof of our results.
+\begin{definition}
+  The one-dimensional cross-section $l_{\Omega,i}(\vb{x})$ of a Lipschitz domain $\Omega$ along the $i^\text{th}$ dimension through $\vb{x}$ is defined as:
+  $$
+    l_{\Omega,i}(\vb{x}) := \left\{\vb{y} \in \Omega \ |\  \forall j \neq i : \vb{x}_j = \vb{y}_j   \right\}\text{.}
+  $$
+\end{definition}
+
+Note that, when $\Omega$ is bounded, $l_{\Omega,i}(\vb{x})$ is the union of collinear line segments. As such, the following definition represents the sum of the lengths of each of these segments.
+
+\begin{definition}
+  The \emph{directional diameter}, $\dirdiam_i(\Omega)$, of a bounded Lipschitz domain $\Omega \subseteq \RR^n$ is defined as:
+  $$
+    \dirdiam_i(\Omega) := \sup_{\vb{x}\in\Omega} \int_{-\infty}^{\infty} I_\Omega(\vb{x}_1, \dots, \vb{x}_{i-1}, t, \vb{x}_{i+1}, \dots, \vb{x}_n) \, \dd t \text{.}
+  $$
+  Here $I_\Omega(\vb{x})$ is defined as $1$ if $\vb{x} \in \Omega$, zero otherwise.
+\end{definition}
+
+In theorem \ref{col:counting_eigenvalues} we will be able to identify each eigenvalue by using a continuous sequence of domains $\Omega_\epsilon$. For this sequence of domains it should hold that if $\epsilon \to 0$, the domains should become unboundedly small. The notion of the \emph{directional diameter} allows us to quantify this.
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[width=\linewidth]{img/chapter3/counting/main-theorem-omega.pdf}
+    \caption{\label{fig:intuitive_example_omega} An example of a sequence of domains $\Omega_\epsilon$ that satisfy the necessary conditions for theorem \ref{col:counting_eigenvalues}: the domains are nested, all domains are Lipschitz, and the horizontal as well as the vertical directional diameter converge to zero for $\epsilon \to 0^{+}$.}
+  \end{center}
+
+  \begin{center}
+    \includegraphics[width=\linewidth]{img/chapter3/counting/main-theorem-rho.pdf}
+    \caption{\label{fig:intuitive_example_rho} Another example of a sequence of domains $\Omega_\epsilon$ that also satisfy the necessary conditions for theorem \ref{col:counting_eigenvalues}. Note that these conditions only require that any directional diameter converges to zero. In this example the horizontal directional diameter does not converge to zero: $\lim_{\epsilon \to 0^+}\dirdiam_1(\Omega_\epsilon) \neq 0$. The vertical directional diameter does vanish: $\lim_{\epsilon \to 0^+}\dirdiam_2(\Omega_\epsilon) = 0$.}
+  \end{center}
+\end{figure}
+
+In figures \ref{fig:intuitive_example_omega} and \ref{fig:intuitive_example_rho}, two examples of series of domains are given. Both of these sets of domains are applicable for theorem \ref{col:counting_eigenvalues}. We would like to note that the domain from figure \ref{fig:intuitive_example_rho} is particularly valuable for \cite{ixaru_new_2010} and \cite{baeyens_improvements_2022}.
+
+Before proving the main result of this paper, let us already state the theorem.
+
+\todo{No restating.}
+
+The next section will be dedicated to proving this theorem. In the last section we will provide some examples of and motivation for our work.
+
+
+\subsection{The main theorem} \label{sec:main_theorem}
+
+Throughout this section the $L^2$-norm $\|\cdot\|_{L^2(\Omega)}$ and Sobolev norm $\|\cdot\|_{H^k(\Omega)}$ are being used. For clarity, we will provide the necessary definitions. For a more thorough discussion of these norms and their properties many texts are available, for example \cite{adams_sobolev_2003}.
+
+Let $L^2(\Omega)$ be the space of functions $u : \Omega \to \RR$ such the norm
+$$
+  \|u\|_{L^2(\Omega)} := \left(\int_\Omega \left| u \right|^2 \right)^{\frac{1}{2}}
+$$
+exists and is finite.
+
+The Sobolev space $ H^k(\Omega) = W^{k, 2}(\Omega) $ is the space of all functions $u \in L^2(\Omega)$ such that, for the multi-index $\alpha$ with order $|\alpha|$ at most $k$, each weak partial derivative $D^\alpha u$ of $u$ is a function in $L^2(\Omega)$. The Sobolev norm of $u$ is defined as:
+$$
+  \|u\|_{H^k(\Omega)} := \left(\sum_{|\alpha| \leq k} \int_\Omega \left| D^\alpha u \right|^2\right)^{\frac{1}{2}}\text{.}
+$$
+
+The subspace $ H^k_0(\Omega)$ of $H^k(\Omega)$ is the closure of all infinitely differentiable compactly supported functions on $\Omega$ in $H^k(\Omega)$.
+
+Before proving the main theorem of this article we provide a kind of Fried\-richs's inequality to estimate a lower bound for $\| u \|_{H^k(\Omega)}$ in terms of $\| u \|_{L^2(\Omega)}$, and the diameter and any directional diameter of $\Omega$.
+
+\begin{lemma}
+  \label{lem:friederichs_like}
+  Let $\Omega \subset \RR^n$ be a bounded domain with Lipschitz boundary, and $k \in \mathbb{N}^{+}$. For each $u \in H_0^k(\Omega)$, and any $j \leq n$
+  \begin{equation}
+    \label{equ:friederichs_like}
+    \| u \|_{L^2(\Omega)} \leq \sqrt{\diam(\Omega) \dirdiam_j(\Omega)} \| u \|_{H^k(\Omega)} \text{.}
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  For ease of notation, we will assume $j = 1$. Note that this proof is equally valid for any other $j$. Assume also $u \in C^\infty_c(\Omega) \cap H_0^k(\Omega)$. Because of the homogeneous Dirichlet boundary conditions,
+  the fundamental theorem of calculus can be used to estimate $|u(\vb{x})|^2$ for each $\vb{x} \in \Omega$
+  $$
+    \left|u(\vb{x})\right|^2 = \left|\int_{-\infty}^{\vb{x}_1} \pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n)\dd t\right|^2 \text{.}
+  $$
+  In this formula, and throughout the proof, we formally pose that $u(\vb{x}) \equiv 0$ for $\vb{x} \notin \Omega$. Note that the fundamental theorem of calculus is applicable because $u$ is compactly supported and in $C^1$.
+
+  Applying the Cauchy-Schwarz inequality provides some simplifications. Growing the integration domain removes the dependency on $\vb{x}_1$.
+  \begin{align*}
+    \left|u(\vb{x})\right|^2 & \leq \int_{-\infty}^{\vb{x}_1} I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n) \dd t \int_{-\infty}^{\vb{x}_1} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t \\
+                             & \leq \dirdiam_1(\Omega) \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t
+  \end{align*}
+  with $a = \inf_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \forall \vb{u} \in l_{\Omega, 1}(\vb{x})\}$ and $b = \sup_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \forall \vb{u} \in l_{\Omega, 1}(\vb{x})\}$. Integrating both sides over $\Omega$, applying Fubini's theorem, and noting that $b - a \leq \diam(\Omega)$, yields the required expression for $u \in C^\infty_c(\Omega)$.
+  \begin{align*}
+    \|u\|_{L^2(\Omega)}^2 & \leq \dirdiam_1(\Omega) \int_\Omega \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)\right|^2\dd t \, \dd \vb{x} \\
+                          & = \dirdiam_1(\Omega) \, (b - a) \, \int_{\Omega} \left|\pdv[]{u}{x_1}\left(\vb{x}\right)\right|^2 \dd \vb{x}                              \\
+                          & \leq \dirdiam_1(\Omega) \, \diam(\Omega) \, \| u \|^2_{H^k(\Omega)}
+  \end{align*}
+
+  To prove this for each $u \in H_0^k(\Omega)$, we only have to note that
+  $C^\infty_0(\Omega)$ is $H^k(\Omega)$-dense in $H^k_0(\Omega)$. Now $u \in H_0^k(\Omega)$ can be written as $u = \lim_{i \to +\infty} u_i$ with $u_i \in C^\infty_c(\Omega)$. This implies that
+  $$\|u\|_{L^2(\Omega)}^2 \leq \dirdiam_1(\Omega) \, \diam(\Omega) \, \| u \|^2_{H^k(\Omega)}\text{,}$$
+  for each $u \in H_0^k(\Omega)$.
+\end{proof}
+
+Now we are able to prove lemma \ref{the:c3_counting_eigenvalues}. This prepares the main result of this paper: theorem \ref{col:counting_eigenvalues}.
+
+\begin{lemma}\label{the:c3_counting_eigenvalues}
+  Let $\left\{\Omega_\epsilon \subseteq \RR^n \ | \ \forall \epsilon \in \left]0, 1\right]\right\}$ be a continuous family of diffeomorphic bounded Lipschitz domains, such that $ a < b \implies \Omega_a \subsetneq \Omega_b $, and
+  $$
+    \exists j : \lim_{\epsilon \to 0^{+}} \dirdiam_j(\Omega_\epsilon) = 0\text{.}
+  $$
+
+  Let $\mathcal{L}$ be a linear self-adjoint uniformly elliptic operator, defined on $\Omega_1$. Define $\lambda_{\epsilon,i}$ as the $i^\text{th}$ eigenvalue of $\mathcal{L}$ limited to $\Omega_\epsilon$ with homogeneous Dirichlet boundary conditions. Then for each $i \in \mathbb{N}$, the values $\lambda_{\epsilon,i}$ as functions of $\epsilon$
+  \begin{itemize}
+    \item are continuous,
+    \item are strictly decreasing,
+    \item and are unbounded for $\epsilon \to 0^{+}$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Already in 1924 Courant and Hilbert \cite[Vol I. Chapter V. Paragraph 13]{courant_methods_2008} noted the continuity of the spectrum given perturbations of the elliptic operator. Hale described (e.g.\ \cite{hale_eigenvalues_2005}) how to translate regular perturbations in the domain to perturbations in the operator. Our set of diffeomorphic domains satisfies the necessary assumptions formulated by Hale, so continuity is guaranteed.
+
+  That $\lambda_{\epsilon, i}$ is a decreasing function of $\epsilon$, can be shown by application of \cite[Vol I, Chapter  VI, paragraph 2, Theorem 3]{courant_methods_2008} \emph{``Under the boundary condition $u = 0$ the $n^\text{th}$ eigenvalue for a domain $G$ never exceeds the $n^\text{th}$ eigenvalue for a subdomain of $G$".} The strictness is addressed in a footnote by this theorem: \emph{"In fact, it is always smaller when we are dealing with a proper subdomain."}.
+
+  To prove that $\lambda_{\epsilon, i}$ grows unboundedly we start with Gårding's inequality \cite[Section 9.2.3]{renardy_introduction_2004}. It says that there exist $C_1$ and $C_2$ such that for all $u \in H^k_0(\Omega_\epsilon)$:
+  \begin{equation}\label{equ:garding}
+    \frac{\bra{\mathcal{L}u}\ket{u}_{L^2(\Omega_\epsilon)}}{\|u\|_{L^2(\Omega_\epsilon)}^2} + C_1 \geq C_2 \frac{\|u\|_{H^k(\Omega_\epsilon)}^2}{\|u\|_{L^2(\Omega_\epsilon)}^2}
+  \end{equation}
+  Note that the same $C_1$ and $C_2$ as for $\Omega_1$ will also work for $\Omega_\epsilon$. Lemma \ref{lem:friederichs_like} provides an estimate for the right-hand side of \eqref{equ:garding}, which, in turn, provides an estimate for the operator $\mathcal{L}$:
+  $$
+    \frac{\bra{\mathcal{L}u}\ket{u}_{L^2(\Omega_\epsilon)}}{\|u\|_{L^2(\Omega_\epsilon)}^2} \geq \frac{C_3}{\sqrt{\dirdiam_j(\Omega_\epsilon)}} - C_1\text{,}
+  $$
+  for a constant $C_3$. By assumption the right-hand side is unbounded for $\epsilon \to 0$. Substituting the eigenfunction $u_{\epsilon, i}$ corresponding to the eigenvalue $\lambda_{\epsilon, i}$ into the left-hand side, yields that $\lambda_{\epsilon, i}$ has to be unbounded as well.
+\end{proof}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{img/chapter3/counting/counting_eigenvalues.pdf}
+    \caption{\label{fig:eigenvalue_graph} This graph displays all eigenvalues less than $15$ for the two-dimensional Schrödinger problems $-\nabla^2 \psi + (1+x^2)(1+y^2)\psi = E \psi$ on the rectangle $[-5.5; 5.5]\times[-5.5; y_{\text{max}}]$ with homogeneous Dirichlet boundary conditions.}
+  \end{center}
+\end{figure}
+
+As an example, in figure \ref{fig:eigenvalue_graph} the spectrum of a Schrödinger operator is plotted as a function of the nested sequence of domains $[-5.5; 5.5] \times [-5.5; y_{\text{max}}]$. Each curve corresponds to an eigenvalue. The figure suggests that all of these lines are continuous, decreasing, and unbounded for $y_{\text{max}} \to -5.5^{+}$, in accordance with lemma \ref{the:c3_counting_eigenvalues}. A horizontal line corresponding to a fixed value $E$ will intersect each curve corresponding to a lower eigenvalue on the whole domain. This number of
+intersection thus gives the number of eigenvalues lower than this given value $E$. If $E$ itself is an eigenvalue, then we have also found its index.
+
+The graph from figure \ref{fig:eigenvalue_graph} and the notion of a horizontal line with fixed value of $E$, give rise to following theorem.
+
+\begin{theorem}[Baeyens, Van Daele and Vernaeve 2022]\label{col:counting_eigenvalues}
+  Let $\mathcal{L}$ be a linear self-adjoint uniformly elliptic operator on a bounded Lipschitz domain $\Omega_1 \subseteq \RR^n$ with homogeneous Dirichlet boundary conditions. Define, following \cite{hale_eigenvalues_2005}, a topology on all domains $\Omega$ which are $C^k$-diffeomorphic to $\Omega_1$.  Assume a continuous family of such $C^k$-diffeomorphic domains $\Omega_\epsilon$ for $\epsilon\in\left]0; 1\right]$ is given such that $\Omega_a \subseteq \Omega_b$ if $a < b$ and $\exists j : \lim_{\epsilon\to 0^+} \dirdiam_j(\Omega_\epsilon) = 0$.
+
+  For a given value $E$ the number of eigenvalues of $\mathcal{L}$ on $\Omega_1$ less than or equal to $E$ is exactly the same as the number of domains $\Omega_\epsilon$ on which $E$ is an eigenvalue of $\mathcal{L}$ limited to $\Omega_\epsilon$ with homogeneous Dirichlet boundary conditions. Domains on which $E$ is an eigenvalue with multiplicity $d$ are counted $d$ times.
 \end{theorem}
 
-\subsection{A test on a more exotic domain}
+As a necessary condition we imposed that, for the sequence of domains $\Omega_\epsilon$,
+$$
+  \dirdiam_j(\Omega_\epsilon)
+$$
+should converge to zero. This may seem a quite restrictive condition, in practice it is not. Most, natural, sequences of domains do satisfy this condition in at least one axis. In section \ref{sec:examples} we provide some examples of different kinds of such domains.
+
+For direct methods, such as (semi-)discretization methods, theorem \ref{col:counting_eigenvalues} cannot directly be applied. However, for shooting methods (\cite{ixaru_new_2010,baeyens_improvements_2022}) this theorem is extremely useful.
+In such methods, for a fixed value of $E$, an error function is computed by propagating solutions over the domain. The error function measures the mismatch between the propagated solution and the boundary conditions.
+
+While propagating a solution one can keep track of how many times the boundary conditions are met inside the domain. Each of these occurrences corresponds to a subdomain on which $E$ is an eigenvalue, which in turn, by theorem \ref{col:counting_eigenvalues}, corresponds to a unique eigenvalue less than $E$.
+
+
+\subsection{Examples}\label{sec:examples}
+
+We provide three examples. The first example illustrates that our result is a more general formulation for a well known theorem for the one-dimensional problem. The second example shows that this theorem can also be applied to more exotic domains. And the third example is one we have implemented in our numerical method for the two-dimensional Schrödinger equation on a rectangular domain.
+
+\subsubsection{One dimensional Sturm-Liouville equation}
+
+Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the Sturm-Liouville equation
+$$
+  \dv{x} \left( p(x) \dv{y_i}{x} \right) + q(x) y_i = -\lambda_i w(x) y_i
+$$
+on the interval $[a, b]$ with homogeneous Dirichlet boundary conditions $y_i(a) = y_i(b) = 0$. Defining the series of domains $\Omega_\epsilon = [a, a + \epsilon\,(b-a)]$, allows us to apply theorem \ref{col:counting_eigenvalues}. Thus, there should be $i$ intervals $\Omega_{\epsilon_j}$, smaller than $[a, b]$, on which $\lambda_i$ is an eigenvalue. As eigenfunctions are unique, up to a factor, $y_i$ should have exactly $i$ zeros inside $[a, b]$. This is a well-known property in Sturm-Liouville theory, which is illustrated in figure \ref{fig:sturm-liouville} for the Bessel equation.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{img/chapter3/counting/sturm-liouville.pdf}
+    \caption{\label{fig:sturm-liouville} This is the eigenfunction $y_4$, with $\lambda_4 \approx 246.74$, of the Bessel equation $ \dv{x} \left( x \dv{y}{x} \right) + \frac{1}{4x} y = -\lambda x y $ on $[0, 1]$. The four subintervals, $\Omega_{\epsilon_1} = [0, \epsilon_1],\dots, \Omega_{\epsilon_4} = [0, \epsilon_4]$, on which $\lambda_4$ is also an eigenvalue of the Bessel equation with homogeneous Dirichlet boundary condition, are indicated.}
+  \end{center}
+\end{figure}
+
+Multiple shooting procedures \cite{baeyens_fast_2020,ledoux_matslise_2016,ixaru_cp_2000} have been developed that implement this using the Prüfer transformation \cite{pruefer_neue_1926}.
+
+\subsubsection{Standing waves on a disc}\label{sec:c3_standing_waves_on_disc}
+
+Consider the eigenpairs of the two-dimensional wave equation
+$$
+  -\nabla^2 \psi = \lambda \psi
+$$
+on the unit disc with homogeneous Dirichlet boundary condition. From the analytical solution with Bessel functions we know the following eigenvalues:
+\begin{center}
+  \bgroup
+  \def\arraystretch{1.5}
+  \begin{tabular}{r|cccccc}
+    Eigenvalue       & $\lambda_0$ & $\lambda_{1,2}$ & $\lambda_{3,4}$ & $\lambda_{5}$ & $\lambda_{6,7}$ & $\lambda_{8,9}$ \\ \hline\hline
+    Analytical value & $J_{0,1}^2$ & $J_{1,1}^2$     & $J_{2,1}^2$     & $J_{0,2}^2$   & $J_{3,1}^2$     & $J_{1,2}^2$     \\ \hline
+    Numerical value  & $5.783$     & $14.68$         & $26.37$         & $30.47$       & $40.71$         & $49.22$
+  \end{tabular}
+  \egroup
+\end{center}
+\vspace{1em}
+
+A straightforward example is to look at the sequence of concentric discs $\Omega_\epsilon$ of radius $R = \epsilon$. From the theory with Bessel functions, we know that if $\lambda_{i}$ is the $i^\text{th}$ eigenvalue on the unit disc, then $\frac{\lambda_{i}}{R^2}$ is the $i^\text{th}$ eigenvalue on the disc with radius $R$. It is obvious that the values $\frac{\lambda_{i}}{R^2}$ as a function of $R$, are continuous, decreasing, and unbounded as $R \to 0^{+}$.
+
+As a more interesting example we will consider a sequence of moon shaped domains, as seen in figure \ref{fig:waves_on_disc}. The choice for this sequence of domains can be motivated from the point of view of shooting methods. In these techniques solutions on one side of the domain, are propagated to the other. That way, the intermediate domains are possibly moon shaped. Note, that because of these exotic domains, the problem can no longer be solved by separation of variables in polar coordinates. Now, finding solutions requires specialized two-dimensional methods. For this a coordinate transformation is introduced which transforms the domain into a rectangle. The resulting transformed equation is not even a Schrödinger equation. Solutions were found by applying a finite difference scheme to this rectangle.
+
+Consider now the fixed value of $E = 50$. From the previous table we know that there are $10$ eigenvalues, counted with multiplicity, less than $E$. This means, following corollary \ref{col:counting_eigenvalues}, there should be exactly $10$ moon shaped domains on which $E$ is also an eigenvalue. These ten domains, with the corresponding eigenfunction of $E = 50$, are plotted in figure \ref{fig:waves_on_disc}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{img/chapter3/counting/disc.pdf}
+    \caption{\label{fig:waves_on_disc} There are 10 smaller moon shaped domains on which $\lambda = 50$ is an eigenvalue of the wave equation $-\nabla^2 \psi = \lambda \psi$ with homogeneous Dirichlet boundary conditions. These domains are found by applying a coordinate transformation such that each moon-shaped domain becomes a rectangle. On these rectangles a finite difference scheme was used.}
+  \end{center}
+\end{figure}
+
+\subsubsection{A two-dimensional Schrödinger equation}\label{exa:ixaru}
+
+In this example we will take a look at a two-dimensional time-independent Schrödinger equation with homogeneous Dirichlet boundary conditions on a rectangle.
+$$
+  -\nabla^2 \psi + V(x, y)\psi = E\psi
+$$
+
+In \cite{ixaru_new_2010} an example is studied with the potential
+$$
+  V(x, y) = (1+x^2)(1+y^2)
+$$
+on the square $[-5.5; 5.5] \times [-5.5; 5.5]$. The first eigenvalues are reported to be as follows.
+
+\begin{center}
+  \begin{tabular}{r|rcr|r}
+    $E_{0}$         & $3.1959181$ & \hspace*{2cm} & $E_{6} = E_{7}$ & $9.9280611$  \\
+    $E_{1} = E_{2}$ & $5.5267439$ &               & $E_{8} = E_{9}$ & $11.3118171$ \\
+    $E_{3}$         & $7.5578033$ &               & $E_{10}$        & $12.1032536$ \\
+    $E_{4}$         & $8.0312723$ &               & $E_{11}$        & $12.2011790$ \\
+    $E_{5}$         & $8.4445814$ &               & $E_{12}$        & $13.3323313$ \\
+  \end{tabular}
+\end{center}
+
+The method used in \cite{ixaru_new_2010} is a shooting method, which means that it guesses a value for $E$ and calculates a matching error. The matching error in turn is used to improve the estimation of $E$. This process is repeated until $E$ is found up to the desired accuracy.
+
+The mentioned matching error is calculated by propagating all possible (eigen)functions $u(x, y)$ from the bottom of the domain to the top. In the context of theorem \ref{col:counting_eigenvalues}, this propagation can be seen as going through all possible subdomains from figure \ref{fig:intuitive_example_rho}. If, while propagating, any of the possible eigenfunction $u$ becomes zero, then a subdomain is found on which $E$ is an eigenvalue, because $u$ satisfies the boundary conditions.
+
+For each $E$, while propagating, one can keep track of how many $u$ did become zero, or in other words, on how many subdomains $E$ is an eigenvalue. Following theorem \ref{col:counting_eigenvalues}, this number tells us how many eigenvalues there are less than $E$ on the whole domain.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{img/chapter3/counting/counting_eigenvalues_zoom.pdf}
+    \caption{\label{fig:counting_eigenvalues_zoom} Here a zoomed in version of figure \ref{fig:eigenvalue_graph} is displayed. Each blue graph represents an eigenvalue of the Schrödinger equation from example \ref{exa:ixaru}. The fixed line $E = 11$ is represented in red. Each crossing of the red line and a blue graph represents a smaller subdomain on which $E=11$ is an eigenvalue. These subdomains, with corresponding eigenfunction are illustrated in figure \ref{fig:ixaru_potential}.}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{img/chapter3/counting/ixaru.pdf}
+    \caption{\label{fig:ixaru_potential} There are 8 smaller rectangles on which $E = 11$ is an eigenvalue of the Schrödinger equation from example \ref{exa:ixaru}. These domains were found by employing the algorithms from \cite{baeyens_improvements_2022}.}
+  \end{center}
+\end{figure}
+
+To illustrate this figure \ref{fig:eigenvalue_graph} describes how the eigenvalues evolve through a growing domain. Figure \ref{fig:counting_eigenvalues_zoom} contains a zoomed in version of the same graph, with $E=11$ highlighted. In the graph, and in accordance with \cite{ixaru_new_2010}, we see that there are $8$ eigenvalues on the full domain less than $11$.
+
+In figure \ref{fig:ixaru_potential} the corresponding $8$ smaller subdomains are depicted. These can be counted, with multiplicity, while propagating all possible solutions to efficiently obtain the number of true eigenvalues less than $E = 11$. Do note that the multiplicity of the eigenvalue on a subdomain is important: $y_\text{max}=0.80845$ is counted twice, because the eigenvalue $E=11$ has two linear independent eigenfunctions on this subdomain.
+
+In \cite{baeyens_improvements_2022} the authors have implemented theorem \ref{col:counting_eigenvalues} in the method from \cite{ixaru_new_2010} to reliably determine the index of all eigenvalues.
+
+\subsubsection{A test on a more exotic domain}
 
 As a numerical demonstration that this theorem is true for more domains than only the rectangle, we demonstrate it on a series of moon-shaped domains. For this, define the transformation $T:[-\frac{\pi}{2}, \frac{\pi}{2}] \times [-1, 1] \to \RR^2$ as:
 \begin{equation}\label{equ:c3_disc_transformation}
@@ -579,7 +871,7 @@ First, let us clearly define which Schrödinger problem we are solving: Find the
 \end{equation}
 holds. As boundary conditions we impose $\psi(x, y) = 0$ on the boundary $\delta \Omega$.
 
-\subsubsection{Transforming the problem onto a rectangular domain}
+\paragraph{Transforming the problem onto a rectangular domain}
 
 Approximating solutions for the eigenvalues of \eqref{equ:c3_disc_schrodinger} on such an exotic domain $\Omega_\epsilon$ is not a trivial task. In principle, this problem could be seen as solving the Schrödinger equation on $[-1,1]^2$ with the potential
 $$
@@ -622,7 +914,7 @@ $$
     \mathcal{D} = c^\alpha {\pdv[]{}{\alpha}} + c^t \pdv[]{}{t} + c^{\alpha\alpha} \pdv[]{}{\alpha\alpha} + c^{\alpha t} \pdv[]{}{\alpha t} + c^{tt} \pdv[]{}{tt}
 $$
 
-\subsubsection{A specialized numerical method}
+\paragraph{A specialized numerical method}
 
 Before we can analyze eigenvalues of \eqref{equ:c3_disc_schrodinger} or after transformation of the operator $-\mathcal{D}$ in relation to the domain $\Omega_\epsilon$, we still need a method to approximate these eigenvalues. For general partial differential equations with boundary conditions some standard techniques are available, \cite[Chapter~11]{heath_scientific_2002} contains an overview of some of these methods. Our choices include, but are not limited to a finite difference method, or a finite element method or a semidiscrete method with shooting. For our purposes a method which is easy to implement, yet gives reliable results will be the best choice. A simple finite difference scheme will be sufficient.
 
@@ -672,7 +964,7 @@ with
                 & {} + \frac{1}{h_\alpha h_t} \vb{C}^{\alpha t} \left(\vb{I}_{n_t - 1}\otimes \vb{D}^{(1)}_{n_\alpha - 1} \right) \left( \vb{D}^{(1)}_{n_t - 1}  \otimes \vb{I}_{n_\alpha - 1} \right)\text{.}
 \end{align*}
 
-\subsubsection{Analysis of eigenvalues in relation to the domain}\label{sec:c3_eigenvalues_wrt_domain_analysis}
+\paragraph{Analysis of eigenvalues in relation to the domain}
 
 Before applying this numerical method on different domains $\Omega_\epsilon$ it is valuable to first find the eigenvalues on the disc $\Omega_1$ itself. In many introductory textbooks to (partial) differential equations the study of the wave equation on a drum is considered. In most texts, if not all, the idea boils down to: with a transformation to polar coordinates and separation of variables this two-dimensional problem can be transformed into two one-dimensional problems. One of these can be solved directly, the other gives rise to the so-called Bessel functions.
 
