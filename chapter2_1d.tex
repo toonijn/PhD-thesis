@@ -103,7 +103,7 @@ With these four theorems in the back of our minds we will be able to develop num
 
 Throughout this thesis, and the research preceding it, we have not and will not focus on the applicability of the Sturm-Liouville equation. This is definitely not due to a lack of applications. Rather, the opposite: Sturm-Liouville equations pop up in an innumerable diversity of fields. Many real-world problems can be stated as or reduced to differential equations and in particular the Sturm-Liouville equation.
 
-\todo{Give some real-world examples of this equation.\cite[Chapter~8]{guenther_sturmliouville_2018}}
+\todo{Give some real-world examples of this equation \cite[Chapter~8]{guenther_sturmliouville_2018}.}
 
 \subsection{Liouville's transformation}\label{sec:c2_liouville_transformation}
 \todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
@@ -641,18 +641,11 @@ Much has been written \todo{Some more sources} about the best choices for the sc
 
 In the previous section we have studied the background of constant perturbation methods. From here on out we develop our additions to these well-established methods. Some of these results were published in \cite{baeyens_fast_2020}, particularly this section \ref{sec:c2_matslise3} and some numerical experiments: \ref{sec:c2_numerical_experiments_mathieu}, \ref{sec:c2_numerical_experiments_coffey_evans} and \ref{sec:c2_numerical_experiments_hydrogen}. The other numerical experiments from \ref{sec:c2_numerical_experiments} take a closer look at our improvements since \cite{baeyens_fast_2020} to the algorithm. In section \ref{sec:c2_periodic}, we present how the constant perturbation method can be used to solve periodic boundary conditions as well. And, later on in section \ref{sec:c2_the_implementation} we take a deep dive into how our new efficient implementation is build.
 
-In 2005 the first version of Matslise \cite{ledoux_matslise_2005}, A \textsc{matlab} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful
-constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP
-methods in the user-friendly and then modern numerical computing environment \textsc{matlab}. Up to that
-point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \ldots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996}
-were written in Fortran.
+In 2005 the first version of Matslise \cite{ledoux_matslise_2005}, A \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
 
-Matslise provided a graphical user interface that made it easy for all
-researchers to effectively solve the
-Sturm--Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve
-a particular SLP, sufficient knowledge of Fortran was needed to implement the problem at hand.
+Matslise provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
 
-In 2016 a new version, \matslise{2}\cite{ledoux_matslise_2016}, was released. In this whole new version of Matslise generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of SLPs. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
+In 2016 a new version, \matslise{2}\cite{ledoux_matslise_2016}, was released. In this whole new version of Matslise generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
 
 As the original Matslise modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the Matslise routines to solve the multidimensional Schrödinger equation. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The \matslise{2} version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In \matslise{2} the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the implementation of \matslise{2}.
 
@@ -967,7 +960,7 @@ $$
 $$
 Our program expects a vector $\vb{y_a} = \begin{pmatrix}\beta_a & - \alpha_a\end{pmatrix}^\transposesign{}$, and analogous for $\vb{y_b}$. We have chosen for these types of arguments to be more in line with how propagation is executed in the constant perturbation method.
 
-\subsection{A potential with jumps}
+\subsection{A potential with jumps}\label{sec:c2_experiment_with_jumps}
 
 In the next numerical experiment we demonstrate another feature of constant perturbation methods. Since the potential function is piecewisely approximated, the potential may be discontinuous as long as the jumps are situated on the boundary between two consecutive subintervals.
 

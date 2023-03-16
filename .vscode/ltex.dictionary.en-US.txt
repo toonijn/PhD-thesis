@@ -65,3 +65,7 @@ diffeomorphic
 Gårding
 Friedrichs
 unboundedly
+timeit
+SLEIGN
+sharedptr
+Veerle

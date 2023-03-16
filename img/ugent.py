@@ -62,6 +62,12 @@ palet = LazyMap(lambda x: Rainbow(((x / palet_N % 1) + pi**(x//palet_N)) % 1))
 
 cm.register_cmap("ugent_RdBu", RdBu)
 
+def style_3d(ax):
+    ax.w_xaxis.set_pane_color((.75, .75, .75, 1.0))
+    ax.w_yaxis.set_pane_color((.9, .9, .9, 1.0))
+    ax.w_zaxis.set_pane_color((.82, .82, .82, 1.0))
+    
+
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
