@@ -69,3 +69,4 @@ timeit
 SLEIGN
 sharedptr
 Veerle
+Newton-Raphson
