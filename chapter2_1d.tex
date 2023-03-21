@@ -26,7 +26,7 @@ Boundary conditions have to be specified before solutions can be found. These co
 \end{itemize}
 These three types of boundary conditions are what is called separated conditions. The condition on the left side $a$, or decoupled from the one on the right side $b$. In contrast, there are also boundary conditions that do coupled both ends.
 \begin{itemize}
-    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{anti-periodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized with a $2 \times 2$ matrix $\vb{K}$:
+    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{antiperiodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized with a $2 \times 2$ matrix $\vb{K}$:
           $$
               \begin{pmatrix} y(a) \\ y'(a) \end{pmatrix} = \vb{K} \begin{pmatrix} y(b) \\ y'(b) \end{pmatrix}\text{.}
           $$
@@ -34,7 +34,7 @@ These three types of boundary conditions are what is called separated conditions
 
 Note that homogeneous Dirichlet or Neumann boundary conditions can always be written as homogeneous Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is more general to consider homogeneous Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and problems with these boundary conditions lose some of the nice properties which are guaranteed for separated conditions. This case will later be studied in section \ref{sec:c2_periodic}.
 
-\subsection{Properties of the Sturm-Liouville equation}
+\subsection{Properties of the Sturm-Liouville equation}\label{sec:c2_slp_properties}
 
 Before developing numerical methods for solving the one-dimensional time-independent Schrödinger equation, it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
@@ -66,7 +66,7 @@ For implementing methods to find solutions, it is valuable to study what a solut
 Knowing we only need to find real solutions simplifies our work. The next theorem allows us to get a grasp on the number of eigenvalues we need to find.
 
 \begin{theorem}\label{the:c2_slp_countable}
-    The number of eigenvalues of a regular Sturm-Liouville problem are countable. All eigenvalues have a lower bound, no upper bound and are unique. This implies that these can be written as:
+    The number of eigenvalues of a regular Sturm-Liouville problem with homogeneous Robin boundary conditions are countable. All eigenvalues have a lower bound, no upper bound and are unique. This implies that these can be written as:
     $$
         \lambda_0 < \lambda_1 < \lambda_2 < \dots \to \infty \text{.}
     $$
@@ -110,7 +110,7 @@ Throughout this thesis, and the research preceding it, we have not and will not 
 
 Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
 
-\section{Background about Matslise}
+\section{Background about Matslise}\label{sec:c2_background}
 
 Numerical methods for ordinary differential equations as \emph{initial value} problems are already many centuries old, starting with Euler's method. Numerical methods as a research topic by itself really took of a little more than a century ago. In particular, linear multistep methods and Runge-Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
 
@@ -567,9 +567,9 @@ Generically we can write such an interval as $I = [X, X+h]$. On $I$, the solutio
 
 The functions $u(\delta)$ and $v(\delta)$ are the propagators from theorem \ref{the:c2_perturbation_terms} with the initial conditions $u(0) = 1, u'(0)=0$ and
 $v(0) = 0, v'(0)=1$. This matrix is called the one-step propagation matrix:
-$$
+\begin{equation}\label{equ:c2_propagation_matrix}
     \vb{P}(\delta) = \begin{pmatrix} u(\delta) & v(\delta) \\ u'(\delta) & v'(\delta) \end{pmatrix}\text{.}
-$$
+\end{equation}
 To execute backward propagation, its inverse can be determined. In $\delta = 0$, due to the initial conditions, the determinant of $\vb{P}(0)$ is one. To determine the determinant throughout the domain we compute its derivative with respect to $\delta$.
 \begin{align*}
     \dv[]{\det\vb{P}}{\delta} & = \left(u(\delta) v'(\delta) - u'(\delta) v(\delta)\right)' \\
@@ -637,7 +637,7 @@ For this we remember theorem \ref{the:c2_kth_eigen_k_roots}. To know the index o
 
 To combat this issue and to provide a reliable way to count the roots of even highly oscillatory eigenfunctions Prüfer's scaled transformation can be used \cite{pruefer_neue_1926}.
 
-\begin{theorem}[Prüfer 1926]
+\begin{theorem}[Prüfer 1926]\label{the:c2_prufer_transformation}
     For a fixed value $E$ define $\theta(x)$ and $\rho(x)$ as the continuous functions which satisfy
     \begin{equation}\label{equ:c2_prufer_theta}
         y(x) = \frac{1}{\sqrt{S(x)}} \rho(x) \sin(\theta(x)) \quad\text{ and }\quad p(x)y'(x) = \sqrt{S(x)} \rho(x) \cos(\theta(x))
@@ -935,12 +935,106 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:c2_periodic}
 
-\todo{Still to write...}
-\begin{theorem}
+In contrast to (separated) Robin boundary conditions, in this section we will study generalized periodic boundary conditions. Assume we are solving a regular Sturm-Liouville equation
+\begin{equation}\label{equ:c2_periodic_sturm_liouville}
+    -\dv[]{p(x)y'(x)}{x} + q(x)y(x) = \lambda w(x) y(x)
+\end{equation}
+on a domain $[a, b]$, with generalized periodic boundary conditions:
+\begin{equation}\label{equ:c2_periodic_boundary_conditions}
+    \begin{pmatrix}
+        y(a) \\ p(a)y'(a)
+    \end{pmatrix} = \vb{K}\begin{pmatrix}
+        y(b) \\ p(b)y'(b)\text{.}
+    \end{pmatrix}
+\end{equation}
 
+In expression \eqref{equ:c2_periodic_boundary_conditions} is $\vb{K}$ assumed to be a $2 \times 2$ real matrix with determinant $1$\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, and if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
+
+In section \ref{sec:c2_slp_properties} we have provided some theorems about regular Sturm-Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem \ref{the:c2_real_eigenvalues} is also applicable here. All eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
+
+Following section \ref{sec:c2_background} and \ref{sec:c2_matslise3}, due to the Liouville-transformation (from section \ref{sec:c2_liouville_transformation}) it is sufficient to only consider Schrödinger problems with $p(x) = w(x) = 1$.
+
+Because the equation has not changed the idea and computation of a piecewise constant approximation, perturbation terms and a propagation matrix are still valid and valuable. There are just a few related problems. First, what do we propagate? No obvious initial conditions are available. And second, we are still only interested in continuous and continuously differentiable functions, so the idea of a matching error is relevant. But how can we compute the index of an eigenvalue? Without this, it would be difficult to ensure all requested eigenvalues are found.
+
+For this we employ the results from \cite{binding_prufer_2012,binding_prufer_2013} to expand the Prüfer transformation. In theorem \ref{the:c2_prufer_transformation}, the Prüfer-angle function $\theta(x)$ was defined. This definition assumed initial conditions $y(a) = \beta_a$ and $p(a)y(b) = -\alpha_a$. In the periodic case, no such initial conditions are available. Therefore, we define the Prüfer-angle as a function of the initial conditions $y(a) = \sin(\alpha)$ and $p(a)y'(a) = \cos(\alpha)$. For a fixed value of $E$, define $\theta_\alpha(x)$ with the ordinary differential equation \eqref{equ:c2_prufer_theta_ode} and initial conditions
+$$
+    \theta_\alpha(a) = \atan(S(a) \tan(\alpha))\text{.}
+$$
+
+As in theorem \ref{the:c2_prufer_transformation}, it is necessary to consider the difference with the right most boundary conditions. For this we define the unique $\pi$-periodic function $\beta(\alpha)$ with $\beta(0) \in \left]-\pi, 0\right]$ and
+$$
+    \tan(\beta(\alpha)) = S(b)\frac{k_{11} \sin(\alpha) + k_{12} \cos(\alpha)}{k_{21} \sin(\alpha) + k_{22} \cos(\alpha)}\text{,}
+$$
+with
+$$
+    \vb{K} = \begin{pmatrix}
+        k_{11} & k_{12} \\ k_{21} & k_{22}
+    \end{pmatrix}\text{.}
+$$
+
+With this $\beta(\alpha)$, we define
+\begin{align}
+    \delta_\alpha(E)       & = \theta_\alpha(b) - \beta(\alpha)\text{,} \nonumber                    \\
+    m(E)            & = \min_{\alpha \in \RR} \delta_\alpha(E) \nonumber                             \\
+    \text{and }M(E) & = \max_{\alpha \in \RR}\delta_\alpha(E)\text{.}\label{equ:c2_periodic_m_and_m}
+\end{align}
+In these expressions we have made the dependence on $E$ explicit, as $E$ was previously assumed to be fixed.
+
+The following lemma and theorems, with proofs can be found in \cite{binding_prufer_2012} and \cite{binding_prufer_2013a}
+\begin{lemma}[Binding and Volkmer 2012]\label{lem:c2_periodic_m_inequality}\hfill
+    \begin{itemize}
+        \item The functions $m$ and $M$ are continuous and strictly increasing.
+        \item For each $E$, we have the inequalities
+              $$
+                  -\pi < m(E) < M(E) < m(E) + \pi\text{.}
+              $$
+    \end{itemize}
+\end{lemma}
+
+For the following theorems we need to distinguish between if $k_{12} < 0 \lor k_{12} = 0 < k_{11}$ and the opposite. Let us call the former the periodic case, and the latter the antiperiodic case.
+
+\begin{theorem}[Binding and Volkmer 2012]
+    For each eigenvalue $\lambda$ of the Sturm-Liouville equation \eqref{equ:c2_periodic_sturm_liouville} subject to generalized periodic boundary conditions, either $m(\lambda) = k\pi$ or $M(\lambda) = k\pi$ with $k$ integer. In the periodic case will $k$ be even, in the antiperiodic case will $k$ be odd.
 \end{theorem}
-\cite{binding_prufer_2012}
 
+The last theorem gives us a coupling between the function $m(E), M(E)$ and the eigenvalues of the Sturm-Liouville problem. To reliably determine the index of an eigenvalue we also need the inverse theorem.
+
+\begin{theorem}[Binding and Volkmer 2012]\label{the:c2_prufer_periodic_index}
+    Define $\lambda_k^{+}$ to be the unique value for which $m(\lambda_k^{+}) = k\pi$ and $\lambda_k^{-}$ to be the unique value such $M(\lambda_k^{-}) = k\pi$. There is no value $\lambda_0^{-}$.
+    \begin{itemize}
+        \item If $k$ is even (for the periodic case) or odd (for the antiperiodic case), then all values $\lambda^{\pm}_k$ are eigenvalues of the corresponding Sturm-Liouville problem.
+        \item There are no other eigenvalues.
+        \item $\lambda_k^{+} < \lambda_{k+1}^{-}$ for each $k \geq 0$.
+        \item An eigenfunction belonging to $\lambda_k^{\pm}$ has exactly $k$ zeros in the interval $\left[a, b\right]$.
+    \end{itemize}
+\end{theorem}
+
+This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). Furthermore, it is also known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/prufer/periodic_minmax.pdf}
+    \end{center}
+    \caption{The scaled Prüfer transformation with different initial conditions for the Schrödinger problem with $q(x) = 3x^2(\pi - x)$ on $[0, \pi]$. The functions $m(E)$ and $M(E)$ from \eqref{equ:c2_periodic_m_and_m} are drawn as well.}\label{fig:c2_periodic_m_and_m}
+\end{figure}
+
+As an illustration, we provide figure \ref{fig:c2_periodic_m_and_m}. Here, the expression $\delta_\alpha(E)$ is visualized for varying initial conditions expressed with $\alpha$. All these curves are captured in between $m(E)$ and $M(E)$. The first five eigenvalues of the considered problem are indicated as well. We see that for these values either $m(E)$ or $M(E)$ is an even multiple of $\pi$.
+
+To determine the index of an eigenvalue, theorem \ref{the:c2_prufer_periodic_index} assures us that using the function $m(E)$ and $M(E)$ is sufficient. But efficiently computing these, is no easy task. Since they are defined as extreme values over all possible initial conditions, there is no straightforward way to evaluate them.
+
+We propose to propagate two different initial conditions and use the inequality from lemma \ref{lem:c2_periodic_m_inequality} to estimate $m(E)$ and $M(E)$. More concretely, we apply the propagation matrix from \eqref{equ:c2_propagation_matrix}, not to a single vector, but to a pair of vectors. Both these vectors give rise to two estimates $\delta_1(E)$ and $\delta_2(E)$ of $\delta_\alpha(E)$, without loss of generality we assume $\delta_1 < \delta_2$. From lemma \ref{lem:c2_periodic_m_inequality}, we know
+$$
+    \delta_2(E) - \pi < m(E) \text{ and } M(E) < \delta_1(E) + \pi \text{.}
+$$
+
+Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_1$ and $E_2$ such that
+$$
+    \delta_1(E_1) + \pi = k \pi \text{ and } \delta_2(E_2) - \pi = k \pi\text{.}
+$$
+
+By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues.
+
+\todo{Still to write: finding the two eigenvalues in the interval $[E_1, E_2]$. First, find the extreme point of the matching error, and then binary search.}
 
 \section{Numerical experiments}\label{sec:c2_numerical_experiments}
 

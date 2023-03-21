@@ -70,3 +70,4 @@ SLEIGN
 sharedptr
 Veerle
 Newton-Raphson
+antiperiodic

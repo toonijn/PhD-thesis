@@ -6,7 +6,7 @@
 \else
 
 \newcommand{\startchapter}[1]{\begin{document}\setcounter{chapter}{#1}\addtocounter{chapter}{-1}}
-\newcommand{\stopchapter}{\printbibliography[title=Bibliography,heading=bibintoc]\end{document}}
+\newcommand{\stopchapter}{\begin{uCJK}\printbibliography[title=Bibliography,heading=bibintoc]\end{uCJK}\end{document}}
 
 
 \documentclass{book}
@@ -49,6 +49,7 @@
 \usepackage{nicefrac}
 \usepackage[outputdir=build]{minted} % Code highlighting
 \usepackage{csquotes}
+\usepackage{bxcjkjatype} % Japanese in bibliography
 
 % format numbers
 \usepackage{numprint}
