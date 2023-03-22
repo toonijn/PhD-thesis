@@ -516,7 +516,7 @@ Let us denote the constant perturbation method with given choices for the degree
 
 Finally, one can simplify the expressions for the coefficients of the perturbation terms $C^{(q)}_i$ by taking into account the orders $P_0$ (for small $Z$) and $P_{ass}$ (for negative $Z$ with $|Z| \gg 0$) that can be attained by the CPM$[N,Q]$ method. Some terms will contribute to the solution in higher orders of $h$, and so they do not need to be computed. This pruning then finally results in a method which was generically denoted as CPM$\{P_0, P_{ass}\}$. Later in theorem \ref{the:c2_delta_formulae}, we will prove that $P_{ass} = P_0$, thus we will denote our method as CPM$\{P_0\}$.
 
-The original SLCPM12-code implemented the CPM$\{12,10\}$ algorithm. In the original Matslise package, a user could choose between several algorithms: CPM$\{12,10\}$, CPM$\{14,12\}$, CPM$\{16,14\}$, CPM$\{18,16\}$.
+The original SLCPM12-code implemented the CPM$\{12,10\}$ algorithm. In the original \matslise{} package, a user could choose between several algorithms: CPM$\{12,10\}$, CPM$\{14,12\}$, CPM$\{16,14\}$, CPM$\{18,16\}$.
 In \matslise{2} only CPM$\{18,16\}$ and CPM$\{16,14\}$ are implemented. The CPM$\{16,14\}$ method is used for propagation and the difference between the two methods is used for error estimation.
 
 The CP methods have also been successfully applied to other types of problems, such as the so-called coupled channel Schrödinger-equations problem. Research in the past lead to the \fortran{} code \lilix{} \cite{ixaru_lilix_2002} and the \matlab{} code \matscs{} \cite{ledoux_numerical_2007}. These programs made it then possible to construct CP-based methods for solving the two-dimensional Schrödinger problem \cite{ixaru_new_2010} and the time-dependent one-dimensional Schrödinger problem \cite{ledoux_accurate_2014}.
@@ -587,9 +587,9 @@ This matrix can now be used for the backward initial value problem.
 If we compute on each interval left of $x_m$ the matrix $\vb{P}(h)$ and on each interval to the right of $x_m$ we compute $\vb{P}^{-1}(h)$, then the solution of $y_\text{L}(x_m)$, $y_\text{L}'(x_m)$ and $y_\text{R}(x_m)$, $y_\text{R}'(x_m)$ can be determined.
 
 To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L}$ and $y_\text{R}$ such that $y_\text{L}(x_m) = y_\text{R}(x_m)$ and $y_\text{L}'(x_m) = y_\text{R}'(x_m)$. This can be expressed as a matching error function:
-$$
+\begin{equation}\label{equ:c2_matching_error}
     e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
-$$
+\end{equation}
 
 The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $Z(\delta) = \eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the needed derivatives. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence to true eigenvalues $E \to \lambda$, for which $e(\lambda) = 0$.
 
@@ -676,7 +676,7 @@ with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine 
 
 In the implementation while propagating solutions with equation \eqref{equ:c2_cpm_propmatrix} we also solve \eqref{equ:c2_prufer_theta_ode}. Luckily, this second ordinary differential equation does not need to be solved accurately, because the very accurate value of $y$ can be used to compute $\theta(x)$ with equation \eqref{equ:c2_prufer_theta_up_to_pi} up to a multiple of $\pi$. The value computed with \eqref{equ:c2_prufer_theta_ode} can then be rounded to the nearest value found with \eqref{equ:c2_prufer_theta_up_to_pi}.
 
-Much has been written \todo{Some more sources} about the best choices for the scaling function $S(x)$, in our implementation we follow Matslise as written in \cite{ledoux_study_2007}.
+Much has been written \todo{Some more sources} about the best choices for the scaling function $S(x)$, in our implementation we follow \matslise{} as written in \cite{ledoux_study_2007}.
 
 As an illustration of this scaled Prüfer transformation with equation \eqref{equ:c2_prufer_theta_ode} we present figure \ref{fig:c2_prufer_curves}. Here two eigenfunctions from the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} with $q=10$ are plotted. The scaled Prüfer angles can be seen in blue. Notice that the Prüfer angle crosses a multiple of $\pi$ if and only if the corresponding $x$ value is a zero of $y(x)$. The final value of $\theta(b) / \pi - 1$ on the right most point of the domain tells us the index of the relevant eigenvalue.
 
@@ -684,17 +684,17 @@ As an illustration of this scaled Prüfer transformation with equation \eqref{eq
 
 In the previous section we have studied the background of constant perturbation methods. From here on out we develop our additions to these well-established methods. Some of these results were published in \cite{baeyens_fast_2020}, particularly this section \ref{sec:c2_matslise3} and some numerical experiments: \ref{sec:c2_numerical_experiments_mathieu}, \ref{sec:c2_numerical_experiments_coffey_evans} and \ref{sec:c2_numerical_experiments_hydrogen}. The other numerical experiments from \ref{sec:c2_numerical_experiments} take a closer look at our improvements since \cite{baeyens_fast_2020} to the algorithm. In section \ref{sec:c2_periodic}, we present how the constant perturbation method can be used to solve periodic boundary conditions as well. And, later on in section \ref{sec:c2_the_implementation} we take a deep dive into how our new efficient implementation is build.
 
-In 2005 the first version of Matslise \cite{ledoux_matslise_2005}, A \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
+In 2005 the first version of \matslise{} \cite{ledoux_matslise_2005}, a \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
 
-Matslise provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
+\matslise{} provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
 
-In 2016 a new version, \matslise{2}\cite{ledoux_matslise_2016}, was released. In this whole new version of Matslise generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
+In 2016 a new version, \matslise{2}\cite{ledoux_matslise_2016}, was released. In this whole new version of \matslise{} generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
 
-As the original Matslise modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the Matslise routines to solve the multidimensional Schrödinger equation. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The \matslise{2} version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In \matslise{2} the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the implementation of \matslise{2}.
+As the original \matslise{} modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the \matslise{} routines to solve the multidimensional Schrödinger equation. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The \matslise{2} version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In \matslise{2} the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the implementation of \matslise{2}.
 
 In fact, this illustrates that \matslise{2} has not been built as a library of functions, but as a set of functions around a central GUI to solve SLP (and Schrödinger problems in particular). Several other features illustrate this, such as the algorithm that is used to detect whether a given problem is singular and the automatic computation of the error estimates for the eigenvalues. The algorithms are very useful for solving a particular SLP, but valuable computation time is lost if this detection or the error estimation is not needed.
 
-These challenges were the main motivator for a more efficient implementation of Matslise. We have considered different ways to optimize Matslise, keeping in mind its main features, in particular its user-friendliness, one of the main reason for the development of the first version of Matslise.
+These challenges were the main motivator for a more efficient implementation of \matslise{}. We have considered different ways to optimize \matslise{}, keeping in mind its main features, in particular its user-friendliness, one of the main reason for the development of the first version of \matslise{}.
 
 In this section we give an overview of our theoretical advancements \cite{baeyens_fast_2020} in building a very efficient implementation of the constant perturbation method. Later on, in section \ref{sec:c2_numerical_experiments} we will perform some numerical experiments and some run-time analysis. In section \ref{sec:c2_the_implementation} we will take the time to take a look at the challenges we faced and the choices we made when building our new implementation.
 
@@ -906,9 +906,9 @@ Further, Theorem~\ref{the:c2_delta_formulae} also gives more insight in the numb
 
 
 \paragraph{Evaluating eigenvalues}
-Once an eigenvalue is computed in Matslise or \matslise{2}, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither Matslise nor \matslise{2} were optimized do to so. To visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed, and all necessary computations are carried out once again.
+Once an eigenvalue is computed in \matslise{} or \matslise{2}, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither \matslise{} nor \matslise{2} were optimized do to so. To visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed, and all necessary computations are carried out once again.
 
-To explain why this approach was chosen in Matslise and \matslise{2}, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From theorem \ref{the:c2_perturbation_terms}, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
+To explain why this approach was chosen in \matslise{} and \matslise{2}, let us consider the propagation matrix in \eqref{equ:c2_cpm_propmatrix}. From theorem \ref{the:c2_perturbation_terms}, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
 via $Z=(V_0-E) \delta^2$ on the functions $\eta_i$ and $\delta$-dependent polynomials $C_j$ that also contain powers of the step length $h$ and the coefficients $V_n$ computed by (\ref{equ:c2_legendre_V}). To compute the formulae in $\text{CPM}\{18\}$ for instance, we will take a look at the expression for $u(\delta)$:
 $$
     u(\delta) = \sum_{i = -1}^6 C_i(\delta) \eta_{i}(\delta)
@@ -931,7 +931,7 @@ whereby $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in 
 
 Although these coefficients can all be computed analytically, it was far from practical to implement these very long formulae in software. Since one was mainly interested in the computation of the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
 
-For the applications we have in mind, this approach is too time-consuming. We decided to develop a new algorithm that is able to reuse all the data that was previously calculated. Therefore, we have chosen to implement in Matslise 3.0 a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order. The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) that was also used in Matslise and \matslise{2}. For our error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points. In section \ref{sec:c2_numerical_experiments} we will present some numerical experiments in which eigenfunctions are computed as well.
+For the applications we have in mind, this approach is too time-consuming. We decided to develop a new algorithm that is able to reuse all the data that was previously calculated. Therefore, we have chosen to implement in \matslise{3} a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order. The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) that was also used in \matslise{} and \matslise{2}. For our error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points. In section \ref{sec:c2_numerical_experiments} we will present some numerical experiments in which eigenfunctions are computed as well.
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:c2_periodic}
 
@@ -974,9 +974,9 @@ $$
 
 With this $\beta(\alpha)$, we define
 \begin{align}
-    \delta_\alpha(E)       & = \theta_\alpha(b) - \beta(\alpha)\text{,} \nonumber                    \\
-    m(E)            & = \min_{\alpha \in \RR} \delta_\alpha(E) \nonumber                             \\
-    \text{and }M(E) & = \max_{\alpha \in \RR}\delta_\alpha(E)\text{.}\label{equ:c2_periodic_m_and_m}
+    \delta_\alpha(E) & = \theta_\alpha(b) - \beta(\alpha)\text{,} \nonumber                           \\
+    m(E)             & = \min_{\alpha \in \RR} \delta_\alpha(E) \nonumber                             \\
+    \text{and }M(E)  & = \max_{\alpha \in \RR}\delta_\alpha(E)\text{.}\label{equ:c2_periodic_m_and_m}
 \end{align}
 In these expressions we have made the dependence on $E$ explicit, as $E$ was previously assumed to be fixed.
 
@@ -1009,7 +1009,7 @@ The last theorem gives us a coupling between the function $m(E), M(E)$ and the e
     \end{itemize}
 \end{theorem}
 
-This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). Furthermore, it is also known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
+This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). And, an eigenvalue has at most a double multiplicity. Furthermore, it is also known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
 
 \begin{figure}
     \begin{center}
@@ -1022,7 +1022,7 @@ As an illustration, we provide figure \ref{fig:c2_periodic_m_and_m}. Here, the e
 
 To determine the index of an eigenvalue, theorem \ref{the:c2_prufer_periodic_index} assures us that using the function $m(E)$ and $M(E)$ is sufficient. But efficiently computing these, is no easy task. Since they are defined as extreme values over all possible initial conditions, there is no straightforward way to evaluate them.
 
-We propose to propagate two different initial conditions and use the inequality from lemma \ref{lem:c2_periodic_m_inequality} to estimate $m(E)$ and $M(E)$. More concretely, we apply the propagation matrix from \eqref{equ:c2_propagation_matrix}, not to a single vector, but to a pair of vectors. Both these vectors give rise to two estimates $\delta_1(E)$ and $\delta_2(E)$ of $\delta_\alpha(E)$, without loss of generality we assume $\delta_1 < \delta_2$. From lemma \ref{lem:c2_periodic_m_inequality}, we know
+We propose to propagate two different initial conditions and use the inequality from lemma \ref{lem:c2_periodic_m_inequality} to estimate $m(E)$ and $M(E)$. More concretely, we apply the propagation matrix from \eqref{equ:c2_propagation_matrix}, not to a single vector, but to a pair of vectors, each corresponding to different initial conditions\footnote{Any pair of linear independent initial conditions will do. In our implementation we have chosen to use $y_1(a)=1$ and $y_1'(a) = 0$ for the first initial condition, $y_2(a)=0$ and $y_2'(a) = 1$ for the second.}. Both these vectors give rise to two estimates $\delta_1(E)$ and $\delta_2(E)$ of $\delta_\alpha(E)$, without loss of generality we assume $\delta_1 < \delta_2$. From lemma \ref{lem:c2_periodic_m_inequality}, we know
 $$
     \delta_2(E) - \pi < m(E) \text{ and } M(E) < \delta_1(E) + \pi \text{.}
 $$
@@ -1032,9 +1032,44 @@ $$
     \delta_1(E_1) + \pi = k \pi \text{ and } \delta_2(E_2) - \pi = k \pi\text{.}
 $$
 
-By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues.
+By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues. One issue left is that the matching error from defined in \eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
 
-\todo{Still to write: finding the two eigenvalues in the interval $[E_1, E_2]$. First, find the extreme point of the matching error, and then binary search.}
+For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. But since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$. Call $u_L(x)$ the solutions propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question becomes: does there exist a linear combination $\vb{c}$ such that
+$$
+    \begin{pmatrix}
+        u_L(x_m)  & v_L(x_m)  \\
+        u'_L(x_m) & v'_L(x_m)
+    \end{pmatrix} \vb{K} \vb{c} = \begin{pmatrix}
+        u_R(x_m)  & v_R(x_m)  \\
+        u'_R(x_m) & v'_R(x_m)
+    \end{pmatrix}\vb{c}
+    \text{?}
+$$
+Or, in other words: find values for $E$ such that
+\begin{equation}\label{equ:c2_periodic_match_matrix}
+    \vb{M}(E) := \begin{pmatrix}
+        u_L(x_m)  & v_L(x_m)  \\
+        u'_L(x_m) & v'_L(x_m)
+    \end{pmatrix} \vb{K} - \begin{pmatrix}
+        u_R(x_m)  & v_R(x_m)  \\
+        u'_R(x_m) & v'_R(x_m)
+    \end{pmatrix}
+\end{equation}
+becomes singular?
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/prufer/periodic_matching.pdf}
+    \end{center}
+    \caption{A close-up of the determinant of $\vb{M}(E)$ from \eqref{equ:c2_periodic_match_matrix} for the same problem as used in figure \ref{fig:c2_periodic_m_and_m}.}\label{fig:c2_periodic_matching}
+\end{figure}
+
+In summary, the function $\det\vb{M}(E)$ has exactly two (or one with double multiplicity) zeros in the interval $[E_1, E_2]$. As a demonstration we provide figure \ref{fig:c2_periodic_matching}. Here $\det\vb{M}(E)$ is displayed for the same test problem as in figure \ref{fig:c2_periodic_m_and_m}. For $k = 2$ we found $E_1 \approx \numprint{8.064}$ and $E_2 \approx \numprint{17.344}$. The eigenvalues in this interval are $\lambda_2^{-} \approx \numprint{11.075}$ and $\lambda_2^{+} \approx \numprint{14.032}$.
+
+If an eigenvalue $\lambda^{-}_k = \lambda^{+}_k$ is not simple, that is to say, it has a double multiplicity, then this will be visible in $\det\vb{M}(\lambda^{-}_k)$. For these values $\det\vb{M}(E)$ will have a double root\footnote{Numerically, it could be possible that this function has no root at all. But then the minimum will be close to zero. When implementing this care should be taken.}.
+
+In \matslise{3} and \pyslise{} we have implemented this theory, for now only when $\vb{K} = \vb{I}$. In section \ref{sec:c2_experiments_andrew_periodic} we present a numerical experiment where we demonstrate how our program can be used.
+
 
 \section{Numerical experiments}\label{sec:c2_numerical_experiments}
 
@@ -1484,7 +1519,7 @@ print(hydrogen.eigenvaluesByIndex(0, 10, (0, 1), (0, 1)))
 
 The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. \matslise{2} is well-suited for singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
 
-Despite these missing features, \pyslise{} can still solve the problem. And, it is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as Matslise and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
+Despite these missing features, \pyslise{} can still solve the problem. And, it is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as \matslise{} and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
 \begin{table}
     \begin{center}
@@ -1650,9 +1685,9 @@ Since we wanted to reimplement \matslise{} into a faster compiled language, we h
 
 In the current day and age one of the more popular languages, with a larger community than \fortran{}'s or \matlab{}'s is \lpython{}. Like \matlab{}, this language is interpreted and is thus equally slow \cite{chaves_octave_2006,unpingco_comparative_2008}. However, in \lpython{} it is not hard to add native packages. These packages are not written in \lpython{} but in some other, more low-level, language. This other language is compiled to native machine code, and nicely packaged to be called from within \lpython{}.
 
-These native packages are the answer to the efficiency versus user-friendliness problem we were faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will use can be written in the more approachable \lpython{} The last question before we could build our new implementation of Matslise was: ``Which compiled language?''. This language has to be able to support the building of \lpython{} packages, it has to have support for linear algebra, preferably with optimized BLAS libraries, and it has to support code architecture for numerical libraries. All of these requests makes \cpp{} a prime candidate. In combination with \pybind{} \cite{jakob_pybind11_2017} for the \lpython{} compatibility and \Eigen{} v3 \cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
+These native packages are the answer to the efficiency versus user-friendliness problem we were faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will use can be written in the more approachable \lpython{} The last question before we could build our new implementation of \matslise{} was: ``Which compiled language?''. This language has to be able to support the building of \lpython{} packages, it has to have support for linear algebra, preferably with optimized BLAS libraries, and it has to support code architecture for numerical libraries. All of these requests makes \cpp{} a prime candidate. In combination with \pybind{} \cite{jakob_pybind11_2017} for the \lpython{} compatibility and \Eigen{} v3 \cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
 
-\paragraph{Try it out!} The new implementation, which we called Matslise 3.0, can be accessed and executed in three different ways.
+\paragraph{Try it out!} The new implementation, which we called \matslise{3}, can be accessed and executed in three different ways.
 
 \begin{itemize}
     \item As a \cpp{} program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There, instructions to compile it can be found.
