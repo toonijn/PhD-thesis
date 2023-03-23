@@ -106,9 +106,45 @@ Throughout this thesis, and the research preceding it, we have not and will not 
 \todo{Give some real-world examples of this equation \cite[Chapter~8]{guenther_sturmliouville_2018}.}
 
 \subsection{Liouville's transformation}\label{sec:c2_liouville_transformation}
-\todo{Formulae, and some notes about implementing it, refer to Veerle's thesis.}
 
-Liouville provided, under certain conditions, a transformation to reduce the Sturm-Liouville equation back to the Schrödinger equation. This transformation can be used to employ the easier numerical algorithms for Schrödinger equations, to solve more general Sturm-Liouville equations.
+In \cite{liouville_second_1837} Liouville introduced a transformation from a Sturm-Liouville problem to a Schrödinger problem. Here we provide just the transformation, with some remarks on how to implement it. For a derivation the original work by Liouville \cite{liouville_second_1837} can be consulted, or a more clear text in the context of \matslise{} can be found in \cite{ledoux_study_2007}. In this last work, the implementation also gets some attention.
+
+In this subsection we change the notation a little from \eqref{equ:c2_sturm_liovuille_equation}. Let us consider the Sturm-Liouville equation
+\begin{equation}\label{equ:c2_liouville_slp}
+    -(p(r) z'(r))' + q(r) z(r) = \lambda w(r) z(r)\text{,}
+\end{equation}
+on the domain $[r_\text{min}, r_\text{max}]$. 
+
+With the transformation
+\begin{align*}
+x &= \int_{r_\text{min}}^{r} \sqrt{\frac{w(r')}{p(r')}}\,\dd r'\text{,} \\
+z &= \sigma y \\
+\text{and } V(x) &= \frac{q}{w} + \sigma {\dv[2]{}{x}} \frac{1}{\sigma} \\
+\text{with } \sigma(r) &= \frac{1}{\sqrt[4]{p(r)w(r)}},
+\end{align*}
+equation \eqref{equ:c2_liouville_slp} becomes
+$$
+-y''(x) + V(x) y(x) = \lambda y(x)
+$$
+on the domain $[0, \xmax]$, with $\xmax = x(r_\text{max})$. In this transformation we assumed $p(x)$ and $w(x)$ to be strictly positive and twice differentiable on the domain.
+
+The boundary conditions
+\begin{align*}
+    \alpha_\text{min} z(r_\text{min}) + \beta_\text{min} p(r_\text{min}) z'(r_\text{min}) &= 0 \\
+    \alpha_\text{max} z(r_\text{max}) + \beta_\text{max} p(r_\text{max}) z'(r_\text{max}) &= 0
+\end{align*}
+are transformed into
+\begin{align*}
+    &A_\text{min} y(0) + \beta_\text{min} y'(0) = 0 \\
+    &A_\text{max} y(\xmax) + \beta_\text{max} y'(\xmax) =0 \\
+    \text{with } & A_\text{min} = \alpha_\text{min}\sigma^2(r_\text{min}) + \beta_\text{min}\sigma'(r_\text{min})\sigma(r_\text{max}) \\
+    \text{and } & A_\text{max} = \alpha_\text{max}\sigma^2(r_\text{max}) + \beta_\text{max}\sigma'(r_\text{max})\sigma(r_\text{max})\text{.}
+\end{align*}
+
+Implementing these formulae is not trivial. In \cite{ledoux_study_2007}, it is proposed to use an adaptive quadrature rule to approximate $x(r)$ up to all precision available in the \texttt{double} datatype. The inverse function $r(x)$ can then be calculated by applying a Newton-Raphson scheme. This computation is again executed to get the full precision available in the used floating-point type.
+
+Evaluating these functions up to the maximal precision available may seem overkill. However, we have found\footnote{This is an example of things we learned the hard way. See the first paragraph of section \ref{sec:c2_implementation_challenges}.} this to be essential. The constant perturbation method used to solve the resulting Schrödinger equation builds a piecewise high order polynomial approximation of the potential function. If these functions are evaluated with relatively low accuracy, the piecewise polynomial approximation has a hard time to reach the required accuracy and far too many intervals will be used.
+
 
 \section{Background about Matslise}\label{sec:c2_background}
 
@@ -1700,9 +1736,9 @@ pip install pyslise
     \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. See section \ref{sec:c2_online_gui}.
 \end{itemize}
 
-\subsection{Implementation challenges}
+\subsection{Implementation challenges}\label{sec:c2_implementation_challenges}
 
-Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Forgot the original program to consider it? Was it a remnant of a previous version, or removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admit, I simplified some code for \matslise{2} to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
+Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Did the programmer forget to consider it? Was it a remnant of a previous version, or of removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admit, I simplified some code for \matslise{2} to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
 
 In this section we want to highlight some challenges we encountered while building the new implementation. Some of these are a consequence of the choice for language we have made, some are some inherent challenges of the constant perturbation method and others are self-inflicted by the ambitious goals we set out for ourselves.
 
