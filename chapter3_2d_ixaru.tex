@@ -10,13 +10,13 @@
 
 \longchapter[A shooting method]{A shooting method for the \twoD time-independent Schrödinger equation}\label{cha:c3}
 
-There are many general methods for partial differential equations. Each method has its own benefits and disadvantages. As a rule of thumb one can say that a method which is very general and widely applicable, will be less efficient, or less accurate, or both than a method which is specifically tuned for the problem at hand. With that in mind, there is a real advantage to gain when investing time and research into a highly tuned optimized method for a specific problem.
+There are many general purpose methods available for solving partial differential equations. Each method has its own benefits and disadvantages. As a rule of thumb one can say that a method which is very general and widely applicable, will be less efficient, or less accurate, or both than a method which is specifically tuned for the problem at hand. With that in mind, there is a real advantage to gain when investing time and research into a highly tuned optimized method for a specific problem.
 
 In this, and the next, chapter we will study two-dimensional time-independent Schrödinger equations
 \begin{equation}\label{equ:c3_schrodinger_2d}
   -\nabla^2\psi(x, y) + V(x, y) \psi(x, y) = E \psi(x, y)
 \end{equation}
-on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogeneous Dirichlet boundary conditions, this means $\forall (x, y) \in \delta\Omega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain and the boundary conditions, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $E$ for which a function $\psi(x, y)$  exists such that they together satisfy the Schrödinger problem \eqref{equ:c3_schrodinger_2d}. Such a value $E$ is called an \emph{eigenvalue} with the corresponding \emph{eigenfunction} $\psi(x, y)$.
+on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogeneous Dirichlet boundary conditions, this means $\forall (x, y) \in \dOmega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain and the boundary conditions, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $E$ for which a function $\psi(x, y)$  exists such that they together satisfy the Schrödinger problem \eqref{equ:c3_schrodinger_2d}. Such a value $E$ is called an \emph{eigenvalue} corresponding to the \emph{eigenfunction} $\psi(x, y)$.
 
 From a functional analysis perspective, the Schrödinger problem can also be interpreted as finding the eigenvalues and eigenfunctions of the \emph{Hamiltonian} $\hamiltonian$, this is the linear functional operator:
 $$
@@ -24,17 +24,11 @@ $$
 $$
 defined on the domain $\Omega$ with given boundary conditions.
 
-Theoretically, working within the functional analysis framework is extremely useful. Much research is available for all kinds of operators on all kinds of domains. In our case we are interested in self-adjoint elliptic operators, for if $V(x, y)$ is bounded and continuous then the Hamiltonian is self-adjoint and elliptic. Proving this here is non-trivial. Not because it is a particular difficult proof, in some textbooks this is merely an example of proven theorems. But all proofs require a thoroughly developed functional analysis framework. As an example of this framework: in the series of books starting with \cite{reed_functional_1980}, the authors start with defining functional spaces and provide some basic topological ideas to finally, after almost 200 pages, define a functional operator. It takes another 50 pages before they consider the spectrum of such an operator. So, in these 250 pages they were able to very rigorously define the needed concepts. Only in the fourth volume \cite{reed_iv_1978} are all parts of the puzzle available to proof the Hamiltonian operator is self-adjoint. And, this self-adjointness implies many theorems proven in volume two \cite{reed_ii_1975}.
+Theoretically, working within the functional analysis framework is extremely useful. Many powerful results are available for all kinds of operators on all kinds of domains. In our case we are interested in self-adjoint elliptic operators, for if $V(x, y)$ is bounded and continuous then the Hamiltonian is self-adjoint and elliptic. Proving this here is non-trivial. Not because it is a particular difficult proof, in some textbooks this is merely an example of proven theorems. But all proofs require a thoroughly developed functional analysis framework. As an example of this framework: in the series of books starting with \cite{reed_functional_1980}, the authors start with defining functional spaces and provide some basic topological ideas to finally, after almost 200 pages, define a functional operator. It takes another 50 pages before they consider the spectrum of such an operator. So, in these 250 pages they were able to very rigorously define the needed concepts. Only in the fourth volume \cite{reed_iv_1978}, all parts of the puzzle are available to prove the Hamiltonian operator is self-adjoint. This self-adjointness in turn implies many theorems proven in volume two \cite{reed_ii_1975}.
 
-In this thesis, we have focus on developing numerical methods for solving Schrödinger problems. Numerical methods have the tremendous benefit of being implemented in imperfect and very finite computers. This enables them to ignore many theoretical edge cases. For example, if we numerically approximate the integral
-$$
-  \int_a^b f(x)\,\dd x
-$$
-we use our favorite quadrature rule and plugin the function $f$. We are not concerned if $f$ is sufficiently integrable. We are not concerned that $f$ could be not \emph{almost everywhere} continuous. The only thing we need is to be able to evaluate $f$ in the points required by the quadrature rule.
+Even though numerical methods are able to take a few theoretical shortcuts\footnote{For example, if we numerically approximate the integral $\int_a^b f(x)\,\dd x$ we use our favorite quadrature rule and plugin the function $f$. We are not concerned if $f$ is sufficiently integrable. We are not concerned that $f$ could be not \emph{almost everywhere} continuous. The only thing we need is to be able to evaluate $f$ in the points required by the quadrature rule.}, having a thorough understanding of the theory can be quite instructive. For now, we will not provide the functional analysis background, or rigorous proofs for the properties of Hamiltonian operators. However, we will state some useful theorems specifically for the Schrödinger problem at hand. The theorems we provide here are all special cases of more general results from functional analysis, proofs for these can be found in many textbooks, for example \cite{reed_functional_1980} and other books in the series.
 
-Even though numerical methods are able to take a few theoretical shortcuts, having a thorough understanding of the theory can be quite instructive. For now, we will not provide the functional analysis background, or rigorous proofs for the properties of Hamiltonian operators. However, we will state some useful theorems specifically for the Schrödinger problem at hand. The theorems we provide here are all special cases of more general results from functional analysis, proofs for these can be found in many textbooks, for example \cite{reed_functional_1980} and other books in the series.
-
-But first let us define a \emph{regular} Schrödinger problem\footnote{The definition we provide here is only for two-dimensional problems. Changing the number of dimensions will not alter the provided theorems.} to be equation \ref{equ:c3_schrodinger_2d} defined on a bounded Lipschitz domain $\Omega \subseteq \RR$ with linear, real and continuous boundary conditions and let $V(x, y) : \Omega \to \RR$ be continuous (and therefor bounded) on $\Omega$. With this in hand, we can state analogous theorems as in the one-dimensional case.
+But first let us define a \emph{regular} Schrödinger problem\footnote{The definition we provide here is only for two-dimensional problems. Changing the number of dimensions will not alter the provided theorems.} to be equation \eqref{equ:c3_schrodinger_2d} defined on a bounded Lipschitz\footnote{Formally, a Lipschitz domain has a Lipschitz continuous boundary. Intuitively, a Lipschitz domain has a ``sufficiently regular" boundary. \cite{dacorogna_introduction_2008}} domain $\Omega \subseteq \RR$ with linear, real and continuous boundary conditions and let $V(x, y) : \Omega \to \RR$ be continuous (and therefore bounded) on $\Omega$. With this in hand, we can state analogous theorems as in the one-dimensional case.
 
 \begin{theorem}\label{the:c3_real_eigenvalues}
   All eigenvalues of a regular Schrödinger problem are real. Corresponding eigenfunctions can always be scaled such that they are real.
@@ -49,7 +43,7 @@ This first theorem states that to find solutions no complex numbers are necessar
   $$
 \end{theorem}
 
-Note that in contrast to theorem \ref{the:c2_slp_countable}, eigenvalues no longer are unique. With this we mean that for the same eigenvalue, multiple linear independent eigenfunctions can be found. These kinds of eigenvalues are said to be degenerate. If the corresponding eigenfunction space has dimension $3$, for example, the eigenvalue is said to have a multiplicity of three.
+Note that in contrast to theorem \ref{the:c2_slp_countable}, eigenvalues are no longer guaranteed to be simple. With this we mean that for the same eigenvalue, multiple linear independent eigenfunctions can be found. Such eigenvalues are said to be degenerate. If the corresponding eigenfunction space has dimension $3$, for example, the eigenvalue is said to have multiplicity three.
 
 The last theorem we provide for now will give some information about the eigenfunctions.
 
@@ -67,61 +61,60 @@ These theorems give a very clear picture about what a solution will look like. B
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/example_zero_both.png}
   \end{center}
-  \caption{A 2D and 3D plot of the eigenfunction corresponding to $i = 3$ and $j = 2$, the eigenvalue is $E_{3,2} = 13$.}\label{fig:example_zero}
+  \caption{A 2D and 3D plot of the eigenfunction corresponding to $i = 3$ and $j = 2$ from equation \ref{equ:c3_zero_example_eigenfunctions}, the eigenvalue is $E_{3,2} = 13$.}\label{fig:example_zero}
 \end{figure}
 
-\begin{example}\label{exa:c3_zero_potential}
-  Consider the Schrödinger problem on the domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions and zero potential. Its equation is given as
-  \begin{equation}\label{equ:c3_example_zero_potential}
-    -\pdv[2]{\psi}{x} - \pdv[2]{\psi}{y} = E \psi(x, y)\text{.}
-  \end{equation}
+As an example we consider the Schrödinger problem on the domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions and zero potential. Its equation is given as
+\begin{equation}\label{equ:c3_example_zero_potential}
+  -\pdv[2]{\psi}{x} - \pdv[2]{\psi}{y} = E \psi(x, y)\text{.}
+\end{equation}
 
-  Now we write an eigenfunction $\psi(x, y)$ as a $y$-depnedent linear combination of the $x$-dependent basis functions $\sin(x)$, $\sin(2x)$, $\sin(3x)$, $\dots$ which satisfy the boundary conditions:
-  $$
-    \psi(x, y) = \sum_{i=1}^\infty c(y) \sin(ix)\text{.}
-  $$
-  If we plug this into the Schrödinger equation then we get
-  $$
-    \sum_{i=1}^\infty i^2 c_i(y) \sin(ix) - \sum_{i=1}^\infty \dv[2]{c_i}{y}(y) \sin(ix) = \sum_{i=1}^\infty E c_i(y) \sin(ix)\text{.}
-  $$
-  Linear combinations of basis functions can only be equal if their coefficients are equal, thus:
-  $$
-    (i^2 - E) c_i(y) = \dv[2]{c_i}{y}(y) \quad \text{ with $c_i(0) = c_i(\pi) = 0$ for each $i \in \{1, 2, \dots\}$.}
-  $$
-  Define $j$ to be all integers $\{1, 2, \dots\}$ such $i^2 + j^2 = E$. Only for these $j$ will this last ordinary differential equation have a solution: $c_i(y) = \sin(j y)$. This implies that all eigenvalues of \eqref{equ:c3_example_zero_potential} are
-  $$
-    E_{i, j} = i^2 + j^2 \quad \text{ for all $i, j \in \{1, 2, \dots\}$}
-  $$
-  with corresponding eigenfunction
-  $$
-    \psi_{i,j} = \sin(ix) \sin(jy)\text{.}
-  $$
+Now we write an eigenfunction $\psi(x, y)$ as a $y$-dependent linear combination of the $x$-dependent functions $\sin(x)$, $\sin(2x)$, $\sin(3x)$, $\dots$ which satisfy the boundary conditions:
+\begin{equation}\label{equ:c3_zero_example_sin_basis}
+  \psi(x, y) = \sum_{i=1}^\infty c_i(y) \sin(ix)\text{.}
+\end{equation}
 
-  The eigenvalues are summarized in the following table.
+Since $\{\sin(x), \sin(2x), \dots\}$ construct a basis for $L^2_0(\Omega)$, this is the space of compactly supported square integrable functions on $\Omega$, all possible eigenfunctions are expressed with equation \eqref{equ:c3_zero_example_sin_basis}. If we plug this into the Schrödinger equation then we get
+$$
+  \sum_{i=1}^\infty i^2 c_i(y) \sin(ix) - \sum_{i=1}^\infty \dv[2]{c_i}{y}(y) \sin(ix) = \sum_{i=1}^\infty E c_i(y) \sin(ix)\text{.}
+$$
+Linear combinations of basis functions can only be equal if their coefficients are equal, thus:
+\begin{equation}\label{equ:c3_zero_example_ode}
+  (i^2 - E) c_i(y) = \dv[2]{c_i}{y}(y) \quad \text{ with $c_i(0) = c_i(\pi) = 0$ for each $i \in \{1, 2, \dots\}$.}
+\end{equation}
+Define $j := \sqrt{E - i^2}$. The ordinary differential equation \eqref{equ:c3_zero_example_ode} will only have solutions if $j$ is a strictly positive integer, specifically: $c_i(y) = \sin\left(\sqrt{E-i^2} y\right)$. This implies that all eigenvalues of \eqref{equ:c3_example_zero_potential} are
+$$
+  E_{i, j} = i^2 + j^2 \quad \text{ for all $i, j \in \{1, 2, \dots\}$}
+$$
+with corresponding eigenfunction
+\begin{equation}\label{equ:c3_zero_example_eigenfunctions}
+  \psi_{i,j} = \sin(ix) \sin(jy)\text{.}
+\end{equation}
 
-  \begin{tabular}{ccccccc}
-    \toprule
-    $0$       & $1$,$2$             & $3$       & $4$,$5$             & \dots & $30$, $31$, $32$              & \dots \\
-    \midrule
-    $E_{1,1}$ & $E_{1,2} = E_{2,1}$ & $E_{2,2}$ & $E_{1,3} = E_{3,1}$ & \dots & $E_{1,7} = E_{5,5} = E_{7,1}$ & \dots \\
-    $2$       & $5$                 & $8$       & $10$                & \dots & $50$                          & \dots \\
-    \bottomrule
-  \end{tabular}
+The eigenvalues are summarized in the following table.
 
-  Here we see that there are many degenerate eigenvalues, the $30^\text{th}$ eigenvalue $50$ has even a multiplicity of three. And, the $234^\text{th}$ eigenvalue with value $325$ even has a multiplicity of six. With some number theory, one can proof that the multiplicity of an eigenvalue can be unbounded.
+\begin{tabular}{ccccccc}
+  \toprule
+  $0$       & $1$,$2$             & $3$       & $4$,$5$             & \dots & $30$, $31$, $32$              & \dots \\
+  \midrule
+  $E_{1,1}$ & $E_{1,2} = E_{2,1}$ & $E_{2,2}$ & $E_{1,3} = E_{3,1}$ & \dots & $E_{1,7} = E_{5,5} = E_{7,1}$ & \dots \\
+  $2$       & $5$                 & $8$       & $10$                & \dots & $50$                          & \dots \\
+  \bottomrule
+\end{tabular}
 
-  A visualization of the eigenfunctions is found in figure \ref{fig:example_zero}. Here we have visualized the surface in a three-dimensional plot on the right. For clarity, we will use most of the time the two-dimensional representation on the left. Note that no color-legend is provided in the two-dimensional representation, as eigenfunctions may always be scaled.
+Here we see that there are many degenerate eigenvalues, the $30^\text{th}$ eigenvalue $50$ even has multiplicity three. And, the $234^\text{th}$ eigenvalue with value $325$ even has multiplicity six. With some number theory, one can prove that the multiplicity of an eigenvalue can be unbounded.
 
-  The eigenvalue corresponding to the eigenfunction from figure \ref{fig:example_zero} has multiplicity two. Another linear independent eigenfunction can be found by swapping $x$ and $y$.
-\end{example}
+A visualization of the eigenfunctions is found in figure \ref{fig:example_zero}. Here we have visualized the surface in a three-dimensional plot on the right. For clarity, we will use most of the time the two-dimensional representation on the left. Note that no color-legend is provided in the two-dimensional representation, as eigenfunctions may always be scaled.
+
+The eigenvalue corresponding to the eigenfunction from figure \ref{fig:example_zero} has multiplicity two. Another linear independent eigenfunction can be found by swapping $x$ and $y$.
 
 For almost all potential functions $V$ however, the corresponding Schrödinger equation can not be solved symbolically. So when one is interested in solutions, one has to resort to numerical methods. When only the ground state, that is the lowest eigenvalue, or maybe only few of the lowest eigenvalues are required, general numerical methods may suffice. Some examples of such techniques are finite difference based methods, or a finite element analysis. When higher eigenvalues are required, the eigenfunctions become more and more oscillatory. For the one-dimensional problem we have seen that general methods have difficulties with highly oscillatory functions, these same difficulties are expected for two-dimensional problems. In chapter \ref{cha:c4} we will study such a more general method, and develop our own method.
 
-This chapter is dedicated to the study and improvement of the new method proposed in \cite{ixaru_new_2010} by Ixaru. In section \ref{sec:c3_ixarus_method}, we will follow \cite{ixaru_new_2010} and study the method itself. Later on, in section \ref{sec:c3_improvements} we will highlight some challenges with using this new method, and propose some improvements. Section \ref{sec:c3_index_of_e} contains the new theory we have developed to determine the index of an eigenfunction. And lastly, in section \ref{sec:c3_experiments} some numerical experiments are presented.
+This chapter is dedicated to the study and improvement of the method proposed in \cite{ixaru_new_2010} by Ixaru. In section \ref{sec:c3_ixarus_method}, we will follow \cite{ixaru_new_2010} and study the method itself. Later on, in section \ref{sec:c3_improvements} we will highlight some challenges with using this method, and propose some improvements. Section \ref{sec:c3_index_of_e} contains the new theory we have developed to determine the index of an eigenfunction. And lastly, in section \ref{sec:c3_experiments} some numerical experiments are presented.
 
 \section{Ixaru's method}\label{sec:c3_ixarus_method}
 
-The main idea of Ixaru's method is built on the well established technique \cite{titchmarsh_eigenfunction_1962} of writing a solution as a linear combination of well-chosen one dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that, to represent an eigenfunction along the whole of the domain, very many basis functions are necessary to ensure accurate values. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, they suggest splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article \cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
+The main idea of Ixaru's method is built on the well established technique (by among others Titchmarsh \cite{titchmarsh_eigenfunction_1962}) of writing a solution as a linear combination of well-chosen one dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that, to represent an eigenfunction along the whole of the domain, many basis functions are necessary to ensure accurate values. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, they suggest splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article \cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
 $$
   \ymin = y_0 < y_1 < y_2 < \dots < y_k < \dots < y_{K-1} < y_{K} = \ymax\text{.}
 $$
@@ -139,23 +132,23 @@ On each sector $k$ (with domain $[\xmin, \xmax]\times[y_{k-1}, y_k]$) a solution
   \psi(x, y) \approx \sum_{i=1}^{N} b_i^{(k)}(x) c_i^{(k)}(y) = \transpose{{\vb{b}^{(k)}}}(x) \, \vb{c}^{(k)}(y) \text{.}
 \end{equation}
 
-Ideally, the used basis on sector $k$ should be relevant to the resulting eigenfunction on this sector. Of course, the eigenfunction is unknown, so using these, is not an option. In principle, there are many bases to choose from, a Fourier-basis is possible or a some basis based upon orthogonal polynomials. But, these well-known choices do not take advantage of the shape of the potential in the sector. \cite{ixaru_new_2010} proposes to use the eigenfunctions from the following one-dimensional Schrödinger problem:
-$$
+Ideally, the used basis on sector $k$ should be related to the resulting eigenfunction on this sector. Of course, the eigenfunction is unknown, so using these, is not an option. In principle, there are many bases to choose from, a Fourier-basis is possible, or some basis based upon orthogonal polynomials. But, these well-known choices do not take advantage of the shape of the potential in the sector. In \cite{ixaru_new_2010}, the author proposes to use the eigenfunctions from the following one-dimensional Schrödinger problem:
+\begin{equation}\label{equ:c3_one_dimensional_schrodinger}
   -\pdv[2]{b_i^{(k)}}{x} + \bar{V}^{(k)}(x)b_i^{(k)}(x) = \lambda_i^{(k)} b_i^{(k)}(x)
-$$
+\end{equation}
 with boundary conditions $b_i^{(k)}(\xmin) = b_i^{(k)}(\xmax) = 0$. The function $\bar{V}^{(k)}(x)$ is a constant (in the $y$-direction) approximation of the potential $V$ on the $k^\text{th}$ sector.
 
-Using this basis is extremely promising. The basis functions are oscillatory for regions where $\bar{V}$ is small, and have an exponential behavior when $\bar{V}$ is large. This same behavior is expected for the two-dimensional eigenfunctions as well. For a potential function which diverges to positive infinity on a large domain, the eigenfunctions will be concentrated in the center, just like the chosen basis-functions.
+Using this basis is extremely promising. The basis functions are oscillatory for regions where $\bar{V}$ is small, and have an exponential behavior when $\bar{V}$ is large. This same behavior is expected for the two-dimensional eigenfunctions as well. For a potential function which becomes large, the two-dimensional eigenfunction is expected to be most present in the regions where $V(x, y)$ is small. The chosen one-dimensional basis functions $b_i^(k)(x)$ express this same behavior.
 
-For the choice of $\bar{V}(x)$, in \cite{ixaru_new_2010} $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used. We will use this as well, for now. But, later we will remark that in some cases other choices may be beneficial.
+For the choice of $\bar{V}(x)$, in \cite{ixaru_new_2010} $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used. We will use this as well, for now. Later, we will remark that in some cases other choices may be beneficial.
 
-Just like the constant perturbation methods for one-dimensional problems, this new method employs shooting to locate the eigenvalues. For this, for a fixed value of $E$, formulae are needed to propagate solutions from the bottom of the domain (along $y = \ymin$) upwards, and from the top of the domain ($y = \ymax$) downwards. So, given a solution at the beginning of sector $k$ expressed in the basis $b_i^{(k)}$: $ \psi(x, y_{k-1}) = \sum_{i=1}^{N} b_i^{(k)}(x)\, c_i^{(k)}(y_{k-1}) $, an expression is constructed to compute $c^{(k)}_i(y_k)$ at the end of the sector. Substituting \eqref{equ:c3_lincomb_basis} into \eqref{equ:c3_schrodinger_2d} gives rise to
+Just like the constant perturbation methods for one-dimensional problems, this method employs shooting to locate the eigenvalues. To do this, for a fixed value of $E$, formulae are needed to propagate solutions from the bottom of the domain (along $y = \ymin$) upwards, and from the top of the domain ($y = \ymax$) downwards. So, given a solution at the beginning of sector $k$ expressed in the basis $b_i^{(k)}$: $ \psi(x, y_{k-1}) = \sum_{i=1}^{N} b_i^{(k)}(x)\, c_i^{(k)}(y_{k-1}) $, an expression is constructed to compute $c^{(k)}_i(y_k)$ at the end of the sector. Substituting \eqref{equ:c3_lincomb_basis} into \eqref{equ:c3_schrodinger_2d} using \eqref{equ:c3_one_dimensional_schrodinger} gives rise to
 
 \begin{equation}\label{equ:c3_coupled_system}
   -\pdv[2]{\vb{c}^{(k)}}{y} + \vb{V}^{(k)}(y) \vb{c}^{(k)}(y) = E \vb{c}^{(k)}(y) \text{.}
 \end{equation}
 
-In this expression $\vb{V}^{(k)}$ is an $N\times N$ matrix dependent on $y$:
+In this expression $\vb{V}^{(k)}$ is an $N\times N$ matrix depending on $y$:
 \begin{equation}\label{equ:c3_v_matrix}
   \vb{V}^{(k)}_{ij}(y) = \int_{\xmin}^{\xmax} b_i^{(k)}(x) b_j^{(k)}(x) \left(V(x, y) - \bar{V}^{(k)}(x)\right) \dd x + \delta_{ij} \lambda_i^{(k)} \text{.}
 \end{equation}
@@ -164,13 +157,13 @@ The system of ordinary differential equations given in \eqref{equ:c3_coupled_sys
 
 For the accurate computation of the integral in \eqref{equ:c3_v_matrix} we have developed specialized formulae. These will be presented later on in section \ref{sec:c3_calculate_vk}.
 
-To be able to propagate a solution along the whole domain it is vital to have an expression to transfer solutions between consecutive sectors. Eigenfunction should be continuous and continuously differentiable. To ensure this when transitioning between sectors we impose for all values $x \in [\xmin, \xmax]$:
+To be able to propagate a solution along the whole domain it is vital to have an expression to transfer solutions between consecutive sectors. Eigenfunctions should be continuous and continuously differentiable. To ensure this when transitioning between sectors we impose for all values $x \in [\xmin, \xmax]$:
 \begin{align*}
   \transpose{\vb{b}^{(k)}}(x) \, \vb{c}^{(k)}(y_k)                   & =\, \transpose{\vb{b}^{(k+1)}}(x) \, \vb{c}^{(k+1)}(y_k)                            \\
   \text{and}\quad
   \transpose{\vb{b}^{(k)}}(x)\,\pdv{\vb{c}^{(k)}}{y}\left(y_k\right) & = \transpose{\vb{b}^{(k+1)}}(x)\,\pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) \text{.}
 \end{align*}
-Multiplying both sides with $b_i^{(k)}$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$, gives
+Multiplying both sides with $\vb{b}^{(k)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$, gives
 \begin{align*}
   \vb{c}^{(k+1)}(y_k)                       & = \vb{M}^{(k)} \vb{c}^{(k)}(y_k)                       \\
   \pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) & = \vb{M}^{(k)} \pdv[]{\vb{c}^{(k)}}{y}\left(y_k\right)
@@ -179,27 +172,29 @@ with
 $$
   \vb{M}^{(k)}_{ij} = \bra{b_{i}^{(k)}}\ket{b_{j}^{(k+1)}} = \int_\xmin^\xmax b_i^{(k)}(x) b_j^{(k+1)}(x) \dd x \text{.}
 $$
-This requires the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normalized $\bra{b_{i}^{(k)}}\ket{b_{j}^{(k)}} = \delta_{ij}$. In the infinite case this matrix $\vb{M}^{(k)}$ is orthogonal. In practice $N$ has to be finite, and $\vb{M}^{(k)}$ is in general no longer orthogonal. Intuitively this means that some information about the solution is lost when transitioning between sectors. This is a minor drawback, inherent to this method.
+Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normalized $\bra{b_{i}^{(k)}}\ket{b_{j}^{(k)}} = \delta_{ij}$. In the infinite case this matrix $\vb{M}^{(k)}$ is orthogonal. In practice $N$ has to be finite, and $\vb{M}^{(k)}$ is in general no longer orthogonal. Intuitively this means that some information about the solution is lost when transitioning between sectors. This is a minor drawback, inherent to this method.
 
-With these tools available, all that is left is to formalize how the shooting can be executed. Instead of propagating with a single starting condition (i.e. a column vector $\vb{c}^{(1)}(\ymin)$) all possible initial values (for homogeneous Dirichlet boundary conditions) are propagated at once.
+\todo{Visualize that $\vb{M}^{(k)}$ is no longer orthogonal.}
+
+With these tools available, all that is left is to formalize how the shooting can be executed. Instead of propagating with a single starting condition (i.e. a column vector $\vb{c}^{(1)}(\ymin)$), all possible initial values (for homogeneous Dirichlet boundary conditions) are propagated at once. Therefore, we propose to start with:
 $$
   \begin{matrix}
-    \vb{C}^{(1)}(\ymin) = \vb{0}_{N\times N} &            & \pdv[]{\vb{C}^{(1)}}{y}\left(\ymin\right) = \vb{I}_{N\times N} \\
+    \vb{C}^{(1)}(\ymin) = \vb{0}_{N\times N} &            & {\pdv[]{}{y}}\vb{C}^{(1)}(\ymin) = \vb{I}_{N\times N} \\
                                              & \text{and} &                                                                \\
-    \vb{C}^{(K)}(\ymax) = \vb{0}_{N\times N} &            & \pdv[]{\vb{C}^{(K)}}{y}\left(\ymax\right) = \vb{I}_{N\times N}
+    \vb{C}^{(K)}(\ymax) = \vb{0}_{N\times N} &            & {\pdv[]{}{y}}\vb{C}^{(K)}\left(\ymax\right) = \vb{I}_{N\times N}\text{.}
   \end{matrix}
 $$
 
-As we are using a multiple shooting procedure in the $y$-direction, the propagated values come together in a matching point $y_m$. Since eigenfunctions have to be continuous and continuously differentiable, a `matching' condition can be formulated.  Let us define $\Cbottom$ and $\Cbottom'$ to be the values of $\vb{C}^{(m)}(y_m)$ and $\pdv[]{\vb{C}^{(m)}}{y}\left(y_m\right)$ respectively when propagated from the bottom of the domain upwards. Analogous $\Ctop$ and $\Ctop'$ can be defined. Now the value $E$ is an eigenvalue of the original problem if and only if there exists vectors $\ubottom$ and $\utop$ such that
-\begin{align*}
-  \Cbottom \cdot \ubottom                   & = \Ctop \cdot \utop           \\
-  \text{and }\quad \Cbottom' \cdot \ubottom & = \Ctop' \cdot \utop \text{.}
-\end{align*}
-This is equivalent with saying $E$ is an eigenvalue of \eqref{equ:c3_schrodinger_2d} if and only if the mismatch matrix
+As we are using a multiple shooting procedure in the $y$-direction, the propagated values come together in a matching line $y = y_m$. Since eigenfunctions have to be continuous and continuously differentiable, a `matching' condition can be formulated.  Let us define $\Cbottom$ and $\Cbottom'$ to be the values of $\vb{C}^{(m)}(y_m)$ and ${\pdv[]{}{y}}\vb{C}^{(m)}\left(y_m\right)$ respectively when propagated from the bottom of the domain upwards. Analogous $\Ctop$ and $\Ctop'$ can be defined. Now the value $E$ is an eigenvalue of the original problem if and only if there exist vectors $\ubottom$ and $\utop$ such that
+\begin{align}
+  \Cbottom \cdot \ubottom                   & = \Ctop \cdot \utop           \nonumber \\
+  \text{and }\quad \Cbottom' \cdot \ubottom & = \Ctop' \cdot \utop \text{.} \label{ref:c3_c1_matching}
+\end{align}
+In \cite{ixaru_new_2010}, $\Cbottom$ and $\Ctop$ are implicitly assumed to be non-singular. With this, equations \eqref{ref:c3_c1_matching} can be rearranged. This makes it equivalent with saying: $E$ is an eigenvalue of \eqref{equ:c3_schrodinger_2d} if and only if the mismatch matrix
 \begin{equation}\label{equ:c3_psi_e}
   \vb{\Phi}(E) := \Cbottom'\Cbottom^{-1} - \Ctop'\Ctop^{-1}
 \end{equation}
-has a zero eigenvalue. Note that the multiplicity of the zero eigenvalue of this matrix is the same as the multiplicity of $E$ as an eigenvalue of \eqref{equ:c3_schrodinger_2d}. In the original article no details are given about how one should find the values of $E$ for which the matrix $\vb{\Phi}(E)$ becomes singular. Later, in section \ref{sec:c3_locating_e}, we will present our method for finding those values. In section \ref{sec:c3_index_of_e}, we will go even further and demonstrate a technique which allows to determine the index of the eigenvalue in question.
+has a zero eigenvalue. Each linear independent eigenvector of $\vb{\Phi}(E)$ corresponding to eigenvalue $0$ implies a linear independent eigenfunction $\psi(x, y)$ of the Schrödinger equation. Conversely, each eigenfunction of the Schrödinger equation corresponding to $E$ will emit an eigenvector (corresponding to $0$) for \eqref{equ:c3_psi_e}. Therefore, the geometric multiplicity of the zero eigenvalue of this matrix is the same as the multiplicity of $E$ as an eigenvalue of \eqref{equ:c3_schrodinger_2d}. In the original article no details are provided about how one should find the values of $E$ for which the matrix $\vb{\Phi}(E)$ becomes singular. Later, in section \ref{sec:c3_locating_e}, we will present our method for finding those values. In section \ref{sec:c3_index_of_e}, we will go even further and demonstrate a technique which allows to determine the index of the eigenvalue in question.
 
 This concludes our overview of the method described by Ixaru in \cite{ixaru_new_2010}. There are a few differences between our overview and the method as described in \cite{ixaru_new_2010}. Most notably, as stated in the beginning, we have swapped the roles of $x$ and $y$. Ixaru split the domain in sectors along the $x$-axis. To highlight the recursive nature of this method we have chosen to apply the split along the $y$-axis. To use this method for three-dimensional problems, we split the domain along the $z$-axis, and for the basis functions on each sector we solve the two-dimensional Schrödinger problem in the $x\,y$-plane. For each of these two-dimensional problems we split the domain along the $y$-axis, and solve some one-dimensional Schrödinger problems along the $x$-axis.
 
@@ -209,7 +204,8 @@ As we have seen with the rise of constant perturbation methods for the one-dimen
 
 We have made four large improvements and present them here in no particular order. First in section \ref{sec:c3_improvement_automatic_sectors}, we made the program able to automatically choose the optimal sector size, to ensure a provided tolerance. In section \ref{sec:c3_improvement_orthonormalization}, we were able to construct a formula to compute the inner product of two eigenfunctions. This formula allows us to normalized eigenfunctions, and construct an orthogonal basis of the eigenspace for degenerate eigenvalues. Section \ref{sec:c3_calculate_vk} is dedicated to the computation of the integral in equation \eqref{equ:c3_v_matrix}. And the last improvement we present here is a robust way to locate eigenvalues in section \ref{sec:c3_locating_e}. For this last improvement we had to develop some new theoretical results, which we will cover in section \ref{sec:c3_index_of_e}.
 
-\todo{Should we say something about scaling in between sectors?}
+% Should we say something about scaling in between sectors?
+% No, too much work, same idea as in MatSCS
 
 \subsection{Automatic optimal sector size}\label{sec:c3_improvement_automatic_sectors}
 
@@ -542,7 +538,6 @@ In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equ
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}
 
 This section is based upon yet unpublished work, in collaboration with professor Hans Vernaeve.
-
 
 Throughout mathematical physics there are many problems dependent on, or consisting of determining eigenvalues of a linear elliptic operator on a given domain with homogeneous Dirichlet boundary conditions. Some examples are the Schrödinger equation, the wave equation, the linear theory of elasticity..., to name a few. There are many methods, analytical as well as numerical, to solve for or to approximate these eigenvalues, e.g. shooting methods\cite{ixaru_numerical_1984,ixaru_new_2010}, finite difference methods\cite{wang_new_2009}, methods for finding the lowest eigenvalues\cite{braun_efficient_1996}, or even the methods discussed in chapters \ref{cha:c2}, \ref{cha:c3} and \ref{cha:c4}, \dots There even exist (numerical) methods that are able to find eigenvalues in the neighborhood of a given value $E$ without the need to compute all lower eigenvalues. For this last group of methods we have developed a theorem to count eigenvalues.
 
@@ -887,7 +882,7 @@ On each of these subdomains $\Omega_\epsilon$, we will approximate the eigenvalu
 \begin{equation}\label{equ:c3_disc_schrodinger}
   -\nabla^2 \psi(x, y) = \lambda \psi(x, y)\text{.}
 \end{equation}
-As boundary conditions we impose $\psi(x, y) = 0$ on the boundary $\delta \Omega_\epsilon$.
+As boundary conditions we impose $\psi(x, y) = 0$ on the boundary $\dOmega_\epsilon$.
 
 Later on, the found approximate eigenvalues can be compared to the eigenvalues on the unit disc $\Omega_1$, as described in section \ref{sec:c3_standing_waves_on_disc}. Theorem \ref{the:c3_counting_eigenvalues} promises that for an eigenvalue $\lambda_i$ on the unit disc, exactly $i$ moon-shaped subdomains can be found on which this $\lambda_i$ is also an eigenvalue.
 
@@ -912,7 +907,7 @@ With this transformation the Schrödinger equation \eqref{equ:c3_disc_schrodinge
 \begin{equation}\label{equ:c3_disc_schrodinger_transformed}
   -\mathcal{D}\phi(\alpha, t) = \lambda\phi(\alpha, t)
 \end{equation}
-with $\phi(\alpha, t)$ defined on the domain $\Xi_\epsilon = \left[-\frac{\pi}{2}, \frac{\pi}{2}\right] \times [-1, 2\epsilon - 1]$. Note that $T(\Xi_\epsilon) = \Omega_\epsilon$. As boundary conditions we impose $\phi(\alpha, t) = 0$ if $(\alpha, t) \in \delta\Xi_\epsilon$. In this expression $\mathcal{D}$ is the differential operator corresponding to $\nabla^2\psi(x, y)$. Calculating this operator by hand is tedious, therefore we will use \sage to do the symbolic heavy lifting for us. To be able to work with the operator $\mathcal{D}$, we first need a procedure to compute it. To ease notation we will denote $T(\alpha, t) = (T^{x}(\alpha, t), T^{y}(\alpha, t))$, and omit the arguments to the functions $\phi$, $\psi$ and $T$. Derivatives will be denoted as $\phi_\alpha = \pdv[]{\phi}{\alpha}$ and $\phi_{\alpha\alpha} = \pdv[2]{\phi}{\alpha}$. We compute all first and second derivatives of $\phi(\alpha, t)$.
+with $\phi(\alpha, t)$ defined on the domain $\Xi_\epsilon = \left[-\frac{\pi}{2}, \frac{\pi}{2}\right] \times [-1, 2\epsilon - 1]$. Note that $T(\Xi_\epsilon) = \Omega_\epsilon$. As boundary conditions we impose $\phi(\alpha, t) = 0$ if $(\alpha, t) \in \partial\Xi_\epsilon$. In this expression $\mathcal{D}$ is the differential operator corresponding to $\nabla^2\psi(x, y)$. Calculating this operator by hand is tedious, therefore we will use \sage to do the symbolic heavy lifting for us. To be able to work with the operator $\mathcal{D}$, we first need a procedure to compute it. To ease notation we will denote $T(\alpha, t) = (T^{x}(\alpha, t), T^{y}(\alpha, t))$, and omit the arguments to the functions $\phi$, $\psi$ and $T$. Derivatives will be denoted as $\phi_\alpha = \pdv[]{\phi}{\alpha}$ and $\phi_{\alpha\alpha} = \pdv[2]{\phi}{\alpha}$. We compute all first and second derivatives of $\phi(\alpha, t)$.
 \begin{equation}\label{equ:disc_transformation_derivatives}
   \begin{cases}
     \phi_\alpha = \psi_x T^x_\alpha + \psi_y T^y_\alpha                                                                                                                   \\
