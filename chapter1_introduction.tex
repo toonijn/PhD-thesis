@@ -14,25 +14,48 @@ Before diving into the required mathematical background, let us take a step back
 
 In this section, we will walk through an abridged version of the history of differential equations. Before talking about functions, it is important to talk about what makes up these functions.
 
-A good starting point is to take a look at number. Counting things is universal and timeless, as such the natural numbers $\NN$ are a jumping point to all the other numbers. In modern mathematics, the next logical step is to introduce the integers $\ZZ$. But historically, negative numbers, and the concept of zero as a number, were only widely accepted throughout the Middle Ages, by Indian, Chinese and Arabic mathematicians.
+A good starting point is to take a look at numbers. Counting things is universal and timeless, as such the natural numbers $\NN$ are a jumping point to all the other numbers. In modern mathematics, the next logical step is to introduce the integers $\ZZ$. But historically, negative numbers, and the concept of zero as a number, were only widely accepted throughout the Middle Ages, by Indian, Chinese and Arabic mathematicians.
 
-In historic texts we found already references to (positive) fractions, as early as Ancient Egypt, around 1000 BC. So after $\NN$ the next numbers that were `discovered', were the positive rational numbers $\QQ^+$. And soon thereafter some irrational numbers were found. The most prominent example is probably $\sqrt{2}$, as the diagonal of the unit square. But it is a bit too generous to say that this was the discovery of the real numbers. It is more accurate to say that there was a notion of algebraic numbers $\QQbar$. These are the numbers that are solutions of polynomial equations, like $x^2 = 2$. But only around the year 900, the Egyptian mathematician Abū Kāmil Shujā ibn Aslam started to accept these solutions as numbers in and of itself.
+In historic texts, we find already references to (positive) fractions, as early as Ancient Egypt, around 1000 BC. So after $\NN$ the next numbers that were `discovered', were the positive rational numbers $\QQ^+$. And soon thereafter some irrational numbers were found. The most prominent example is probably $\sqrt{2}$, as the diagonal of the unit square. But it is a bit too generous to say that this was the discovery of the real numbers. It is more accurate to say that there was a notion of algebraic numbers $\QQbar$. These are the numbers that are solutions of polynomial equations, like $x^2 = 2$. But only around the year 900, the Egyptian mathematician Abū Kāmil Shujā ibn Aslam started to accept these solutions as numbers in and of itself.
 
 The mathematical invention that may have had the most impact in our daily lives, may be also unnoticed by many: the Hindu-Arabic numeral system. This is a way of writing down numbers, invented between the first and fourth centuries. Most numeral systems were not made for large numbers or were cumbersome to work with. Only the best of mathematicians could do computation in those systems, especially multiplication was difficult. The Hindu-Arabic numeral system solved this by being positional based. This means that the last digits is the one's place, the digit before that ten's, then hundred's, and so on. This allows for a compact way to write down large numbers, that still allows easy computation through arithmetic manipulations. Our modern numeral system is a direct descendant of the Hindu-Arabic numeral system. Compare for example the Roman numeral \uppercase\expandafter{\romannumeral 3846\relax} to our modern equivalent $3846$. And to help illustrate the point, try squaring both numbers.
 
-From the sixteenth century onwards mathematics in Europe started to flourish. For our purposes, the next stride towards the real numbers was made by Simon Stevin from Bruges. He created a way to write numbers as a decimal expansion. It was he who introduced the concept of `digits behind the decimal point'. In this same century the complex numbers were discovered. And later in 1637, it was René Descartes who coined the terms `real' and `imaginary' numbers.
+From the sixteenth century onwards mathematics in Europe started to flourish. For our purposes, the next stride towards the real numbers was made by Simon Stevin from Bruges. He created a way to write real numbers as a decimal expansion. It was he who introduced the concept of `digits behind the decimal point'. In this same century the complex numbers were discovered. And later in 1637, it was René Descartes who coined the terms `real' and `imaginary' numbers.
 
 But it still took more than 200 years more before we would get a first formal mathematical definition of the real numbers $\RR$. It was the work of the great logicians of the late 19th century, spearheaded by Georg Cantor. He provided in 1874 a formal logical construction of the real numbers. It may seem surprising that a rigorous definition of the real numbers came so late in the rich history of mathematics. But, in practice, the development of calculus, and the theory of functions, did not really require strict formal definitions to advance.
 
-
 \subsection{Calculus}
 
+From a natural sciences view, it is natural to study relations between quantities. For example position in function of time, or air resistance in function of velocity. Yet, the earliest examples of the use of calculus seem to have their origins in geometry: finding the area under a parabola, or the volume of a cone\dots
 
+Throughout Ancient times and the Middle Ages across mathematical texts of many cultures, diverse examples of what we now call derivatives and integrals can be found. But all these examples were concrete applications to problems. Only in the seventeenth century were the first unifying theories of derivatives and integrals of functions developed. It was by non-other than Newton and Leibniz. The history between these two fathers of calculus is much richer than one would expect, it reads almost as a screenplay. In short, it is now accepted that both mathematicians independently developed the theory of calculus, at the time it was not.
 
+The notations
+$$
+    \int f(x) \, \dd x \quad \text{ and } \dv[]{f(x)}{x}
+$$
+for the integral and the derivative of a function $f$ were introduced by Liebniz. Newton introduced the notation
+$$
+    \dot{f}
+$$
+for the derivative of $f$. In mathematical texts this notation is less common, but it can be abundantly found in physics. In this work we will mostly use $\dv[]{f}{x}$ for the derivative of $f$. If from context the variable to which the derivative is considered is clear, then we will abbreviate $\dv[]{f}{x}$ to $f'(x)$.
+
+For many examples of how the theory of calculus and especially differential equations have developed throughout the last 400 years, we refer the interested reader to \cite{archibald_history_2005}. One of these examples explains what Newton probably understood by integrals and quadratures, and how these were computed. Another example is concerned with how the works of d'Alembert evolved.
+
+The first differential equations, as we know them now, were studied shortly after the work by Newton. Leibniz himself, and the Bernoulli brothers came across differential equations in the context of geometry and mechanics. In the eighteenth century the multivariate theory of Leibniz was extended and the first partial differential equations were written down. In the nineteenth century from the theoretical side, more results about the existence of solutions to differential equation were found. From the practical side, many more applications were found. Not only in mechanics, but also in heat transfer, optics, fluid flow and electricity and magnetism were differential equations instrumental. The equations of Navier and Stokes or the laws of Maxwell, to name a few, were developed.
+
+And the developments from the nineteenth century continued into the twentieth. Great new theoretical stride were made, and many new applications were found. Most notably, for this thesis at least, in quantum mechanics with Schrödinger's equation.
 
 \subsection{Advent of computing}
 
-\subsection{Modern times}
+Most\footnote{Mathematically, we can even say `almost all'.} differential equation can not be explicitly solved. For ordinary linear differential equations with constant coefficient, for example, are symbolic results available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's\footnote{Both forward and backward.} method from 1768. This is a simple method, yet Cauchy proved convergence. This convergence assures, that if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
+
+Later, in the middle of the nineteenth century were multistep methods developed. And at the end of that century did Runge publish the first Runge-Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
+
+What strikes me the most is that all these methods were developed long before computers were invented. This implies that the first applications of these methods required an unfathomable amount of manual computation. Now, we are spoiled, and computers do all the numerical heavy lifting for us\footnote{Regularly I feel very fortunate to be a PhD-student now, and not then. I assume that, before computers, many tedious computations must have been assigned to students.}. Back then, the term `computer' did exist, but it was a profession, not a device.
+
+Throughout the twentieth century, with the rise of computing devices, the use and applicability of these numerical methods for ordinary differential equations exploded. We were able to reach never before-seen accuracies in fractions of the time it would have costed only a few decades earlier. This explosion in computational power has continued. Now, the speed of affordable consumer desktop computers can be measured in teraFLOPS\footnote{`FLOPS' is a measure of how many \emph{fl}oating point \emph{o}perations \emph{p}er \emph{s}econd a computer can execute. A computer with a speed of $1$ teraFLOPS can execute  one billion floating point operations each second.}. For example, my university computer (Intel i7-8700K and an NVIDIA Quadro P2000) has a combined rated speed of a little over 3 teraFLOPS. Almost all of this speed comes from its graphics processing unit, with the CPU only contributing $0.06$ teraFLOPS. This already indicates that FLOPS is an imperfect unit. Writing a program that is able to use \emph{all} these FLOPS is prohibitively difficult.
+
 
 \section{Ordinary differential equations}
 
@@ -43,18 +66,5 @@ But it still took more than 200 years more before we would get a first formal ma
 \subsection{Time-dependent problems}
 
 \subsection{Eigenvalue-eigenfunction problems}
-
-\subsection{Linear self-adjoint elliptic operators}\label{sec:c1_selfadjoint}
-
-
-
-\begin{theorem}[Eigenvalues are sorted and increasing]
-\end{theorem}
-
-\begin{theorem}[Eigenfunctions are orthonormal]
-\end{theorem}
-
-\begin{theorem}[Courant's nodal domain theorem]
-\end{theorem}
 
 \stopchapter

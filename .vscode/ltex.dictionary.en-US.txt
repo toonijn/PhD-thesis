@@ -72,3 +72,7 @@ Veerle
 Newton-Raphson
 antiperiodic
 Titchmarsh
+quadratures
+Runge
+teraFLOPS
+Quadro
