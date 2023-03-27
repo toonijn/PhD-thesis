@@ -142,7 +142,7 @@ Using this basis is extremely promising. The basis functions are oscillatory for
 
 For the choice of $\bar{V}(x)$, in \cite{ixaru_new_2010} $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used. We will use this as well, for now. Later, we will remark that in some cases other choices may be beneficial.
 
-Just like the constant perturbation methods for one-dimensional problems, this method employs shooting to locate the eigenvalues. To do this, for a fixed value of $E$, formulae are needed to propagate solutions from the bottom of the domain (along $y = \ymin$) upwards, and from the top of the domain ($y = \ymax$) downwards. So, given a solution at the beginning of sector $k$ expressed in the basis $b_i^{(k)}$: $ \psi(x, y_{k-1}) = \sum_{i=1}^{N} b_i^{(k)}(x)\, c_i^{(k)}(y_{k-1}) $, an expression is constructed to compute $c^{(k)}_i(y_k)$ at the end of the sector. Substituting \eqref{equ:c3_lincomb_basis} into \eqref{equ:c3_schrodinger_2d} using \eqref{equ:c3_one_dimensional_schrodinger} gives rise to
+Just like the constant perturbation methods for one-dimensional problems, this method employs shooting to locate the eigenvalues. To do so, for a fixed value of $E$, formulae are needed to propagate solutions from the bottom of the domain (along $y = \ymin$) upwards, and from the top of the domain ($y = \ymax$) downwards. So, given a solution at the beginning of sector $k$ expressed in the basis $b_i^{(k)}$: $ \psi(x, y_{k-1}) = \sum_{i=1}^{N} b_i^{(k)}(x)\, c_i^{(k)}(y_{k-1}) $, an expression is constructed to compute $c^{(k)}_i(y_k)$ at the end of the sector. Substituting \eqref{equ:c3_lincomb_basis} into \eqref{equ:c3_schrodinger_2d} using \eqref{equ:c3_one_dimensional_schrodinger} gives rise to
 
 \begin{equation}\label{equ:c3_coupled_system}
   -\pdv[2]{\vb{c}^{(k)}}{y} + \vb{V}^{(k)}(y) \vb{c}^{(k)}(y) = E \vb{c}^{(k)}(y) \text{.}
@@ -172,29 +172,39 @@ with
 $$
   \vb{M}^{(k)}_{ij} = \bra{b_{i}^{(k)}}\ket{b_{j}^{(k+1)}} = \int_\xmin^\xmax b_i^{(k)}(x) b_j^{(k+1)}(x) \dd x \text{.}
 $$
-Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normalized $\bra{b_{i}^{(k)}}\ket{b_{j}^{(k)}} = \delta_{ij}$. In the infinite case this matrix $\vb{M}^{(k)}$ is orthogonal. In practice $N$ has to be finite, and $\vb{M}^{(k)}$ is in general no longer orthogonal. Intuitively this means that some information about the solution is lost when transitioning between sectors. This is a minor drawback, inherent to this method.
+Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normalized $\bra{b_{i}^{(k)}}\ket{b_{j}^{(k)}} = \delta_{ij}$, or in matrix notation:
+\begin{equation}\label{equ:c3_b_orthonormal}
+  \int_\xmin^\xmax \transpose{\vb{b}} \vb{b}\,\dd x = \vb{I}\text{.}
+\end{equation}
 
-\todo{Visualize that $\vb{M}^{(k)}$ is no longer orthogonal.}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/orthogonal_m.pdf}
+  \end{center}
+  \caption{Let $\vb{N}$ be the upper left $N \times N$ block of $\vb{M}$, with $\vb{M}$ the transition between the bases defined by the Schrödinger problems with potentials $V(x) = (x-1)^2$ and $V(x) = (x+1)^2$. This graph displays $\left\| \vb{N} \transpose{\vb{N}} - I \right\|_2$ as a function of $N$.}\label{fig:c3_orthogonal_m}
+\end{figure}
+
+In the infinite case this matrix $\vb{M}^{(k)}$ is orthogonal. In practice $N$ has to be finite, and $\vb{M}^{(k)}$ is in general no longer orthogonal. Intuitively this means that some information about the solution is lost when transitioning between sectors. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure \ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor drawback, inherent to this method.
 
 With these tools available, all that is left is to formalize how the shooting can be executed. Instead of propagating with a single starting condition (i.e. a column vector $\vb{c}^{(1)}(\ymin)$), all possible initial values (for homogeneous Dirichlet boundary conditions) are propagated at once. Therefore, we propose to start with:
 $$
   \begin{matrix}
-    \vb{C}^{(1)}(\ymin) = \vb{0}_{N\times N} &            & {\pdv[]{}{y}}\vb{C}^{(1)}(\ymin) = \vb{I}_{N\times N} \\
-                                             & \text{and} &                                                                \\
+    \vb{C}^{(1)}(\ymin) = \vb{0}_{N\times N} &            & {\pdv[]{}{y}}\vb{C}^{(1)}(\ymin) = \vb{I}_{N\times N}                    \\
+                                             & \text{and} &                                                                          \\
     \vb{C}^{(K)}(\ymax) = \vb{0}_{N\times N} &            & {\pdv[]{}{y}}\vb{C}^{(K)}\left(\ymax\right) = \vb{I}_{N\times N}\text{.}
   \end{matrix}
 $$
 
 As we are using a multiple shooting procedure in the $y$-direction, the propagated values come together in a matching line $y = y_m$. Since eigenfunctions have to be continuous and continuously differentiable, a `matching' condition can be formulated.  Let us define $\Cbottom$ and $\Cbottom'$ to be the values of $\vb{C}^{(m)}(y_m)$ and ${\pdv[]{}{y}}\vb{C}^{(m)}\left(y_m\right)$ respectively when propagated from the bottom of the domain upwards. Analogous $\Ctop$ and $\Ctop'$ can be defined. Now the value $E$ is an eigenvalue of the original problem if and only if there exist vectors $\ubottom$ and $\utop$ such that
 \begin{align}
-  \Cbottom \cdot \ubottom                   & = \Ctop \cdot \utop           \nonumber \\
+  \Cbottom \cdot \ubottom                   & = \Ctop \cdot \utop           \nonumber                  \\
   \text{and }\quad \Cbottom' \cdot \ubottom & = \Ctop' \cdot \utop \text{.} \label{ref:c3_c1_matching}
 \end{align}
 In \cite{ixaru_new_2010}, $\Cbottom$ and $\Ctop$ are implicitly assumed to be non-singular. With this, equations \eqref{ref:c3_c1_matching} can be rearranged. This makes it equivalent with saying: $E$ is an eigenvalue of \eqref{equ:c3_schrodinger_2d} if and only if the mismatch matrix
 \begin{equation}\label{equ:c3_psi_e}
   \vb{\Phi}(E) := \Cbottom'\Cbottom^{-1} - \Ctop'\Ctop^{-1}
 \end{equation}
-has a zero eigenvalue. Each linear independent eigenvector of $\vb{\Phi}(E)$ corresponding to eigenvalue $0$ implies a linear independent eigenfunction $\psi(x, y)$ of the Schrödinger equation. Conversely, each eigenfunction of the Schrödinger equation corresponding to $E$ will emit an eigenvector (corresponding to $0$) for \eqref{equ:c3_psi_e}. Therefore, the geometric multiplicity of the zero eigenvalue of this matrix is the same as the multiplicity of $E$ as an eigenvalue of \eqref{equ:c3_schrodinger_2d}. In the original article no details are provided about how one should find the values of $E$ for which the matrix $\vb{\Phi}(E)$ becomes singular. Later, in section \ref{sec:c3_locating_e}, we will present our method for finding those values. In section \ref{sec:c3_index_of_e}, we will go even further and demonstrate a technique which allows to determine the index of the eigenvalue in question.
+has a zero eigenvalue. Each linear independent eigenvector of $\vb{\Phi}(E)$ corresponding to eigenvalue $0$ implies a linear independent eigenfunction $\psi(x, y)$ of the Schrödinger equation. Conversely, each eigenfunction of the Schrödinger equation corresponding to $E$ will emit a singular vector for \eqref{equ:c3_psi_e}. Therefore, the geometric multiplicity of the zero eigenvalue of this matrix is the same as the multiplicity of $E$ as an eigenvalue of \eqref{equ:c3_schrodinger_2d}. In the original article no details are provided about how one should find the values of $E$ for which the matrix $\vb{\Phi}(E)$ becomes singular. Later, in section \ref{sec:c3_locating_e}, we will present our method for finding those values. In section \ref{sec:c3_index_of_e}, we will go even further and demonstrate a technique which allows to determine the index of the eigenvalue in question.
 
 This concludes our overview of the method described by Ixaru in \cite{ixaru_new_2010}. There are a few differences between our overview and the method as described in \cite{ixaru_new_2010}. Most notably, as stated in the beginning, we have swapped the roles of $x$ and $y$. Ixaru split the domain in sectors along the $x$-axis. To highlight the recursive nature of this method we have chosen to apply the split along the $y$-axis. To use this method for three-dimensional problems, we split the domain along the $z$-axis, and for the basis functions on each sector we solve the two-dimensional Schrödinger problem in the $x\,y$-plane. For each of these two-dimensional problems we split the domain along the $y$-axis, and solve some one-dimensional Schrödinger problems along the $x$-axis.
 
@@ -202,15 +212,14 @@ This concludes our overview of the method described by Ixaru in \cite{ixaru_new_
 
 As we have seen with the rise of constant perturbation methods for the one-dimensional Sturm-Liouville equation, research builds upon previous work. With this in mind we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily our work done in \cite{baeyens_fast_2020}.
 
-We have made four large improvements and present them here in no particular order. First in section \ref{sec:c3_improvement_automatic_sectors}, we made the program able to automatically choose the optimal sector size, to ensure a provided tolerance. In section \ref{sec:c3_improvement_orthonormalization}, we were able to construct a formula to compute the inner product of two eigenfunctions. This formula allows us to normalized eigenfunctions, and construct an orthogonal basis of the eigenspace for degenerate eigenvalues. Section \ref{sec:c3_calculate_vk} is dedicated to the computation of the integral in equation \eqref{equ:c3_v_matrix}. And the last improvement we present here is a robust way to locate eigenvalues in section \ref{sec:c3_locating_e}. For this last improvement we had to develop some new theoretical results, which we will cover in section \ref{sec:c3_index_of_e}.
+We have made four large improvements and present them here in no particular order. First in section \ref{sec:c3_improvement_automatic_sectors}, we made the program able to automatically choose the optimal sector size. This automatic sector selection allows for a user to only need to specify the required accuracy of the results. In section \ref{sec:c3_improvement_orthonormalization}, we were able to construct a formula to compute the inner product of two eigenfunctions. This formula allows us to normalize eigenfunctions and to construct an orthogonal basis of the eigenspace for degenerate eigenvalues. Section \ref{sec:c3_calculate_vk} is dedicated to the computation of the integral in equation \eqref{equ:c3_v_matrix}. And the last improvement we present here is a robust way to locate eigenvalues in section \ref{sec:c3_locating_e}. For this last improvement we had to develop some new theoretical results, which we will cover in section \ref{sec:c3_index_of_e}.
 
 % Should we say something about scaling in between sectors?
 % No, too much work, same idea as in MatSCS
 
 \subsection{Automatic optimal sector size}\label{sec:c3_improvement_automatic_sectors}
 
-When developing numerical methods (for any problem, not only for differential equations), it is most user-friendly to allow a user to only specify to which accuracy results are required. Everything else should be automatic. For example, an implementation of an adaptive quadrature rule should let the user specify only the function which to integrate, and the accuracy required. No extra parameters, such as the initial number of grid points or the order of the method for example, should be required\footnote{But ideally, a user who is experimenting or wants more control should be able to optionally specify some of these extra parameters.}. In \matslise{3} we have followed \matslise{2}, which has automatic sector size built in. It would improve the usability of this method if we could include something similar.
-
+When developing numerical methods (for any problem, not only for differential equations), it is most user-friendly to ask a user to only specify to which accuracy results are required. Everything else should be automatic\footnote{For example, an implementation of an adaptive quadrature rule should let the user specify only the function which to integrate, and the accuracy required. No extra parameters, such as the initial number of grid points or the order of the method for example, should be required. But ideally, a user who is experimenting or wants more control should be able to specify any of these extra parameters.}. In \matslise{3}, we have followed \matslise{2}, which has automatic sector size built in. It would improve the usability of this two-dimensional method if we include something similar.
 
 We could use the same ideas that \matslise{} is using, the only difference is the way we compute the error for a given sector. In the one-dimensional case, the difference between the 16th and 18th order propagation matrix is used to estimate the error. Here, we are propagating on each sector a coupled system of Schrödinger equations. This propagation is implemented with an adaptation of \matscs{} \cite{ledoux_numerical_2007}. In this adaptation two different propagation methods are implemented: a 10th order and 8th order method. The difference between the corresponding propagation matrices can be used to estimate the error that will be made on this sector.
 
@@ -218,8 +227,20 @@ In theory and in practice this works beautifully, but some optimizations are sti
 $$
   -\pdv[2]{b_i}{x} + V(x, \bar{y}) = \lambda_i b_i
 $$
-with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}{2}$ then it is maybe not necessary to recompute these basis functions. In our testing we have seen that the algorithm is not very sensitive to when we decide $\frac{s_1}{2} \not\approx
-  \frac{s_0}{2}$. We have chosen the heuristic that $y_k + \frac{s_1}{3} \leq \bar{y} \leq y_k + \frac{2 s_1}{3}$. Intuitively this means that we are happy with $\bar{y}$ as long as it is situated within the middle third of a sector. Another big advantage of not needing to recompute the basis functions is that the expensive recursive expressions, which we will see in section \ref{sec:c3_calculate_vk}, for the integrals $\int_{0}^{h} b_i(\delta)b_j(\delta)\delta^n \dd \delta $ can be reused.
+with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}{2}$ then it is maybe not necessary to recompute these basis functions. In our testing we have seen that the algorithm is not very sensitive to when we decide $\frac{s_1}{2} \not\approx \frac{s_0}{2}$. We have chosen the heuristic that $y_k + \frac{s_1}{3} \leq \bar{y} \leq y_k + \frac{2 s_1}{3}$. Intuitively this means that our program reuses the basis functions $b_i$ as long as the corresponding $\bar{y}$ is situated within the middle third of a sector. Another big advantage of not needing to recompute the basis functions is that the expensive recursive expressions, which we will see in section \ref{sec:c3_calculate_vk}, for the integrals $\int_{0}^{h} b_i(\delta)b_j(\delta)\delta^n \dd \delta $ can be reused as well.
+
+\begin{figure}
+  \begin{center}
+    \begin{minipage}{.59\textwidth}
+      \includegraphics[width=\textwidth]{img/chapter3/sector_example.pdf}
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+      \caption{A possible sector selection for problem \ref{sec:c3_experiment_ixaru} with potential $V(x, y) = (1+x^2)(1+y^2)$. The blue lines indicate sector boundaries. The red lines visualize the piecewise approximation used by \matslise{3} for each of the $x$-directional problems.}\label{fig:c3_sector_selection_example}
+    \end{minipage}
+  \end{center}
+\end{figure}
+
+A possible automatic sector selection is visualized in figure \ref{fig:c3_sector_selection_example}. Here we have run our implementation on the problem from section \eqref{sec:c3_experiment_ixaru}. We notice that in the middle of the domain, where the potential $V(x, y) = (1+x^2)(1+y^2)$ is smaller and less steep, the sectors are larger.
 
 \subsection{Orthonormalization of eigenfunctions}\label{sec:c3_improvement_orthonormalization}
 
@@ -227,19 +248,21 @@ For the one dimensional case, we know from theory that eigenfunctions correspond
 
 Ideally, the eigenfunctions returned by are program should form an orthonormal basis. For this we need to normalize eigenfunctions, and ensure that the returned basis of a multidimensional eigenspace is orthogonal. To execute normalization, the inner product $\bra{u}\ket{u} := \int_\Omega u^2$  of an eigenfunction $u$ with itself should be computed. To orthogonalize two linear-independent eigenfunctions in the same eigenspace, a Gram-Schmidt process can be used. For this process, there has to be a way to compute the inner product $\bra{u}\ket{v}$ of two functions $u$ and $v$ in this eigenspace.
 
-To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases the inner product of two functions should be computable. One way would be to numerically estimate this value with some quadrature rules. In principle this is a valid approach, but in practice, this is quite computationally expensive. Therefore, we have constructed specialized formulae to compute these inner products:
+To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases the inner product of two functions should be computable. One way would be to numerically estimate this value with some quadrature rules. In principle this is a valid approach, but in practice, this is quite computationally expensive. Therefore, we have constructed in theorem \ref{the:c3_dot_product} specialized formulae to compute these inner products.
 
-\begin{theorem}
-  Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one dimensional orthonormal basis functions (as described in section \ref{sec:c3_ixarus_method}, on a single sector).
+Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem \ref{the:c3_dot_product} is formulated with the assumptions these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domains, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one dimensional Sturm-Liouville problems.
+
+\begin{theorem}\label{the:c3_dot_product}
+  Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section \ref{sec:c3_ixarus_method}, on a single sector).
   \begin{align*}
     \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \\
     \psi_b(x, y) = \transpose{\vb{b}(x)} \vb{c_b}(y) = \sum_i b_i(x) c_{b, i}(y)
   \end{align*}
-  On a rectangular domain $[\xmin, \xmax] \times [\ymin, \ymax]$ the inner product of these two functions can be expressed as:
+  On a rectangular domain $[\xmin, \xmax] \times [\ymin, \ymax]$ the inner product of these two functions can be expressed as
   $$
-    \bra{\psi_a}\ket{\psi_b} = \int_\xmin^\xmax \int_\ymin^\ymax \psi_a\psi_b \, \dd y \, \dd x = \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=y_\ymax} \text{.}
+    \bra{\psi_a}\ket{\psi_b} = \int_\xmin^\xmax \int_\ymin^\ymax \psi_a\psi_b \, \dd y \, \dd x = \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=y_\ymax} \text{,}
   $$
-  With $\vb{c_a}' = \dv[]{\vb{c_a}}{y}$, analogous for $\vb{c_b}' = \dv[]{\vb{c_b}}{y}$.
+  with $\vb{c_a}' = \dv[]{\vb{c_a}}{y}$ and $\vb{c_b}' = \dv[]{\vb{c_b}}{y}$.
 \end{theorem}
 \begin{proof}
   By assumption $\psi_a$ and $\psi_b$ are solutions of the Schrödinger equation:
@@ -247,69 +270,65 @@ To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases 
     -\nabla^2 \psi_a + V \psi_a = E \psi_a \\
     -\nabla^2 \psi_b + V \psi_b = E \psi_b \text{.}
   \end{align*}
-  Deriving the first equation with respect to $E$ and multiplying with $\psi_b$ gives
+  Differentiating the first equation with respect to $E$ and multiplying with $\psi_b$ gives
   \begin{align*}
-    -\nabla^2\pdv{\psi_a}{E} \, \psi_b + V(x, y)\pdv{\psi_a}{E} \, \psi_b & = E \pdv{\psi_a}{E}\psi_b + \psi_a\psi_b \text{.} \\
+    - \psi_b \nabla^2\pdv{\psi_a}{E} + V(x, y)\pdv{\psi_a}{E} \, \psi_b & = E \pdv{\psi_a}{E}\psi_b + \psi_a\psi_b \text{.} \\
     \intertext{The second equation can be multiplied with $ \pdv[]{\psi_a}{E}$ to result in}
-    -\nabla^2\psi_b\,\pdv{\psi_a}{E}  + V(x, y)\psi_b\,\pdv{\psi_a}{E}    & = E \psi_b\pdv{\psi_a}{E} \text{.}
+    -\pdv{\psi_a}{E} \nabla^2\psi_b  + V(x, y)\psi_b\,\pdv{\psi_a}{E}   & = E \psi_b\pdv{\psi_a}{E} \text{.}
   \end{align*}
-  The difference of these last two expressions can be integrated over the domain $[\xmin, \xmax]\times[\ymin, \ymax]$ to obtain an expression for the inner product $\bra{\psi_a}\ket{\psi_b}$. For brevity of notation we omit the integration boundaries, these are assumed to be the whole domain.
+  The difference of these last two expressions can be integrated over the domain $[\xmin, \xmax]\times[\ymin, \ymax]$ to obtain an expression for the inner product $\bra{\psi_a}\ket{\psi_b}$. For brevity of notation we omit the integration domain, this is assumed to be $[\xmin, \xmax] \times [\ymin, \ymax]$.
 
   \begin{align*}
-    \iint \psi_a\,\psi_b = & \iint\nabla^2\psi_b\,\pdv{\psi_a}{E} - \iint \nabla^2\pdv{\psi_a}{E}\,\psi_b                                                               \\
-    \intertext{The right-hand side can be calculated by applying Green's second identity:}
-    \iint \psi_a\,\psi_b = & \oint \left(\pdv{\psi_a}{E} \nabla \psi_b \cdot \vb{n} -  \psi_b \nabla \pdv{\psi_a}{E} \cdot \vb{n} \right) \text{.}                      \\
+    \iint \psi_a\,\psi_b = & \iint\pdv{\psi_a}{E}\nabla^2\psi_b - \iint \psi_b\nabla^2\pdv{\psi_a}{E}                                                                                                                                               \\
+    \intertext{The right-hand side can be calculated by applying Green's second identity\footnotemark}\noalign{\footnotetext{Let $f: \Omega \to \RR$ and $g: \Omega \to \RR$ be twice differentiable functions on $\Omega \subseteq \RR^d$. Green's second identity tells us
+        $$
+          \int_\Omega f \nabla^2 g - g \nabla^2 f \dd \Omega = \oint_{\dOmega} \left(f \nabla g - g \nabla f\right) \cdot \dd \vb{n} \text{,}
+        $$
+        with $\vb{n}$ the normal of $\dOmega$.}}
+    =                      & \oint \left(\pdv{\psi_a}{E} \nabla \psi_b \cdot \vb{n} -  \psi_b \nabla \pdv{\psi_a}{E} \cdot \vb{n} \right) \text{.}                                                                                                  \\
     \intertext{This can be written explicitly on the integration domain as}
-    \iint \psi_a\,\psi_b = & \left.\int_{\xmin}^{\xmax} \left(\pdv{\psi_a}{E} \pdv{\psi_b}{y} -  \psi_b \pdv[2]{\psi_a}{E}{y} \right) \dd x \right|_{y=\ymin}^{y=\ymax} \\
-                           & +\left.\int_{\ymin}^{\ymax} \pdv{\psi_a}{E} \pdv{\psi_b}{x} \dd y \right|_{x=\xmin}^{x=\xmax} \text{.}                                     \\
-    \intertext{Taking into account that the eigenfunctions $\psi_a$ and $\psi_b$ are expressed in terms of an orthonormal set of basis functions $\vb{b}(x)$, such that
-      $$
-        \int_{\xmin}^{\xmax} \vb{b}(x) \transpose{\vb{b}}(x) \dd x = \vb{I}_{n\times n} \text{,}
-      $$
-      we can simplify the expression to}
-    \iint \psi_a\,\psi_b = & \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=\ymax}          \\
-                           & +\left.\int_{y_{k-1}}^{y_{k}} \pdv{\transpose{\vb{c_a}}}{E} \vb{b} \transpose{\vb{b}'} \vb{c_b} \dd y \right|_{x=\xmin}^{x=\xmax} \text{.}
+    =                      & \left.\int_{\xmin}^{\xmax} \left(\pdv{\psi_a}{E} \pdv{\psi_b}{y} -  \psi_b \pdv[2]{\psi_a}{E}{y} \right) \dd x \right|_{y=\ymin}^{y=\ymax}                                                                             \\
+                           & +\left.\int_{\ymin}^{\ymax} \left(\pdv{\psi_a}{E} \pdv{\psi_b}{x}-  \psi_b \pdv[2]{\psi_a}{E}{x}  \right) \dd y \right|_{x=\xmin}^{x=\xmax} \text{.}                                                                   \\
+    \intertext{Taking into account that the eigenfunctions $\psi_a$ and $\psi_b$ are expressed in terms of an orthonormal set of basis functions $\vb{b}(x)$ as in equation \eqref{equ:c3_b_orthonormal}, we can simplify the expression to}
+    =                      & \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=\ymax}                                                                                      \\
+                           & +\left.\int_{\ymin}^{\ymax} \left(\transpose{\vb{b}}\pdv{\vb{c_a}}{E} \transpose{\vb{b}'} \vb{c_b} - \transpose{\vb{b}}\vb{c_b} \transpose{\vb{b}'} \pdv{\vb{c_a}}{E}\right)\dd y \right|_{x=\xmin}^{x=\xmax} \text{.}
   \end{align*}
-  Since the basis functions satisfy the Dirichlet boundary conditions $\vb{b}(\xmin) = \vb{b}(\xmax) = \vb{0}$ the last term has to be zero, which proves the theorem.
+  Since the basis functions satisfy the Dirichlet boundary conditions\footnote{Note that this proof also works if the basis $\vb{b}$ is assumed to satisfy homogeneous Robin boundary conditions.} $\vb{b}(\xmin) = \vb{b}(\xmax) = \vb{0}$ the last term has to be zero, which proves the theorem.
 \end{proof}
 
 This theorem gives an expression for the inner product of two eigenfunctions on each sector. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
 
 \subsection{Calculation of \texorpdfstring{$\vb{V}^{(k)}(y)$}{Vk(y)}}\label{sec:c3_calculate_vk}
 
-Another improvement we have made can be found in the calculation of the matrix $\vb{V}^{(k)}(y)$ from equation \eqref{equ:c3_v_matrix}. When one wants to implement this definition accurately, some considerations have to be made. As the formula consist of an integral with a relatively complicated integrand, we have to consider in which points this integrand is known. Furthermore, evaluating more points is non-trivial.
+Another improvement we have made can be found in the calculation of the matrix $\vb{V}^{(k)}(y)$ from equation \eqref{equ:c3_v_matrix}. When one wants to implement the right-hand side of \eqref{equ:c3_v_matrix} accurately, some considerations have to be made. As the formula consist of an integral with a relatively complicated integrand, we have to consider in which points this integrand is known. Furthermore, evaluating more points is non-trivial.
 
-In \cite{ixaru_new_2010}, they remark that not only the values of the basis function is known but also the values of their derivative. To use this, ideas from \cite{kim_quadrature_2002} are combined with the treatment of exponential fitting with two frequencies in \cite{ixaru_operations_1997}. This yielded a procedure close to \texttt{CENC1} from \cite{ixaru_exponential_2004}.
+In \cite{ixaru_new_2010}, the author points out that not only the values of the basis functions are known but also the values of their derivatives. To use this, ideas from \cite{kim_quadrature_2002} are combined with the treatment of exponential fitting with two frequencies in \cite{ixaru_operations_1997}. This yielded a procedure close to \texttt{CENC1} from \cite{ixaru_exponential_2004}.
 
-In our case, the story is quite different. Because of our improvements to Matslise, we can improve accuracy even further. In particular, the computation of $b_i^{(k)}(x)$ is now efficiently possible in arbitrary points. This allows us to use off-the-shelf adaptive quadrature rules, to ensure accuracy. As this was only a first test to approximate $\vb{V}^{(k)}(x)$, we did not use specialized exponentially fitted methods. When profiling our implementation we found that the time to execute these quadrature formulae was almost negligible.
+In our case, the story is quite different. Because of our improvements to \matslise{}, we can improve accuracy even further. In particular, the computation of $b_i^{(k)}(x)$ is now efficiently possible in arbitrary points. This allows us to use off-the-shelf adaptive quadrature rules, to ensure accuracy. As this was only a first test to approximate $\vb{V}^{(k)}(x)$, we did not use specialized exponentially fitted methods. When profiling our implementation we found that the time to execute these quadrature formulae was almost negligible.
 
-So in practice, there was little need to improve even further, with more complicated quadrature formulae from \cite{ixaru_operations_1997,kim_quadrature_2002,conte_modified_2016}. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$, are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewise. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can also be accurately fitted on this function $V(x, y)$, if the same pieces as for $\bar{V}^{(k)}$ are used.
+So in practice, there was little need to improve even further, with more complicated quadrature formulae from \cite{ixaru_operations_1997,kim_quadrature_2002,conte_modified_2016}. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$ are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewisely. As such, it is reasonable to assume, that a piecewise sixteenth degree polynomial can also be accurately fitted on this function $V(x, y)$, if the same grid as for $\bar{V}^{(k)}$ is used.
 
-More formal, let us split the interval $[\xmin, \xmax]$ into the same partition that \matslise{3} used to compute the basis functions: $\xmin = x_0, x_1, \dots, x_K = \xmax$. For a fixed value of $y$ on the section $[x_{l-1}, x_l]$, the potential $V(x, y)$ can be approximated by a sixteenth order polynomial, just like $\bar{V}^{(k)}(x)$. We thus approximate $V(x, y) - \bar{V}^{(k)}(x)$ on $x \in [x_{l-1}, x_l]$ by a polynomial $q_l(x)$. This means that to compute \eqref{equ:c3_v_matrix}, it is sufficient if we are able to evaluate
+More formal, let us split the interval $[\xmin, \xmax]$ into the same partition that \matslise{3} used for the piecewise approximation $\xmin = x_0, x_1, \dots, x_K = \xmax$. For a fixed value of $y$ on the section $[x_{l-1}, x_l]$, the potential $V(x, y)$ can be approximated by a sixteenth order polynomial, just like $\bar{V}^{(k)}(x)$. We thus approximate $V(x, y) - \bar{V}^{(k)}(x)$ on $[x_{l-1}, x_l]$ by a polynomial $q_l(x)$. This means that to compute \eqref{equ:c3_v_matrix}, it is sufficient to be able to evaluate
 \begin{equation}\label{equ:vk_quad_sector1d}
   \int_{0}^{h} b_i^{(k)}(x_{l-1}+\delta)b_j^{(k)}(x_{l-1}+\delta)\delta^n\dd \delta
 \end{equation}
 with $h := x_l-x_{l-1}$.
 
-In chapter \ref{cha:c2} we have provided expressions for $b_i^{(k)}(x_{l-1}+\delta)$ in function of $\delta$ and $Z_i := \delta^2\left(\bar{V}^{(k)}_{l,0}- \lambda^{(k)}_i\right)$:
+In chapter \ref{cha:c2} we have provided expressions for $b_i^{(k)}(x_{l-1}+\delta)$ as a function of $\delta$ and $Z_i := \delta^2\left(\bar{V}^{(k)}_{l,0}- \lambda^{(k)}_i\right)$:
 $$
   b_i^{(k)}(x_{l-1}+\delta) = \sum_{m=-1} c_m(\delta) \eta_m(Z_i)\text{.}
 $$
-In this expression $c_m(\delta)$ are known polynomials in $\delta$.
+In this expression, $c_m(\delta)$ are known polynomials in $\delta$.
 
 Thus, to reconstruct the value of \eqref{equ:vk_quad_sector1d}, it is sufficient to compute the value of
 \begin{equation}\label{equ:c3_eta_eta_inegral}
-  \int_0^h \eta_k(Z_i) \eta_l(Z_j) \delta^n \dd \delta
+  I_{k,l}^n := \int_0^h \eta_k(Z_i) \eta_l(Z_j) \delta^n \dd \delta
 \end{equation}
 for all appropriate $k$, $l$ and $n$. In the next section we will develop recursive formulae for this expression.
 
-\subsubsection{Weighted integral of product of two \texorpdfstring{$\eta$}{eta}-functions.}
+\subsubsection{Weighted integral of product of two \texorpdfstring{$\eta$}{eta}-functions}
 
-Here, the goal is to develop an expression to compute \eqref{equ:c3_eta_eta_inegral}:
-$$
-  I_{k,l}^n := \int_0^h \eta_k(Z_i) \eta_l(Z_j) \delta^n \dd \delta\text{.}
-$$
-Thanks to the recursive property of $\eta$-functions
+Here, the goal is to develop an expression to compute \eqref{equ:c3_eta_eta_inegral}. Due to the recursive property of $\eta$-functions
 $$
   \eta_k(Z) = \frac{1}{Z}\left(\eta_{k-2}(Z) - (2k-1)\eta_{k-1}(Z)  \right)\text{,}
 $$
@@ -329,7 +348,7 @@ In the case where $i = j$, these values are given as
 \end{align*}
 
 
-We next show that it is possible, via partial integration, to compute formulae for $F^{n}:=I_{-1,-1}^{n}$ and $J^{n}:=I_{0,0}^{n+2}$ using values for $G^{n-1}:=I_{-1,0}^{n}$ and $H^{n-1}:=I_{0,-1}^{n}$. Analogous, formulae for $G^{n}$ and $H^{n}$ use the values of $F^{n-1}$ and $J^{n-1}$. Let us consider the case of $F^{n}$. Deriving both sides of
+We next show that it is possible, via partial integration, to compute formulae for $F^{n}:=I_{-1,-1}^{n}$ and $J^{n}:=I_{0,0}^{n+2}$ using values for $G^{n-1}:=I_{-1,0}^{n}$ and $H^{n-1}:=I_{0,-1}^{n}$. Analogous, formulae for $G^{n}$ and $H^{n}$ use the values of $F^{n-1}$ and $J^{n-1}$. Let us consider the case of $F^{n}$. Differentiating both sides of
 $$
   \int^{h}_0 \eta_{-1}(Z_i)\eta_{-1}(Z_j)\dd \delta = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right)
 $$
@@ -346,7 +365,6 @@ $$
   f(\delta) = \frac{\delta}{\theta_i - \theta_j}\left(\theta_i \eta_0(Z_i)\eta_{-1}(Z_j) - \theta_j \eta_{-1}(Z_i)\eta_0(Z_j)\right)\,,
 $$
 we obtain
-
 \begin{align*}
   F^{n} & = \int_{0}^{h}\eta_{-1}(Z_i)\eta_{-1}(Z_j) \delta^{n} \dd \delta                                                                                    \\
         & =h^{n} F^0 - \frac{n}{\theta_i - \theta_j}\int_{0}^{h} \delta^{n} \left( \theta_i \eta_{0}(Z_i)\eta_{-1}(Z_j)
@@ -365,25 +383,22 @@ we obtain
         & = h^{n} J^0 - \frac{n }{\theta_i - \theta_j}\left( G^{n-1} - H^{n-1} \right)
 \end{align*}
 
-Calculating these values for increasing $n$ can be a numerically unstable process. It is more accurate to
-% {\color{red} assume $I_{-1,-1}^n \to 0$ if $n \to \infty$} (analogous for $I_{-1,0}^{n}$, $I_{0,-1}^{n}$ and $I_{0,0}^{n}$) and 
-reverse the recursion with decreasing values of $n$. This gives rise to the recursion:
+Calculating these values for increasing $n$ can be a numerically unstable process. It is a more stable algorithm to reverse the recursion with decreasing values of $n$. This gives rise to the recursion:
 \begin{align*}
   F^{n-1} & = \frac{1}{n}\left( x_1 \theta_i + x_2 \theta_j + h^n \right) \\
   J^{n-1} & = \frac{1}{n}\left( x_1  + x_2\right)                         \\
   G^{n-1} & = \frac{1}{n}\left( y_1  + \theta_i y_2\right)                \\
-  H_{n-1} & = \frac{1}{n}\left( y_1  + \theta_j y_2\right)                \\
+  H_{n-1} & = \frac{1}{n}\left( y_1  + \theta_j y_2\right)
 \end{align*}
 with:
 \begin{align*}
-  x_1 & = H^{0} h^n - H^n        \\
-  x_2 & = G^0 h^n - G^n          \\
-  y_1 & = F^{0} h^n - F^{n}      \\
-  y_2 & = J^{0} h^n - J^{n}  \,. \\
+  x_1 & = H^{0} h^n - H^n             \\
+  x_2 & = G^0 h^n - G^n               \\
+  y_1 & = F^{0} h^n - F^{n}           \\
+  y_2 & = J^{0} h^n - J^{n}  \text{.}
 \end{align*}
 
-Then this recursion can be executed starting with $n$ sufficiently large and with $F^n$, $G^n$, $H^n$ and $J^n$ replaced by 0.
-To show this, let us focus on the computation of the $F$ and $J$ integrals (a similar analysis can be made for the $G$ and $H$ integrals).
+Then this recursion can be executed starting with $n$ sufficiently large and with $F^n$, $G^n$, $H^n$ and $J^n$ replaced by 0. \todo{This next section should show that $F^{n} \to 0$ if $n \to \infty$, I don't see how. Alternatively, maybe a Taylor-series?}To show this, let us focus on the computation of the $F$ and $J$ integrals (a similar analysis can be made for the $G$ and $H$ integrals).
 One verifies that
 % expressions %for $F^{n-2}$ and $J^{n-2}$, which can be rewritten as
 \begin{align*} F^{n-2} & = \frac {  1 }{n \left( n-1 \right) }
@@ -417,20 +432,20 @@ In the previous section we obtained formulae to compute \eqref{equ:vk_quad_secto
 $$
   \vb{M}_{ij}^{(k)} = \int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x\text{,}
 $$
-but there are a few hurdles. Firstly, we would like to use the automatic sector selection algorithm in Matslise, this has the big advantage of ensuring the requested accuracy. Using this automatic sector selection has the consequence of choosing a different partition along the $x$-axis for different sectors in the $y$-direction. However, since $\vb{M}^{(k)}$ requires basis functions on two different sectors it would be very cumbersome to construct appropriate formulae.
+but there are a few hurdles. Firstly, we would like to use the automatic sector selection algorithm in \matslise{}, this has the big advantage of ensuring the requested accuracy. Using this automatic sector selection has the consequence of choosing a different partition along the $x$-axis for different sectors in the $y$-direction. However, since $\vb{M}^{(k)}$ requires basis functions on two different sectors it would be very cumbersome to construct appropriate formulae.
 
 Secondly we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are quite expensive to compute. For $\vb{V}^{(k)}(y)$ this cost can be justified by also reducing function evaluations of the potential $V(x, y)$.
 
-In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in Matslise it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
+In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
 
-For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure accurate enough values, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
+For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
 
 
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
 
-In section \ref{sec:c3_ixarus_method} we have studied a method to determine for a given value $E$ if it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation \eqref{equ:c3_psi_e} becomes singular. In \cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about one would go about finding such values for $E$.
+In section \ref{sec:c3_ixarus_method} we have studied a method to determine, for a given value $E$, whether it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation \eqref{equ:c3_psi_e} becomes singular. In \cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about one would go about finding such values for $E$.
 
-In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by continuously halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different sign on the boundary of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
+In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by repeatedly halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different signs on the end points of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
 
 Another well-known technique is Newton's method. Here, the root of a scalar function $f$ can be approximated by iterating the following scheme:
 $$
@@ -438,31 +453,34 @@ $$
 $$
 For single roots, this method has a faster rate of convergence. Choosing initial values is also easier, because a value $x_0$ should be chosen only to be `sufficiently close' to a true root. One of the biggest drawbacks of this method is that the derivative of $f(x)$ should be available. For complicated functions, this can be difficult. Extensions of this method exist for which the derivative is not necessary, the secant method for example.
 
-In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions for which roots are uniquely defined $\RR^n \to \RR^n$. In our case, we are interested in when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ become zero. This does not map directly on any of these classical root-finding algorithms.
+In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions $\RR^n \to \RR^n$ for which roots are uniquely defined. In our case, we are interested in when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ become zero. This does not map directly on any of these classical root-finding algorithms.
 
-To combat these issues with the classical algorithms, we propose a light modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation \eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that $\vb{\Phi}(E)$ is singular, as defined by \eqref{equ:c3_psi_e}. In other words, the matrix $\vb{\Phi}(E)$ has to have a zero eigenvalue.
+To combat these issues with the classical algorithms, we propose a small modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation \eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that the matrix $\vb{\Phi}(E)$, as defined by \eqref{equ:c3_psi_e}, is singular.
+$$
+  \vb{\Phi}(E) := \Cbottom'\Cbottom^{-1} - \Ctop'\Ctop^{-1}
+$$
+In other words, the matrix $\vb{\Phi}(E)$ has to have a zero eigenvalue.
 
-In Newton's method the derivative of the value in question should be available. Fortunately, in \cite{ixaru_lilix_2002} and also in \cite{ledoux_cpmp_2006} procedures are available to compute the derivative of solutions with respect to $E$. In our case, this means that the matrices
+In Newton's method the derivative of the function in question should be available. Fortunately, in \cite{ixaru_lilix_2002} and also in \cite{ledoux_cpmp_2006} procedures are available to compute the derivative of solutions with respect to $E$. In our case, this means that the matrices
 $$
   \pdv[]{\Cbottom}{E}, \pdv[]{\Cbottom'}{E}, \pdv[]{\Ctop}{E} \text{ and } \pdv[]{\Ctop'}{E}
 $$
-are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself.
+are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself. First note for any invertible matrix $\vb{A}$, since $\vb{0} = \left(\vb{A}\vb{A}^{-1}\right)' = \vb{A}' \vb{A}^{-1} + \vb{A} \left(\vb{A}^{-1}\right)'$, that $\left(\vb{A}^{-1}\right)' = -\vb{A}^{-1} \vb{A}' \vb{A}^{-1}$. Applying this fact together with the product rule yields
 \begin{align*}
   \pdv{\vb{\Phi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
-                       & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}
+                       & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}\text{.}
 \end{align*}
 
-Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
+Since we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of a matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
 
 \begin{theorem}[Lancaster 1964]\label{the:c3_eigenvalue_derivative}
   Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C}^{n\times n}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
 
-  Let $\lambda$ be a simple eigenvalue of $\vb{A}(x_0)$ with left and right eigenvalues $\vb{v}$, $\vb{u}$ respectively. It now holds that
+  Let $\lambda$ be a simple eigenvalue of $\vb{A}(x_0)$ with left and right eigenvectors $\vb{v}$, $\vb{u}$ respectively. It now holds that
   $$
     \left(\dv[]{\lambda}{x}\right)_{x=x_0} = \frac{1}{\transpose{\vb{v}}\vb{u}} \left(\transpose{\vb{v}}\dv[]{\vb{A}}{x} \vb{u} \right)_{x=x_0}\text{,}
   $$
-  where $\dv[]{\vb{A}}{x}$ is the matrix with, as each coefficient, the derivative of the corresponding coefficient of $\vb{A}(x)$ with respect to $x$.
-
+  where $\dv[]{\vb{A}}{x}$ is the matrix with, as coefficients, the derivatives of the corresponding coefficients of $\vb{A}(x)$ with respect to $x$.
 \end{theorem}
 \begin{proof}
   As $\vb{u}$ and $\vb{v}$ are right, respectively left, eigenvectors corresponding to the eigenvalue $\lambda$ it follows that:
@@ -479,24 +497,33 @@ Because we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also 
     \transpose{\vb{v}}\vb{A}'\vb{u} & = \lambda' \transpose{\vb{v}}\vb{u}                                         \\
     \implies \quad \lambda'         & = \frac{\transpose{\vb{v}}\vb{A}'\vb{u}}{\transpose{\vb{v}}\vb{u}} \text{.}
   \end{align*}
+  Here we assumed $\transpose{\vb{v}}\vb{u} \neq 0$. This concern is addressed in the appendix of \cite{lancaster_eigenvalues_1964}: by considering the subspaces of left and right eigenvectors corresponding to $\lambda$, it can be proven that $\transpose{\vb{v}}\vb{u}$ never vanishes.
 \end{proof}
 
-Some care should be taken when two eigenvalues coincide. In \cite{lancaster_eigenvalues_1964}, this is handled by considering the left and right eigenvector space corresponding to the multiple eigenvalue. But since we are dealing with only numerical results this (almost) never happens. Theorem \ref{the:c3_eigenvalue_derivative} applied to $\vb{\Phi}(E)$ gives, with left and right eigenvectors, $\vb{v}$ and $\vb{u}$ respectively, corresponding to the eigenvalue $\lambda$:
+Some care should be taken when two eigenvalues coincide. In \cite{lancaster_eigenvalues_1964}, this is handled by considering the left and right eigenvector space corresponding to the multiple eigenvalue. But since we are dealing with only numerical results this (almost) never happens. Theorem \ref{the:c3_eigenvalue_derivative} applied to $\vb{\Phi}(E)$ gives, with left and right eigenvectors $\vb{v}$ and $\vb{u}$ respectively, corresponding to the eigenvalue $\lambda$:
 $$
   \pdv{\lambda}{E} = \frac{1}{\transpose{\vb{v}}\vb{u}}\transpose{\vb{v}} \pdv{\vb{\Phi}}{E} \vb{u} \text{.}
 $$
 
-With the values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, to converge a crude initial guess $E_0$ to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\eigs$ which returns the set of eigenvalues of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
+With the values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, in order to let a crude initial guess $E_0$ converge to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\spectrum$ which returns the spectrum of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
 $$
-  \eigs(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
+  \spectrum(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
 $$
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/select_lambda_newton.pdf}
+  \end{center}
+  \caption{Two eigenvalues of $\vb{\Phi}(E)$ are plotted. Whichever is preferred by $f(E)$ from \eqref{equ:c3_mismatch_newton_function} is highlighted.}\label{fig:c3_select_lambda_newton}
+\end{figure}
 
 Now, we define the scalar function $f(E) : \RR \to \RR$ as
 \begin{equation}\label{equ:c3_mismatch_newton_function}
-  f(E) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
+  f(E) = \argmin_{\lambda \in \spectrum(\vb{\Phi}(E)) \cap \RR} \left|\frac{\lambda}{\pdv*[]{\lambda}{E}}\right|\text{.}
 \end{equation}
+On this function $f(E)$ the classical Newton's method can be used.
 
-On this function $f(E)$ the classical Newton's method can be used. Note that this function is constructed such that in each step the real eigenvalue with the closest, possible root in a linear approximation will be selected.
+In figure \ref{fig:c3_select_lambda_newton} the idea of $f(E)$ from \eqref{equ:c3_mismatch_newton_function} is demonstrated. Assume the blue line and red line each represent an eigenvalue of $\vb{\Phi}(E)$. The regions where this eigenvalue is chosen by $f(E)$ are indicated. Note that by construction, in each step the real eigenvalue with the closest possible root in a linear approximation will be selected.
 
 \subsubsection{A numerical example}
 
@@ -507,14 +534,11 @@ To provide some intuition about the eigenvalues $\lambda$ of the mismatch matrix
 on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$ with homogeneous Dirichlet boundary conditions. This problem is also the numerical example from Ixaru's work \cite{ixaru_new_2010}.
 
 \begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{img/chapter3/mismatch_rainbow.pdf}
-  \caption{Each of the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem \eqref{equ:c3_mismatch_ixaru} as a function of $E$. The true eigenvalues of this problem are indicated with $E_0$, $E_1$, $\dots$ The lines are colored and continued to aid in the clarity of this illustration. But, do notice that this is only a best guess approximation.}\label{fig:c3_mismatch_rainbow}
-\end{figure}
-
-Throughout this research, one of the first graphs which we studied can be found in figure \ref{fig:c3_mismatch_rainbow}. Here all eigenvalues of the mismatch matrix $\vb{\Phi}(E)$ are plotted. For each value of $E$, in this problem $\vb{\Phi}(E)$ had $N$ real eigenvalues, with $N$ the size of basis on each sector, as described in \ref{sec:c3_ixarus_method}. Upon seeing this graph, it is easy to say, that one can `follow' the trajectory of a single eigenvalue as $E$ changes. In reality, this is not easy at all. For example, sometimes two eigenvalue curves intersect, other times they barely avoid each other, and seemingly switch which curve they follow. In figure \ref{fig:c3_mismatch_rainbow_zoom} this strange behavior is visible. Also note, that following the lowest eigenvalue $\lambda_0$, will  not result in a nice smooth curve, since this value reaches vertical asymptotes.
-
-\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/mismatch_rainbow.pdf}
+  \end{center}
+  \caption{Each of the eigenvalues $\lambda$ of the mismatch matrix $\vb{\Phi}(E)$ of the Schrödinger problem \eqref{equ:c3_mismatch_ixaru} with $N = 12$ as a function of $E$. The true eigenvalues of this problem are indicated with $E_0$, $E_1$, $\dots$ The lines are colored and continued to aid in the clarity of this illustration. But, do notice that this is only a best guess approximation.}\label{fig:c3_mismatch_rainbow}
+  \vspace{1cm}
   \begin{center}
     \includegraphics[width=.495\textwidth]{img/chapter3/mismatch_rainbow_zoomed_0.pdf}
     \hfill
@@ -523,23 +547,26 @@ Throughout this research, one of the first graphs which we studied can be found 
   \caption{These are zoomed in views of the graph from \ref{fig:c3_mismatch_rainbow}. Some surprising behavior of the eigenvalues of $\vb{\Phi}(E)$ are visible.}\label{fig:c3_mismatch_rainbow_zoom}
 \end{figure}
 
+Throughout this research, one of the first graphs which we studied can be found in figure \ref{fig:c3_mismatch_rainbow}. Here all eigenvalues of the mismatch matrix $\vb{\Phi}(E)$ are plotted. For each value of $E$, in this problem $\vb{\Phi}(E)$ has $N$ real eigenvalues, with $N$ number of functions $b_i^{(k)}(x)$ on each sector, as described in section \ref{sec:c3_ixarus_method}. Upon seeing this graph, it is easy to say, that one can `follow' the trajectory of a single eigenvalue as $E$ changes. In reality, this is not easy at all. For example, sometimes two eigenvalue curves intersect, other times they barely avoid each other, and seemingly switch which curve they follow. In figure \ref{fig:c3_mismatch_rainbow_zoom} this strange behavior is visible.
+
+
 These difficulties and nuances are hidden away behind the colors and seemingly continuous lines present in figure \ref{fig:c3_mismatch_rainbow}. Practically, this graph is generated from the eigenvalues (and their derivatives) of $\vb{\Phi}(E)$ for $\numprint{10000}$ values of $E$. Two eigenvalues $\lambda^{(i)}_j$, $\lambda^{(i+1)}_k$  for two adjacent values $E_{i}$ and $E_{i+1}$, are determined to correspond to the same curve (and thus get the same color) if
-$$ \lambda^{(i)}_j \approx \lambda^{(i+1)}_k - (E_{i+1} - E_i) \dv[]{\lambda^{(i+1)}_k}{E} $$
-is sufficiently accurate.
+$$ \frac{\lambda^{(i+1)}_k  - \lambda^{(i)}_j}{E_{i+1} - E_i} \approx \dv[]{\lambda^{(i+1)}_k}{E} $$
+holds within a given accuracy.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{img/chapter3/mismatch_newton.pdf}
-  \caption{The function \eqref{equ:c3_mismatch_newton_function}, derived from problem \eqref{equ:c3_mismatch_ixaru}, is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}\label{fig:c3_mismatch_newton}
+  \caption{The function \eqref{equ:c3_mismatch_newton_function} for problem \eqref{equ:c3_mismatch_ixaru} is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}\label{fig:c3_mismatch_newton}
 \end{figure}
 
-In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. For example, the region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \eigs(\vb{\Phi(E)}) \cap \RR} \left|\lambda\right|$ was used, this region would be even smaller. But still, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of an eigenvalue less than the value $E$. This allows us to detect these missing values, and locate them. In the next section (\ref{sec:c3_index_of_e}), we will develop some new theory to locate all eigenvalues reliably.
+In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. For example, the region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \spectrum(\vb{\Phi}(E)) \cap \RR} \left|\lambda\right|$ was used, this region would be extremely tiny, as can be seen on figure \ref{fig:c3_mismatch_newton}. But still, even with \eqref{equ:c3_mismatch_newton_function}, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of eigenvalues less than the value $E$. This allows us to detect these missing values, and locate them. In the next section (\ref{sec:c3_index_of_e}), we will develop some new theory to locate all eigenvalues reliably.
 
 \section{Determining the index of eigenvalues}\label{sec:c3_index_of_e}
 
 This section is based upon yet unpublished work, in collaboration with professor Hans Vernaeve.
 
-Throughout mathematical physics there are many problems dependent on, or consisting of determining eigenvalues of a linear elliptic operator on a given domain with homogeneous Dirichlet boundary conditions. Some examples are the Schrödinger equation, the wave equation, the linear theory of elasticity..., to name a few. There are many methods, analytical as well as numerical, to solve for or to approximate these eigenvalues, e.g. shooting methods\cite{ixaru_numerical_1984,ixaru_new_2010}, finite difference methods\cite{wang_new_2009}, methods for finding the lowest eigenvalues\cite{braun_efficient_1996}, or even the methods discussed in chapters \ref{cha:c2}, \ref{cha:c3} and \ref{cha:c4}, \dots There even exist (numerical) methods that are able to find eigenvalues in the neighborhood of a given value $E$ without the need to compute all lower eigenvalues. For this last group of methods we have developed a theorem to count eigenvalues.
+Throughout mathematical physics there are many problems dependent on, or consisting of determining eigenvalues of a linear elliptic operator on a given domain with homogeneous Dirichlet boundary conditions. Some examples are the Schrödinger equation, the wave equation, the linear theory of elasticity,... to name a few. There are many methods, analytical as well as numerical, to solve for or to approximate these eigenvalues, e.g. shooting methods \cite{ixaru_numerical_1984,ixaru_new_2010}, finite difference methods \cite{wang_new_2009}, methods for finding the lowest eigenvalues \cite{braun_efficient_1996}, or even the methods discussed in chapters \ref{cha:c2}, \ref{cha:c3} and \ref{cha:c4}, \dots There even exist (numerical) methods that are able to find eigenvalues in the neighborhood of a given value $E$ without the need to compute all lower eigenvalues. For this last group of methods we have developed a theorem to count eigenvalues.
 
 \begin{table}
   \newlength{\hoWidth}
@@ -556,17 +583,17 @@ Throughout mathematical physics there are many problems dependent on, or consist
   \end{center}
 \end{table}
 
-Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one dimensional problems, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
+Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one dimensional problems, such as regular Sturm-Liouville problems with linear separated boundary conditions on bounded domains, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
 % Fun fact: Richard Courant maried the daughter of Carl Runge
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=\linewidth]{img/chapter3/counting/harmonic_3d.png}
-    \caption{\label{fig:harmonic_3d} A three-dimensional graph of the eigenfunction $u_{3,1}$ of the quantum harmonic oscillator, $-\nabla^2 u + (x^2+y^2) u = \lambda u$, on the square $[-5; 5] \times [-5; 5]$, with homogeneous Dirichlet boundary conditions. This graph illustrates how the density plots from table \ref{tab:courant_harmonic} and figure \ref{fig:c3_disc_solutions} should be interpreted.}
+    \caption{\label{fig:harmonic_3d} A three-dimensional graph of the eigenfunction $u_{3,1}$ of the quantum harmonic oscillator $-\nabla^2 u + (x^2+y^2) u = \lambda u$, on the square $[-5; 5] \times [-5; 5]$, with homogeneous Dirichlet boundary conditions. This graph illustrates how the density plots from table \ref{tab:courant_harmonic} and figure \ref{fig:c3_disc_solutions} should be interpreted.}
   \end{center}
 \end{figure}
 
-A practical problem in applying Courant's nodal domain theorem is that it is, numerically, quite difficult to reliably determine the number of nodal domains of a function. This history and our need to determine the number of eigenvalues less than a certain value $E$ have motivated us to formulate theorem \ref{lem:c3_eigenvalues_curves}.
+A practical problem in applying Courant's nodal domain theorem is that it is, numerically, quite difficult to reliably determine the number of nodal domains of a function. With this in mind and our need to determine the number of eigenvalues less than a certain value $E$ have motivated us to formulate theorem \ref{lem:c3_eigenvalues_curves}.
 
 To develop the necessary theory for this theorem, some definitions are needed. These will simplify the notation and proof of our results.
 \begin{definition}
@@ -600,7 +627,7 @@ In theorem \ref{the:c3_counting_eigenvalues} we will be able to identify each ei
   \end{center}
 \end{figure}
 
-In figures \ref{fig:intuitive_example_omega} and \ref{fig:intuitive_example_rho}, two examples of series of domains are given. Both of these sets of domains are applicable for theorem \ref{the:c3_counting_eigenvalues}. We would like to note that the domain from figure \ref{fig:intuitive_example_rho} is particularly valuable for \cite{ixaru_new_2010} and our work\cite{baeyens_improvements_2022} in this chapter.
+In figures \ref{fig:intuitive_example_omega} and \ref{fig:intuitive_example_rho}, two examples of series of domains are given. Both of these sets of domains are applicable for theorem \ref{the:c3_counting_eigenvalues}. We would like to note that the domain from figure \ref{fig:intuitive_example_rho} is particularly valuable for \cite{ixaru_new_2010} and our work \cite{baeyens_improvements_2022} in this chapter.
 
 
 
@@ -611,7 +638,7 @@ The next section will be dedicated to proving this theorem. In the last section 
 
 Throughout this section the $L^2$-norm $\|\cdot\|_{L^2(\Omega)}$ and Sobolev norm $\|\cdot\|_{H^k(\Omega)}$ are being used. For clarity, we will provide the necessary definitions. For a more thorough discussion of these norms and their properties many texts are available, for example \cite{adams_sobolev_2003}.
 
-Let $L^2(\Omega)$ be the space of functions $u : \Omega \to \RR$ such the norm
+Let $L^2(\Omega)$ be the space of functions $u : \Omega \to \RR$ such that the norm
 $$
   \|u\|_{L^2(\Omega)} := \left(\int_\Omega \left| u \right|^2 \right)^{\frac{1}{2}}
 $$
@@ -622,9 +649,11 @@ $$
   \|u\|_{H^k(\Omega)} := \left(\sum_{|\alpha| \leq k} \int_\Omega \left| D^\alpha u \right|^2\right)^{\frac{1}{2}}\text{.}
 $$
 
-The subspace $ H^k_0(\Omega)$ of $H^k(\Omega)$ is the closure of all infinitely differentiable compactly supported functions on $\Omega$ in $H^k(\Omega)$.
+The function space $C^\infty(\Omega)$ consists of all infinitely differentiable defined on $\Omega$. And, $C_0^\infty(\Omega)$ consists of all infinitely differentiable functions $f$ defined on $\Omega$ such that $f(\vb{x}) = 0$ for all $\vb{x} \in \dOmega$.
 
-Before proving the main theorem of this article we provide a kind of Fried\-richs's inequality to estimate a lower bound for $\| u \|_{H^k(\Omega)}$ in terms of $\| u \|_{L^2(\Omega)}$, and the diameter and any directional diameter of $\Omega$.
+The subspace $ H^k_0(\Omega)$ of $H^k(\Omega)$ is the closure of $C_0^\infty(\Omega)$ in $H^k(\Omega)$.
+
+Before proving the main theorem of this section, we provide a kind of Fried\-richs's inequality to estimate a lower bound for $\| u \|_{H^k(\Omega)}$ in terms of $\| u \|_{L^2(\Omega)}$, and the diameter and any directional diameter of $\Omega$.
 
 \begin{lemma}
   \label{lem:friederichs_like}
@@ -635,8 +664,8 @@ Before proving the main theorem of this article we provide a kind of Fried\-rich
   \end{equation}
 \end{lemma}
 \begin{proof}
-  For ease of notation, we will assume $j = 1$. Note that this proof is equally valid for any other $j$. Assume also $u \in C^\infty_c(\Omega) \cap H_0^k(\Omega)$. Because of the homogeneous Dirichlet boundary conditions,
-  the fundamental theorem of calculus can be used to estimate $|u(\vb{x})|^2$ for each $\vb{x} \in \Omega$
+  For ease of notation, we will assume $j = 1$. Note that this proof is equally valid for any other $j$. Assume also $u \in C^\infty_0(\Omega) \cap H_0^k(\Omega)$. Because of the homogeneous Dirichlet boundary conditions,
+  the fundamental theorem of calculus\footnote{\todo{Fundamental theorem of calculus}} can be used to estimate $|u(\vb{x})|^2$ for each $\vb{x} \in \Omega$
   $$
     \left|u(\vb{x})\right|^2 = \left|\int_{-\infty}^{\vb{x}_1} \pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n)\dd t\right|^2 \text{.}
   $$
@@ -647,7 +676,7 @@ Before proving the main theorem of this article we provide a kind of Fried\-rich
     \left|u(\vb{x})\right|^2 & \leq \int_{-\infty}^{\vb{x}_1} I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n) \dd t \int_{-\infty}^{\vb{x}_1} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t \\
                              & \leq \dirdiam_1(\Omega) \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t
   \end{align*}
-  with $a = \inf_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \forall \vb{u} \in l_{\Omega, 1}(\vb{x})\}$ and $b = \sup_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \forall \vb{u} \in l_{\Omega, 1}(\vb{x})\}$. Integrating both sides over $\Omega$, applying Fubini's theorem, and noting that $b - a \leq \diam(\Omega)$, yields the required expression for $u \in C^\infty_c(\Omega)$.
+  with $a = \inf_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$ and $b = \sup_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$. Integrating both sides over $\Omega$, applying Fubini's theorem\footnote{\todo{Fubini's theorem}}, and noting that $b - a \leq \diam(\Omega)$, yields the required expression for $u \in C^\infty_0(\Omega)$.
   \begin{align*}
     \|u\|_{L^2(\Omega)}^2 & \leq \dirdiam_1(\Omega) \int_\Omega \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)\right|^2\dd t \, \dd \vb{x} \\
                           & = \dirdiam_1(\Omega) \, (b - a) \, \int_{\Omega} \left|\pdv[]{u}{x_1}\left(\vb{x}\right)\right|^2 \dd \vb{x}                                 \\
@@ -655,7 +684,7 @@ Before proving the main theorem of this article we provide a kind of Fried\-rich
   \end{align*}
 
   To prove this for each $u \in H_0^k(\Omega)$, we only have to note that
-  $C^\infty_0(\Omega)$ is $H^k(\Omega)$-dense in $H^k_0(\Omega)$. Now $u \in H_0^k(\Omega)$ can be written as $u = \lim_{i \to +\infty} u_i$ with $u_i \in C^\infty_c(\Omega)$. This implies that
+  $C^\infty_0(\Omega)$ is $H^k(\Omega)$-dense in $H^k_0(\Omega)$. Now $u \in H_0^k(\Omega)$ can be written as $u = \lim_{i \to +\infty} u_i$ with $u_i \in C^\infty_0(\Omega)$. This implies that
   $$\|u\|_{L^2(\Omega)}^2 \leq \dirdiam_1(\Omega) \, \diam(\Omega) \, \| u \|^2_{H^k(\Omega)}\text{,}$$
   for each $u \in H_0^k(\Omega)$.
 \end{proof}
@@ -703,17 +732,14 @@ intersection thus gives the number of eigenvalues lower than this given value $E
 
 The graph from figure \ref{fig:c3_counting_eigenvalue_graph} and the notion of a horizontal line with fixed value of $E$, give rise to following theorem.
 
-\begin{theorem}[Baeyens, Van Daele and Vernaeve 2022]\label{the:c3_counting_eigenvalues}
-  Let $\mathcal{L}$ be a linear self-adjoint uniformly elliptic operator on a bounded Lipschitz domain $\Omega_1 \subseteq \RR^n$ with homogeneous Dirichlet boundary conditions. Define, following \cite{hale_eigenvalues_2005}, a topology on all domains $\Omega$ which are $C^k$-diffeomorphic to $\Omega_1$.  Assume a continuous family of such $C^k$-diffeomorphic domains $\Omega_\epsilon$ for $\epsilon\in\left]0; 1\right]$ is given such that $\Omega_a \subseteq \Omega_b$ if $a < b$ and $\exists j : \lim_{\epsilon\to 0^+} \dirdiam_j(\Omega_\epsilon) = 0$.
+% [Baeyens, Van Daele and Vernaeve 2022] first publish before getting a name
+\begin{theorem}\label{the:c3_counting_eigenvalues}
+  Let $\mathcal{L}$ be a linear self-adjoint uniformly elliptic operator on a bounded Lipschitz domain $\Omega_1 \subseteq \RR^n$ with homogeneous Dirichlet boundary conditions. Define, following \cite{hale_eigenvalues_2005}, a topology on all domains $\Omega$ which are $C^k$-diffeomorphic to $\Omega_1$.  Assume a continuous family of such $C^k$-diffeomorphic domains $\Omega_\epsilon$ for $\epsilon\in\left]0, 1\right]$ is given such that $\Omega_a \subseteq \Omega_b$ if $a < b$ and $\exists j : \lim_{\epsilon\to 0^+} \dirdiam_j(\Omega_\epsilon) = 0$.
 
   For a given value $E$ the number of eigenvalues of $\mathcal{L}$ on $\Omega_1$ less than or equal to $E$ is exactly the same as the number of domains $\Omega_\epsilon$ on which $E$ is an eigenvalue of $\mathcal{L}$ limited to $\Omega_\epsilon$ with homogeneous Dirichlet boundary conditions. Domains on which $E$ is an eigenvalue with multiplicity $d$ are counted $d$ times.
 \end{theorem}
 
-As a necessary condition we imposed that, for the sequence of domains $\Omega_\epsilon$,
-$$
-  \dirdiam_j(\Omega_\epsilon)
-$$
-should converge to zero. This may seem a quite restrictive condition, in practice it is not. Most, natural, sequences of domains do satisfy this condition in at least one axis. In the next section we provide some examples of different kinds of such domains.
+As a necessary condition we imposed that, for the sequence of domains $\Omega_\epsilon$, $\dirdiam_j(\Omega_\epsilon)$ should converge to zero. This may seem a quite restrictive condition, in practice it is not. Most (natural) sequences of domains do satisfy this condition in at least one axis. In the next section we provide some examples of different kinds of such domains.
 
 For direct methods, such as (semi-)discretization methods, theorem \ref{the:c3_counting_eigenvalues} cannot directly be applied. However, for shooting methods (\cite{ixaru_new_2010,baeyens_improvements_2022}) this theorem is extremely useful.
 In such methods, for a fixed value of $E$, an error function is computed by propagating solutions over the domain. The error function measures the mismatch between the propagated solution and the boundary conditions.
@@ -727,7 +753,7 @@ We provide a few examples. The first example illustrates that our result is a mo
 
 \subsubsection{One dimensional Sturm-Liouville equation}
 
-Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the Sturm-Liouville equation
+Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the regular Sturm-Liouville equation
 $$
   -\dv{x} \left( p(x) \dv{y_i}{x} \right) + q(x) y_i = \lambda_i w(x) y_i
 $$
@@ -736,11 +762,11 @@ on the interval $[a, b]$ with homogeneous Dirichlet boundary conditions $y_i(a) 
 \begin{figure}
   \begin{center}
     \includegraphics[width=.9\textwidth]{img/chapter3/counting/sturm-liouville.pdf}
-    \caption{Eigenfunction $y_4$, with $\lambda_4 \approx 246.74$, of the $\nicefrac{1}{2}$-order Bessel equation\cite{titchmarsh_eigenfunction_1962} $-\dv{x}{} \left( x \dv{y}{x} \right) + \frac{1}{4x} y = \lambda x y $ on $[0, 1]$, with $y(0) = y(1) = 0$. The four subintervals, $\Omega_{\epsilon_1} = [0, \epsilon_1],\dots, \Omega_{\epsilon_4} = [0, \epsilon_4]$, on which $\lambda_4$ is also an eigenvalue of this equation, are indicated.}\label{fig:c3_counting_sturm_liouville}
+    \caption{Eigenfunction $y_4$, with $\lambda_4 \approx 246.74$, of the $\nicefrac{1}{2}$-order Bessel equation \cite{titchmarsh_eigenfunction_1962} $-\dv{x}{} \left( x \dv{y}{x} \right) + \frac{1}{4x} y = \lambda x y $ on $[0, 1]$, with $y(0) = y(1) = 0$. The four subintervals, $\Omega_{\epsilon_1} = [0, \epsilon_1],\dots, \Omega_{\epsilon_4} = [0, \epsilon_4]$, on which $\lambda_4$ is also an eigenvalue of this equation, are indicated.}\label{fig:c3_counting_sturm_liouville}
   \end{center}
 \end{figure}
 
-Multiple shooting procedures \cite{baeyens_fast_2020,ledoux_matslise_2016,ixaru_cp_2000} have been developed that implement this using the Prüfer transformation\cite{pruefer_neue_1926}.
+Multiple shooting procedures \cite{baeyens_fast_2020,ledoux_matslise_2016,ixaru_cp_2000} have been developed that implement this well-known property for Sturm-Liouville problems using the Prüfer transformation \cite{pruefer_neue_1926}.
 
 \subsubsection{Standing waves on a disc}\label{sec:c3_standing_waves_on_disc}
 
@@ -750,7 +776,7 @@ Consider the eigenvalues and eigenfunctions of the two-dimensional wave equation
 \end{equation}
 on the unit disc with homogeneous Dirichlet boundary condition.
 
-In many introductory textbooks to (partial) differential equations the study of the wave equation on a drum is considered. In most texts, if not all, the idea boils down to: with a transformation to polar coordinates and separation of variables this two-dimensional problem can be transformed into two one-dimensional problems. One of these can be solved directly, the other gives rise to the so-called Bessel functions.
+In many introductory textbooks to (partial) differential equations the study of the wave equation on a drum is considered. In most texts, if not all, the idea boils down to: with a transformation into polar coordinates and separation of variables this two-dimensional problem can be transformed into two one-dimensional problems. One of these can be solved directly, the other gives rise to the so-called Bessel functions.
 
 Here we will give a brief overview of the symbolic calculations to solve \eqref{equ:c3_disc_before_polar} on the unit disc $B(\vb{0}, 1)$, with homogeneous Dirichlet boundary conditions. For more details one could consult for example \cite[chapter~4]{asmar_partial_2005}. As stated we first transform \eqref{equ:c3_disc_before_polar} to polar coordinates. For this we pose $x = r\cos(\theta)$ and $y = r\sin(\theta)$, with $r \in [0,1]$ and $\theta \in [0, 2\pi]$. The solutions $u(r, \theta) := \psi(r\cos(\theta), r\sin(\theta))$ are now considered in the transformed domain. Applying the chain rule to $\nabla^2\psi$, yields the new equation
 \begin{equation}\label{equ:c3_disc_after_polar}
@@ -768,7 +794,7 @@ Rearranging terms to an $r$-dependent side and a $\theta$-dependent side yields 
 \end{align*}
 with $k$ a constant and boundary conditions $R(1) = 0$, $\Theta(0) = \Theta(2\pi)$ and $\Theta'(0) = \Theta'(2\pi)$.
 
-Solutions for $\Theta(\theta)$ can directly be found, as a solution of a linear second order differential equation with constant coefficients. Thus, $\Theta$ only has periodic solutions
+Solutions for $\Theta(\theta)$ can directly be found as a solution of a linear second order differential equation with constant coefficients. Thus, $\Theta$ only has periodic solutions
 $$
   \Theta(\theta) = A_m \cos(m\theta) + B_m \sin(m\theta)\text{,}
 $$
@@ -778,7 +804,7 @@ The differential equation for $R(r)$ becomes
 $$
   r^2 R'' + r R + (\lambda r^2 - m^2)R = 0\text{.}
 $$
-We find that solutions to our equation can be written using the $m^\text{th}$ so-called Bessel function of the first kind $R(r) = J_m(r \sqrt{\lambda})$, for more details about these functions see for example \cite[section~4.7]{asmar_partial_2005}. These solutions only satisfy the boundary condition $R(1) = 0$, if and only if $\sqrt{\lambda}$ is a positive zero of $J_m$. If we denote $j_{m, n}$ as the $n^\text{th}$ positive root of the $m^\text{th}$ Bessel function $J_m$ we find that all eigenvalues of \eqref{equ:c3_disc_after_polar} and also of \eqref{equ:c3_disc_before_polar} are given as the squares of roots of the Bessel functions. So $\lambda = j_{m, n}^2$ is an eigenvalue of \eqref{equ:c3_disc_before_polar}. It is single eigenvalue if $m = 0$, otherwise it is a double eigenvalue. The following table contains the first ten eigenvalues, counted with multiplicity.
+We find that solutions to our equation can be written using the $m^\text{th}$ so-called Bessel function of the first kind $R(r) = J_m(r \sqrt{\lambda})$, for more details about these functions see for example \cite[section~4.7]{asmar_partial_2005}. These solutions only satisfy the boundary condition $R(1) = 0$, if and only if $\sqrt{\lambda}$ is a positive zero of $J_m$. If we denote $j_{m, n}$ as the $n^\text{th}$ positive root of the $m^\text{th}$ Bessel function $J_m$, we find that all eigenvalues of \eqref{equ:c3_disc_after_polar} and also of \eqref{equ:c3_disc_before_polar} are given as the squares of roots of the Bessel functions. So $\lambda = j_{m, n}^2$ is an eigenvalue of \eqref{equ:c3_disc_before_polar}. It is a single eigenvalue if $m = 0$, otherwise it is a double eigenvalue. The following table contains the first ten eigenvalues, counted with multiplicity.
 
 \begin{center}
   \bgroup
@@ -795,11 +821,11 @@ To apply theorem \ref{the:c3_counting_eigenvalues} we need to define a family of
 
 Concentric discs may not be the most thrilling examples. But in the example in section \ref{sec:c3_counting_exotic_domain} we will consider a much more interesting family of domains for the wave equation on a disc.
 
-\subsubsection{A two-dimensional Schrödinger equation}\label{exa:ixaru}
+\subsubsection{A two-dimensional Schrödinger equation}\label{sec:c3_counting_ixaru}
 
-In this example we will take a look at a two-dimensional time-independent Schrödinger equation with homogeneous Dirichlet boundary conditions on a rectangle.
+In this example we will take a look at a two-dimensional time-independent Schrödinger equation with homogeneous Dirichlet boundary conditions on a rectangle:
 $$
-  -\nabla^2 \psi + V(x, y)\psi = E\psi
+  -\nabla^2 \psi + V(x, y)\psi = E\psi\text{.}
 $$
 
 In section \ref{sec:c3_experiment_ixaru} we will study the Schrödinger problem with the potential
@@ -818,25 +844,23 @@ on the square $[-5.5; 5.5] \times [-5.5; 5.5]$ with homogeneous Dirichlet bounda
   \end{tabular}
 \end{center}
 
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=1\textwidth]{img/chapter3/counting/ixaru.png}
-    \caption{There are 8 smaller rectangles on which $E = 11$ is an eigenvalue of the Schrödinger equation from example \ref{exa:ixaru}.}\label{fig:c3_counting_ixaru_subdomains}
-  \end{center}
-\end{figure}
-
-For this problem we will use the method as described in section \ref{sec:c3_ixarus_method}. In summary, this is a shooting method. Which means that it guesses a value for $E$ and calculates a matching error. The matching error in turn is used to improve the estimation of $E$. This process is repeated until $E$ is found up to the desired accuracy.
+For this problem we will use the method as described in section \ref{sec:c3_ixarus_method}. In summary, this is a shooting method, which means that it guesses a value for $E$ and calculates a matching error. The matching error in turn is used to improve the estimation of $E$. This process is repeated until $E$ is found up to the desired accuracy.
 
 This matching error is calculated by propagating all possible eigenfunctions $u(x, y)$ from the bottom and the top of the domain to the matching line. In the context of theorem \ref{the:c3_counting_eigenvalues}, this propagation can be thought of as going through all possible subdomains from figure \ref{fig:intuitive_example_rho}. If while propagating, any of the possible eigenfunctions $u$ becomes identically zero on a line, then a subdomain is found on which $E$ is an eigenvalue.
 
-For each $E$, while propagating, one can keep track of how many $u$ did become zero on a line, or in other words, on how many subdomains $E$ is an eigenvalue. Following theorem \ref{the:c3_counting_eigenvalues}, this number tells us how many eigenvalues there are less than $E$ on the whole domain. In figure \ref{fig:c3_counting_ixaru_subdomains}, keeping track of when an eigenfunction becomes zero on a line is demonstrated. For $E = 11$ all domains are visualized where any $u(x, y) = 0$ for all $x \in [\xmin, \xmin]$. Notice that there may be domains on which multiple eigenfunctions are found for that particular value of $E$. These domains should be counted as many times. In figure \ref{fig:c3_counting_ixaru_subdomains}, we see that $\ymax \approx \numprint{0.80845}$ is counted twice. From the tabulated true eigenvalues in \cite{ixaru_new_2010}, we know that there are indeed exactly $8$ eigenvalues less than $E = 11$. This example thus verifies theorem \ref{the:c3_counting_eigenvalues} as well.
-
 \begin{figure}
   \begin{center}
-    \includegraphics[width=1\textwidth]{img/chapter3/counting/counting_eigenvalues_zoom.pdf}
-    \caption{Here a zoomed in version of figure \ref{fig:c3_counting_eigenvalue_graph} is displayed. Each blue graph represents an eigenvalue of the Schrödinger equation from example \ref{exa:ixaru}. The fixed line $E = 11$ is represented in red. Each crossing of the red line and a blue graph represents a smaller subdomain on which $E=11$ is an eigenvalue. These subdomains, with corresponding eigenfunction are illustrated in figure \ref{fig:c3_counting_ixaru_subdomains}.}\label{fig:counting_eigenvalues_zoom}
+    \includegraphics[width=1\textwidth]{img/chapter3/counting/ixaru.png}
   \end{center}
+  \caption{There are 8 (smaller) rectangles on which $E = 11$ is an eigenvalue of the Schrödinger problem from example \ref{sec:c3_counting_ixaru}.}\label{fig:c3_counting_ixaru_subdomains}
+\vspace{1cm}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{img/chapter3/counting/counting_eigenvalues_zoom.pdf}
+  \end{center}
+  \caption{Here, a zoomed in version of figure \ref{fig:c3_counting_eigenvalue_graph} is displayed. Each blue graph represents an eigenvalue of the Schrödinger equation from example \ref{sec:c3_counting_ixaru}. The fixed line $E = 11$ is represented in red. Each crossing of the red line and a blue graph represents a smaller subdomain on which $E=11$ is an eigenvalue. These subdomains, with corresponding eigenfunction are illustrated in figure \ref{fig:c3_counting_ixaru_subdomains}.}\label{fig:counting_eigenvalues_zoom}
 \end{figure}
+
+For each $E$, while propagating, one can keep track of how many $u$ did become zero on a line, or in other words, on how many subdomains $E$ is an eigenvalue. Following theorem \ref{the:c3_counting_eigenvalues}, this number tells us how many eigenvalues there are less than $E$ on the whole domain. In figure \ref{fig:c3_counting_ixaru_subdomains}, keeping track of when an eigenfunction becomes zero on a line is demonstrated. For $E = 11$ all domains are visualized where any $u(x, y) = 0$ for all $x \in [\xmin, \xmin]$. Notice that there may be domains on which multiple eigenfunctions are found for that particular value of $E$. These domains should be counted as many times. In figure \ref{fig:c3_counting_ixaru_subdomains}, we see that $\ymax \approx \numprint{0.80845}$ is counted twice. From the tabulated true eigenvalues in \cite{ixaru_new_2010}, we know that there are indeed exactly $8$ eigenvalues less than $E = 11$. This example thus verifies theorem \ref{the:c3_counting_eigenvalues} as well.
 
 For completeness, we will also verify lemma \ref{lem:c3_eigenvalues_curves} by taking a closer look at the graph from figure \ref{fig:c3_counting_eigenvalue_graph}. In figure \ref{fig:counting_eigenvalues_zoom} we see a zoomed version. These graphs describe how the eigenvalues evolve through the growing domain. If we draw a horizontal line at $E = 11$, as in figure \ref{fig:counting_eigenvalues_zoom}, $8$ curves intersect this line. Each curve corresponds to a lower lying eigenvalue, just like lemma \ref{lem:c3_eigenvalues_curves} predicts.
 
@@ -874,7 +898,7 @@ Strictly speaking, for $\alpha = 0$,  $T(\alpha, t)$ is undefined. In these poin
   \label{fig:c3_disc_transformation}
 \end{figure}
 
-To demonstrate the effectiveness of theorem \ref{lem:c3_eigenvalues_curves}, we will consider the family of continuous subdomains
+To demonstrate the applicability of theorem \ref{lem:c3_eigenvalues_curves}, we will consider the family of continuous subdomains
 $$
   \Omega_\epsilon = \left\{T(\alpha, t) \,\middle|\, \forall \alpha \in \left[-\frac{\pi}{2}, \frac{\pi}{2}\right], \forall t \in [-1, 2\epsilon - 1]  \right\}\text{.}
 $$
@@ -895,11 +919,11 @@ $$
     +\infty & \text{otherwise}
   \end{cases} {}\text{.}
 $$
-But numerically, this does not make the problem easier. Yes, the rectangular domain would allow us to employ the earlier developed method. But on the other hand, the potential becomes infinite, which is very difficult to implement with sufficiently high accuracies. Also, Ixaru's method has difficulties with non-continuous potentials. Note: the inability to tackle non-continuous problems is a phenomenon present in many high order numerical methods. In section \ref{sec:c2_experiment_with_jumps}, we have seen that with one-dimensional problems, \matslise{} can avoid these issues by smartly choosing its piecewise approximation. For higher dimensional problems, these kinds of tricks are no longer possible.
+But numerically, this does not make the problem easier. Yes, the rectangular domain would allow us to employ the earlier developed method. But on the other hand, the potential becomes infinite, which is very difficult to implement with sufficiently high accuracies. Also, Ixaru's two-dimensional method has difficulties with non-continuous potentials. Note: the inability to tackle non-continuous problems is a phenomenon present in many high order numerical methods. In section \ref{sec:c2_experiment_with_jumps}, we have seen that with one-dimensional problems, \matslise{} can avoid these issues by smartly choosing its piecewise approximation. For higher dimensional problems, these kinds of tricks are no longer possible.
 
 We propose another technique. We can transform equation \eqref{equ:c3_disc_schrodinger} from these moon-shaped domains to a more manageable rectangular domain. The cost of this transformation is that \eqref{equ:c3_disc_schrodinger} will no longer be a Schrödinger equation.
 
-As earlier stated, the transformation we will apply is the function $(x, y) = T(\alpha, t)$ from \eqref{equ:c3_disc_transformation}. To formalize this, we introduce $\phi(\alpha, t)$ as
+As stated earlier, the transformation we will apply is the function $(x, y) = T(\alpha, t)$ from \eqref{equ:c3_disc_transformation}. To formalize this, we introduce $\phi(\alpha, t)$ as
 $$
   \phi(\alpha, t) = \psi(T(\alpha, t))\text{.}
 $$
@@ -907,7 +931,7 @@ With this transformation the Schrödinger equation \eqref{equ:c3_disc_schrodinge
 \begin{equation}\label{equ:c3_disc_schrodinger_transformed}
   -\mathcal{D}\phi(\alpha, t) = \lambda\phi(\alpha, t)
 \end{equation}
-with $\phi(\alpha, t)$ defined on the domain $\Xi_\epsilon = \left[-\frac{\pi}{2}, \frac{\pi}{2}\right] \times [-1, 2\epsilon - 1]$. Note that $T(\Xi_\epsilon) = \Omega_\epsilon$. As boundary conditions we impose $\phi(\alpha, t) = 0$ if $(\alpha, t) \in \partial\Xi_\epsilon$. In this expression $\mathcal{D}$ is the differential operator corresponding to $\nabla^2\psi(x, y)$. Calculating this operator by hand is tedious, therefore we will use \sage to do the symbolic heavy lifting for us. To be able to work with the operator $\mathcal{D}$, we first need a procedure to compute it. To ease notation we will denote $T(\alpha, t) = (T^{x}(\alpha, t), T^{y}(\alpha, t))$, and omit the arguments to the functions $\phi$, $\psi$ and $T$. Derivatives will be denoted as $\phi_\alpha = \pdv[]{\phi}{\alpha}$ and $\phi_{\alpha\alpha} = \pdv[2]{\phi}{\alpha}$. We compute all first and second derivatives of $\phi(\alpha, t)$.
+with $\phi(\alpha, t)$ defined on the domain $\Xi_\epsilon = \left[-\frac{\pi}{2}, \frac{\pi}{2}\right] \times [-1, 2\epsilon - 1]$. Note that $T(\Xi_\epsilon) = \Omega_\epsilon$. As boundary conditions we impose $\phi(\alpha, t) = 0$ if $(\alpha, t) \in \partial\Xi_\epsilon$. In this expression $\mathcal{D}$ is the differential operator corresponding to $\nabla^2\psi(x, y)$. Calculating this operator by hand is tedious, therefore we will use \sage{} to do the symbolic heavy lifting for us. To be able to work with the operator $\mathcal{D}$, we first need a procedure to compute it. To ease notation we will denote $T(\alpha, t) = (T^{x}(\alpha, t), T^{y}(\alpha, t))$, and omit the arguments to the functions $\phi$, $\psi$ and $T$. Derivatives will be denoted as $\phi_\alpha = \pdv[]{\phi}{\alpha}$ and $\phi_{\alpha\alpha} = \pdv[2]{\phi}{\alpha}$. We compute all first and second derivatives of $\phi(\alpha, t)$.
 \begin{equation}\label{equ:disc_transformation_derivatives}
   \begin{cases}
     \phi_\alpha = \psi_x T^x_\alpha + \psi_y T^y_\alpha                                                                                                                   \\
@@ -919,7 +943,7 @@ with $\phi(\alpha, t)$ defined on the domain $\Xi_\epsilon = \left[-\frac{\pi}{2
   \end{cases}
 \end{equation}
 
-The question now is, can we isolate $\psi_{xx} + \psi_{yy}$ from the right-hand side of the system from \eqref{equ:disc_transformation_derivatives}? As this is a linear system in the derivatives of $\psi$, there is a unique linear combination $\vb{c}(\alpha, t) = (c^\alpha, c^t, c^{\alpha\alpha}, c^{\alpha t}, c^{tt})$ of rows such that:
+The question now is: can we isolate $\psi_{xx} + \psi_{yy}$ from the right-hand side of the system from \eqref{equ:disc_transformation_derivatives}? As this is a linear system in the derivatives of $\psi$, there is a unique linear combination $\vb{c}(\alpha, t) = (c^\alpha, c^t, c^{\alpha\alpha}, c^{\alpha t}, c^{tt})$ such that:
 $$
   c^\alpha \phi_\alpha + c^t\phi_t + c^{\alpha\alpha}\phi_{\alpha\alpha} + c^{\alpha t} \phi_{\alpha t} + c^{tt} \phi_{tt} = \psi_{xx} + \psi_{yy}\text{.}
 $$
@@ -931,26 +955,26 @@ $$
 
 \paragraph{A specialized numerical method}
 
-Before we can analyze eigenvalues of \eqref{equ:c3_disc_schrodinger} or after transformation of the operator $-\mathcal{D}$ in relation to the domain $\Omega_\epsilon$, we still need a method to approximate these eigenvalues. For general partial differential equations with boundary conditions some standard techniques are available, \cite[Chapter~11]{heath_scientific_2002} contains an overview of some of these methods. Our choices include, but are not limited to a finite difference method, or a finite element method or a semidiscrete method with shooting. For our purposes a method which is easy to implement, yet gives reliable results will be the best choice. A simple finite difference scheme will be sufficient.
+Before we can analyze eigenvalues of \eqref{equ:c3_disc_schrodinger} or after transformation of the operator $-\mathcal{D}$ in relation to the domain $\Omega_\epsilon$, we still need a method to approximate these eigenvalues. For general partial differential equations with appropriate boundary conditions some standard techniques are available, \cite[Chapter~11]{heath_scientific_2002} contains an overview of some of these methods. Our choices include, but are not limited to, a finite difference method, or a finite element method or a semidiscrete method with shooting. For our purposes a method which is easy to implement, yet gives reliable results will be the best choice. A simple finite difference scheme will be sufficient.
 
-We will place an $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gives rise to the equidistant points $-\frac{\pi}{2}=\alpha_0, \alpha_1, \dots, \alpha_{n_\alpha} = \frac{\pi}{2}$, and the points $-1 = t_0, t_1, \dots t_{n_t} = 1 - 2\epsilon$. The distances between two points are given by $h_\alpha = \frac{\pi}{n_\alpha}$ and $h_t = \frac{2\epsilon}{n_t}$. Because of the homogeneous Dirichlet boundary conditions $\phi_{0,j} = \phi_{n_\alpha,j} = \phi_{i, 0} = \phi_{i,n_t} = 0$ for all $i$ and $j$. These grid points allow us to write down approximations of first and second derivatives of $\phi(\alpha, t)$ in each of the grid points $\phi_{i, j} = \phi(\alpha_i, t_j)$.
+We will place an $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gives rise to the equidistant points $-\frac{\pi}{2}=\alpha_0, \alpha_1, \dots, \alpha_{n_\alpha} = \frac{\pi}{2}$, and the points $-1 = t_0, t_1, \dots t_{n_t} = -1 + 2\epsilon$. The distances between two points are given by $h_\alpha = \frac{\pi}{n_\alpha}$ and $h_t = \frac{2\epsilon}{n_t}$. Because of the homogeneous Dirichlet boundary conditions $\phi_{0,j} = \phi_{n_\alpha,j} = \phi_{i, 0} = \phi_{i,n_t} = 0$ for all $i$ and $j$. These grid points allow us to write down approximations of first and second derivatives of $\phi(\alpha, t)$ in each of the grid points $\phi_{i, j} = \phi(\alpha_i, t_j)$.
 \begin{align*}
-  {\pdv[]{\phi}{\alpha}}(\alpha_i, t_j)    & = \frac{1}{2h_\alpha}\left( \phi_{i+1,j} - \phi_{i-1,j} \right)                                           \\
-  {\pdv[]{\phi}{t}}(\alpha_i, t_j)         & = \frac{1}{2h_t}\left( \phi_{i,j+1} - \phi_{i,j-1} \right)                                                \\
-  {\pdv[2]{\phi}{\alpha}}(\alpha_i, t_j)   & = \frac{1}{h_\alpha^2}\left( \phi_{i+1,j} - 2 \phi_{i,j} + \phi_{i-1,j} \right)                           \\
-  {\pdv[]{\phi}{\alpha}{t}}(\alpha_i, t_j) & = \frac{1}{4h_\alpha h_t}\left( \phi_{i+1,j+1} - \phi_{i+1,j-1} - \phi_{i-1,j+1} + \phi_{i-1,j-1} \right) \\
-  {\pdv[2]{\phi}{t}}(\alpha_i, t_j)        & = \frac{1}{h_t^2}\left( \phi_{i,j+1} - 2 \phi_{i,j} + \phi_{i,j-1} \right)
+  {\pdv[]{\phi}{\alpha}}(\alpha_i, t_j)    & \approx \frac{1}{2h_\alpha}\left( \phi_{i+1,j} - \phi_{i-1,j} \right)                                           \\
+  {\pdv[]{\phi}{t}}(\alpha_i, t_j)         & \approx \frac{1}{2h_t}\left( \phi_{i,j+1} - \phi_{i,j-1} \right)                                                \\
+  {\pdv[2]{\phi}{\alpha}}(\alpha_i, t_j)   & \approx \frac{1}{h_\alpha^2}\left( \phi_{i+1,j} - 2 \phi_{i,j} + \phi_{i-1,j} \right)                           \\
+  {\pdv[]{\phi}{\alpha}{t}}(\alpha_i, t_j) & \approx \frac{1}{4h_\alpha h_t}\left( \phi_{i+1,j+1} - \phi_{i+1,j-1} - \phi_{i-1,j+1} + \phi_{i-1,j-1} \right) \\
+  {\pdv[2]{\phi}{t}}(\alpha_i, t_j)        & \approx \frac{1}{h_t^2}\left( \phi_{i,j+1} - 2 \phi_{i,j} + \phi_{i,j-1} \right)
 \end{align*}
 
-When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote the identity matrix of dimensions $n \times n$ as $\vb{I}_n$. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and an $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
+When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote $\vb{I}_n$ as the $n \times n$ identity matrix. Furthermore, a diagonal matrix with $a_1, \dots a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and an $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$
 
-We will define the Kronecker product of a $k \times l$ matrix $\vb{A}$ and $m \times n$ matrix $\vb{B}$ as the $km \times ln$ block matrix:
+The Kronecker product of a $k \times l$ matrix $\vb{A}$ and an $m \times n$ matrix $\vb{B}$ is defined as the $km \times ln$ block matrix:
 $$
   \vb{A} \otimes \vb{B} := \begin{pmatrix}
     A_{1,1} \vb{B} & A_{1, 2} \vb{B} & \dots  & A_{1, l} \vb{B} \\
     A_{2,1} \vb{B} & A_{2, 2} \vb{B} & \dots  & A_{2, l} \vb{B} \\
     \vdots         & \vdots          & \ddots & \vdots          \\
-    A_{k,1} \vb{B} & A_{k, 2} \vb{B} & \dots  & A_{k, l} \vb{B} \\
+    A_{k,1} \vb{B} & A_{k, 2} \vb{B} & \dots  & A_{k, l} \vb{B}
   \end{pmatrix}{}\text{.}
 $$
 
@@ -968,7 +992,7 @@ $$
 $$
 and analogous for $\vb{C}^{\alpha}$, $\vb{C}^{\alpha\alpha}$, $\vb{C}^{\alpha t}$ and $\vb{C}^{t t}$.
 
-All this notation allows us to approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix eigenvalue problem:
+All these notations allow us to approximate \eqref{equ:c3_disc_schrodinger_transformed} as a matrix eigenvalue problem:
 $$
   -\vb{M} \vb*{\phi} = \lambda \vb*{\phi}
 $$
@@ -982,7 +1006,7 @@ with
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/on_disc/eigenvalues_flow.pdf}
-    \caption{Eigenvalues in relation to $\epsilon$.}
+    \caption{Eigenvalues of the Schrödinger equation with zero potential on the family of domains of section \ref{sec:c3_counting_exotic_domain} in relation to $\epsilon$.}
     \label{fig:c3_disc_eigenvalues_flow}
   \end{center}
 \end{figure}
@@ -991,7 +1015,7 @@ with
 
 With a numerical method to compute eigenvalues of the wave equation \eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to demonstrate theorem \ref{lem:c3_eigenvalues_curves}.
 
-By employing our numerical method on different domains $\Omega_\epsilon$ we can compute figure \ref{fig:c3_disc_eigenvalues_flow}. Here each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line, right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represent is marked on the right side. In accordance with theorem \ref{lem:c3_eigenvalues_curves} all lines in figure \ref{fig:c3_disc_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.
+By employing our numerical method on different domains $\Omega_\epsilon$ we can construct figure \ref{fig:c3_disc_eigenvalues_flow}. This figure was computed with $n_\alpha = n_t = 61$, this makes $\vb{M}$ a $3600\times3600$ sparse matrix, for $200$ equidistantly spaced values for $\epsilon$. Here each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line, right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represents is marked on the right side. In accordance with theorem \ref{lem:c3_eigenvalues_curves} all lines in figure \ref{fig:c3_disc_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.
 
 
 \begin{figure}
@@ -1007,13 +1031,110 @@ Consider now the fixed value of $E = 45$. From the analysis in \ref{sec:c3_stand
 
 \section{Numerical experiments}\label{sec:c3_experiments}
 
+\todo{example with large eigenvalues}
+
+\todo{prepare for examples in next chapter}
+
+\todo{rework}
+
+The focus of this article is mainly to provide some theoretical advancements. To demonstrate the relevance and effectiveness of the provided theory, we proudly present the following numerical results. In summary the obtained results are at least as accurate as the original method as those proposed in \cite{ixaru_new_2010}, but are significantly faster, even when corrected for the more powerful modern CPUs. Following Ixaru, we take $N=12$ in all  experiments.
+
+Another large improvement can be found in the `autonomy' of the algorithm. In \cite{ixaru_new_2010} different steps sizes are tabulated. But, since we implemented automatic step size selection, this distinction is no longer relevant. To demonstrate that our improvements facilitate using this method, we will also provide some \texttt{Python}-code. This code makes use of the package \texttt{pyslise2d}. This package is still in active development, the most recent version can be installed with \texttt{pip install pyslise2d}. The implementation of our method is done in \texttt{C++}, to improve efficiency and performance, and precompiled in \texttt{pyslise2d}.
+
 \subsection{Ixaru's potential}\label{sec:c3_experiment_ixaru}
 
-\todo{Copy from article}
+In the first example we look at the same problem as in \cite{ixaru_new_2010}. Consider the potential $$
+  V(x, y) = (1+x^2)(1+y^2)
+$$
+on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$.
+
+In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference values calculated by Ixaru in \cite{ixaru_new_2010}. There the computation took $45$ seconds. Our values can be computed within $1.4$ seconds on an Intel i7-8700K.
+
+\begin{table}
+  \centering
+  \begin{tabular}{l|n{2}{7}n{2}{10}r}
+                    & {Ixaru\cite{ixaru_new_2010}} & {Our results} & {$\Delta$} \\
+    \hline
+    $E_{0}$         & 3.1959181                    & 3.1959181112  & 1.1e-8     \\
+    $E_{1} = E_{2}$ & 5.5267439                    & 5.5267440748  & 1.7e-7     \\
+    $E_{3}$         & 7.5578033                    & 7.5578035728  & 2.7e-7     \\
+    $E_{4}$         & 8.0312723                    & 8.0312723637  & 6.4e-8     \\
+    $E_{5}$         & 8.4445814                    & 8.4445817565  & 3.6e-7     \\
+    $E_{6} = E_{7}$ & 9.9280611                    & 9.9280611619  & 6.2e-8     \\
+    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  & 5.1e-7     \\
+    $E_{10}$        & 12.1032536                   & 12.103253445  & 1.6e-7     \\
+    $E_{11}$        & 12.2011790                   & 12.201179825  & 8.3e-7     \\
+    $E_{12}$        & 13.3323313                   & 13.332332972  & 1.7e-6
+  \end{tabular}
+  \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
+\end{table}
+
+By using \texttt{pyslise2d} the code to solve this problem is quite straightforward.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise2d import Pyslise2D
+
+def V(x, y):
+    return (1+x*x)*(1+y*y)
+
+problem = Pyslise2D(V, -5.5,5.5, -5.5,5.5,
+                    tolerance=1e-8)
+problem.eigenvaluesByIndex(0, 12)
+\end{minted}
+% \end{noindent}
 
 \subsection{Hénon-Heiles}\label{sec:c3_experiment_henon}
+Another interesting example is that of the Hénon-Heiles potential. The corresponding Schrödinger problem is given by:
+$$
+  -\frac{1}{2}\nabla^2 \psi + \left(\frac{1}{2}\left(x^2 + y^2\right) + \frac{1}{12\sqrt{5}} y \left(3 x^2  - y^2\right)\right)\psi = E \psi \text{.}
+$$
 
-\todo{Copy from article}
+Following \cite{braun_efficient_1996}, we report the first eigenvalues on the square $[-6, 6] \times [-6, 6]$ in table \ref{tab:henon_heiles_eigenvalues}. The computation only took $1.3$ seconds, and the results are identical, within the available precision in \cite{braun_efficient_1996}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{l|rrr}
+                      & Reference\cite{braun_efficient_1996} & Our results    & Difference \\
+    \hline
+
+    $E_{0}$           & $0.998595$                           & $0.9985947661$ & $2.3(-7)$  \\
+    $E_{1} = E_{2}$   & $1.990077$                           & $1.9900767814$ & $2.2(-7)$  \\
+    $E_{3}$           & $2.956243$                           & $2.9562429806$ & $1.9(-8)$  \\
+    $E_{4} = E_{5}$   & $2.985326$                           & $2.9853263715$ & $3.7(-7)$  \\
+    $E_{6} = E_{7}$   & $3.925964$                           & $3.9259638565$ & $1.4(-7)$  \\
+    $E_{8}$           & $3.982417$                           & $3.9824172948$ & $2.9(-7)$  \\
+    $E_{9}$           & $3.985761$                           & $3.9857610624$ & $6.2(-8)$  \\
+    $E_{10}$          & $4.870144$                           & $4.8701435890$ & $4.1(-7)$  \\
+    $E_{11} = E_{12}$ & $4.898644$                           & $4.8986454644$ & $1.5(-6)$  \\
+    $E_{13} = E_{14}$ & $4.986251$                           & $4.9862512850$ & $2.8(-7)$  \\
+    $E_{15}$          & $5.817019$                           & $5.8170190699$ & $7.0(-8)$  \\
+    $E_{16}$          & $5.817027$                           & $5.8170279899$ & $9.9(-7)$  \\
+  \end{tabular}
+  \caption{\label{tab:henon_heiles_eigenvalues}  The first few eigenvalues of the problem with potential $V(x,y) = x^2 + y^2 + \frac{1}{6\sqrt{5}} y \left(3 x^2  - y^2\right)$ on the domain $[-6; 6] \times [-6; 6]$. The results are reported divided by $2$ to provide compatibility with \cite{braun_efficient_1996}.}
+\end{table}
+
+With this method, also the eigenfunctions can be computed. This is demonstrated in figure \ref{fig:henon_heiles_eigenfunction}.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.85\linewidth]{img/chapter3/henon_heiles_eigenfunctions.png}
+    \caption{\label{fig:henon_heiles_eigenfunction} The first 12 eigenfunctions of the Hénon-Heiles potential.}
+  \end{center}
+\end{figure}
+
+With our implementation, the code looks as follows.
+
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise2d import Pyslise2D
+from math import sqrt
+
+def V(x, y):
+    return x*x + y*y + 1/(6*sqrt(5)) * y * (3*x*x- y*y)
+
+problem = Pyslise2D(V, -6,6, -6,6, tolerance=1e-8)
+problem.eigenvaluesByIndex(0, 16)
+\end{minted}
+% \end{noindent}
 
 \section{Conclusions}
 

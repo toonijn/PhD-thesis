@@ -1,0 +1,19 @@
+INFO: latexindent version 3.7.1, 2019-09-07, a script to indent .tex files
+      latexindent lives here: /usr/share/texlive/texmf-dist/scripts/latexindent/
+      Mon Mar 27 20:04:59 2023
+      Filename: /home/toon/Documents/doctoraat/thesis/__latexindent_temp_chapter3_2d_ixaru.tex
+INFO: Processing switches:
+      -y|--yaml: YAML settings specified via command line
+      -c|--cruft: cruft directory
+INFO: Directory for backup files and /home/toon/Documents/doctoraat/thesis/indent.log: /home/toon/Documents/doctoraat/thesis/
+INFO: YAML settings read: defaultSettings.yaml
+      Reading defaultSettings.yaml from /usr/share/texlive/texmf-dist/scripts/latexindent/defaultSettings.yaml
+INFO: YAML settings read: indentconfig.yaml or .indentconfig.yaml
+      Home directory is /home/toon (didn't find either indentconfig.yaml or .indentconfig.yaml)
+      To specify user settings you would put indentconfig.yaml here: /home/toon/indentconfig.yaml
+      Alternatively, you can use the hidden file .indentconfig.yaml as: /home/toon/.indentconfig.yaml
+INFO: YAML settings read: -y switch
+      Updating masterSettings with defaultIndent:   
+FATAL: I couldn't find /home/toon/Documents/doctoraat/thesis/__latexindent_temp_chapter3_2d_ixaru.tex, are you sure it exists?.
+       No indentation done.
+       Exiting.

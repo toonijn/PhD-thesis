@@ -5,7 +5,7 @@ from math import pi
 import matplotlib as mpl
 
 mpl.rc('text', usetex=True)
-mpl.rc('text.latex', preamble=r'\usepackage{amsmath,physics,lmodern,mathtools,amsfonts,amssymb}')
+mpl.rc('text.latex', preamble=r'\usepackage{amsmath,physics,lmodern,mathtools,amsfonts,amssymb}\DeclareMathOperator*{\argmin}{arg\,min}')
 mpl.rc('font', family='serif', size=14, serif="Computer Modern Roman")
 
 kleuren = {
