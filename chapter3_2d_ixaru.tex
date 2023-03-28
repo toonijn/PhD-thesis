@@ -7,6 +7,7 @@
 \undefinedlabel{the:c2_slp_countable}{2.x}
 \undefinedlabel{the:c2_kth_eigen_k_roots}{2.x}
 \undefinedlabel{sec:c2_experiment_with_jumps}{2.x.x}
+\undefinedlabel{sec:c2_implementation_challenges}{2.x}
 
 \longchapter[A shooting method]{A shooting method for the \twoD time-independent Schrödinger equation}\label{cha:c3}
 
@@ -56,6 +57,8 @@ The last theorem we provide for now will give some information about the eigenfu
 \end{theorem}
 
 These theorems give a very clear picture about what a solution will look like. But also what kind of questions we want to be able to handle, for example: ``What is the smallest eigenvalue?'', or ``Draw a graph of the first few eigenfunctions.''. To put these theorems in context we consider the following example.
+
+\subsection{A first example}\label{sec:c3_first_example}
 
 \begin{figure}
   \begin{center}
@@ -853,7 +856,7 @@ This matching error is calculated by propagating all possible eigenfunctions $u(
     \includegraphics[width=1\textwidth]{img/chapter3/counting/ixaru.png}
   \end{center}
   \caption{There are 8 (smaller) rectangles on which $E = 11$ is an eigenvalue of the Schrödinger problem from example \ref{sec:c3_counting_ixaru}.}\label{fig:c3_counting_ixaru_subdomains}
-\vspace{1cm}
+  \vspace{1cm}
   \begin{center}
     \includegraphics[width=1\textwidth]{img/chapter3/counting/counting_eigenvalues_zoom.pdf}
   \end{center}
@@ -1031,28 +1034,89 @@ Consider now the fixed value of $E = 45$. From the analysis in \ref{sec:c3_stand
 
 \section{Numerical experiments}\label{sec:c3_experiments}
 
+In the previous section we have made some theoretical advancements. To demonstrate the relevance and effectiveness of the provided theory, we proudly present some numerical results. In summary the obtained results are at least as accurate as the original method in \cite{ixaru_new_2010}, but are significantly faster, even when corrected for the more powerful modern CPUs.
+
+Another large improvement can be found in the `autonomy' of the algorithm. In \cite{ixaru_new_2010} different steps sizes are tabulated. But, since we implemented automatic step size selection, this distinction is no longer relevant. To demonstrate that our improvements facilitate using this method, we will also provide some \lpython{}-code. The example code makes use of the package \pyslisetd{}. This package contains our implementation (in \cpp{}, see the discussion from section \ref{sec:c2_implementation_challenges}) of the earlier described algorithm, together with our improvements.
+
+Via \texttt{pip}, the package \pyslisetd{} can be installed.
+% \begin{noindent}
+\begin{minted}{bash}
+pip install pyslise2d
+\end{minted}
+% \end{noindent}
+
+
 \todo{example with large eigenvalues}
 
 \todo{prepare for examples in next chapter}
 
 \todo{rework}
 
-The focus of this article is mainly to provide some theoretical advancements. To demonstrate the relevance and effectiveness of the provided theory, we proudly present the following numerical results. In summary the obtained results are at least as accurate as the original method as those proposed in \cite{ixaru_new_2010}, but are significantly faster, even when corrected for the more powerful modern CPUs. Following Ixaru, we take $N=12$ in all  experiments.
+\subsection{The zero potential}
 
-Another large improvement can be found in the `autonomy' of the algorithm. In \cite{ixaru_new_2010} different steps sizes are tabulated. But, since we implemented automatic step size selection, this distinction is no longer relevant. To demonstrate that our improvements facilitate using this method, we will also provide some \texttt{Python}-code. This code makes use of the package \texttt{pyslise2d}. This package is still in active development, the most recent version can be installed with \texttt{pip install pyslise2d}. The implementation of our method is done in \texttt{C++}, to improve efficiency and performance, and precompiled in \texttt{pyslise2d}.
+As a first example we will find eigenvalues of the Schrödinger equation with a zero potential
+$$
+-\nabla \psi(x, y) = \lambda \psi(x, y)
+$$
+on the domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions.
+
+In section \ref{sec:c3_first_example} we have calculated the eigenvalues to be of the form $i^2 + j^2$ for any $i, j \in \NN^+$, and the corresponding eigenfunction is given by $ \psi(x, y) = \sin(ix)\sin(jy)$. To reiterate, the first few eigenvalues are
+$$
+2, 5, 5, 8, 10, 10, 13, 13, 17, 17, 18, 20, 20, 25, 25, 26, 26, 29, 29, 32, \dots
+$$
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/zero.pdf}
+  \end{center}
+  \caption{The relative error for the first hundred eigenvalues of the zero potential Schrödinger problem on the square $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions. Degenerate eigenvalues are connected.}\label{fig:c3_experiment_zero}
+\end{figure}
+
+Despite this being the easiest Schrödinger problem to consider, it is non-trivial in the sense that the multiplicity of an eigenvalue is rather unpredictable.
+
+In figure \ref{fig:c3_experiment_zero} the relative errors of the first hundred eigenvalues found with \pyslisetd{} are presented. Even for an extremely low number of basis functions used on each sector ($N = 5$), we are still able to reach the most accurate results possible for the first two dozen eigenvalues. However, once the eigenvalue is sufficiently high, it becomes totally wrong, since the relative error is close to $1$.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/zero_missing.png}
+  \end{center}
+  \caption{When using $N = 5$. On the left: the found $22^\text{nd}$ eigenfunction. On the right: the missing $23^\text{th}$ eigenfunction.}\label{fig:c3_experiment_zero_missing}
+\end{figure}
+
+The reason for these sudden wrong results can be found in the fact that the zero potential is definitely an easy problem for this method. Upon close inspection, we have found that \pyslisetd{} only uses a total of three sectors on the whole domain, independent of the requested accuracy. On each sector exactly the same one-dimensional problem is solved, which entails exactly the same basis functions $b_i(x) = \sin(i x)$. And coincidentally, the two-dimensional eigenfunction corresponding to $E = i^2 + j^2$ can be written as $\psi(x, y) = c(y) \sin(i x)$. In summary for this method, by construction the Schrödinger problem with zero potential get solved exactly. Yet, for $N=5$ we see that $E_{22} = E_{23}$ is not found correctly. Notice that $E_{22} = E_{23} = 37 = 1^2 + 6^2$. When, only $5$ basis functions are considered on a sector, the necessary function $\sin(6 x)$ will not be present, and therefore this eigenvalue can not be correctly found. As an illustration, figure \ref{fig:c3_experiment_zero_missing} visualizes this missing eigenfunction.
+
+Let us also address a possible concern: why did our method not detect this missing eigenvalue, using theorem \ref{the:c3_counting_eigenvalues}? Our method checks how many times on each sector there was a linear combination of the propagated functions that vanishes. If an insufficient number of basis functions are used, no such vanishing combination will be found, and the index will not be correctly determined. Here, the importance of a sufficiently large basis is apparent.
+
+To illustrate the usability of \pyslisetd{} we present some sample code to solve this Schrödinger problem.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise2d import Pyslise2D
+from math import pi
+
+problem = Pyslise2D(lambda x, y: 0, 0, pi, 0, pi,
+                    tolerance=1e-8, N=10)
+print(problem.eigenvaluesByIndex(0, 10))
+\end{minted}
+% \end{noindent}
+This code will output a list of all eigenvalues as tuples. With for each eigenvalue, its index, the eigenvalue itself and its multiplicity. This multiplicity is detected with numerical accuracy, thus this may be inaccurate. An eigenvalue can be present multiple times in the list to compensate.
 
 \subsection{Ixaru's potential}\label{sec:c3_experiment_ixaru}
 
-In the first example we look at the same problem as in \cite{ixaru_new_2010}. Consider the potential $$
+For the next example we follow \cite{ixaru_new_2010} and study the problem from section \ref{sec:c3_counting_ixaru}. Consider the Schrödinger problem with potential
+$$
   V(x, y) = (1+x^2)(1+y^2)
 $$
-on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$.
+on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions.
+
+
+
+
 
 In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference values calculated by Ixaru in \cite{ixaru_new_2010}. There the computation took $45$ seconds. Our values can be computed within $1.4$ seconds on an Intel i7-8700K.
 
 \begin{table}
   \centering
-  \begin{tabular}{l|n{2}{7}n{2}{10}r}
+  \begin{tabular}{l|n{2}{7}n{2}{10}n{1}{1}}
                     & {Ixaru\cite{ixaru_new_2010}} & {Our results} & {$\Delta$} \\
     \hline
     $E_{0}$         & 3.1959181                    & 3.1959181112  & 1.1e-8     \\
@@ -1093,22 +1157,21 @@ Following \cite{braun_efficient_1996}, we report the first eigenvalues on the sq
 
 \begin{table}
   \centering
-  \begin{tabular}{l|rrr}
-                      & Reference\cite{braun_efficient_1996} & Our results    & Difference \\
+  \begin{tabular}{l|n{1}{6}n{1}{10}n{1}{1}}
+                      & {Braun et al.\cite{braun_efficient_1996}} & {Our results} & {Difference} \\
     \hline
-
-    $E_{0}$           & $0.998595$                           & $0.9985947661$ & $2.3(-7)$  \\
-    $E_{1} = E_{2}$   & $1.990077$                           & $1.9900767814$ & $2.2(-7)$  \\
-    $E_{3}$           & $2.956243$                           & $2.9562429806$ & $1.9(-8)$  \\
-    $E_{4} = E_{5}$   & $2.985326$                           & $2.9853263715$ & $3.7(-7)$  \\
-    $E_{6} = E_{7}$   & $3.925964$                           & $3.9259638565$ & $1.4(-7)$  \\
-    $E_{8}$           & $3.982417$                           & $3.9824172948$ & $2.9(-7)$  \\
-    $E_{9}$           & $3.985761$                           & $3.9857610624$ & $6.2(-8)$  \\
-    $E_{10}$          & $4.870144$                           & $4.8701435890$ & $4.1(-7)$  \\
-    $E_{11} = E_{12}$ & $4.898644$                           & $4.8986454644$ & $1.5(-6)$  \\
-    $E_{13} = E_{14}$ & $4.986251$                           & $4.9862512850$ & $2.8(-7)$  \\
-    $E_{15}$          & $5.817019$                           & $5.8170190699$ & $7.0(-8)$  \\
-    $E_{16}$          & $5.817027$                           & $5.8170279899$ & $9.9(-7)$  \\
+    $E_{0}$           & 0.998595                                  & 0.9985947661  & 2.3e-7       \\
+    $E_{1} = E_{2}$   & 1.990077                                  & 1.9900767814  & 2.2e-7       \\
+    $E_{3}$           & 2.956243                                  & 2.9562429806  & 1.9e-8       \\
+    $E_{4} = E_{5}$   & 2.985326                                  & 2.9853263715  & 3.7e-7       \\
+    $E_{6} = E_{7}$   & 3.925964                                  & 3.9259638565  & 1.4e-7       \\
+    $E_{8}$           & 3.982417                                  & 3.9824172948  & 2.9e-7       \\
+    $E_{9}$           & 3.985761                                  & 3.9857610624  & 6.2e-8       \\
+    $E_{10}$          & 4.870144                                  & 4.8701435890  & 4.1e-7       \\
+    $E_{11} = E_{12}$ & 4.898644                                  & 4.8986454644  & 1.5e-6       \\
+    $E_{13} = E_{14}$ & 4.986251                                  & 4.9862512850  & 2.8e-7       \\
+    $E_{15}$          & 5.817019                                  & 5.8170190699  & 7.0e-8       \\
+    $E_{16}$          & 5.817027                                  & 5.8170279899  & 9.9e-7       \\
   \end{tabular}
   \caption{\label{tab:henon_heiles_eigenvalues}  The first few eigenvalues of the problem with potential $V(x,y) = x^2 + y^2 + \frac{1}{6\sqrt{5}} y \left(3 x^2  - y^2\right)$ on the domain $[-6; 6] \times [-6; 6]$. The results are reported divided by $2$ to provide compatibility with \cite{braun_efficient_1996}.}
 \end{table}

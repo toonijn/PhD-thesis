@@ -9,11 +9,11 @@
 
 \section{Introduction}
 
-The one-dimensional time-independent Schrödinger equation is a linear ordinary differential equation posed as an eigenvalue problem on a domain $[a, b] \subseteq \RR$ with specified boundary conditions. Solutions are given as an eigenvalue $\lambda \in \RR$ with corresponding eigenfunction $y: \RR \to \RR$. These eigenfunctions are defined over the bounded domain $[a, b]$ of the problem. Each solution has to satisfy the following equation
+The one-dimensional time-independent Schrödinger equation is a linear ordinary differential equation posed as an eigenvalue problem on a domain $\Omega \subseteq \RR$ with specified boundary conditions. Solutions are given as an eigenvalue $\lambda \in \RR$ with corresponding eigenfunction $y: \Omega \to \RR$. Each solution has to satisfy the following equation
 $$
     -y''(x) + V(x)y(x) = \lambda y(x)
 $$
-for each of the values $x\in [a, b]$. In this equation the given function $V: \RR \to \RR$ is the potential of the problem at hand. Note that if $y(x)$ is an eigenfunction, $c\,y(x)$ will also be an eigenfunction with the same eigenvalue, for each value of $c \in \RR_0$. As such, it is not really possible to say ``\emph{the} eigenfunction corresponding to a certain eigenvalue". Later on we will prove that in many cases the eigenfunction is, up to a constant factor, uniquely defined.
+for each of the values $x\in \Omega$. In this equation the given function $V: \RR \to \RR$ is the potential of the problem at hand. Note that if $y(x)$ is an eigenfunction, $c\,y(x)$ will also be an eigenfunction with the same eigenvalue, for each value of $c \in \RR_0$. As such, it is not really possible to say ``\emph{the} eigenfunction corresponding to a given eigenvalue". Later on we will prove that in many cases the eigenfunction is, up to a constant factor, uniquely defined.
 
 Boundary conditions have to be specified before solutions can be found. These conditions pose restrictions on $y(a)$, $y'(a)$, $y(b)$ and $y'(b)$. Boundary conditions come in many flavors. We provide an overview of the most common ones:
 \begin{itemize}
@@ -24,9 +24,9 @@ Boundary conditions have to be specified before solutions can be found. These co
               \alpha_a y(a) + \beta_a y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b y'(b) = 0  \text{.}
           $$
 \end{itemize}
-These three types of boundary conditions are what is called separated conditions. The condition on the left side $a$, or decoupled from the one on the right side $b$. In contrast, there are also boundary conditions that do coupled both ends.
+These three types of boundary conditions are what is called separated conditions. The condition on the left side $a$ is decoupled from the one on the right side $b$. In contrast, there are also boundary conditions that do couple both ends.
 \begin{itemize}
-    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solutions has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{antiperiodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized with a $2 \times 2$ matrix $\vb{K}$:
+    \item \emph{Periodic boundary conditions} are used to specify that a solution should be periodic. In other words, the solution has to end in the same value as it started, and so should the derivative. Mathematically this can be written as: $y(a) = y(b)$ and $y'(a) = y'(b)$. These condition can be extended to \emph{antiperiodic boundary conditions}: $y(a) = -y(b)$ and $y'(a) = -y'(b)$. Or even generalized with a $2 \times 2$ matrix $\vb{K}$:
           $$
               \begin{pmatrix} y(a) \\ y'(a) \end{pmatrix} = \vb{K} \begin{pmatrix} y(b) \\ y'(b) \end{pmatrix}\text{.}
           $$
@@ -36,15 +36,15 @@ Note that homogeneous Dirichlet or Neumann boundary conditions can always be wri
 
 \subsection{Properties of the Sturm-Liouville equation}\label{sec:c2_slp_properties}
 
-Before developing numerical methods for solving the one-dimensional time-independent Schrödinger equation, it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
+Before developing numerical methods for solving the one-dimensional time-independent Schrödinger equation, it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and to use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
-In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more useful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
+In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more impactful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
 
-The Sturm-Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the bounded domain $[a, b]$:
+The Sturm-Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the domain $\Omega \subseteq \RR$:
 \begin{equation}\label{equ:c2_sturm_liovuille_equation}
     -(p(x) y'(x))' + q(x) y(x) = \lambda w(x) y(x)\text{.}
 \end{equation}
-The functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $[a, b]$. These functions define the Sturm-Liouville problem. If $p(x)$, $q(x)$ and $w(x)$ are continuous, $p(x)$ is differentiable and $p(x) > 0$ and $w(x) > 0$ over the whole domain $[a, b]$, then the problem is called a \emph{regular} Sturm-Liouville problem.
+The functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $\Omega$. These functions define the Sturm-Liouville problem. If the domain is a bounded interval $\Omega = [a, b]$, and if $p(x)$, $q(x)$ and $w(x)$ are continuous, $p(x)$ is differentiable and $p(x) > 0$ and $w(x) > 0$ over the whole domain $[a, b]$, then the problem is called a \emph{regular} Sturm-Liouville problem.
 
 A solution of a Sturm-Liouville problem consists of an eigenvalue $\lambda$ with corresponding eigenfunction $y(x)$, which satisfy \eqref{equ:c2_sturm_liovuille_equation} on $[a, b]$. For now, we will study the Sturm-Liouville equation with homogeneous Robin boundary conditions:
 \begin{equation}\label{equ:c2_sturm_liovuille_boundary}
@@ -94,7 +94,7 @@ This last theorem is essential. It enables us to formulate questions such as: ``
 Even stronger: Sturm-Liouville theory provides a way to characterize the index of an eigenvalue by means of only the eigenfunction.
 
 \begin{theorem}\label{the:c2_kth_eigen_k_roots}
-    The eigenfunction $y_k(x)$ corresponding to the $k^{\text{th}}$ eigenvalue $\lambda_k$ has exactly $k$ zeros in the interior of the domain $\left]a, b\right[$.
+    The eigenfunction $y_k(x)$ corresponding to the $k^{\text{th}}$ eigenvalue $\lambda_k$ has exactly $k$ zeros in the interior of the domain $\left[a, b\right]$.
 \end{theorem}
 
 This theorem is illustrated in figure \ref{fig:c2_sturm_liovuille_k_roots}. Here we see the first few eigenfunctions of a Sturm-Liouville problem. Later on we will use the term ``highly oscillatory eigenfunction'', theorem \ref{the:c2_kth_eigen_k_roots} explains why this is justified. If $k$ becomes large, the eigenfunction will have many zeros and therefor will oscillate heavily. This can also already be seen on the last panel of figure \ref{fig:c2_sturm_liovuille_k_roots}.
@@ -103,7 +103,7 @@ With these four theorems in the back of our minds we will be able to develop num
 
 Throughout this thesis, and the research preceding it, we have not and will not focus on the applicability of the Sturm-Liouville equation. This is definitely not due to a lack of applications. Rather, the opposite: Sturm-Liouville equations pop up in an innumerable diversity of fields. Many real-world problems can be stated as or reduced to differential equations and in particular the Sturm-Liouville equation.
 
-\todo{Give some real-world examples of this equation \cite[Chapter~8]{guenther_sturmliouville_2018}.}
+% \todo{Give some real-world examples of this equation \cite[Chapter~8]{guenther_sturmliouville_2018}.}
 
 \subsection{Liouville's transformation}\label{sec:c2_liouville_transformation}
 
@@ -113,42 +113,42 @@ In this subsection we change the notation a little from \eqref{equ:c2_sturm_liov
 \begin{equation}\label{equ:c2_liouville_slp}
     -(p(r) z'(r))' + q(r) z(r) = \lambda w(r) z(r)\text{,}
 \end{equation}
-on the domain $[r_\text{min}, r_\text{max}]$. 
+on the domain $[r_\text{min}, r_\text{max}]$.
 
 With the transformation
 \begin{align*}
-x &= \int_{r_\text{min}}^{r} \sqrt{\frac{w(r')}{p(r')}}\,\dd r'\text{,} \\
-z &= \sigma y \\
-\text{and } V(x) &= \frac{q}{w} + \sigma {\dv[2]{}{x}} \frac{1}{\sigma} \\
-\text{with } \sigma(r) &= \frac{1}{\sqrt[4]{p(r)w(r)}},
+    x                      & = \int_{r_\text{min}}^{r} \sqrt{\frac{w(r')}{p(r')}}\,\dd r'\text{,} \\
+    z                      & = \sigma y                                                           \\
+    \text{and } V(x)       & = \frac{q}{w} + \sigma {\dv[2]{}{x}} \frac{1}{\sigma}                \\
+    \text{with } \sigma(r) & = \frac{1}{\sqrt[4]{p(r)w(r)}},
 \end{align*}
 equation \eqref{equ:c2_liouville_slp} becomes
 $$
--y''(x) + V(x) y(x) = \lambda y(x)
+    -y''(x) + V(x) y(x) = \lambda y(x)
 $$
 on the domain $[0, \xmax]$, with $\xmax = x(r_\text{max})$. In this transformation we assumed $p(x)$ and $w(x)$ to be strictly positive and twice differentiable on the domain.
 
 The boundary conditions
 \begin{align*}
-    \alpha_\text{min} z(r_\text{min}) + \beta_\text{min} p(r_\text{min}) z'(r_\text{min}) &= 0 \\
-    \alpha_\text{max} z(r_\text{max}) + \beta_\text{max} p(r_\text{max}) z'(r_\text{max}) &= 0
+    \alpha_\text{min} z(r_\text{min}) + \beta_\text{min} p(r_\text{min}) z'(r_\text{min}) & = 0 \\
+    \alpha_\text{max} z(r_\text{max}) + \beta_\text{max} p(r_\text{max}) z'(r_\text{max}) & = 0
 \end{align*}
 are transformed into
 \begin{align*}
-    &A_\text{min} y(0) + \beta_\text{min} y'(0) = 0 \\
-    &A_\text{max} y(\xmax) + \beta_\text{max} y'(\xmax) =0 \\
-    \text{with } & A_\text{min} = \alpha_\text{min}\sigma^2(r_\text{min}) + \beta_\text{min}\sigma'(r_\text{min})\sigma(r_\text{max}) \\
-    \text{and } & A_\text{max} = \alpha_\text{max}\sigma^2(r_\text{max}) + \beta_\text{max}\sigma'(r_\text{max})\sigma(r_\text{max})\text{.}
+                 & A_\text{min} y(0) + \beta_\text{min} y'(0) = 0                                                                             \\
+                 & A_\text{max} y(\xmax) + \beta_\text{max} y'(\xmax) =0                                                                      \\
+    \text{with } & A_\text{min} = \alpha_\text{min}\sigma^2(r_\text{min}) + \beta_\text{min}\sigma'(r_\text{min})\sigma(r_\text{max})         \\
+    \text{and }  & A_\text{max} = \alpha_\text{max}\sigma^2(r_\text{max}) + \beta_\text{max}\sigma'(r_\text{max})\sigma(r_\text{max})\text{.}
 \end{align*}
 
-Implementing these formulae is not trivial. In \cite{ledoux_study_2007}, it is proposed to use an adaptive quadrature rule to approximate $x(r)$ up to all precision available in the \texttt{double} datatype. The inverse function $r(x)$ can then be calculated by applying a Newton-Raphson scheme. This computation is again executed to get the full precision available in the used floating-point type.
+Implementing these formulae is not trivial. In \cite{ledoux_study_2007}, it is proposed to use an adaptive quadrature rule to approximate $x(r)$ up to the full precision available in the \texttt{double} datatype. The inverse function $r(x)$ can then be calculated by applying a Newton-Raphson scheme. Again, this computation is executed to get the full precision available in the used floating-point type.
 
-Evaluating these functions up to the maximal precision available may seem overkill. However, we have found\footnote{This is an example of things we learned the hard way. See the first paragraph of section \ref{sec:c2_implementation_challenges}.} this to be essential. The constant perturbation method used to solve the resulting Schrödinger equation builds a piecewise high order polynomial approximation of the potential function. If these functions are evaluated with relatively low accuracy, the piecewise polynomial approximation has a hard time to reach the required accuracy and far too many intervals will be used.
+Evaluating these functions up to the maximal precision available may seem overkill. However, we have found\footnote{This is an example of things we learned the hard way. See the first paragraph of section \ref{sec:c2_implementation_challenges}.} this to be essential. The constant perturbation method used to solve the resulting Schrödinger equation builds a piecewise high order polynomial approximation of the potential function. If these functions are evaluated with relatively low accuracy, the piecewise polynomial approximation algorithm has a hard time to reach the required accuracy and far too many subintervals will be used.
 
 
 \section{Background about Matslise}\label{sec:c2_background}
 
-Numerical methods for ordinary differential equations as \emph{initial value} problems are already many centuries old, starting with Euler's method. Numerical methods as a research topic by itself really took of a little more than a century ago. In particular, linear multistep methods and Runge-Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
+Numerical methods for ordinary differential equations as \emph{initial value} problems are already many centuries old, starting with Euler's method. Numerical methods as a research topic by itself really took off a little more than a century ago. In particular, linear multistep methods and Runge-Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
 
 For ordinary differential equations as \emph{boundary value} problems, such as the Sturm-Liouville equations, the story is different. There still are only a few general methods for such problems. For linear ordinary differential equations, one of the more popular choices is a method based upon finite differences.
 
@@ -156,7 +156,7 @@ For ordinary differential equations as \emph{boundary value} problems, such as t
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter2/finite_difference_grid.pdf}
     \end{center}
-    \caption{An equidistant division of the domain $[a, b]$ in $n$ intervals.}
+    \caption{An equidistant division of the domain $[a, b]$ in $n$ subintervals.}
     \label{fig:c2_finite_difference_grid}
 \end{figure}
 
@@ -164,18 +164,18 @@ To illustrate the idea behind methods based upon finite difference, consider the
 $$
     y''(x) = \alpha + \beta y(x) + \gamma y'(x)
 $$
-on the interval $[a, b]$ with boundary conditions $y(a) = y_a$ and $y(b) = y_b$. First, we discretize the integration domain $[a, b]$ into an equally spaced grid of points $a = x_0$, $x_1$, $\dots$, $x_i$, $\dots$, $x_{n-1}$, $x_{n} = b$, with $\Delta x$ the distance between two consecutive points. This discretization can be seen in figure \ref{fig:c2_finite_difference_grid}. The differential equation is now approximated by using finite difference expressions of the involved derivatives. For example:
+on the interval $[a, b]$ with boundary conditions $y(a) = y_a$ and $y(b) = y_b$. First, we discretize the integration domain $[a, b]$ into an equally spaced grid of points $a = x_0$, $x_1$, $\dots$, $x_i$, $\dots$, $x_{n-1}$, $x_{n} = b$, with $\Delta x$ the distance between two consecutive points. This discretization can be seen in figure \ref{fig:c2_finite_difference_grid}. The differential equation is now approximated by using finite difference expressions of the involved derivatives. For example, the second order approximations:
 \begin{align*}
     y''(x_i)            & \approx \frac{y(x_{i-1}) - 2 y(x_i) + y(x_{i+1})}{\Delta x^2} \\
     \text{and } y'(x_i) & \approx \frac{y(x_{i+1}) - y(x_{i-1})}{2 \Delta x}\text{.}
 \end{align*}
 This simplification yields a linear system in the variables $y(x_1), \dots, y(x_{n-1})$. In general, for linear ordinary differential equations with linear boundary conditions, this technique leads to a linear matrix-vector reformulation of the differential equation, which can be solved with classical linear algebra tools.
 
-In this general technique constructing higher order methods is mostly as straightforward as using a more accurate finite difference approximation. But these methods become increasingly computationally expensive as more accuracy is required. Or in our case, if an eigenvalue problem is being solved, when higher eigenvalues are requested, computational cost increases significantly.
+In this general technique constructing higher order methods is mostly as straightforward as using a more accurate finite difference approximation. However, these methods become increasingly computationally expensive as more accuracy is required. In our case, the computational cost increases significantly when higher eigenvalues are requested.
 
 \subsubsection{Finite difference scheme for the Sturm-Liouville equation}
 
-Until around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville problem looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After solving the approximating linear algebra problem, they applied some corrections to improve the accuracy of higher eigenvalues. They experimented with which finite difference approximations to use. First they tried classical formulae, later on highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions were developed.
+Until around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville problem looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After solving the approximating linear algebra problem, some corrections can be applied to improve the accuracy of higher eigenvalues. The authors of \cite{andrew_correction_1985,vandenberghe_accurate_1991} experimented with which finite difference approximations to use. First classical formulae were tried, later on highly tuned exponential fitted formulae to better handle the oscillatory nature of the eigenfunctions were developed.
 
 To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simple version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general advantages but also disadvantages of this technique. For completeness, we recall the Sturm-Liouville equation from \eqref{equ:c2_sturm_liovuille_equation}:
 $$
@@ -218,6 +218,7 @@ $$
                                           &                                   &                                   & p_{n - \frac{3}{2}} & -p_{n - \frac{3}{2}} - p_{n - \frac{1}{2}} \\
     \end{pmatrix}{}\text{.}
 $$
+% \todo{Make the dots nicer}
 
 To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one can notice that if $w(x_i)$ is never $0$ for $0 < i < n$ then $\diag(\vb{w})$ is invertible and the problem becomes a simple tridiagonal eigenvalue problem. This can then be solved with any of our favorite tridiagonal eigenvalue solvers. If $w$ happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \cite{lapack}, for example, contains the specialized routines \texttt{?stev} and relatives.
 
@@ -241,7 +242,7 @@ As a numerical experiment of this method we will take a look at the following St
 \begin{equation}\label{equ:c2_fd_test_problem}
     -\left((1+x)^2 y \right)' + (x^2 - 2) y = \lambda e^x y
 \end{equation}
-on the domain $[0, 1]$ with homogeneous Dirichlet boundary conditions. Figure \ref{fig:c2_fd_h_error} shows the relative errors of the 4 lowest eigenvalues in function of the chosen number of grid points $n+1$. As $n$ increases, the error decreases, as desired. Notice that as the constructed method is based upon second order finite difference formulae, we expect to see the decrease of error be of second order too. This is indicated in the figure with the dotted line. The constructed method is of relatively low order, so to compute very accurate approximations, a dense grid is needed. In the literature one can find many methods based upon finite difference approximations, many of which use (much) higher order formulae. These better methods can reach high accuracy with relatively little computational work for the first few eigenvalues.
+on the domain $[0, 1]$ with homogeneous Dirichlet boundary conditions. Figure \ref{fig:c2_fd_h_error} shows the relative errors of the lowest four eigenvalues in function of the chosen number of grid points $n+1$. As $n$ increases, the error decreases, as desired. Notice that as the constructed method is based upon second order finite difference formulae, we expect to see the decrease of error be of second order too. This is indicated in the figure with the dotted line. The constructed method is of relatively low order, so to compute very accurate approximations, a dense grid is needed. In the literature one can find many methods based upon finite difference approximations, many of which use (much) higher order formulae. These better methods can reach high accuracy with relatively little computational work for the first few eigenvalues.
 
 As earlier hinted, methods based upon finite differences struggle with the computation of higher eigenvalues. Figure \ref{fig:c2_fd_k_error} illustrates this. Here, the relative error of the first 50 eigenvalues is plotted, for different values of $n$. Note that in the case of $n = 32$, only $32$ eigenvalues can be computed. On this figure, the line corresponding to $\mathcal{O}(k^2)$ is drawn. Together with the $\mathcal{O}(\Delta x^2)$ from earlier, one expects the relative error of the $k^\text{th}$ eigenvalue to be
 $$
@@ -251,13 +252,13 @@ for this method applied to problem \eqref{equ:c2_fd_test_problem}. This shows us
 
 \subsection{CP-methods}
 
-The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm-Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions to the one dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
+The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm-Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions of the one dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
 
 For this, we will only consider the Schrödinger equation
 \begin{equation}\label{equ:c2_cpm_schrodinger}
     - y'' + V(x) y = \lambda y
 \end{equation}
-on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a) + \beta_a y(a) = 0$ and $\alpha_b y(b) + \beta_b y(b) = 0$. But do note, that using Liouville's transformation Sturm-Liouville problems can be transformed into Schrödinger problems.
+on the domain $[a, b]$ with homogeneous Robin boundary conditions $\alpha_a y(a) + \beta_a y(a) = 0$ and $\alpha_b y(b) + \beta_b y(b) = 0$. However, do note that using Liouville's transformation Sturm-Liouville problems can be transformed into Schrödinger problems.
 
 \subsubsection{Piecewise constant approximation of the potential}
 
@@ -290,7 +291,7 @@ $$
 $$
 If $n$ subintervals are used, this system of equations has $2n$ variables and $2(n-1)$ equations. Together with the two equations from the boundary conditions, this yields a fully determined linear system. Now, we have translated the problem of finding eigenvalues of the Schrödinger equation \eqref{equ:c2_cpm_schrodinger} to finding values for $\lambda$ such that this system of equations has non-zero solutions. Only these solutions correspond to a non-zero eigenfunction.
 
-Finding values for $\lambda$ for which the constructed system becomes singular is not as trivial as one may assume. In \cite{canosa_new_1970}, the authors have provided their own root finding algorithm based upon finding changes in the sign of the determinant. But this algorithm is not without issue. Eigenvalues may be arbitrarily close together, which makes it hard to ensure you have found all requested values. Choosing the appropriate step sizes when eigenvalues become increasingly sparse is a balance between efficiency and not missing any. Later on we will describe a way to reliably and efficiently determine all required eigenvalues.
+Finding values for $\lambda$ for which the constructed system becomes singular is not as trivial as one may assume. In \cite{canosa_new_1970}, the authors have provided their own root finding algorithm based upon finding changes in the sign of the determinant. But this algorithm is not without issue. Eigenvalues may be arbitrarily close together, which makes it hard to ensure you have found all requested values. Choosing the appropriate step sizes when the distance between eigenvalues increases, is a balance between efficiency and not missing any. Later on we will describe a way to reliably and efficiently determine all required eigenvalues.
 
 One of the main benefits of this ``new method for the solution of the Schrödinger equation'' \cite{canosa_new_1970} is that its accuracy does not depend on the size of the requested eigenvalue. Because only analytical solutions of the piecewise approximated problem are considered, oscillations can be represented exactly. Even the most extreme oscillations are cleanly captured inside the $\sin$ en $\cos$ of $y_i$. The idea of using analytical solutions allowed the development of the CP-methods.
 
@@ -311,7 +312,7 @@ Here we will state the most important theorems from \cite{pruess_estimating_1973
     $$
 \end{theorem}
 
-This theorem provides justification for the idea of Canosa and De Oliveira. Even though a constant approximation ($m = 0$) may be crude, it still is a second order method. Furthermore, the theorem suggest that expanding this method up to higher degree piecewise polynomial approximations may be worthwhile.
+This theorem provides justification for the idea of Canosa and De Oliveira. Even though a constant approximation ($m = 0$) may be crude, it still is a second order method. Furthermore, the theorem suggests that expanding this method up to higher degree piecewise polynomial approximations may be worthwhile.
 
 In \cite{pruess_estimating_1973}, the author also studies what happens to the error on the eigenvalues if $k$ is increased. In \cite{canosa_new_1970} it was assumed that this error does not get worse as $k$ increases.
 
@@ -328,6 +329,8 @@ In \cite{pruess_estimating_1973}, the author also studies what happens to the er
 \end{theorem}
 
 This last theorem does not only say that the error does not become larger if $k$ increases, but the relative error even decreases rapidly when $k \to \infty$. Theorem \ref{the:c2_pruess_1973_2} highlights the main advantage this technique has in comparison to other state-of-the-art methods. Where many other methods become less and less accurate for large eigenvalues, this method becomes even more accurate.
+
+\todo{This is a so-called assymptotic method. Add a reference.}
 
 \begin{figure}
     \begin{center}
@@ -352,7 +355,7 @@ As a numerical experiment we have applied the method with constant piecewise app
 on the domain $[0, \pi]$ with homogeneous Dirichlet boundary conditions. In figure \ref{fig:c2_pruess_h_error} the relative error of the application of the method is illustrated. We see that the error follows indeed the predicted line of $\mathcal{O}(h^2)$. In figure \ref{fig:c2_pruess_k_error} we see the dramatic increase in accuracy when $k$ becomes larger. The predicted order of $\mathcal{O}(k^{-4})$ seems to be reached once $k$ is sufficiently large.
 
 
-But still some nuances have to be made. In \cite{pruess_estimating_1973} some numerical examples are given for constant ($m=0$), linear ($m=1$) and quadratic ($m=2$) approximations. But only for the constant approximations analytical solutions were used. For the higher order experiments, the true solution on a single subinterval is approximated by an at least fifteenth order Taylor series expansion. These Taylor series are only polynomial approximations of a possibly highly oscillatory function. This will give problems for higher lying eigenvalues.
+But still some nuances have to be made. In \cite{pruess_estimating_1973} some numerical examples are given for constant ($m=0$), linear ($m=1$) and quadratic ($m=2$) approximations. But only for the constant approximations analytical solutions are used. For the higher order experiments, the true solution on a single subinterval is approximated by an at least fifteenth order Taylor series expansion. These Taylor series are only polynomial approximations of a possibly highly oscillatory function. This gives problems for higher lying eigenvalues.
 
 \subsubsection{Constant perturbation methods}
 
@@ -380,6 +383,7 @@ with appropriate initial values. That is, $u_0(0) = 1$ and $u_0'(0) = 0$ for $p 
 \end{equation}
 with initial conditions $p_q(0) = p_q'(0) = 0$. Notice that this definition implies that $p$ indeed solves \eqref{equ:c2_cpm_corrected} with the appropriate initial values:
 \begin{align*}
+    p   & = p_0 + \sum_{q=1}^\infty p_q
     p'' & = (\bar{V} - \lambda)p_0 + \sum_{q=1}^\infty\left((\bar{V} - \lambda)p_q + \Delta V(\delta) p_{q-1}\right) \\
         & = (\bar{V} - \lambda)\sum_{q=0}^\infty p_q + \Delta V(\delta) \sum_{q=0}^\infty p_q                        \\
         & = (\Delta V(\delta) + \bar{V} - \lambda)p\text{.}
@@ -405,6 +409,8 @@ To symbolically compute the expression of $p_q$ Ixaru has introduced some auxili
 \end{figure}
 
 Much has already been written about these instrumental functions. For example in Ixaru's book \cite{ixaru_numerical_1984}. To get a feeling for these functions, we provide figure \ref{fig:c2_eta_functions}.
+
+\todo{Add that these functions decrease quickly. This is ideal for convergent series.}
 
 In definition \ref{def:c2_eta_functions}, we have chosen to simplify the notation by allowing computations in $\CC$. But when implementing these formulas, it is much more efficient to keep all calculations in $\RR$. For $Z < 0$, we implement $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
 
@@ -453,7 +459,7 @@ With the theory about the family of $\eta$-functions in hand, we are able to sol
     \end{align*}
     The function $p_0$ inherits the initial conditions of $p$. If $q > 0$, $p_q$ has as initial conditions $p_q(0) = p_q'(0) = 0$.
 
-
+    \todo{Mention/prove that the expression for $p_q$ is finite.}
     If $\Delta V(\delta)$ is a polynomial in $\delta$ then each term $p_q$ is given by:
     \begin{align}
         p_q(\delta)  & = \sum_{i=-1}^\infty \delta^{2i+1} C^{(q)}_i(\delta) \eta_{i}(Z(\delta))  \label{equ:c2_cp_coeff_pq_formula}                                             &
@@ -461,34 +467,40 @@ With the theory about the family of $\eta$-functions in hand, we are able to sol
         p_q'(\delta) & = \frac{C_{-1}^{(q)}(\delta)}{\delta^2}\left(\eta_{-1}(Z(\delta))+Z(\delta)\eta_{0}(Z(\delta))\right)            \label{equ:c2_cp_coeff_pq_diff_formula}   \\\nonumber
                      & \qquad + \sum_{i=-1}^\infty \left(C_{i}^{(q)\prime}(\delta) + \delta C_{i+1}^{(q)}(\delta)\right) \delta^{2i + 1}\eta_{i}(Z(\delta)) \text{.}
     \end{align}
-    The functions $ C^{(q)}_i (\delta) $ are polynomials and satisfy the following recursive relation: \begin{align*}
+    The functions $ C^{(q)}_i (\delta) $ are polynomials and satisfy the following recursive relation: \begin{align}
         C_i^{(q)}(\delta)    & = \frac{\delta^{-i}}{2} \int_0^\delta \varepsilon^{i-1} \left(
         C_{i-1}^{(q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(q)\prime\prime}(\varepsilon)
-        \right)\dd\varepsilon                                                                 \\
+        \right)\dd\varepsilon                                                                 \nonumber \\
         C_{i}^{(0)}(\delta)  & = \begin{cases}
             \delta & \text{if $p = u$ and $i = -1$} \\
             1      & \text{if $p = v$ and $i = 0$}  \\
             0      & \text{otherwise}
-        \end{cases}                                   \\
-        C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\,.                                 \\
-    \end{align*}
+        \end{cases}                                   \label{equ:c2_recursive_Cs} \\
+        C_{-1}^{(q)}(\delta) & = 0 \quad \text{if $q > 0$}\text{.}\nonumber
+    \end{align}
 \end{theorem}
 \begin{proof}
 As these formulae are recursively defined, a proof by induction is most natural. For $q=0$ the exact solutions can be calculated. If $\bar{V} \geq \lambda$, then $u_0(\delta) = \cosh(\sqrt{Z(\delta)})$ and $v_0(\delta) = \sinh(\sqrt{Z(\delta)})/\sqrt{\bar{V} - \lambda}$. If $\bar{V} < \lambda$ on the other hand, then $u_0(\delta) = \cos(\sqrt{-Z(\delta)})$ and $v_0(\delta) = \sin(\sqrt{-Z(\delta)})/\sqrt{\lambda - \bar{V}}$. By using the $\eta$-functions both these cases can be summarized as:
 $$ u_0 = \eta_{-1}(Z(\delta)) \text{ and } v_0 = \delta\eta_{0}(Z(\delta))\text{.}$$
 Substituting, for $q=0$, the values of $C^{(0)}_i$ into \eqref{equ:c2_cp_coeff_pq_formula} yields exactly the same expressions. This proves the induction basis.
 
-Assume, as induction hypothesis, that the theorem holds for any value for $q$ less than $Q$. First we prove that for each $i$, $C_i^{(Q)}$ is a polynomial. For this we apply induction with respect to $i$. For $i = -1$, the $C^{(Q)}_{-1} =0$ is a polynomial. Because $\Delta V(\delta)$ is assumed to be polynomial, we notice that for any other $i$
+Assume, as induction hypothesis, that the theorem holds for any value for $q$ less than $Q$. First we prove that for each $i$, $C_i^{(Q)}$ is a polynomial. For this we apply induction with respect to $i$. For $i = -1$, the $C^{(Q)}_{-1} =0$ is a polynomial. Since $\Delta V(\delta)$ is assumed to be polynomial, we notice that for any other $i$
 $$
     C_{i-1}^{(Q-1)}(\varepsilon) \Delta V(\varepsilon) - C_{i-1}^{(Q)\prime\prime}(\varepsilon)
 $$
 is a polynomial, as a consequence of the induction hypothesis in $Q$, and the induction hypothesis in $i$. This implies that the integrand in the definition of $C_i^{(Q)}(\delta)$ is polynomial with no terms of degree less than $i-1$. This means that the integral in that definition will be divisible by $\delta^i$. Which proves that all $C_{i}^{(Q)}$ are polynomials.
 
+\todo{First handle initial conditions, only later prove the ODE.}
 Next we prove that $p_Q(\delta)$ is a solution of
 $$
     p_Q''(\delta)  = (\bar{V} - \lambda) p_Q(\delta) + \Delta V(\delta) p_{Q-1}(\delta)
 $$
-with initial conditions $p_Q(0) = p_Q'(0) = 0$. That $p_Q(0) = 0$ can be seen in \eqref{equ:c2_cp_coeff_pq_formula}, using the facts that $C^{(Q)}_{-1} = 0$ for $Q > 0$ and that $C_i^{(Q)}$ are polynomials. Using the properties from theorem \ref{the:c2_eta_functions}, we can compute $p_Q'(\delta)$ to be as in \eqref{equ:c2_cp_coeff_pq_diff_formula}. That this expression is zero for $\delta = 0$ is less apparent. First, notice that most terms are zero because $C_i^{(Q)}$ are polynomials and $C^{(Q)}_{-1} = 0$ for $Q > 0$. The only term for which this is not clear is with $i = -1$: $C_0^{(Q)}(0)\eta_{0}(Z(0))$. For this term, we remark that the polynomial $C^{(q)}_{-1}(\delta)$ never contains a constant term, for most values of $q$ it is zero, and for $q=0$ it can only be zero or $\delta$. This means, by the recursive construction, that $C_{i}^{(q)}(\delta)$ also does not contain a constant term. Which means $C_{i}^{(q)}(0) = 0$, and thus $p_Q'(0) = 0$, for $Q > 0$. The last thing, we still have to prove, is that this $p_Q$ indeed solves its defining equation.
+with initial conditions $p_Q(0) = p_Q'(0) = 0$. That $p_Q(0) = 0$ can be seen in \eqref{equ:c2_cp_coeff_pq_formula}, using the facts that $C^{(Q)}_{-1} = 0$ for $Q > 0$ and that $C_i^{(Q)}$ are polynomials. Using the properties from theorem \ref{the:c2_eta_functions}, we can compute $p_Q'(\delta)$ to be as in \eqref{equ:c2_cp_coeff_pq_diff_formula}. That this expression is zero for $\delta = 0$ is less apparent. First, notice that most terms are zero because $C_i^{(Q)}$ are polynomials and $C^{(Q)}_{-1} = 0$ for $Q > 0$. The only term for which this is not clear is with $i = -1$: $C_0^{(Q)}(0)\eta_{0}(Z(0))$. For this term, we remark that the polynomial $C^{(q)}_{-1}(\delta)$ never contains a constant term, for most values of $q$ it is zero, and for $q=0$ it can only be zero or $\delta$. This means, by the recursive construction, that $C_{i}^{(q)}(\delta)$ also does not contain a constant term. This in turn means $C_{i}^{(q)}(0) = 0$, and thus $p_Q'(0) = 0$, for $Q > 0$. The last thing, we still have to prove, is that this $p_Q$ indeed solves its defining equation.
+
+\todo{The ODE should start here.}
+$$
+    p_Q''(\delta)  = (\bar{V} - \lambda) p_Q(\delta) + \Delta V(\delta) p_{Q-1}(\delta)
+$$
 
 For this, we compute $p_Q''$. For the sake of brevity, we will omit the argument $\delta$ from most functions, and remember that all derivatives are with respect to $\delta$. But first, we know from the definition of $C_i^q$ that
 $$
@@ -515,7 +527,7 @@ These expressions, together with $C_{-1}^{(Q)} = 0$, now can be used to simplify
 Due to the definition of $Z = \delta^2(\bar{V} - \lambda)$, this expresses exactly that $p_Q$ is a solution to $p_Q'' = (\bar{V} - \lambda)p_Q + \delta V p_{Q-1}$.
 \end{proof}
 
-At first glance, it may not be clear why theorem \ref{the:c2_perturbation_terms} is that important. Still, these rather tedious computations and relatively complicated recursive relation allows us to analytically construct formulae of any order. To calculate such a formula choose the number of perturbation corrections $Q$ and the number of $\eta$-functions to use $N$ and compute the values of $C_{i}^{(q)}$ for $q \leq Q$ and $i \leq N$. If $\Delta V$ is assumed to be a polynomial in $\delta$, then $C_{i}^{(q)}$ will be as well. The solution $p(\delta)$ will now have the following form with finite sums:
+At first glance, it may not be clear why theorem \ref{the:c2_perturbation_terms} is that important. Still, these rather tedious computations and relatively complicated recursive relation allows us to analytically construct formulae of any order. To calculate such a formula, choose the number of perturbation corrections $Q$ and the number of $\eta$-functions to use $N$ and compute the values of $C_{i}^{(q)}$ with the recursive relations \eqref{equ:c2_recursive_Cs} for $q \leq Q$ and $i \leq N$. If $\Delta V$ is assumed to be a polynomial in $\delta$, then $C_{i}^{(q)}$ will be as well. The solution $p(\delta)$ will now have the following form with finite sums:
 $$
     p(\delta) = \sum_{q=0}^{Q} p_q(\delta) \text{ with } p_q(\delta) = \sum_{i=-1}^{N} C_{i}^{(q)}(\delta) \delta^{2i+1} \eta_i(Z) \text{.}
 $$
@@ -526,8 +538,8 @@ $$
 $$
 and are increasing in degree, together with $\widetilde{P}_n(x) = 1$ for any $n$. As a reference we provide the first four.
 \begin{align*}
-    \widetilde{P}_0(x) = & 1      & \widetilde{P}_2(x) = & 6x^2 - 6x + 1             \\
-    \widetilde{P}_1(x) = & 2x - 1 & \widetilde{P}_3(x) = & 20 x^3 - 30 x^2 +12 x - 1
+    \widetilde{P}_0(x) = & \,1      & \widetilde{P}_2(x) = & \,6x^2 - 6x + 1             \\
+    \widetilde{P}_1(x) = & \,2x - 1 & \widetilde{P}_3(x) = & \,20 x^3 - 30 x^2 +12 x - 1
 \end{align*}
 
 Applying a least squares approximation of $V(\delta)$ with $N + 1$ shifted Legendre polynomials yields
@@ -592,7 +604,7 @@ $$
     y_\text{R}(b) = \beta_b \text{ and } y_\text{R}'(b) = -\alpha_b\text{.}
 $$
 
-Now, the domain $[x_\text{min}, x_\text{max}]$ is partitioned in $K$ intervals. The $i^\text{th}$ interval can be written as $I_i = [x_{i-1}, x_{i}]$, with $a = x_0, x_1, \dots, x_{K-1}, x_{K} = b$ the grid points. One of these grid points can now be chosen as the matching point $x_m$. Note that numerically it is a little easier if this matching point is not in the exact center of the domain. If the potential happens to be zero, the eigenfunctions will have roots in this center. And, if the matching points coincide with a root, care has to be taken to determine the scaling of the left and right solutions.
+Now, the domain $[x_\text{min}, x_\text{max}]$ is partitioned in $K$ intervals. The $i^\text{th}$ interval can be written as $I_i = [x_{i-1}, x_{i}]$, with $a = x_0, x_1, \dots, x_{K-1}, x_{K} = b$ the grid points. One of these grid points can now be chosen as the matching point $x_m$. Note that numerically it is a little easier if this matching point is not in the exact middle of the domain. If the potential happens to be zero, some eigenfunctions will have roots in this midpoint. And, if the matching points coincide with a root of an eigenfunction, care has to be taken to determine the scaling of the left and right solutions.
 
 Generically we can write such an interval as $I = [X, X+h]$. On $I$, the solution $y$ can now be expressed as:
 \begin{equation}
@@ -614,7 +626,7 @@ To execute backward propagation, its inverse can be determined. In $\delta = 0$,
                               & =0
 \end{align*}
 
-This implies that $\det\vb{P}(\delta) = 1$, for each $0\leq \delta\leq h$. Which allows us to write down $\vb{P}^{-1}(\delta)$:
+This implies that $\det\vb{P}(\delta) = 1$, for each $0\leq \delta\leq h$, which allows us to write down $\vb{P}^{-1}(\delta)$:
 $$
     \vb{P}^{-1}(\delta) = \begin{pmatrix} v'(\delta) & -v(\delta) \\ -u'(\delta) & u(\delta) \end{pmatrix}\text{.}
 $$
@@ -622,12 +634,12 @@ This matrix can now be used for the backward initial value problem.
 
 If we compute on each interval left of $x_m$ the matrix $\vb{P}(h)$ and on each interval to the right of $x_m$ we compute $\vb{P}^{-1}(h)$, then the solution of $y_\text{L}(x_m)$, $y_\text{L}'(x_m)$ and $y_\text{R}(x_m)$, $y_\text{R}'(x_m)$ can be determined.
 
-To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L}$ and $y_\text{R}$ such that $y_\text{L}(x_m) = y_\text{R}(x_m)$ and $y_\text{L}'(x_m) = y_\text{R}'(x_m)$. This can be expressed as a matching error function:
+To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L}$ and $y_\text{R}$ such that $y_\text{L}(x_m) = y_\text{R}(x_m)$ and $y_\text{L}'(x_m) = y_\text{R}'(x_m)$. This can be expressed via a matching error function:
 \begin{equation}\label{equ:c2_matching_error}
     e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
 \end{equation}
 
-The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $Z(\delta) = \eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the needed derivatives. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence to true eigenvalues $E \to \lambda$, for which $e(\lambda) = 0$.
+The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $Z(\delta) = \eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the needed derivatives. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence of $E$ to true eigenvalues $\lambda$, for which $e(\lambda) = 0$.
 
 \begin{figure}
     \begin{center}
@@ -640,7 +652,7 @@ As an example we consider one of Paine's problems from \cite{paine_correction_19
 \begin{equation}\label{ref:equ_shooting_paine}
     -y''(x) + e^x y(x) = \lambda y(x)
 \end{equation}
-with homogeneous Dirichlet boundary conditions. In \cite{paine_correction_1981}, the eigenvalues are reported with five decimal digits, \pyslise{} agrees for all provided digits. The first twelve eigenvalues with 24 fractional digits are reported here.
+with homogeneous Dirichlet boundary conditions. In \cite{paine_correction_1981}, the eigenvalues are reported with five decimal digits, our new implementation \matslise{3} (see section \ref{sec:c2_matslise3}) agrees for all provided digits. The first twelve eigenvalues with 24 fractional digits are reported here.
 \begin{center}
     \begin{tabular}{n{2}{24}n{3}{24}}
         4.896669379967691490474902  & 56.181594022847580296684220  \\
@@ -671,8 +683,9 @@ There still remains one problem: how do we ensure that we have found \emph{all} 
 
 For this we remember theorem \ref{the:c2_kth_eigen_k_roots}. To know the index of the eigenvalue we can `simply' count the number of roots the corresponding eigenfunction has. In practice this is quite hard, especially for highly oscillatory eigenfunctions. For these it is very easy to miss a few roots.
 
-To combat this issue and to provide a reliable way to count the roots of even highly oscillatory eigenfunctions Prüfer's scaled transformation can be used \cite{pruefer_neue_1926}.
+To combat this issue and to provide a reliable way to even count the roots of highly oscillatory eigenfunctions Prüfer's scaled transformation can be used \cite{pruefer_neue_1926}.
 
+\todo{Reread. What if $b$ is also a root? Dirichlet?}
 \begin{theorem}[Prüfer 1926]\label{the:c2_prufer_transformation}
     For a fixed value $E$ define $\theta(x)$ and $\rho(x)$ as the continuous functions which satisfy
     \begin{equation}\label{equ:c2_prufer_theta}
@@ -694,11 +707,11 @@ To combat this issue and to provide a reliable way to count the roots of even hi
     $y(x)$ has $k$ roots in $[a, b]$ and $E$ is the $k^\text{th}$ eigenvalue.
 \end{theorem}
 
-Imposing that $\theta(x)$ and $\rho(x)$ as continuous functions ensures that \eqref{equ:c2_prufer_theta} uniquely defines these functions. Without using continuity, $\theta(x)$ can be calculated as
+Imposing that $\theta(x)$ and $\rho(x)$ as continuous functions ensures that \eqref{equ:c2_prufer_theta} uniquely defines these functions. $\theta(x)$ can be calculated as
 \begin{equation}\label{equ:c2_prufer_theta_up_to_pi}
-    \theta(x) = \atan\frac{S(x)y(x)}{y'(x)} + j\pi
+    \theta(x) = \atan\frac{S(x)y(x)}{p(x) y'(x)} + j\pi
 \end{equation}
-with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine which value $j$ should be. To compute $\theta(x)$ efficiently and reliably we have to define it with the differential equation:
+with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine which value $j$ should be. To compute $\theta(x)$ efficiently and reliably we substitute \eqref{equ:c2_prufer_theta} into the Sturm-Liouville equation. This yields:
 \begin{equation}\label{equ:c2_prufer_theta_ode}
     \theta' = \frac{S}{p} \cos^2(\theta) + \frac{Ew - q}{S}\sin^2\theta + \frac{S'}{S}\sin(\theta)\cos(\theta)\text{.}
 \end{equation}
@@ -710,7 +723,7 @@ with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine 
     \caption{Eigenfunction $y_1(x)$ and $y_3(x)$ for the Mathieu problem with $q = 10$ from section \ref{sec:c2_numerical_experiments_mathieu}. The scaled Prüfer angle $\theta(x)$ is plotted as well.}\label{fig:c2_prufer_curves}
 \end{figure}
 
-In the implementation while propagating solutions with equation \eqref{equ:c2_cpm_propmatrix} we also solve \eqref{equ:c2_prufer_theta_ode}. Luckily, this second ordinary differential equation does not need to be solved accurately, because the very accurate value of $y$ can be used to compute $\theta(x)$ with equation \eqref{equ:c2_prufer_theta_up_to_pi} up to a multiple of $\pi$. The value computed with \eqref{equ:c2_prufer_theta_ode} can then be rounded to the nearest value found with \eqref{equ:c2_prufer_theta_up_to_pi}.
+In the implementation while propagating solutions with equation \eqref{equ:c2_cpm_propmatrix} we also solve \eqref{equ:c2_prufer_theta_ode}. Luckily, this second ordinary differential equation does not need to be solved accurately, because the very accurate value of $y$ can be used to compute $\theta(x)$ with equation \eqref{equ:c2_prufer_theta_up_to_pi} up to a multiple of $\pi$. The value computed with \eqref{equ:c2_prufer_theta_ode} can then be rounded to the nearest value found with \eqref{equ:c2_prufer_theta_up_to_pi}. \todo{Clear up.}
 
 Much has been written \todo{Some more sources} about the best choices for the scaling function $S(x)$, in our implementation we follow \matslise{} as written in \cite{ledoux_study_2007}.
 
@@ -724,7 +737,7 @@ In 2005 the first version of \matslise{} \cite{ledoux_matslise_2005}, a \matlab{
 
 \matslise{} provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
 
-In 2016 a new version, \matslise{2}\cite{ledoux_matslise_2016}, was released. In this whole new version of \matslise{} generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
+In 2016 a new version, \matslise{2} \cite{ledoux_matslise_2016}, was released. In this whole new version of \matslise{} generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
 
 As the original \matslise{} modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use, following the ideas of Ixaru in \cite{ixaru_new_2010}, the \matslise{} routines to solve the multidimensional Schrödinger equation. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The \matslise{2} version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In \matslise{2} the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the implementation of \matslise{2}.
 
@@ -732,7 +745,7 @@ In fact, this illustrates that \matslise{2} has not been built as a library of f
 
 These challenges were the main motivator for a more efficient implementation of \matslise{}. We have considered different ways to optimize \matslise{}, keeping in mind its main features, in particular its user-friendliness, one of the main reason for the development of the first version of \matslise{}.
 
-In this section we give an overview of our theoretical advancements \cite{baeyens_fast_2020} in building a very efficient implementation of the constant perturbation method. Later on, in section \ref{sec:c2_numerical_experiments} we will perform some numerical experiments and some run-time analysis. In section \ref{sec:c2_the_implementation} we will take the time to take a look at the challenges we faced and the choices we made when building our new implementation.
+In this section we give an overview of our theoretical advancements \cite{baeyens_fast_2020} in building a very efficient implementation of the constant perturbation method. Later on, in section \ref{sec:c2_numerical_experiments} we will perform some numerical experiments and some runtime analysis. In section \ref{sec:c2_the_implementation} we will take the time to take a look at the challenges we faced and the choices we made when building our new implementation.
 
 \subsection{The CP method for Schrödinger problems}\label{the-method}
 
@@ -924,9 +937,7 @@ $\bar{p}(\theta)$ in which $V_i = 0$ if $i > N$.
                                        & \qquad\qquad \left. -5 \theta^{5} V_{3} \eta_{2}\right) + \mathcal{O}(h^{6})
 \end{align*}
 
-Remark that in Theorem~\ref{the:c2_delta_formulae}, in contrast to Theorem~\ref{the:c2_h_error_estimate}, no assumption is made on the size of $Z=\delta^2 (V_0-E)$. In the proof of Theorem~\ref{the:c2_h_error_estimate} this distinction was necessary because error terms were expressed
-not only in terms of bounded functions $\eta_i(Z)$ but also in terms of the unbounded argument $Z$, whereas in the proof of
-Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{the:c2_h_error_estimate} is sharper than the one given in Theorem~\ref{the:c2_delta_formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
+Remark that in Theorem~\ref{the:c2_delta_formulae}, in contrast to Theorem~\ref{the:c2_h_error_estimate}, no assumption is made on the size of $Z=\delta^2 (V_0-E)$. In the proof of Theorem~\ref{the:c2_h_error_estimate} this distinction was necessary because error terms were expressed not only in terms of bounded functions $\eta_i(Z)$ but also in terms of the unbounded argument $Z$, whereas in the proof of Theorem~\ref{the:c2_delta_formulae} all error terms were expressed in terms of $\eta_i(Z)$. This enables us to give $\mathcal{O}(h^{N+2})$ error estimates for all $Z$. However, for sufficiently large negative $Z(h) \ll 0$ the $\mathcal{O}({h^N}/{\sqrt{E}})$ error estimate given in Theorem~\ref{the:c2_h_error_estimate} is sharper than the one given in Theorem~\ref{the:c2_delta_formulae}. This new result shows that the order $P_{ass}$ for large and negative $Z$ is the same as the order for small values for $Z$, thus $P_0 = P_{ass}$. So from now on we can denote a CP-method as $\text{CPM}\{r\}$, this method will be accurate with order $\mathcal{O}(h^r)$ if $N=r-2$ and $Q=\lfloor \frac{r}{3} \rfloor$. As a demonstration we give the formulae for the fourth order method $\text{CPM}\{4\}$:
 
 \begin{align*}
     2\bar{u}^{(4)}            & = 2 \eta_{-1} + h^{3}\left(\left(\theta^{3} - \theta^{2}\right) V_{1} \eta_{0} -\theta^{3} V_{1} \eta_{1}\right)                                                                                                 \\
@@ -971,7 +982,7 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 \section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:c2_periodic}
 
-In contrast to (separated) Robin boundary conditions, in this section we will study generalized periodic boundary conditions. Assume we are solving a regular Sturm-Liouville equation
+In contrast to (separated) Robin boundary conditions, in this section we will study the case of generalized periodic boundary conditions. Assume we are solving a regular Sturm-Liouville equation
 \begin{equation}\label{equ:c2_periodic_sturm_liouville}
     -\dv[]{p(x)y'(x)}{x} + q(x)y(x) = \lambda w(x) y(x)
 \end{equation}
@@ -984,20 +995,20 @@ on a domain $[a, b]$, with generalized periodic boundary conditions:
     \end{pmatrix}
 \end{equation}
 
-In expression \eqref{equ:c2_periodic_boundary_conditions} is $\vb{K}$ assumed to be a $2 \times 2$ real matrix with determinant $1$\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, and if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
+In expression \eqref{equ:c2_periodic_boundary_conditions}, $\vb{K}$ is assumed to be a $2 \times 2$ real matrix with determinant $1$\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, and if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
 
-In section \ref{sec:c2_slp_properties} we have provided some theorems about regular Sturm-Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem \ref{the:c2_real_eigenvalues} is also applicable here. All eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
+In section \ref{sec:c2_slp_properties} we have provided some theorems about regular Sturm-Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem \ref{the:c2_real_eigenvalues} is also applicable here: all eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
 
 Following section \ref{sec:c2_background} and \ref{sec:c2_matslise3}, due to the Liouville-transformation (from section \ref{sec:c2_liouville_transformation}) it is sufficient to only consider Schrödinger problems with $p(x) = w(x) = 1$.
 
-Because the equation has not changed the idea and computation of a piecewise constant approximation, perturbation terms and a propagation matrix are still valid and valuable. There are just a few related problems. First, what do we propagate? No obvious initial conditions are available. And second, we are still only interested in continuous and continuously differentiable functions, so the idea of a matching error is relevant. But how can we compute the index of an eigenvalue? Without this, it would be difficult to ensure all requested eigenvalues are found.
+Since the equation has not changed the idea and computation of a piecewise constant approximation, perturbation terms and a propagation matrix are still valid and valuable. There are just a few related problems. First, what do we propagate? No obvious initial conditions are available. And secondly, we are still only interested in continuous and continuously differentiable functions, so the idea of a matching error is relevant. But how can we compute the index of an eigenvalue? Without this, it would be difficult to ensure all requested eigenvalues are found.
 
-For this we employ the results from \cite{binding_prufer_2012,binding_prufer_2013} to expand the Prüfer transformation. In theorem \ref{the:c2_prufer_transformation}, the Prüfer-angle function $\theta(x)$ was defined. This definition assumed initial conditions $y(a) = \beta_a$ and $p(a)y(b) = -\alpha_a$. In the periodic case, no such initial conditions are available. Therefore, we define the Prüfer-angle as a function of the initial conditions $y(a) = \sin(\alpha)$ and $p(a)y'(a) = \cos(\alpha)$. For a fixed value of $E$, define $\theta_\alpha(x)$ with the ordinary differential equation \eqref{equ:c2_prufer_theta_ode} and initial conditions
+For this we employ the results from Binding and Volkmer \cite{binding_prufer_2012,binding_prufer_2013} to expand the Prüfer transformation. In theorem \ref{the:c2_prufer_transformation}, the Prüfer-angle function $\theta(x)$ was defined. This definition assumed initial conditions $y(a) = \beta_a$ and $p'(a)y(a) = -\alpha_a$. In the periodic case, no such initial conditions are available. Therefore, we define the Prüfer-angle as a function of the initial conditions $y(a) = \sin(\alpha)$ and $p(a)y'(a) = \cos(\alpha)$. For a fixed value of $E$, define $\theta_\alpha(x)$ with the ordinary differential equation \eqref{equ:c2_prufer_theta_ode} \todo{repeat this equation} and initial conditions
 $$
     \theta_\alpha(a) = \atan(S(a) \tan(\alpha))\text{.}
 $$
 
-As in theorem \ref{the:c2_prufer_transformation}, it is necessary to consider the difference with the right most boundary conditions. For this we define the unique $\pi$-periodic function $\beta(\alpha)$ with $\beta(0) \in \left]-\pi, 0\right]$ and
+As in theorem \ref{the:c2_prufer_transformation}, it is necessary to consider the difference with the rightmost boundary condition. For this we define the unique $\pi$-periodic function $\beta(\alpha)$ with $\beta(0) \in \left]-\pi, 0\right]$ and
 $$
     \tan(\beta(\alpha)) = S(b)\frac{k_{11} \sin(\alpha) + k_{12} \cos(\alpha)}{k_{21} \sin(\alpha) + k_{22} \cos(\alpha)}\text{,}
 $$
@@ -1016,7 +1027,7 @@ With this $\beta(\alpha)$, we define
 \end{align}
 In these expressions we have made the dependence on $E$ explicit, as $E$ was previously assumed to be fixed.
 
-The following lemma and theorems, with proofs can be found in \cite{binding_prufer_2012} and \cite{binding_prufer_2013a}
+The following lemma and theorems, with proofs can be found in \cite{binding_prufer_2012} and \cite{binding_prufer_2013a}.
 \begin{lemma}[Binding and Volkmer 2012]\label{lem:c2_periodic_m_inequality}\hfill
     \begin{itemize}
         \item The functions $m$ and $M$ are continuous and strictly increasing.
@@ -1030,10 +1041,10 @@ The following lemma and theorems, with proofs can be found in \cite{binding_pruf
 For the following theorems we need to distinguish between if $k_{12} < 0 \lor k_{12} = 0 < k_{11}$ and the opposite. Let us call the former the periodic case, and the latter the antiperiodic case.
 
 \begin{theorem}[Binding and Volkmer 2012]
-    For each eigenvalue $\lambda$ of the Sturm-Liouville equation \eqref{equ:c2_periodic_sturm_liouville} subject to generalized periodic boundary conditions, either $m(\lambda) = k\pi$ or $M(\lambda) = k\pi$ with $k$ integer. In the periodic case will $k$ be even, in the antiperiodic case will $k$ be odd.
+    For each eigenvalue $\lambda$ of the Sturm-Liouville equation \eqref{equ:c2_periodic_sturm_liouville} subject to generalized periodic boundary conditions, either $m(\lambda) = k\pi$ or $M(\lambda) = k\pi$ with $k$ integer. In the periodic case, $k$ will be even, in the antiperiodic case, $k$ will be odd.
 \end{theorem}
 
-The last theorem gives us a coupling between the function $m(E), M(E)$ and the eigenvalues of the Sturm-Liouville problem. To reliably determine the index of an eigenvalue we also need the inverse theorem.
+The last theorem gives us a coupling between the function $m(E), M(E)$ and the eigenvalues of the Sturm-Liouville problem. To reliably determine the index of an eigenvalue we also need the converse theorem.
 
 \begin{theorem}[Binding and Volkmer 2012]\label{the:c2_prufer_periodic_index}
     Define $\lambda_k^{+}$ to be the unique value for which $m(\lambda_k^{+}) = k\pi$ and $\lambda_k^{-}$ to be the unique value such $M(\lambda_k^{-}) = k\pi$. There is no value $\lambda_0^{-}$.
@@ -1041,11 +1052,11 @@ The last theorem gives us a coupling between the function $m(E), M(E)$ and the e
         \item If $k$ is even (for the periodic case) or odd (for the antiperiodic case), then all values $\lambda^{\pm}_k$ are eigenvalues of the corresponding Sturm-Liouville problem.
         \item There are no other eigenvalues.
         \item $\lambda_k^{+} < \lambda_{k+1}^{-}$ for each $k \geq 0$.
-        \item An eigenfunction belonging to $\lambda_k^{\pm}$ has exactly $k$ zeros in the interval $\left[a, b\right]$.
+        \item An eigenfunction belonging to $\lambda_k^{\pm}$ has exactly $k$ zeros in the interval $\left[a, b\right[$.
     \end{itemize}
 \end{theorem}
 
-This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). And, an eigenvalue has at most a double multiplicity. Furthermore, it is also known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
+This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). And, an eigenvalue has at most multiplicity two. Furthermore, it is also known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
 
 \begin{figure}
     \begin{center}
@@ -1056,21 +1067,26 @@ This theorem characterizes all eigenvalues of regular Sturm-Liouville problems w
 
 As an illustration, we provide figure \ref{fig:c2_periodic_m_and_m}. Here, the expression $\delta_\alpha(E)$ is visualized for varying initial conditions expressed with $\alpha$. All these curves are captured in between $m(E)$ and $M(E)$. The first five eigenvalues of the considered problem are indicated as well. We see that for these values either $m(E)$ or $M(E)$ is an even multiple of $\pi$.
 
-To determine the index of an eigenvalue, theorem \ref{the:c2_prufer_periodic_index} assures us that using the function $m(E)$ and $M(E)$ is sufficient. But efficiently computing these, is no easy task. Since they are defined as extreme values over all possible initial conditions, there is no straightforward way to evaluate them.
+To determine the index of an eigenvalue, theorem \ref{the:c2_prufer_periodic_index} assures us that using the function $m(E)$ and $M(E)$ is sufficient. But efficiently computing these functions, is no easy task. Since they are defined as extreme values over all possible initial conditions, there is no straightforward way to evaluate them.
+
+\todo{Still some major remarks from Marnix.}
 
 We propose to propagate two different initial conditions and use the inequality from lemma \ref{lem:c2_periodic_m_inequality} to estimate $m(E)$ and $M(E)$. More concretely, we apply the propagation matrix from \eqref{equ:c2_propagation_matrix}, not to a single vector, but to a pair of vectors, each corresponding to different initial conditions\footnote{Any pair of linear independent initial conditions will do. In our implementation we have chosen to use $y_1(a)=1$ and $y_1'(a) = 0$ for the first initial condition, $y_2(a)=0$ and $y_2'(a) = 1$ for the second.}. Both these vectors give rise to two estimates $\delta_1(E)$ and $\delta_2(E)$ of $\delta_\alpha(E)$, without loss of generality we assume $\delta_1 < \delta_2$. From lemma \ref{lem:c2_periodic_m_inequality}, we know
+\todo{Not trivial, explain.}
 $$
     \delta_2(E) - \pi < m(E) \text{ and } M(E) < \delta_1(E) + \pi \text{.}
 $$
 
 Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_1$ and $E_2$ such that
+\todo{Add a figure.}
 $$
     \delta_1(E_1) + \pi = k \pi \text{ and } \delta_2(E_2) - \pi = k \pi\text{.}
 $$
 
-By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues. One issue left is that the matching error from defined in \eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
+By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues. One issue left is that the matching error defined in \eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition, propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
 
 For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. But since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$. Call $u_L(x)$ the solutions propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question becomes: does there exist a linear combination $\vb{c}$ such that
+\todo{Explain}
 $$
     \begin{pmatrix}
         u_L(x_m)  & v_L(x_m)  \\
@@ -1091,7 +1107,7 @@ Or, in other words: find values for $E$ such that
         u'_R(x_m) & v'_R(x_m)
     \end{pmatrix}
 \end{equation}
-becomes singular?
+becomes singular.
 
 \begin{figure}
     \begin{center}
@@ -1101,6 +1117,7 @@ becomes singular?
 \end{figure}
 
 In summary, the function $\det\vb{M}(E)$ has exactly two (or one with double multiplicity) zeros in the interval $[E_1, E_2]$. As a demonstration we provide figure \ref{fig:c2_periodic_matching}. Here $\det\vb{M}(E)$ is displayed for the same test problem as in figure \ref{fig:c2_periodic_m_and_m}. For $k = 2$ we found $E_1 \approx \numprint{8.064}$ and $E_2 \approx \numprint{17.344}$. The eigenvalues in this interval are $\lambda_2^{-} \approx \numprint{11.075}$ and $\lambda_2^{+} \approx \numprint{14.032}$.
+\todo{Add a figure.}
 
 If an eigenvalue $\lambda^{-}_k = \lambda^{+}_k$ is not simple, that is to say, it has a double multiplicity, then this will be visible in $\det\vb{M}(\lambda^{-}_k)$. For these values $\det\vb{M}(E)$ will have a double root\footnote{Numerically, it could be possible that this function has no root at all. But then the minimum will be close to zero. When implementing this care should be taken.}.
 
@@ -1156,7 +1173,7 @@ print(problem.eigenvaluesByIndex(0, 50, (0, 1), (0, 1)))
 \end{minted}
 % \end{noindent}
 
-The first few lines imports the necessary functions. The next line defines the potential $V(x)$. Then, a \texttt{Pyslise} object is constructed. Here the user needs to provide the potential $V(x)$, and the left ($0$) and right ($\pi$) boundaries of the domain. Optionally a tolerance may be specified. Because we are working in \texttt{double} precision in \lpython{}, anything less than approximately $10^{-16}$ is nonsensical.
+The first few lines imports the necessary functions. The next line defines the potential $V(x)$. Then, a \texttt{Pyslise} object is constructed. Here the user needs to provide the potential $V(x)$, and the left ($0$) and right ($\pi$) end points of the domain. Optionally a tolerance may be specified. Because we are working in \texttt{double} precision in \lpython{}, anything less than approximately $10^{-16}$ is nonsensical.
 
 Next, we find the eigenvalues. For this we use \texttt{.eigenvaluesByIndex}, a function defined on \texttt{Pyslise} objects. This function expects four arguments: $i_\text{min}$, $i_\text{max}$, $\vb{y_a}$ and $\vb{y_b}$. It will return all eigenvalues $\lambda_i$ for which $i_\text{min} \leq i < i_\text{max}$ of the problem with boundary conditions
 $$
@@ -1218,7 +1235,7 @@ only $3$ subintervals are used. For completeness, we have visualized these 3 sub
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter2/matslise_jumps_eigenfunctions.pdf}
     \end{center}
-    \caption{These are the first five eigenfunctions of the Schrödinger problem with potential \eqref{equ:c2_matslise_jumps_well}.}
+    \caption{These are the first five eigenfunctions of the Schrödinger problem with potential \eqref{equ:c2_matslise_jumps_well} on $[-2,2]$ with homogeneous Dirichlet boundary conditions.}
     \label{fig:c2_matslise_jumps_eigenfunctions}
 \end{figure}
 
@@ -1515,8 +1532,6 @@ for i, E, f in coffey_evans.eigenpairsByIndex(2, 5, (0, 1)):
 % \end{noindent}
 Notice here that by providing the arguments \texttt{2} and \texttt{5} to \texttt{.eigenpairsByIndex}, we only request the eigenvalues and eigenfunctions with index $2$, $3$ and $4$. Visually these graphs look convincing. But, as a more rigorous verification we have provided table \ref{tab:c2_ce_eigenfunctions}. Here the maximum absolute errors in the eigenfunctions are tabulated. Again, we have used \matslise{2} with a tolerance of $10^{-14}$ to obtain reference results to compare with.
 
-\todo{Maybe something about orthogonality}
-
 From the theory we expect that the time needed to evaluate the eigenfunction does not depend on the difficulties to find eigenvalues for that particular problem. Once an eigenvalue is found, the corresponding eigenfunction should be easily calculated. The computation time to evaluate an eigenfunction for an equidistant grid of $n$ points is reported in table \ref{tab:c2_tab6}. The remarkable speed-up we were able to achieve with our new implementation can be observed.
 
 \begin{table}
@@ -1530,6 +1545,7 @@ From the theory we expect that the time needed to evaluate the eigenfunction doe
             \bottomrule
         \end{tabular}
     \end{center}
+    \todo{Fix caption.}
     \caption{\label{tab:c2_tab6} Maximum error in $n$ equidistant points of the eigenfunction $y_n$ for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=15$.}
 \end{table}
 
@@ -1553,7 +1569,7 @@ print(hydrogen.eigenvaluesByIndex(0, 10, (0, 1), (0, 1)))
 \end{minted}
 % \end{noindent}
 
-The potential is unbounded for the left endpoint of the integration interval, thus this is a singular problem. \matslise{2} is well-suited for singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
+The potential is unbounded for the left endpoint of the integration interval, thus this is a non regular problem. \matslise{2} is well-suited for such singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
 
 Despite these missing features, \pyslise{} can still solve the problem. And, it is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as \matslise{} and approximately 4 times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
 
@@ -1618,7 +1634,7 @@ Another difference can be found in the output:
 \end{minted}
 % \end{noindent}
 
-The function \texttt{.eigenvaluesByIndex} returns a list of all found eigenvalues. Now for each eigenvalue the tuple has three elements: the index, the eigenvalue and the multiplicity. From the theory we know that for periodic problems eigenvalues must no longer be unique. An eigenvalue can have a double multiplicity, if \pyslise{} detects this, a multiplicity of $2$ is returned. For example, if we request much higher eigenvalues with the line
+The function \texttt{.eigenvaluesByIndex} returns a list of all found eigenvalues. Now for each eigenvalue the tuple has three elements: the index, the eigenvalue and the multiplicity. From the theory we know that for periodic problems eigenvalues must no longer be unique. An eigenvalue can have a double multiplicity, if \pyslise{} detects this, multiplicity $2$ is returned. For example, if we request much higher eigenvalues with the line
 % \begin{noindent}
 \begin{minted}{python}
 print(problem.eigenvaluesByIndex(1000, 1005))
@@ -1649,7 +1665,7 @@ These higher eigenvalues are degenerate, so \pyslise{} returns multiplicity $2$.
     \caption{A plot of the first three eigenfunctions $y_0$, $y_1$ and $y_2$ with eigenvalues $\lambda_0\approx\numprint{2.029}$, $\lambda_1\approx\numprint{6.500}$ and $\lambda_0\approx\numprint{7.015}$ of  the periodic problem from section \ref{sec:c2_experiments_andrew_periodic}.}\label{fig:c2_periodic_eigenfunctions}
 \end{figure}
 
-In \cite{andrew_correction_1989} the first twenty eigenvalues are computed to four digits behind the decimal point. In \cite{vandenberghe_modified_1995} an extra fifth digit is computed. \matslise{3} can be much more accurate. In table \ref{tab:c2_andrew_periodic} we have tabulated the results from \cite{andrew_correction_1989}, from \cite{vandenberghe_modified_1995} and the results obtained with \pyslise{} and a tolerance of $10^{-12}$. Our computed values agree with the literature up to all five digits, except for the last eigenvalue where we have found a different rounding.
+In \cite{andrew_correction_1989} the first twenty eigenvalues are computed to four digits behind the decimal point. In \cite{vandenberghe_modified_1995} an extra fifth digit is computed. \matslise{3} produces much more accurate results. In table \ref{tab:c2_andrew_periodic} we have tabulated the results from \cite{andrew_correction_1989}, from \cite{vandenberghe_modified_1995} and the results obtained with \pyslise{} and a tolerance of $10^{-12}$. Our computed values agree with the literature up to all five digits, except for the last eigenvalue where we have found a different rounding.
 
 As an illustration we present the graph of the first three eigenfunctions in figure \ref{fig:c2_periodic_eigenfunctions}.
 
@@ -1682,7 +1698,7 @@ print(sturm_liouville.eigenvaluesByIndex(0, 10, (0, 1), (1, 0)))
 \end{minted}
 % \end{noindent}
 
-Here we are using the \texttt{SturmLiouville} solver. We now have to specify the three defining functions $p(x)$, $q(y)$ and $w(x)$. Notice that in the last line we have specified $y(0) = 0$ and $y'(0) = 1$ to mark the left boundary condition, and $y(1) = 1$ and $y'(1) = 0$ to mark the right boundary conditions. Remember that solutions will only satisfy these boundary conditions after some scaling factor.
+Here we are using the \texttt{SturmLiouville} solver. We now have to specify the three defining functions $p(x)$, $q(y)$ and $w(x)$. Notice that in the last line we have specified $y(0) = 0$ and $y'(0) = 1$ to mark the left boundary condition, and $y(1) = 1$ and $y'(1) = 0$ to mark the right boundary conditions. Remember that solutions will only satisfy these boundary conditions after some rescaling.
 
 Under the hood, the \texttt{SturmLiouville} solver will compute Liouville's transformation as in section \ref{sec:c2_liouville_transformation}. This yields a Schrödinger problem for which \matslise{3} will use the constant perturbation method, just as for the \texttt{Pyslise} solver.
 
@@ -1715,7 +1731,7 @@ Later on in chapters \ref{cha:c3} and \ref{cha:c4} we develop methods to solve t
 
 This need for speed drove us away from \matslise{} or \matslise{2}. These are efficient and accurate packages which mainly focus on the computation of the eigenvalues with automatic regularity detection. In our case, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular one-dimensional Schrödinger-problems. We investigate possible bottlenecks of performance of the \matslise{2} package and its routines.
 
-Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. The mesh is then used for all eigenvalue computations. This means that all evaluations of the coefficient functions $C_i^(q)$ from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily implement their Sturm-Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
+Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. The mesh is then used for all eigenvalue computations. This means that all evaluations of the coefficient functions $C_i^{(q)}$ from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily implement their Sturm-Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
 
 Since we wanted to reimplement \matslise{} into a faster compiled language, we had to consider what we would gain but also what we would lose. Speed and efficiency only goes so far if it is implemented in a prohibitively difficult package to use. As stated, one of the great strengths of \matslise{2} is its ease of use. We were hesitant to use compiled languages for this reason.
 
@@ -1729,7 +1745,7 @@ These native packages are the answer to the efficiency versus user-friendliness 
     \item As a \cpp{} program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There, instructions to compile it can be found.
     \item As a \lpython{}-package: in order to avoid that users need to compile the packages themselves, we also provide a 64-bit prebuilt python package \pyslise{}, for \texttt{Linux}, \texttt{Windows} and \texttt{macOS}. Installing \pyslise{} is as easy as simply running:
           % \begin{noindent}
-\begin{minted}{python}
+\begin{minted}{bash}
 pip install pyslise
 \end{minted}
 % \end{noindent}
@@ -1741,10 +1757,6 @@ pip install pyslise
 Building a new implementation from an existing package allows for incorporating some learned lessons from the previous implementations, and simplifying some functionality.  In practice this is harder than it sounds. For example, when simplifying some functionality one has to carefully consider why the original code did not include this simplification. Did the programmer forget to consider it? Was it a remnant of a previous version, or of removed code? Or something else entirely? In the hard way, I have learned that, in numerical algorithms especially, the original programmer probably had very good reasons not to include something. More times than I would like to admit, I simplified some code for \matslise{2} to include in the new implementation, only to discover that my `simplification' did not cover all edge-cases or all possible scenarios. In the best cases I made these discoveries quickly upon testing that code. Other times these discoveries only occurred a few months or even years later when getting stuck on a particular difficult bug.
 
 In this section we want to highlight some challenges we encountered while building the new implementation. Some of these are a consequence of the choice for language we have made, some are some inherent challenges of the constant perturbation method and others are self-inflicted by the ambitious goals we set out for ourselves.
-
-\todo{About the code-architecture, overview of parts}
-
-\todo{UML diagram}
 
 \subsubsection{Computation of the perturbation term formulae}
 
@@ -1774,12 +1786,12 @@ $$
 $$
 This structure allows \sage{} to optimize each expression, in contrast to working with general symbolic expressions, which would also allow other operations such as division or $\sin$ for example.
 
-As an example, the \sage{} program starts with defining the variables $V_0, \dots, V_N$, $h$ and $\delta$.
+As an example, the \sage{} program starts with defining the variables $V_0, V_1, V_2$, $h$ and $\delta$.
 %\begin{noindent}
 \begin{minted}{python}
-pr_V = QQ["V0", "V1", "V2"]
-pr_h = pr_V["h"]
-pr_delta = pr_h["delta"]
+pr_V = QQ['V0', 'V1', 'V2']
+pr_h = pr_V['h']
+pr_delta = pr_h['delta']
 
 V0, V1, V2 = pr_V.gens()
 h = pr_h.gen()
@@ -1811,12 +1823,12 @@ $$
     V_{0}^{2} + V_{0} V_{1} + V_{1} V_{0} + V_{1}^{2}\text{.}
 $$
 
-Using these polynomial rings it is straightforward to implement the formulae from theorem \ref{the:c2_perturbation_terms}. The last thing to do is generating the \cpp{}-code to compute the values $d_{q,i}$ from \eqref{equ:c2_symbolic_propagators}. For this we generate for each element of the propagation matrix $u(\delta)$, $v(\delta)$, $u'(\delta)$ and $v'(\delta)$ the $(Q+2)\times (N+1)$ matrix $T_p$ of formulae for $d_{q,i}$. For example:
+Using these polynomial rings it is straightforward to implement the formulae from theorem \ref{the:c2_perturbation_terms}. The last thing to do is generating the \cpp{}-code to compute the values $d_{q,i}$ from \eqref{equ:c2_symbolic_propagators}. For this we generate for each element of the propagation matrix $u(\delta)$, $v(\delta)$, $u'(\delta)$ and $v'(\delta)$ the $(Q+2)\times (N+1)$ matrix $\vb{T_u}, \dots, \vb{T_{v'}}$ of formulae for $d_{q,i}$. For example:
 $$
-    (T_v)_{1, 3} = h\cdot\left(-0.5 V_1 + h\cdot\left(0.5 V_2 + h\cdot\left(-0.5 V_3 + h\cdot\left(\dots\right)\right)\right)\right)\text{.}
+    (\vb{T_v})_{1, 3} = h\cdot\left(-0.5 V_1 + h\cdot\left(0.5 V_2 + h\cdot\left(-0.5 V_3 + h\cdot\left(\dots\right)\right)\right)\right)\text{.}
 $$
 
-As one may expect, this generates a huge file of code. In figure \ref{fig:c2_generated_code} we have provided the cleaned-up\footnote{In practice, we have to ensure all scalars have the right type, see section \ref{sec:c2_generalizing_scalar}. So a simple fraction like $\frac{37}{80}$ has to be implemented as \mintinline{c++}{Scalar(37LL)/Scalar(80LL)}, here is \texttt{Scalar} a template type variable.} generated code for $(T_u)_{4, 10}$. This expression is one example of the over $300$ complicated terms needed to generate the propagation matrix.
+As one may expect, this generates a huge file of code. In figure \ref{fig:c2_generated_code} we have provided the cleaned-up\footnote{In practice, we have to ensure all scalars have the right type, see section \ref{sec:c2_generalizing_scalar}. So a simple fraction like $\frac{37}{80}$ has to be implemented as \mintinline{c++}{Scalar(37L)/Scalar(80L)}, here is \texttt{Scalar} a template type variable.} generated code for $(T_u)_{4, 10}$. This expression is one example of the over $300$ complicated terms needed to generate the propagation matrix.
 
 \begin{figure}
     %\begin{noindent}
@@ -1870,7 +1882,7 @@ In the scalar case, this works wonderfully. All tested compilers are able to pro
 
 \subsubsection{Generalizing the scalar-type}\label{sec:c2_generalizing_scalar}
 
-One of the very cool features of the linear algebra library \Eigen is that it does not care what kind of scalars you are working with. All their algorithms are implemented agnostic of the scalar type. This is achieved by using \cpp{}-templates. For readers unfamiliar with this concept we will provide a very brief summary of this concept. For a thorough description see \cite[Chapter~23]{stroustrup_programming_2013}.
+One of the very cool features of the linear algebra library \Eigen{} is that it does not care what kind of scalars you are working with. All their algorithms are implemented agnostic of the scalar type. This is achieved by using \cpp{}-templates. For readers unfamiliar with this concept we will provide a very brief summary of this concept. For a thorough description see \cite[Chapter~23]{stroustrup_programming_2013}.
 
 First, let us take a look at the \texttt{C}-functions to compute the square root of a floating point number.
 % \begin{noindent}

@@ -130,7 +130,7 @@ RUN git clone --recursive https://github.com/twist-numerical/matslise.git \
     && git checkout e7c180fe64f5fc2f9752073f44845cd88418f16e
 RUN git clone --recursive https://github.com/twist-numerical/matslise2d.git \
     && cd matslise2d \
-    && git checkout ce38674f3ca2e6f12fa926750d8645e22e0a6d7d
+    && git checkout f623a1bd1a2f573ed7d8ff36ccda542f5d1635e6
 RUN mkdir eigen/build
 RUN mkdir matslise/build-sage;  mkdir matslise/build-python
 RUN mkdir matslise2d/build-sage ; mkdir matslise2d/build-python
