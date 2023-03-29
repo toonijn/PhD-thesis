@@ -8,6 +8,8 @@
 \undefinedlabel{the:c2_kth_eigen_k_roots}{2.x}
 \undefinedlabel{sec:c2_experiment_with_jumps}{2.x.x}
 \undefinedlabel{sec:c2_implementation_challenges}{2.x}
+\undefinedlabel{sec:c2_generalizing_scalar}{2.x.x}
+\undefinedlabel{sec:c4_numerical_harmonic}{4.x.x}
 
 \longchapter[A shooting method]{A shooting method for the \twoD time-independent Schrödinger equation}\label{cha:c3}
 
@@ -1045,24 +1047,17 @@ pip install pyslise2d
 \end{minted}
 % \end{noindent}
 
-
-\todo{example with large eigenvalues}
-
-\todo{prepare for examples in next chapter}
-
-\todo{rework}
-
-\subsection{The zero potential}
+\subsection{The zero potential}\label{sec:c3_experiments_zero}
 
 As a first example we will find eigenvalues of the Schrödinger equation with a zero potential
 $$
--\nabla \psi(x, y) = \lambda \psi(x, y)
+  -\nabla \psi(x, y) = \lambda \psi(x, y)
 $$
 on the domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions.
 
 In section \ref{sec:c3_first_example} we have calculated the eigenvalues to be of the form $i^2 + j^2$ for any $i, j \in \NN^+$, and the corresponding eigenfunction is given by $ \psi(x, y) = \sin(ix)\sin(jy)$. To reiterate, the first few eigenvalues are
 $$
-2, 5, 5, 8, 10, 10, 13, 13, 17, 17, 18, 20, 20, 25, 25, 26, 26, 29, 29, 32, \dots
+  2, 5, 5, 8, 10, 10, 13, 13, 17, 17, 18, 20, 20, 25, 25, 26, 26, 29, 29, 32, \dots
 $$
 
 \begin{figure}
@@ -1100,6 +1095,44 @@ print(problem.eigenvaluesByIndex(0, 10))
 % \end{noindent}
 This code will output a list of all eigenvalues as tuples. With for each eigenvalue, its index, the eigenvalue itself and its multiplicity. This multiplicity is detected with numerical accuracy, thus this may be inaccurate. An eigenvalue can be present multiple times in the list to compensate.
 
+
+\subsection{The harmonic oscillator}\label{sec:c3_experiment_harmonic}
+
+As the zero potential is quite easy for this method, next we will consider the quantum harmonic oscillator with potential $V(x, y) = x^2 + y^2$. On the infinite domain $\RR^2$, the true eigenvalues are known to be
+$$
+  2, 4, 4, 6, 6, 6, 8, 8, 8, 8, 10, \dots, 10, 12, \dots
+$$
+The method does not support infinite domains, thus we will assume the homogeneous Dirichlet boundary conditions on $\Omega = [-9.5, 9.5] \times [-9.5, 9.5]$. This allows comparison to section \ref{sec:c4_numerical_harmonic}.
+
+Our implementation is relatively autonomous, there are only two parameters to study. Firstly we can specify a tolerance to influence the automatic sector size selection. And secondly, we can influence the number of basis functions $N$ to use on each sector.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/harmonic.pdf}
+  \end{center}
+  \caption{A comparison of relative error of the first fifty eigenvalues for different basis sizes $N$ and requested tolerances $\text{tol}$. For $N=22$, the algorithm with different tolerances used respectively $19$, $29$ and $40$ sectors.}\label{fig:c3_experiment_harmonic}
+\end{figure}
+
+In figure \ref{fig:c3_experiment_harmonic} we provide a comparison of the relative error of the first few eigenvalues when varying these two parameters. The first thing we notice is that our implementation has degenerate eigenvalue detection, this can be seen in the equal error for each of these eigenvalues.
+
+For a small basis size ($N = 6$) we can observe the same behavior as in figure \ref{fig:c3_experiment_zero}. From a certain point onward, eigenvalues will be plain wrong. For the first fifty eigenvalues this behavior disappears once $N$ is sufficiently large.
+
+When we focus upon the first three eigenvalues we see (as expected) that if we lower the requested tolerance, the eigenvalue approximations become more accurate. However, for higher lying eigenvalues, this relation seems to disappear unexpectedly. This is concerning. It may suggest that there is still somewhere a source of inaccuracy which we are not controlling for. In section \ref{sec:c3_conclusion_hypothesis} we will present some hypotheses and deeper analysis for these results.
+
+Ever the optimist, we also notice that for the first ten eigenvalues, our algorithm reaches an accuracy of $2^{-30} \approx 10^{-9}$. For the first twenty eigenvalues, we reach an accuracy of $2^{-21} \approx 10^{-7}$. These results are nonetheless impressive.
+
+As a reference, the following code can be used to solve this problem.
+% \begin{noindent}
+\begin{minted}{python}
+from pyslise2d import Pyslise2D
+
+problem = Pyslise2D(lambda x, y: x*x + y*y, -9.5, 9.5, -9.5, 9.5
+                    tolerance=1e-8, N=14)
+print(problem.eigenvaluesByIndex(0, 30))
+\end{minted}
+% \end{noindent}
+
+
 \subsection{Ixaru's potential}\label{sec:c3_experiment_ixaru}
 
 For the next example we follow \cite{ixaru_new_2010} and study the problem from section \ref{sec:c3_counting_ixaru}. Consider the Schrödinger problem with potential
@@ -1108,32 +1141,33 @@ $$
 $$
 on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions.
 
+For this problem no analytical results are available
 
 
-
+\todo{Add some fluff.}
 
 In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference values calculated by Ixaru in \cite{ixaru_new_2010}. There the computation took $45$ seconds. Our values can be computed within $1.4$ seconds on an Intel i7-8700K.
 
 \begin{table}
   \centering
-  \begin{tabular}{l|n{2}{7}n{2}{10}n{1}{1}}
-                    & {Ixaru\cite{ixaru_new_2010}} & {Our results} & {$\Delta$} \\
+  \begin{tabular}{l|n{2}{7}n{2}{10}}
+                    & {Ixaru\cite{ixaru_new_2010}} & {Our results} \\
     \hline
-    $E_{0}$         & 3.1959181                    & 3.1959181112  & 1.1e-8     \\
-    $E_{1} = E_{2}$ & 5.5267439                    & 5.5267440748  & 1.7e-7     \\
-    $E_{3}$         & 7.5578033                    & 7.5578035728  & 2.7e-7     \\
-    $E_{4}$         & 8.0312723                    & 8.0312723637  & 6.4e-8     \\
-    $E_{5}$         & 8.4445814                    & 8.4445817565  & 3.6e-7     \\
-    $E_{6} = E_{7}$ & 9.9280611                    & 9.9280611619  & 6.2e-8     \\
-    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  & 5.1e-7     \\
-    $E_{10}$        & 12.1032536                   & 12.103253445  & 1.6e-7     \\
-    $E_{11}$        & 12.2011790                   & 12.201179825  & 8.3e-7     \\
-    $E_{12}$        & 13.3323313                   & 13.332332972  & 1.7e-6
+    $E_{0}$         & 3.1959181                    & 3.195918111   \\
+    $E_{1} = E_{2}$ & 5.5267439                    & 5.526744074   \\
+    $E_{3}$         & 7.5578033                    & 7.557803572   \\
+    $E_{4}$         & 8.0312723                    & 8.031272363   \\
+    $E_{5}$         & 8.4445814                    & 8.444581756   \\
+    $E_{6} = E_{7}$ & 9.9280611                    & 9.928061161   \\
+    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614   \\
+    $E_{10}$        & 12.1032536                   & 12.103253445   \\
+    $E_{11}$        & 12.2011790                   & 12.201179825   \\
+    $E_{12}$        & 13.3323313                   & 13.332332972  
   \end{tabular}
   \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
 \end{table}
 
-By using \texttt{pyslise2d} the code to solve this problem is quite straightforward.
+By using \texttt{pyslise2d}, the code to solve this problem is quite straightforward.
 % \begin{noindent}
 \begin{minted}{python}
 from pyslise2d import Pyslise2D
@@ -1148,6 +1182,9 @@ problem.eigenvaluesByIndex(0, 12)
 % \end{noindent}
 
 \subsection{Hénon-Heiles}\label{sec:c3_experiment_henon}
+
+\todo{Add some fluff.}
+
 Another interesting example is that of the Hénon-Heiles potential. The corresponding Schrödinger problem is given by:
 $$
   -\frac{1}{2}\nabla^2 \psi + \left(\frac{1}{2}\left(x^2 + y^2\right) + \frac{1}{12\sqrt{5}} y \left(3 x^2  - y^2\right)\right)\psi = E \psi \text{.}
@@ -1199,8 +1236,39 @@ problem.eigenvaluesByIndex(0, 16)
 \end{minted}
 % \end{noindent}
 
-\section{Conclusions}
+\subsection{Analyzing unexpected numerical behavior}\label{sec:c3_conclusion_hypothesis}
 
+In figure \ref{fig:c3_experiment_harmonic}, we have seen some strange behavior of the relative error of the eigenvalues in function of the tolerance and basis size. It was clear that something unexpected was happening. Ideally for numerical methods, we should observe an increase in accuracy when more accurate intermediate results are used. As a reminder, in figure \ref{fig:c3_experiment_harmonic}, in some cases the relative error of the found eigenvalues did not decrease if a larger basis on each sector or more sectors were used.
+
+Discovering where accuracy is lost, is a real challenge. As chapter \ref{cha:c2} contains many numerical experiments up to extreme precision, it would be very surprising if the basis functions would be the cause of these inaccuracies. Another possible source could be the propagation of $\vb{c}^{(k)}$ from \eqref{equ:c3_coupled_system} within a sector. Our implementation of \matscs{} has been thoroughly tested. Furthermore, numerical issues here would more likely present as an abundance of sectors. In section \ref{sec:c3_experiments_zero}, we have studied the Schrödinger problem with zero potential. Here our program was able to reach machine precision without much trouble. This likely confirms that basis functions are correctly calculated and that propagation with the coupled of system of Schrödinger equations seems to work.
+
+Of course, no sufficiently interesting program is bug-free. The programs we have developed in this thesis are definitely not an exception. However, bugs in numerical software present themselves most of the time as completely wrong results or slow convergence. The behavior seen in figure \ref{sec:c3_experiments_zero} is atypical, to say the least.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/harmonic_analysis.pdf}
+    \caption{We have solved the harmonic oscillator problem from section \ref{sec:c3_experiment_harmonic} once again with $N = 22$ and a requested tolerance of $10^{-11}$. The blue points represent the results calculated with \texttt{double}-precision. The red points are calculated in \texttt{long double}-precision.}\label{fig:c3_harmonic_analysis}
+  \end{center}
+\end{figure}
+
+Yet, more analysis is warranted. To locate the source of the numerical difficulties, we present figure \ref{fig:c3_harmonic_analysis}. Here we have run our program  for the harmonic oscillator problem from before with a tolerance of $10^{-11}$. Once the computation was executed with the standard \texttt{double}-precision\footnote{Numbers with a $53$ bit mantissa.}. Another time we have repeated the same calculation with the same parameters, but using \texttt{long double}-numbers\footnote{This is the x86 extended precision format with a mantissa of $65$ bit.}. As a tolerance of $10^{-11}$ is well within the range of \texttt{double}-precision numbers, we expect to see (almost) identical results. However, this is not the case. The results obtained with the datatype with higher precision are for most eigenvalues much more accurate. 
+
+Interpreting these results is not straightforward. It would be hard to attribute the difference from figure \ref{fig:c3_harmonic_analysis}. Due to the use of template parameters (see section \ref{sec:c2_generalizing_scalar}), exactly the same code is being executed for all numeric types. It would be also extremely unlikely if this would be a logical or mathematical error, as a higher precision numeric type does reach more accurate results, with all other parameters being equal.
+
+So, what can it be? Our best guess is that this is an inherent numerical instability when using the method studied in this chapter. We see many possible sources of this numeric instability, finding the true culprit may be insurmountably difficult. One possibility could be that in the huge formula we implemented for propagation of coupled systems of Schrödinger equations some cancellation occurs. To demonstrate this possibility we take a closer look at a single term in these giant formulae:
+$$
+\dots + \left(-\frac{1}{24}\vb{V_0}\vb{V_1} + \frac{1}{24} \vb{V_1}\vb{V_0}\right) h^4 + \dots \text{.}
+$$
+Here $\vb{V_0}$ and $\vb{V_1}$ are matrices used in the polynomial approximation of the matrix potential $\vb{V}(x)$. If $\vb{V_0}$ and $\vb{V_1}$ almost commute, $\vb{V_0}\vb{V_1}$ and $\vb{V_1}\vb{V_0}$ will be close together, and cancellation becomes an issue. This is only one example of many such terms, commutators are extremely common in these huge expressions.
+
+In section \ref{sec:c3_calculate_vk}, we have developed a technique to symbolically calculate the integrals present in the definition of $\vb{V}^{(k)}(y)$. Here we were careful in ensuring numerical stable recursive formulas. Another possibility for the numeric difficulties could be that we still were not careful enough. It could be that in these calculations a numeric instability becomes impactful if more accuracy is requested.
+
+Or, another possible culprit can maybe be found in the propagation of $\vb{c}^{(k)}(y)$. If many basis functions are used on a sector, there arises a large discrepancy in the behavior of the propagation of different elements of $\vb{c}^{(k)}(y)$. The first elements (corresponding to small eigenvalues) will exhibit an oscillatory behavior, but the last elements (corresponding to much larger eigenvalues) exhibit an exponential behavior. This discrepancy is already partly mitigated by regularly rescaling the propagated matrix, however this rescaling is only (and can be only)done on the boundary of sectors.
+
+In summary, we were unable to exactly pinpoint the source of the particular unexpected results of figure \ref{sec:c3_experiments_zero}. However, some possibilities were discussed. More importantly, all these possibilities have in common that they are extremely difficult are nearly impossible to fix.
+
+
+\section{Conclusions}
 
 \todo{}
 

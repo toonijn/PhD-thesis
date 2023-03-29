@@ -15,3 +15,4 @@
 {"rule":"THE_SUPERLATIVE","sentence":"^\\QA nodal domain is defined as a largest connected set of the domain on which the eigenfunction \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q does not become zero.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QIf \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, for example, contains the specialized routines ?stev and relatives.\\E$"}
 {"rule":"HAVE_PART_AGREEMENT","sentence":"^\\QWe say that the \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qth eigenvalue \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q has index \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QA comparison of relative error of the first fifty eigenvalues for different basis sizes \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q and requested tolerances tol.\\E$"}

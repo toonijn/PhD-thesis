@@ -56,8 +56,13 @@ What strikes me the most is that all these methods were developed long before co
 
 Throughout the twentieth century, with the rise of computing devices, the use and applicability of these numerical methods for ordinary differential equations exploded. We were able to reach never before-seen accuracies in fractions of the time it would have costed only a few decades earlier. This explosion in computational power has continued. Now, the speed of affordable consumer desktop computers can be measured in teraFLOPS\footnote{`FLOPS' is a measure of how many \emph{fl}oating point \emph{o}perations \emph{p}er \emph{s}econd a computer can execute. A computer with a speed of $1$ teraFLOPS can execute  one billion floating point operations each second.}. For example, my university computer (Intel i7-8700K and an NVIDIA Quadro P2000) has a combined rated speed of a little over 3 teraFLOPS. Almost all of this speed comes from its graphics processing unit, with the CPU only contributing $0.06$ teraFLOPS. This already indicates that FLOPS is an imperfect unit. Writing a program that is able to use \emph{all} these FLOPS is prohibitively difficult.
 
-
 \section{Ordinary differential equations}
+
+In the most general formulation expresses an $n$ dimensional $k^\text{th}$ order ordinary differential equation 
+$$
+f\left(x, y, {\pdv[]{y}{x}}, {\pdv[2]{y}{x}}, \dots, {\pdv[k]{y}{x}}\right) = 0
+$$
+a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$.
 
 \todo{All norms are $L_2$.}
 
