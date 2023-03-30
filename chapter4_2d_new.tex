@@ -9,17 +9,18 @@
 
 \longchapter[Strands: a new method]{Strands: a new method for the \twoD time-independent Schrödinger equation}\label{cha:c4}
 
-In chapter \ref{cha:c2} we have studied the constant perturbation methods. We have seen a brief history about these CP-methods, as well as a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
+In chapter \ref{cha:c2} we have studied a constant perturbation method for one-dimensional Sturm-Liouville problems. We have seen a brief history about these CP-methods, as well as a thorough overview about how these methods can be implemented. The numerical examples illustrated the benefits and demonstrated the accuracy of the studied techniques.
 
 Chapter \ref{cha:c3} was dedicated to the treatment of a recent method to solve the time-independent two-dimensional Schrödinger equation. This method aims to use the strengths of the constant perturbation methods for higher dimensional problems. This new method is promising, and we developed many improvements upon the original idea.
 
-One of the unique powers of the CP-methods is their ability to not only compute low eigenvalues accurately, but even increase accuracy for higher eigenvalues. For Sturm-Liouville problems there are methods which can accurately compute low eigenvalues ({\color{red}to do: reference to simple methods}) and there are methods which are accurate for higher eigenvalues (e.g. asymptotic methods \cite{kuzmina_asymptotic_2000,zhukova_asymptotic_2020}). A CP-method, however, is one of few, if not the only, technique which is accurate for low as well as high eigenvalues.
+One of the unique powers of the CP-methods is their ability to not only compute low eigenvalues accurately, but even increase accuracy for higher eigenvalues. For Sturm-Liouville problems there are methods which can accurately compute low eigenvalues ({\color{red}to do: reference to simple methods}) and there are methods which are accurate for higher eigenvalues (e.g. asymptotic methods \cite{kuzmina_asymptotic_2000,zhukova_asymptotic_2020}). A CP-method, however, is one of few techniques which is accurate for low as well as high eigenvalues.
 
 For two dimensions, this property did not translate cleanly. The method described in chapter \ref{cha:c3} tries to capture this by considering solutions of a one-dimensional Schrödinger problem in the $x$-direction, while a method for a coupled system of Schrödinger equations has been used in the $y$-direction. In theory this method is capable of computing any eigenvalue. In practice, this is not the case. A two-dimensional eigenfunction is represented as a linear combination $\sum_{i} c_i(y) \beta_i(x)$ of one-dimensional basis functions $\beta_i(x)$. This basis is well-chosen, such that even a few functions can already describe a two-dimensional eigenfunction sufficiently well. When implementing this, the basis has to be finite. As eigenfunctions corresponding to higher eigenvalues will become more and more oscillatory, the chosen finite basis will no longer be able to express all necessary details.
 
 That the basis is finite, thus limits the accuracy for higher eigenvalues, which negates one of the strongest benefits of the employed CP-methods. As such, we believe that the perfect method for the more-dimensional time-independent Schrödinger equation is one which does not decrease in accuracy as the higher eigenvalues are requested. Just like the CP-methods are for the one-dimensional case. Developing such a method will, most likely, require new and very complicated formulae.
 
-For clarity, we did not develop such a perfect method. But in the last few years I've played with the idea... In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.
+For clarity, we did not develop such a perfect method. But in the last few years I've played with the idea...
+% \todo{In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.}
 
 More realistically, during our research into the method of Ixaru, we have found other work, also focussing upon the time-independent Schrödinger problem. These ideas and methods have inspired us to develop our own technique. The new methods we propose try to fix or mitigate some issues present in the other methods.
 
@@ -29,7 +30,7 @@ More realistically, during our research into the method of Ixaru, we have found 
 
 After careful implementation and thorough testing of Ixaru's method from chapter \ref{cha:c3}, I could browse through the literature with renewed appreciation for the Schrödinger problem. When researching that method, many obstacles and challenges arose. It was an interesting task to balance computation time, symbolic formulas and numerical accuracy. So with this in mind, I came across \cite{wang_new_2009} by Wang and Shao.
 
-In this article the authors proposed a new kind of discretization scheme for solving two-dimensional time-independent Schrödinger equations. Before studying the details of the method, I like to review their numerical results. They tested the algorithm on two potential functions. First, the harmonic oscillator was considered. Schrödinger problems with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues. Second, they provided results for the Hénon-Heiles potential. Here, the exact solutions are not known, but reliable approximations exist. For both potentials their results were quite impressive. They reached a high accuracy for a significant number of eigenvalues without using excessive computation time.
+In this article the authors proposed a new kind of discretization scheme for solving two-dimensional time-independent Schrödinger equations. Before studying the details of a new method, I like to review its numerical results. In \cite{wang_new_2009}, the algorithm was tested on two potential functions. First, the harmonic oscillator was considered. Schrödinger problems with this potential function are not extremely difficult, but they capture some of the challenges that numerical algorithms may face, while still having symbolic solutions for the eigenvalues. Second, they provided results for the Hénon-Heiles potential. Here, the exact solutions are not known, but reliable approximations exist. For both potentials their results were quite impressive. They reached a high accuracy for a significant number of eigenvalues without using excessive computation time.
 
 But the thing that strikes me most about \cite{wang_new_2009} is the simplicity of the method. They constructed formulas for a discrete approximation on a grid. Finding these kinds of results within the literature is disheartening and inspirational at the same time. At first glance they were able to reach higher accuracy with a simpler method than Ixaru's work \cite{ixaru_new_2010} and our improvements \cite{baeyens_improvements_2022} to it. Before throwing away all our work, and declaring \cite{wang_new_2009} to be superior, let us analyze it ourselves.
 
@@ -58,9 +59,9 @@ In \cite{wang_new_2009} the coefficients $c_i$ for $N_q = 3, 4, 5, 6$ are provid
 
 Using these formulae the problem now approximates to a simple, albeit very large, square matrix eigenvalue problem.
 \begin{equation}\label{equ:c4_fd_sparse_matrix}
-    \left(-\vb{D}_{n_x} \otimes \vb{I}_{n_y} - \vb{I}_{n_x} \otimes \vb{D}_{n_y} +  \diag\begin{pmatrix}V(x_1, y_1) \\ V(x_1, y_2) \\ \vdots \end{pmatrix} \right)\vb{u} = \lambda \vb{u}
+    \left(-\vb{T}_{n_x} \otimes \vb{I}_{n_y} - \vb{I}_{n_x} \otimes \vb{T}_{n_y} +  \diag\begin{pmatrix}V(x_1, y_1) \\ V(x_1, y_2) \\ \vdots \end{pmatrix} \right)\vb{u} = \lambda \vb{u}
 \end{equation}
-Here, $\vb{D}_{n_x}$ is the symmetric Toeplitz\footnote{A matrix is called Toeplitz if each diagonal only contains a constant value. In other words, a matrix $\vb{A}$ is Toeplitz if it can be written as follows. $\vb{A}$ is a symmetric Toeplitz matrix if $a_{-i} = a_i$. $$\begin{pmatrix} a_0 & a_1 & a_2 & \dots \\ a_{-1} & a_0 & a_1 & \ddots \\ \vdots & \ddots & \ddots & \ddots \end{pmatrix}$$} $n_x \times n_x$ matrix with the first row $\begin{pmatrix} c_0 & c_1 & \dots & c_{N_x} & 0 & \dots \end{pmatrix}$. Analogous for $\vb{D}_{n_y}$. The $n\times n$ identity matrix is denoted as $\vb{I}_n$. The operation $\cdot \otimes \cdot$ is the Kronecker product\footnote{The Kronecker product of the $m\times m$ matrix $\vb{A}$ and the $n\times n$ matrix $\vb{B}$ is the following $(m+n)\times (m+n)$ block matrix: $$ \vb{A} \otimes \vb{B} = \begin{pmatrix} A_{1,1} \vb{B} & A_{1,2} \vb{B} & \dots \\ A_{2,1} \vb{B} & A_{2,2} \vb{B} & \\ \vdots & & \ddots \end{pmatrix} $$}. And finally, the vector of unknowns $\vb{u}$ is the approximation of $\psi$ in each of the grid points: $\vb{u} \approx \transpose{\begin{pmatrix} \psi(x_1, y_1) & \psi(x_1, y_2) & \dots \end{pmatrix}}$. The matrix on the left-hand side of \eqref{equ:c4_fd_sparse_matrix} can be directly computed. It is valuable to note that most of the entries of this matrix will be zero, so considering it as a sparse matrix is preferred. Many classical, well tested solvers exist for sparse eigenvalue problems. The authors of \cite{wang_new_2009} have used algorithms provided by \mathematica\cite{Mathematica}.
+Here, $\vb{T}_{n_x}$ is the symmetric Toeplitz\footnote{A matrix is called Toeplitz if each diagonal only contains a constant value. In other words, a matrix $\vb{A}$ is Toeplitz if it can be written as follows. $\vb{A}$ is a symmetric Toeplitz matrix if $a_{-i} = a_i$. $$\begin{pmatrix} a_0 & a_1 & a_2 & \cdots \\ a_{-1} & a_0 & a_1 & \ddots \\ \vdots & \ddots & \ddots & \ddots \end{pmatrix}$$} $n_x \times n_x$ matrix with the first row $\begin{pmatrix} c_0 & c_1 & \cdots & c_{N_x} & 0 & \cdots \end{pmatrix}$. Analogous for $\vb{T}_{n_y}$. The $n\times n$ identity matrix is denoted as $\vb{I}_n$. The operation $\cdot \otimes \cdot$ is the Kronecker product\footnote{The Kronecker product of the $m\times m$ matrix $\vb{A}$ and the $n\times n$ matrix $\vb{B}$ is the following $(m+n)\times (m+n)$ block matrix: $$ \vb{A} \otimes \vb{B} = \begin{pmatrix} A_{1,1} \vb{B} & A_{1,2} \vb{B} & \cdots \\ A_{2,1} \vb{B} & A_{2,2} \vb{B} & \\ \vdots & & \ddots \end{pmatrix} $$}. And finally, the vector of unknowns $\vb{u}$ is the approximation of $\psi$ in each of the grid points: $\vb{u} \approx \transpose{\begin{pmatrix} \psi(x_1, y_1) & \psi(x_1, y_2) & \cdots \end{pmatrix}}$. The matrix on the left-hand side of \eqref{equ:c4_fd_sparse_matrix} can be directly computed. It is valuable to note that most of the entries of this matrix will be zero, so considering it as a sparse matrix is preferred. Many classical, well tested solvers exist for sparse eigenvalue problems. The authors of \cite{wang_new_2009} have used algorithms provided by \mathematica\cite{Mathematica}.
 
 Before reviewing, and recalculating their numerical results, I want to take the time to thoroughly analyze their formulae. Using an equidistant grid and coefficients which optimize for the Taylor series of the function in question, is oddly reminiscent of finite difference approximations. To confirm this similarity we have calculated the central finite difference approximations of the second order derivative.
 
@@ -129,6 +130,7 @@ For one-dimensional problems the behavior of the error with respect to $k$ has a
 
 By separation of variables, the exact solutions of this equation can be found: $\psi_{i, j}(x, y) = \sin(i x)\sin(j y)$ with eigenvalue $\lambda_{i,j} = i^2 + j^2$ for all $i, j \in \Nplus$. The first few of these eigenvalues are listed.
 \input{img/chapter4/zero_exact.tex}
+
 In a certain way, these eigenvalues are more interesting than those from the harmonic oscillator, as their multiplicities are less predictable.
 
 In figure \ref{fig:c4_fd_zero} the relative error in each of the first $100$ eigenvalues is displayed for different values of $h = \eta$ and $N_x = N_y$. When comparing this figure to the results of the harmonic oscillator \ref{fig:c4_fd_harmonic}, some striking differences can be seen. Maybe most surprisingly, increasing the order does not give more accurate results! For low eigenvalues the method with $N_x=N_y=1$ is most accurate, this is simply the second order central finite difference formula. When using higher order methods the error does not get any better than $2^{-8}\approx \numprint{0.00391}$, which is not at all as accurate as the results for the harmonic oscillator, where the error for $N_x=N_y = 5$ lies between $2^{-32} \approx \numprint{2.3e-10}$ and at most $2^{-16} \approx \numprint{1.5e-05}$. This is quite a disconcerting behavior for a numerical method to have.
@@ -154,10 +156,6 @@ Yet, these finite difference methods are not without issues. One of the most pro
 
 Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
-\subsection{A semi-discrete method}\label{sec:c4_semi_discrete}
-
-{\color{red} To do: consider writing this intermediate method}
-
 \section{Strands: A line-based collocation method}
 
 In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR^2$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
@@ -166,7 +164,7 @@ In contrast to the previous methods, we propose a technique which is not necessa
 \end{equation}
 Still, we impose homogeneous Dirichlet boundary conditions: $\psi(x, y) = 0$ for $(x, y) \in \dOmega$.
 
-The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as its values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the creation of section \ref{sec:c4_semi_discrete}, where we have chosen to approximate the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
+The main idea underlying this method is that we want to represent the eigenfunctions $\psi$ efficiently. A fully discretized method may represent eigenfunctions as its values on certain grid points. Our first attempt to develop a more continuous approximation of the eigenfunction used ideas from chapter \ref{cha:c3} and led to the ideas for a new method, where we approximated the eigenfunction as a linear combination of well-chosen basis functions on parallel lines throughout the domain. This led to a continuous approximation along one direction and a discrete approximation along the other direction of the domain.
 
 \begin{figure}
     \begin{center}
@@ -226,14 +224,14 @@ With these finite sums equations \eqref{equ:c4_new_method_pre_matrix_equality} a
 \end{align}
 The introduction of appropriate vectors and matrices will allow us to translate \eqref{equ:c4_new_method_pre_matrix_unified} into a matrix problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
 \begin{align*}
-    \vb{c_x}            & = \transpose{\begin{pmatrix} c_0^{(x_0)} & c_1^{(x_0)} & \dots & c_{K_{x_0}-1}^{(x_0)} & c_0^{(x_1)} & c_1^{(x_1)} & \dots \end{pmatrix}}         \\
-    \text{and }\vb{c_y} & = \transpose{\begin{pmatrix} c_0^{(y_0)} & c_1^{(y_0)} & \dots & c_{K_{y_0}-1}^{(y_0)} & c_0^{(y_1)} & c_1^{(y_1)} & \dots \end{pmatrix}}\text{.}
+    \vb{c_x}            & = \transpose{\begin{pmatrix} c_0^{(x_0)} & c_1^{(x_0)} & \cdots & c_{K_{x_0}-1}^{(x_0)} & c_0^{(x_1)} & c_1^{(x_1)} & \cdots \end{pmatrix}}         \\
+    \text{and }\vb{c_y} & = \transpose{\begin{pmatrix} c_0^{(y_0)} & c_1^{(y_0)} & \cdots & c_{K_{y_0}-1}^{(y_0)} & c_0^{(y_1)} & c_1^{(y_1)} & \cdots \end{pmatrix}}\text{.}
 \end{align*}
 
 Furthermore, we introduce the $n_x \times n_x$ diagonal matrix $\vb{\Lambda_x}$ and the $n_y \times n_y$ diagonal matrix $\vb{\Lambda_y}$ which contain the eigenvalues of the one-dimensional Schrödinger problems used to define the basis functions:
 \begin{align*}
-    \vb{\Lambda_x}            & = \diag\begin{pmatrix} \lambda_0^{(x_0)} & \lambda_1^{(x_0)} & \dots & \lambda_{K_{x_0}-1}^{(x_0)} & \lambda_0^{(x_1)} & \lambda_1^{(x_1)} & \dots \end{pmatrix}         \\
-    \text{and }\vb{\Lambda_y} & = \diag\begin{pmatrix} \lambda_0^{(y_0)} & \lambda_1^{(y_0)} & \dots & \lambda_{K_{y_0}-1}^{(y_0)} & \lambda_0^{(y_1)} & \lambda_1^{(y_1)} & \dots \end{pmatrix}\text{.} \\
+    \vb{\Lambda_x}            & = \diag\begin{pmatrix} \lambda_0^{(x_0)} & \lambda_1^{(x_0)} & \cdots & \lambda_{K_{x_0}-1}^{(x_0)} & \lambda_0^{(x_1)} & \lambda_1^{(x_1)} & \cdots \end{pmatrix}         \\
+    \text{and }\vb{\Lambda_y} & = \diag\begin{pmatrix} \lambda_0^{(y_0)} & \lambda_1^{(y_0)} & \cdots & \lambda_{K_{y_0}-1}^{(y_0)} & \lambda_0^{(y_1)} & \lambda_1^{(y_1)} & \cdots \end{pmatrix}\text{.} \\
 \end{align*}
 
 \begin{figure}
