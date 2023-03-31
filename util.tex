@@ -50,6 +50,51 @@
 \usepackage[outputdir=build]{minted} % Code highlighting
 \usepackage{csquotes}
 \usepackage{bxcjkjatype} % Japanese in bibliography
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[CO]{\leftmark}
+\fancyhead[CE]{\rightmark}
+
+\makeatletter
+\newcommand{\padnum}[2]{%
+  \ifnum#1>1 \ifnum#2<10 0\fi
+  \ifnum#1>2 \ifnum#2<100 0\fi
+  \ifnum#1>3 \ifnum#2<1000 0\fi
+  \ifnum#1>4 \ifnum#2<10000 0\fi
+  \ifnum#1>5 \ifnum#2<100000 0\fi
+  \ifnum#1>6 \ifnum#2<1000000 0\fi
+  \ifnum#1>7 \ifnum#2<10000000 0\fi
+  \ifnum#1>8 \ifnum#2<100000000 0\fi
+  \ifnum#1>9 \ifnum#2<1000000000 0\fi
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi
+  \expandafter\@firstofone\expandafter{\number#2}%
+}
+\makeatother
+
+\ifdefined\mainthesisfile
+% \newcommand{\flipbookpath}[1]{flipbook/pdf/#1.pdf}
+\newcounter{oddpagecounter}
+\setcounter{oddpagecounter}{8}
+\fancyfoot[OR]{%
+    \stepcounter{oddpagecounter}%
+    % \includegraphics[width=2cm]{flipbook/pdf/\padnum{4}{\value{oddpagecounter}}.pdf}
+}
+%\includegraphics[width=\paperwidth]{\flipbookpath{\padzeroes[2]{\decimal{oddpagecounter}}}}
+
+%\usepackage{flipbook}
+%\usepackage{fancyhdr}
+%\fancyfoot[RO]{                           % Flipbook at right foot in odd pages
+%\setlength\unitlength{1cm}                % Specify the units
+%  \begin{picture}(0,0)                    % New picture
+%    \put(-0.2,-2){                        % Position of the picture
+%      \fbImageF{./flipbook/pdf/}{png}{width=2cm} % Insert numbered picture in increasing order. Directory: ./Fig/Flipbook. Prefix of all pictures: image_ (in fact image_1, image_2, ...). Extension of the pictures: png. 
+%     }
+% \end{picture}
+%}
+\fi
+
 
 % format numbers
 \usepackage{numprint}

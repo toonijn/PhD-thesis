@@ -980,7 +980,7 @@ Although these coefficients can all be computed analytically, it was far from pr
 
 For the applications we have in mind, this approach is too time-consuming. We decided to develop a new algorithm that is able to reuse all the data that was previously calculated. Therefore, we have chosen to implement in \matslise{3} a $\delta$-independent higher order method that is combined with a $\delta$-dependent formula of lower order. The higher order method is the $\text{CPM}\{18\}$-formula (i.e.\ $N=16$ and $Q=6$) that was also used in \matslise{} and \matslise{2}. For our error estimation, a $\delta$-dependent version of $\text{CPM}\{16\}$ is implemented ($N=14$ and $Q=5)$, which also allows the fast and accurate evaluation of the eigenfunctions in arbitrary points. In section \ref{sec:c2_numerical_experiments} we will present some numerical experiments in which eigenfunctions are computed as well.
 
-\section{Periodic \texorpdfstring{\oneD}{1D} time-independent Schrödinger equation}\label{sec:c2_periodic}
+\section{Periodic \texorpdfstring{\oneD}{1D} Schrödinger equation}\label{sec:c2_periodic}
 
 In contrast to (separated) Robin boundary conditions, in this section we will study the case of generalized periodic boundary conditions. Assume we are solving a regular Sturm-Liouville equation
 \begin{equation}\label{equ:c2_periodic_sturm_liouville}
