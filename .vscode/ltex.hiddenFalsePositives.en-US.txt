@@ -16,3 +16,5 @@
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QIf \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q happens to be constant, this becomes a symmetric tridiagonal matrix, for which LAPACK \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, for example, contains the specialized routines ?stev and relatives.\\E$"}
 {"rule":"HAVE_PART_AGREEMENT","sentence":"^\\QWe say that the \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qth eigenvalue \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q has index \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QA comparison of relative error of the first fifty eigenvalues for different basis sizes \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q and requested tolerances tol.\\E$"}
+{"rule":"ITS_TO_IT_S","sentence":"^\\QThis does not need to be a problem, as we can propagate solutions until we find convergence for both the eigenfunction and its derivative to zero.\\E$"}
+{"rule":"BOTH_AS_WELL_AS","sentence":"^\\QLooking back at this thesis, and the researching years preceding it, fills me with many emotions: both positive, as well as less positive.\\E$"}

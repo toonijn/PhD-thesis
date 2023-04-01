@@ -330,7 +330,7 @@ In \cite{pruess_estimating_1973}, the author also studies what happens to the er
 
 This last theorem does not only say that the error does not become larger if $k$ increases, but the relative error even decreases rapidly when $k \to \infty$. Theorem \ref{the:c2_pruess_1973_2} highlights the main advantage this technique has in comparison to other state-of-the-art methods. Where many other methods become less and less accurate for large eigenvalues, this method becomes even more accurate.
 
-\todo{This is a so-called assymptotic method. Add a reference.}
+\todo{This is a so-called asymptotic method. Add a reference.}
 
 \begin{figure}
     \begin{center}
@@ -412,7 +412,7 @@ Much has already been written about these instrumental functions. For example in
 
 \todo{Add that these functions decrease quickly. This is ideal for convergent series.}
 
-In definition \ref{def:c2_eta_functions}, we have chosen to simplify the notation by allowing computations in $\CC$. But when implementing these formulas, it is much more efficient to keep all calculations in $\RR$. For $Z < 0$, we implement $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
+In definition \ref{def:c2_eta_functions}, we have chosen to simplify the notation by allowing computations in $\CC$. But when implementing these formulae, it is much more efficient to keep all calculations in $\RR$. For $Z < 0$, we implement $\eta_{-1}(Z) = \cos(\sqrt{-Z})$ and $\eta_{-1}(Z) = \sin(\sqrt{-Z})/\sqrt{-Z}$.
 
 Another interesting property of these $\eta$-functions is its series expansions:\begin{align*}
     \eta_{-1}(Z) & = \sum_{q=0}^{\infty} \frac{Z^q}{(2q + 1)!}                                                      \\
@@ -733,7 +733,7 @@ As an illustration of this scaled Prüfer transformation with equation \eqref{eq
 
 In the previous section we have studied the background of constant perturbation methods. From here on out we develop our additions to these well-established methods. Some of these results were published in \cite{baeyens_fast_2020}, particularly this section \ref{sec:c2_matslise3} and some numerical experiments: \ref{sec:c2_numerical_experiments_mathieu}, \ref{sec:c2_numerical_experiments_coffey_evans} and \ref{sec:c2_numerical_experiments_hydrogen}. The other numerical experiments from \ref{sec:c2_numerical_experiments} take a closer look at our improvements since \cite{baeyens_fast_2020} to the algorithm. In section \ref{sec:c2_periodic}, we present how the constant perturbation method can be used to solve periodic boundary conditions as well. And, later on in section \ref{sec:c2_the_implementation} we take a deep dive into how our new efficient implementation is build.
 
-In 2005 the first version of \matslise{} \cite{ledoux_matslise_2005}, a \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
+In 2005 the first version of \matslise{} \cite{ledoux_cp_2004,ledoux_matslise_2005}, a \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
 
 \matslise{} provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
 
@@ -747,24 +747,7 @@ These challenges were the main motivator for a more efficient implementation of 
 
 In this section we give an overview of our theoretical advancements \cite{baeyens_fast_2020} in building a very efficient implementation of the constant perturbation method. Later on, in section \ref{sec:c2_numerical_experiments} we will perform some numerical experiments and some runtime analysis. In section \ref{sec:c2_the_implementation} we will take the time to take a look at the challenges we faced and the choices we made when building our new implementation.
 
-\subsection{The CP method for Schrödinger problems}\label{the-method}
-
-CP methods have already been described extensively, see e.g.\ \cite{ixaru_numerical_1984,ixaru_cp_1998,ixaru_cp_2000,ledoux_cp_2004}. The main bricks for the CP method and related $\eta$-functions were laid in \cite{ixaru_numerical_1984}. We present a short overview for the Schrödinger equation in particular; for a more in depth explanation see the previously mentioned references.
-
-The one dimensional time independent Schrödinger equation is of the form
-$$
-    -y''(x) + V(x)y(x) = \lambda y(x)\text{.}
-$$
-The function $V(x)$ is called the potential function. This eigenvalue problem is mostly considered as a boundary value problem on the interval $[a, b]$. We further assume that the boundary conditions are homogeneous Robin conditions, i.e.~they can be expressed as
-$$
-    \alpha_a y(a) + \beta_a y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b y'(b) = 0\text{,}
-$$
-with not both $\alpha_a$ and $\beta_a$ zero (analogous for $\alpha_b$ and $\beta_b$).
-
-
-\subsection{New formulae for the computation of the eigenfunctions}\label{sec:c2_cp_in_delta}
-
-In section \ref{the-method} we have provided an overview of the CP method to solve the one-dimensional Schrödinger equation. This method can be summarized in the following steps:
+As a high-level overview, the constant perturbation method for solving one-dimensional Schrödinger problems can be summarized in the following steps:
 \begin{itemize}
     \item Split the domain $[a, b]$ in intervals $(a=x_0, x_1, x_2, \dots, x_k, \dots, x_n = b)$.
     \item For each interval $k$ write $X = x_{k-1}$ and $h = x_k - x_{k-1}$. \begin{itemize}
@@ -778,7 +761,7 @@ In section \ref{the-method} we have provided an overview of the CP method to sol
     \item Employ multiple shooting to find solutions to the boundary value problem.
 \end{itemize}
 
-Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{the:c2_perturbation_terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{the:c2_h_error_estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these 'simplified' formulae are daunting to work with.
+Up to now the perturbation terms for $u(\delta)$ and $v(\delta)$ given in Theorem \ref{the:c2_perturbation_terms} were only calculated and implemented with $\delta = h$. In that case, one not only obtains superconvergence as formulated in Theorem \ref{the:c2_h_error_estimate}, but there is also a major simplification in symbolic complexity. Nevertheless, for higher orders even these `simplified' formulae are daunting to work with.
 
 For the efficient calculation of eigenfunctions in arbitrary points of the domain it would however be beneficial if the propagation terms were also implemented in function of $\delta$. To prove the corresponding mathematical results, we reformulate the expressions of the propagators in terms of $\theta=\delta/h$.
 
@@ -1329,7 +1312,7 @@ Secondly the accuracy of \pyslise{} is a lot higher. This can be explained by th
 
 In practice, and for our use-cases in the following chapters, we have found \matslise{3} and \pyslise{} to be sufficiently fast. Knowing this we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
 
-\paragraph{Eigenfunctions} As explained in section \ref{sec:c2_cp_in_delta} one of the reasons we developed more complicated formulae and build a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
+\paragraph{Eigenfunctions} As explained in section \ref{sec:c2_matslise3} one of the reasons we developed more complicated formulae and build a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
 
 Assume\footnote{Or take a look at section \ref{sec:c3_calculate_vk}, where we need to do exactly this.} we want to compute an orthogonal projection of a function $f(x)$ to the truncated basis of the eigenfunctions $y_i$: $ f(x) = \sum_{i = 0} c_i y_i(x)$.
 To compute these numerically we need to approximate the following integrals for all necessary values for $i$:
@@ -1749,7 +1732,7 @@ These native packages are the answer to the efficiency versus user-friendliness 
 pip install pyslise
 \end{minted}
 % \end{noindent}
-    \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}. See section \ref{sec:c2_online_gui}.
+    \item Online: lastly we also have created the possibility to run this code inside the web browser: \url{https://matslise.ugent.be/ti1d}.% See section \ref{sec:c2_online_gui}.
 \end{itemize}
 
 \subsection{Implementation challenges}\label{sec:c2_implementation_challenges}
@@ -1878,7 +1861,7 @@ v1_v1_v2 = v1 * v1_v2
 \end{minted}
 %\end{noindent}
 
-In the scalar case, this works wonderfully. All tested compilers are able to process this generated file without many difficulties. For coupled systems this generated file is much harder on the compiler because $V_0, \dots, V_N$ are no longer simple scalars. They have become matrices from the \Eigen{} library. \Eigen{} relies upon inlining and other compiler optimizations to generate the best possible machine-code, for some compilers (most notably for the Microsoft Visual Studio compiler) this becomes too much, and they run out of available system memory. To combat this issue partially, we introduce more temporaries and split the giant formulas into more manageable simpler expressions.
+In the scalar case, this works wonderfully. All tested compilers are able to process this generated file without many difficulties. For coupled systems this generated file is much harder on the compiler because $V_0, \dots, V_N$ are no longer simple scalars. They have become matrices from the \Eigen{} library. \Eigen{} relies upon inlining and other compiler optimizations to generate the best possible machine-code, for some compilers (most notably for the Microsoft Visual Studio compiler) this becomes too much, and they run out of available system memory. To combat this issue partially, we introduce more temporaries and split the giant formulae into more manageable simpler expressions.
 
 \subsubsection{Generalizing the scalar-type}\label{sec:c2_generalizing_scalar}
 
@@ -2045,19 +2028,22 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework. And, i
 
 All these tests can be easily run during development. They are automatically run on each code change with the help of GitHub Actions. Here the program is compiled, and the tests are executed on a clean test system on GitHub's servers for Linux, macOS and Windows. This also builds and tests the Python-package. Working with GitHub Actions for automated testing allows us to quickly detect code regressions and failing tests on other operating system.
 
-\subsection{A graphical user interface}\label{sec:c2_online_gui}
+% \subsection{A graphical user interface}\label{sec:c2_online_gui}
 
-\todo{Expand this section, maybe add a screenshot}
+% Expand this section, maybe add a screenshot
 
-Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
+% Since all the code is written in \texttt{C++} it can be compiled to WebAssembly. This format enables most modern browsers to execute the code, this has been tested in Firefox and Chrome. Of course this will not be as efficient as running it natively through \texttt{C++} or Python.
 
-\section{Conclusions and future work}
+\section{Future work}
 
-\todo{Write a conclusion}
+In this section we have introduced and improved upon the constant perturbation method for Sturm-Liouville problems, and more specifically time-independent one-dimensional Schrödinger equations. In section \ref{sec:c2_matslise3} we started from the complicated propagation formulae, and complicated them even further by explicitly keeping the dependence on $\delta$. These even more intimidating formulae enabled us to evaluate eigenfunctions extremely efficiently, as seen in the numerical experiments in section \ref{sec:c2_numerical_experiments}.
 
-\begin{enumerate}
-    \item What have we added, what is new?
-    \item Dynamically expanding domains.
-\end{enumerate}
+Besides this new theoretical advancement, and the efficient implementation accompanying it (as detailed in section \ref{sec:c2_the_implementation}), we also applied the constant perturbation method to periodic problems in section \ref{sec:c2_periodic}. As far as we have found in the literature, problems with non-separated boundary conditions were not yet tackled with CP-methods. Furthermore, implementations that are able to solve problems with periodic boundary conditions are rare. So, we believe the results from section \ref{sec:c2_periodic} can be published as a separate article. Regarding `future work', this is a concrete example.
+
+In the next chapters we will use the method and the implementation developed here to solve time-independent two-dimensional Schrödinger problems. Our advancements in this chapter were invaluable in the developments from the next chapters.
+
+Since the constant-perturbation methods are well-established and thoroughly researched, it is hard to fundamentally improve them. Many researchers already advanced this topic. However, we still see some opportunities to apply constant perturbation in more general Sturm-Liouville problems. One of the first assumptions we made when introducing the CP-methods was that the domain $\Omega = [a, b]$ is a bounded interval. If one was interested in solving Sturm-Liouville problems on infinite domains ($\left[0, +\infty\right[$ or $\left]-\infty, +\infty\right[$ for example), the domain had to be truncated. For Schrödinger problems where the potential quickly diverges to $+\infty$, this truncation does not pose a big issue. However, for problems with potentials such as the hydrogen potential (from section \ref{sec:c2_numerical_experiments_hydrogen}), eigenvalues close to, but less than zero, are very sensitive to this truncation. Mitigating this is difficult. If the domain is chosen too small, boundary effects change the computed eigenvalues. If the domain is too large, selecting the optimal step size is difficult. 
+
+As a possible avenue for future research, we believe that CP-methods can be used on truly infinite domains, without truncation. Now, we always propagate solutions from the end points of the interval to a matching point somewhere in the interior. But in principle, we could also propagate solutions from the middle of the domain to the end points. On an infinite domain there will not be two endpoints. This does not need to be a problem, as we can propagate solutions until we find convergence for both the eigenfunction and its derivative to zero. I suspect that implementing this will be far from trivial. The program should be able to dynamically add more steps in both directions if larger eigenvalues are requested. 
 
 \stopchapter
