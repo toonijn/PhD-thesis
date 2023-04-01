@@ -3,9 +3,10 @@
 \startchapter{4}
 \undefinedlabel{cha:c2}{2}
 \undefinedlabel{cha:c3}{3}
-\undefinedlabel{sec:c3_standing_waves_on_disc}{3.-.-.-}
-\undefinedlabel{sec:c3_experiment_henon}{3.-.-}
-\undefinedlabel{sec:c3_calculate_vk}{3.-.-}
+\undefinedlabel{sec:c3_standing_waves_on_disc}{3.x.x.x}
+\undefinedlabel{sec:c3_experiment_henon}{3.x.x}
+\undefinedlabel{sec:c3_calculate_vk}{3.x.x}
+\undefinedlabel{the:c3_counting_eigenvalues}{3.x}
 
 \longchapter[Strands: a new method]{Strands: a new method for the \twoD time-independent Schrödinger equation}\label{cha:c4}
 
@@ -20,7 +21,7 @@ For two dimensions, this property did not translate cleanly. The method describe
 That the basis is finite, thus limits the accuracy for higher eigenvalues, which negates one of the strongest benefits of the employed CP-methods. As such, we believe that the perfect method for the more-dimensional time-independent Schrödinger equation is one which does not decrease in accuracy as the higher eigenvalues are requested. Just like the CP-methods are for the one-dimensional case. Developing such a method will, most likely, require new and very complicated formulae.
 
 For clarity, we did not develop such a perfect method. But in the last few years I've played with the idea...
-% \todo{In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.}
+% In section \ref{c4:sec_utopy} we will present some ideas for such a method. Some of which, someone, somewhere, may find inspirational.
 
 More realistically, during our research into the method of Ixaru, we have found other work, also focussing upon the time-independent Schrödinger problem. These ideas and methods have inspired us to develop our own technique. The new methods we propose try to fix or mitigate some issues present in the other methods.
 
@@ -34,7 +35,7 @@ In this article the authors proposed a new kind of discretization scheme for sol
 
 But the thing that strikes me most about \cite{wang_new_2009} is the simplicity of the method. They constructed formulas for a discrete approximation on a grid. Finding these kinds of results within the literature is disheartening and inspirational at the same time. At first glance they were able to reach higher accuracy with a simpler method than Ixaru's work \cite{ixaru_new_2010} and our improvements \cite{baeyens_improvements_2022} to it. Before throwing away all our work, and declaring \cite{wang_new_2009} to be superior, let us analyze it ourselves.
 
-\subsection{A finite difference scheme}
+\subsection{A finite difference scheme}\label{sec:c4_fd_scheme}
 
 As in chapter \ref{cha:c3}, we are considering the Schrödinger equation
 \begin{equation}\label{equ:c4_schrodinger}
@@ -156,7 +157,7 @@ Yet, these finite difference methods are not without issues. One of the most pro
 
 Alternatively, a method which is able to reduce the size of the matrices involved without losing accuracy may be preferable.
 
-\section{Strands: A line-based collocation method}
+\section{Strands: A line-based collocation method}\label{sec:c4_strands}
 
 In contrast to the previous methods, we propose a technique which is not necessarily restricted to cases where the domain is only a rectangle. So consider a finite domain $\Omega \subseteq \RR^2$ on which we are searching for eigenvalues $E \in \RR$ and eigenfunctions $\psi: \Omega \to \RR$ such that for a given potential $V : \Omega \to \RR$ the following holds
 \begin{equation}\label{equ:c4_schrodinger_equation_new_method}
@@ -387,7 +388,7 @@ For the right-hand side, by construction $\vb{B_x} \vb{Z_x} = \vb{B_y} \vb{Z_y}$
 
     {\color{red}To do: Finding solutions of generalized rectangular eigenvalue problems}
 
-\subsubsection{Least squares approximation}
+\subsubsection{Least squares approximation}\label{sec:c4_matrix_least_squares}
 
 For dense matrices, the previous technique works very well. The correct eigenvalues are found within very reasonable computation time. But, if extremely high accuracies are required, the used grid size should be increased. This also has a significant impact on the size of the involved matrices. As these become larger, using their sparsity becomes a necessity. This is where both of the previous techniques to solve \eqref{equ:c4_new_method_first_matrix_problem} fall short. There, existing algorithms for sparse matrices were not able to do the required computations efficiently and accurately. To combat this, we have developed an alternative method. Explicitly tuned to be able to use the sparsity of the matrices.
 
@@ -588,27 +589,27 @@ The nine unknown variables are $\psi^{(i, j)}_{m, n}$ for $m, n \in \{1,2,3\}$. 
 This relatively small linear system can now be numerically solved to obtain values of the eigenfunction within the small rectangle $\Omega_{i,j}$. On the right-hand side of figure \ref{fig:c4_new_method_zoomed_in}, all red dots are now computed values and can be used to construct a polynomial interpolation. As a basis we have chosen the 25 functions: $x^i y^j$ for all $i,j \in \{0,1,2,3,4\}$.
 
 
-\subsubsection{Alternative methods}
+% \subsubsection{Alternative methods}
 
-Throughout the development of an algorithm to compute values of the eigenfunctions, we have considered many other methods for the computation of these eigenfunctions on an interior rectangle as well. In this section we will acknowledge some of these alternatives, together with their strengths and weaknesses. To motivate our final idea of solving a tiny Schrodinger-like problem to find interior points to interpolate through, a modest numerical comparison will be studied.
+% Throughout the development of an algorithm to compute values of the eigenfunctions, we have considered many other methods for the computation of these eigenfunctions on an interior rectangle as well. In this section we will acknowledge some of these alternatives, together with their strengths and weaknesses. To motivate our final idea of solving a tiny Schrodinger-like problem to find interior points to interpolate through, a modest numerical comparison will be studied.
 
-\paragraph{Interpolation through only boundary points} Previously, we stated that the functions $x^2 + y^2 - 1$ and $x^2 y^2$ have an identical boundary on the square $[-1, 1] \times [-1, 1]$. Also recall figure \ref{fig:c4_interpolation_boundary issue}. This non-uniqueness can be solved by only considering polynomials with a total degree strictly less than four:
-$$
-    1, x, y, x^2, xy, y^2, x^3, x^2 y, x y^2 \text{ and } y^3\text{.}
-$$
-These ten functions can now be used as an interpolation basis. For this we choose ten points on the boundary of the internal rectangle. Or, we choose more points and use a least squares approximation.
+% \paragraph{Interpolation through only boundary points} Previously, we stated that the functions $x^2 + y^2 - 1$ and $x^2 y^2$ have an identical boundary on the square $[-1, 1] \times [-1, 1]$. Also recall figure \ref{fig:c4_interpolation_boundary issue}. This non-uniqueness can be solved by only considering polynomials with a total degree strictly less than four:
+% $$
+%     1, x, y, x^2, xy, y^2, x^3, x^2 y, x y^2 \text{ and } y^3\text{.}
+% $$
+% These ten functions can now be used as an interpolation basis. For this we choose ten points on the boundary of the internal rectangle. Or, we choose more points and use a least squares approximation.
 
-\todo{Interpolation up to cubic functions}
+% Interpolation up to cubic functions
 
-\todo{Interpolation over different small rectangles}
+% Interpolation over different small rectangles
 
-\todo{$K > 4$, trade off between runtime and accuracy}
+% $K > 4$, trade off between runtime and accuracy
 
-\subsubsection{Non-rectangular domains}
-
-\todo{Non-rectangular domains}
+% \subsubsection{Non-rectangular domains}
 
 \subsection{Numerical experiments}\label{sec:c4_numerical_experiments}
+
+\todo{Code from article}
 
 When developing a new method it is instrumental these are well tested. This inescapably means that the program should be run on many problems with a wide variety of settings. Doing this thoroughly and consistently after code changes can be a cumbersome task. Knowing this, we have from the very first versions onwards included many automatic tests. On every code change, these tests would run on all supported platforms (Linux, Windows and macOS) to verify that our changes still produce sufficiently accurate results for the considered problems. For the development of this new method we continuously test the harmonic oscillator, the Hénon-Heiles potential and the quartic oscillator (\ref{sec:c4_numerical_harmonic} and \ref{sec:c4_numerical_henon_heiles}) on simple rectangular domains, the zero potential (\ref{sec:c4_numerical_zero}) on a rectangular and circular domain and Ixaru's potential on a rectangular, circular and a $45\degree$ rotated rectangle. All tests are conducted in \texttt{double}-precision and most problems are also tested in de extended \texttt{long double} datatype.
 
@@ -733,7 +734,7 @@ Ignoring these special cases allows us to interpret the graphs from figure \ref{
 
 Throughout the development of this new method we have focussed upon keeping the matrices small. The idea is that finding eigenvalues of a (sparse) matrix is quite expensive, definitely more expensive than all other steps. But it would be careless to take this assumption at face value without more thorough analysis. In section \ref{sec:c4_numerical_experiments} we have already seen that our method can reach the same accuracy as a finite difference scheme with a smaller sparse matrix in the end. So, if all steps to construct the sparse problem are almost negligible in comparison to finding eigenvalues of that sparse system, then our method will be faster for the same accuracies.
 
-As an experiment, we will take a look at the Hénon-Heiles problem from section \ref{sec:c4_numerical_henon_heiles} on the square domain $[-6 , 6]\times [-6, 6]$ on a $64\times 64$ grids and a maximum basis size of $48$. We have run a profiler on our program to solve this problem. Our program consists of two main parts. First, the grid is constructed and the basis functions on each grid line are computed. Secondly, we employ \spectra to find the eigenvalues of the resulting sparse matrix. For the second part, we have two options. We can find the largest eigenvalues of the shifted inverse matrix. Or, with the implicitly started Arnoldi method we can select only the smallest eigenvalues while converging. The first technique has much better convergence, but is more expensive because in each step a linear system has to be solved. For many problems the second technique also converges to the true smallest eigenvalues, but the convergence is less reliable and slower. But the final runtime may be faster because no systems have to be solved.
+As an experiment, we will take a look at the Hénon-Heiles problem from section \ref{sec:c4_numerical_henon_heiles} on the square domain $[-6 , 6]\times [-6, 6]$ on a $64\times 64$ grids and a maximum basis size of $48$. We have run a profiler on our program to solve this problem. Our program consists of two main parts. First, the grid is constructed and the basis functions on each grid line are computed. Secondly, we employ \spectra{} to find the eigenvalues of the resulting sparse matrix. For the second part, we have two options. We can find the largest eigenvalues of the shifted inverse matrix. Or, with the implicitly started Arnoldi method we can select only the smallest eigenvalues while converging. The first technique has much better convergence, but is more expensive because in each step a linear system has to be solved. For many problems the second technique also converges to the true smallest eigenvalues, but the convergence is less reliable and slower. But the final runtime may be faster because no systems have to be solved.
 
 To evaluate these differences we have solved this problem 20 times with each of the techniques (selecting the smallest eigenvalues versus using the shifted inverse matrix). With the first technique, our program had an average total runtime of $\numprint[s]{3.295}$ and with the second technique the total runtime rose to $\numprint[s]{8.700}$. Using only these numbers to draw conclusions may be a little premature.
 
@@ -792,52 +793,105 @@ When first developing the ideas for this method I always saw it as a loom, with 
     \end{minipage}
 \end{center}
 
-\section{Some ideas for a utopian method}\label{c4:sec_utopy}
 
-In the introduction of this chapter we briefly discussed what a perfect method for time independent Schrödinger equations may be. It should be a method which is fast and accurate, of course. More specifically, its accuracy should not degrade upon requesting higher eigenvalues. Even if ridiculously high eigenvalues are required. But, ideally, this guaranteed accuracy should not come with the cost of increased run time. Requesting the first five eigenvalues should be (approximately) as fast as requesting the five eigenvalues larger than one million for example.
+% \section{Some ideas for a utopian method}\label{c4:sec_utopy}
 
-In this section, I want to give an overview of the ideas and experiments I explored in the past few years. This section will not be written as a scientific paper. It will not contain absolute truths. It will not allege to have any certainties. This section will contain many of my mathematical feelings, unverified, uncensored, and definitely not peer reviewed. And, I will try highlight in which ideas I still see merit, and with which ideas I have run into a dead end.
+% In the introduction of this chapter we briefly discussed what a perfect method for time independent Schrödinger equations may be. It should be a method which is fast and accurate, of course. More specifically, its accuracy should not degrade upon requesting higher eigenvalues. Even if ridiculously high eigenvalues are required. But, ideally, this guaranteed accuracy should not come with the cost of increased run time. Requesting the first five eigenvalues should be (approximately) as fast as requesting the five eigenvalues larger than one million for example.
 
-Before diving into my mathematical ramblings, I need to give you some caveats: I have not read every article about the topics described here. I do not know all intricacies of developing numerical methods. And I see myself as an applied mathematician\footnote{This is not an apology, I am a proud (and proudly) applied mathematician. But, my background influences how I practice mathematics. And in this section in particular this is important to keep in mind when following along with my thoughts.}, so I prefer numerical experiments and testing a hypothesis over strong mathematical rigor and watertight proofs. Still, I believe myself to be somewhat qualified to write about numerical methods for two-dimensional time independent Schrödinger equations, as I spent the previous (almost) six years of my professional time developing such methods myself. But, if you have invested yourself in any of the topics we will cover here, and you find me to be unjustly negative or unfairly harsh, I really do want to apologize in advance for that. It is not my intention to write theories off. It is not my intention to declare topics a waste of time. All things I write here are and will be my experience with these topics, in and only in the context of numerical methods for the two-dimensional time independent Schrödinger equation.
+% In this section, I want to give an overview of the ideas and experiments I explored in the past few years. This section will not be written as a scientific paper. It will not contain absolute truths. It will not allege to have any certainties. This section will contain many of my mathematical feelings, unverified, uncensored, and definitely not peer reviewed. And, I will try highlight in which ideas I still see merit, and with which ideas I have run into a dead end.
 
-\subsection{Preliminary ideas}
+% Before diving into my mathematical ramblings, I need to give you some caveats: I have not read every article about the topics described here. I do not know all intricacies of developing numerical methods. And I see myself as an applied mathematician\footnote{This is not an apology, I am a proud (and proudly) applied mathematician. But, my background influences how I practice mathematics. And in this section in particular this is important to keep in mind when following along with my thoughts.}, so I prefer numerical experiments and testing a hypothesis over strong mathematical rigor and watertight proofs. Still, I believe myself to be somewhat qualified to write about numerical methods for two-dimensional time independent Schrödinger equations, as I spent the previous (almost) six years of my professional time developing such methods myself. But, if you have invested yourself in any of the topics we will cover here, and you find me to be unjustly negative or unfairly harsh, I really do want to apologize in advance for that. It is not my intention to write theories off. It is not my intention to declare topics a waste of time. All things I write here are and will be my experience with these topics, in and only in the context of numerical methods for the two-dimensional time independent Schrödinger equation.
 
-\subsubsection{Exponential fitting}
+% \subsection{Preliminary ideas}
 
-The first topic I want to cover here is already controversial. My research group and in particular my promotor are already studying exponential fitting for over three decades. They were able to successfully use this technique countless times in various applications. And, I know, as a young researcher, even younger than they have been researching this topic even, it is quite pretentious to make statements about this topic. But my promotor and I have worked sufficiently close together, that he knows me to make some statement I better should not have. Let this subsection be such a statement.
+% \subsubsection{Exponential fitting}
 
-The general idea of exponential fitting is to develop methods which are specifically tuned to be accurate for exponential and oscillatory function of certain frequencies. They have been successfully applied to numerical differentiation, quadrature formulas and ordinary differential equations (linear multistep methods and Runge-Kutta methods)\cite{ixaru_exponential_2004}. For the more recent advances we refer to \cite{paternoster_present_2012}. The success of this technique can not be denied.
+% The first topic I want to cover here is already controversial. My research group and in particular my promotor are already studying exponential fitting for over three decades. They were able to successfully use this technique countless times in various applications. And, I know, as a young researcher, even younger than they have been researching this topic even, it is quite pretentious to make statements about this topic. But my promotor and I have worked sufficiently close together, that he knows me to make some statement I better should not have. Let this subsection be such a statement.
 
-Yet, my relationship with exponential fitting has been rocky. Most importantly, this thesis could not have come to fruition without them. The constant perturbation methods, and in particular \matslise, are exponentially fitted methods. The extreme accuracies reached for the one-dimensional problem are only possible because for each energy the specifically tuned $\eta$-functions take exactly the important frequencies into account.
+% The general idea of exponential fitting is to develop methods which are specifically tuned to be accurate for exponential and oscillatory function of certain frequencies. They have been successfully applied to numerical differentiation, quadrature formulas and ordinary differential equations (linear multistep methods and Runge-Kutta methods)\cite{ixaru_exponential_2004}. For the more recent advances we refer to \cite{paternoster_present_2012}. The success of this technique can not be denied.
 
-On the other hand, when we tried to use exponentially fitted quadrature formulas for the computation of the potential matrix $\vb{V}^{(k)}(y)$ in section \ref{sec:c3_calculate_vk}, the results were less than ideal. It was already quite the challenge to determine to which frequencies these formulae should be tuned. Because these quadrature formulae should be computed for many possible eigenvalues and for all sectors of the domain with a wildly varying potential, the fitted frequencies most definitely could not be constant. So they should be automatically and dynamically computed. In principle this only incurs a small computational overhead. In practice, this was quite difficult to implement. We needed to tune the formulae for different frequencies and many edge-cases arose: what if some of them were close together? What if some functions were exponential and the others trigonometric? Or all exponential? Or none of them? All these question were interconnected, and important. If two frequencies were close together, in the formulae we were dividing two tiny numbers. So the limit had to be taken. In relatively rare cases the resulting quadrature formulae became highly unstable with large negative weights. One of the major issues was that even though these cases were quite rare, they popped up often because we were approximating so many integrals. In short, this instability caused a numerical mess. After this experience, I hope you can understand the hesitation in my love for exponential fitting.
+% Yet, my relationship with exponential fitting has been rocky. Most importantly, this thesis could not have come to fruition without them. The constant perturbation methods, and in particular \matslise, are exponentially fitted methods. The extreme accuracies reached for the one-dimensional problem are only possible because for each energy the specifically tuned $\eta$-functions take exactly the important frequencies into account.
 
-The eigenfunctions of the two-dimensional eigenproblem we are trying to solve are oscillatory, even highly so for large eigenvalues. Therefor, it is natural to think about exponential fitting. But translating this idea into something practical is not straightforward. For ordinary differential systems much research from recent years is available: second order problems\cite{dambrosio_exponentially_2011,}, symplectic methods \cite{vandenberghe_symplectic_2011,wu_explicit_2012}\dots For partial differential equations we have found very little research available. In \cite{zahra_exponentially_2019} the authors develop an exponentially fitted method for the two-dimensional time fractional damped Klein-Gordon equation. Upon construction of the symbolic formulae they use a polynomial basis set together with the following exponential functions, based upon the parameters $\mu, \nu \in \CC$:
+% On the other hand, when we tried to use exponentially fitted quadrature formulas for the computation of the potential matrix $\vb{V}^{(k)}(y)$ in section \ref{sec:c3_calculate_vk}, the results were less than ideal. It was already quite the challenge to determine to which frequencies these formulae should be tuned. Because these quadrature formulae should be computed for many possible eigenvalues and for all sectors of the domain with a wildly varying potential, the fitted frequencies most definitely could not be constant. So they should be automatically and dynamically computed. In principle this only incurs a small computational overhead. In practice, this was quite difficult to implement. We needed to tune the formulae for different frequencies and many edge-cases arose: what if some of them were close together? What if some functions were exponential and the others trigonometric? Or all exponential? Or none of them? All these question were interconnected, and important. If two frequencies were close together, in the formulae we were dividing two tiny numbers. So the limit had to be taken. In relatively rare cases the resulting quadrature formulae became highly unstable with large negative weights. One of the major issues was that even though these cases were quite rare, they popped up often because we were approximating so many integrals. In short, this instability caused a numerical mess. After this experience, I hope you can understand the hesitation in my love for exponential fitting.
+
+% The eigenfunctions of the two-dimensional eigenproblem we are trying to solve are oscillatory, even highly so for large eigenvalues. Therefor, it is natural to think about exponential fitting. But translating this idea into something practical is not straightforward. For ordinary differential systems much research from recent years is available: second order problems\cite{dambrosio_exponentially_2011,}, symplectic methods \cite{vandenberghe_symplectic_2011,wu_explicit_2012}\dots For partial differential equations we have found very little research available. In \cite{zahra_exponentially_2019} the authors develop an exponentially fitted method for the two-dimensional time fractional damped Klein-Gordon equation. Upon construction of the symbolic formulae they use a polynomial basis set together with the following exponential functions, based upon the parameters $\mu, \nu \in \CC$:
+% $$
+%     \exp(\pm\mu x \pm\nu y), x\exp(\pm\mu x \pm\nu y), y\exp(\pm\mu x \pm\nu y), x y \exp(\pm\mu x \pm\nu y), \dots
+% $$
+% For determining $\mu$ and $\nu$ they propose an algorithm which is able to eliminate the leading term of the error by choosing these parameters appropriately. In our case, using this set of basis functions directly will be far from optimal. For the Schrödinger equation, we have seen that the frequency of the oscillations is highly dependent on the value of the potential. Where in the domain the potential is low, the eigenfunction will strongly oscillate, where the potential is higher the oscillations will slow down, and where the potential is even higher than the energy there will be no oscillations at all, and we have an exponential behavior. So in a certain sense, the values of $\mu$ and $\nu$ should dependent upon the energy and upon the value of the potential, and by extension thus the location $x, y$ in the domain.
+
+
+% \subsubsection{Piecewise constant approximations}
+
+% Canosa and De Oliveira first ideas, high level overview and quick sketch for 2D.
+
+% \subsubsection{Constant perturbation}
+
+% Without being negative: why it is secondary to the constant approximation.
+
+% \subsubsection{Shooting}
+
+% Shooting vs direct methods, why we need shooting for high eigenvalues.
+
+% \subsubsection{Finding eigenvalues within an order of magnitude}
+
+% Like Prüfer.
+
+% \subsection{The main idea}
+
+% Some formulas, boundary conditions, propagation, CP?
+
+\section{Closing remarks}
+
+In this chapter we have developed and implemented Strands to approximate eigenvalues and eigenfunctions of the two-dimensional time-independent Schrödinger equation. For this new method we have strived to avoid or fix some issues with the method from chapter \ref{cha:c3}. We believe Strands to be easier to implement than the Ixaru's two-dimensional method. Yet in the numerical experiments, this simpler method achieved more accurate results with similar computational cost. However, directly comparing these methods is difficult. In chapter \ref{cha:c3}, we have studied a shooting method which is able to target specific eigenvalues. On the other hand, our method from section \ref{sec:c4_strands}  translates the problem into a direct matrix eigenproblem, similarly to the method from section \ref{sec:c4_fd_scheme}.
+
+Looking back at this thesis, and the researching years preceding it, fills me with many emotions: both positive, and less positive. First and foremost, I am quite proud with the results we were able to achieve. In chapter \ref{cha:c2}, we have started from a well-established and thoroughly studied technique for one-dimensional Schrödinger equations, and we improved upon known results. Both theoretical and practical advances were made. In chapter \ref{cha:c3}, we have taken a relatively new technique and build upon it. Our implementation advances the use of this technique with some new features. For these, some theoretical strides had to be taken. One of the results I am most proud on in this thesis is theorem \ref{the:c3_counting_eigenvalues}. Five years ago, when I implemented this new technique for the first time in \matlab{}, I was disappointed that it was impossible to ensure one has found all eigenvalues in a given range. In my master's thesis I have voiced this missing feature as a possible idea for future work. Privately, my promotor and I were rather pessimistic if this issue ever could be fixed. We believed that this method is too complicated to be able to give any guarantees on the index of eigenvalues. Despite this pessimism, I am proud that we have persevered and developed this new theorem \ref{the:c3_counting_eigenvalues}.
+
+During the research for chapters \ref{cha:c2} and \ref{cha:c3}, at times I was sometimes quite demotivated. We were advancing and building improvements. Yet, both techniques were not \emph{mine}. I had difficulties with finding ownership. And, the real low-point in my PhD-research was August 2020. I was browsing through the literature and found an article which was able to solve the two-dimensional Schrödinger equations faster and more accurate than we ever could. Unavoidably, many existential questions were raised. Getting through this \emph{crisis of faith} was definitely not easy. It took some time, but a few long months later, I found renewed inspiration and \emph{goesting}\footnote{This is a very Flemish word. It loosely translates to `with an enthusiastic motivation'.}. In my archives, the earliest draft I can find for ideas for a new method for two-dimensional Schrödinger equations is from February 2021. And in the next few years I have learned that, maybe unsurprisingly, developing a new method is hard. We went through many iterations. In this chapter, you can read the (for now) final version.
+
+
+\subsection{Looking forward}
+
+Writing about what the future will bring is, what we would call in Dutch, looking at coffee grounds\footnote{In English, more commonly: reading tea leaves.}. Without sounding overly ambitious: I hope our new method and our implementation may be useful for someone somewhere.
+
+As all things in life, our new method is not perfect. One of the more user-friendly features of our improvements to the method from chapter \ref{cha:c3}, is the ability to automatically select the needed sector sizes to ensure a requested accuracy. In this chapter, the grid size is still an open parameter, the relation of this size to the numerical accuracy is not yet thoroughly researched. Also, in section \ref{sec:c4_strands}, we were adamant that our new technique works on non-uniform grids with varying basis sizes on each grid line. Yet, we studied this only to a limited extend. Ideally, some automatic  grid selection should be implemented. Vaguely, on regions of the domain where the sought eigenfunctions are interesting, the used grid should be denser. Implementing a heuristic for this, may be straightforward. But being able to guarantee that a given accuracy is obtained with a particular grid is difficult. Another improvement to this technique may be found in the choice of basis functions on grid lines. Now on the line $x = x_i$, we solve a one-dimensional Schrödinger problem with potential $\frac{1}{2} V(x_i, y)$. In each grid point, the value of the potential is split between both intersecting grid lines. In principle, this split does not need to be equal. Maybe other choice can be defended as well.
+
+Besides direct improvements to the method itself, we believe more fundamentally different ideas can be explored. Does the grid need to be square? How can this method be used to solve time-dependent Schrödinger equations\footnote{For one-dimensional time-dependent problems, \matslise{2} is used in \cite{ledoux_accurate_2014}.}? Can this technique be extended for general linear operators? What changes for a three-dimensional problem?
+
+Concerning the three-dimensional problem, we have studied some preparatory ideas. First, place a rectangular grid on the domain, with three grid lines per grid point. And qs basis we use Schrödinger problems with a three-way split of the potential. For example, on the line $x = x_i \land y = y_j$ we solve the one-dimensional Schrödinger problem with potential $\frac{1}{3} V(x_i, y_j, z)$. To find the eigenvalues we have to solve (analogous to \eqref{equ:c4_nm_matrix_compact})
 $$
-    \exp(\pm\mu x \pm\nu y), x\exp(\pm\mu x \pm\nu y), y\exp(\pm\mu x \pm\nu y), x y \exp(\pm\mu x \pm\nu y), \dots
+    \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} + \vb{B_z} \vb{\Lambda_z}\vb{c_z} = E \vb{B_x} \vb{c_x} = E \vb{B_y} = E \vb{B_z} \vb{c_z}\text{.}
 $$
-For determining $\mu$ and $\nu$ they propose an algorithm which is able to eliminate the leading term of the error by choosing these parameters appropriately. In our case, using this set of basis functions directly will be far from optimal. For the Schrödinger equation, we have seen that the frequency of the oscillations is highly dependent on the value of the potential. Where in the domain the potential is low, the eigenfunction will strongly oscillate, where the potential is higher the oscillations will slow down, and where the potential is even higher than the energy there will be no oscillations at all, and we have an exponential behavior. So in a certain sense, the values of $\mu$ and $\nu$ should dependent upon the energy and upon the value of the potential, and by extension thus the location $x, y$ in the domain.
+The technique to solve this equation as described in section \ref{sec:c4_matrix_least_squares}, generalizes elegantly for more dimension. In summary, approximating eigenvalues is quite straightforward. The largest issues we have found in a first exploratory study is the computation of an eigenfunction in arbitrary points. No longer can we do the same trick to solve a much smaller Schrödinger problem with calculated boundary conditions. Eigenfunction solutions are only known upon the grid lines. Not on the planer faces of each of the grid cells.
 
+On a more personal note, the researching for and the writing of this thesis has taught me a great deal. Some lessons were a reconfirmation of things I already new. For example, I really like solving problems. When a new challenge crosses my path, far too often I think: ``It could not be \emph{that} hard, right?'' And, after spending anything between a few hours and a few years trying to solve the problem, I have to conclude: ``Well, it definitely is that hard.''
 
-\subsubsection{Piecewise constant approximations}
+One of the other lessons I learned about myself is that I like collaborating. In researching this thesis, it was almost always only my promotor and I. Now, I am very fortunate to get along really well\footnote{Of course, I hope (and do believe) that this is symmetric.} with my promotor. Yet, many times I felt that I was missing some more people to collaborate with, to just bounce ideas around with, to just talk with...
 
-\todo{Canosa and De Oliveira first ideas, high level overview and quick sketch for 2D}
+And the last lesson I want to share is that I get easily distracted with interesting problems. During the past five years, far too many times I was very busy not doing my PhD-research. All these distractions are out of the scope of this text. However, if you, the reader, want to talk with me, and don't know what about, then just ask me something about: 
+mathematical origami,
+plagiarism detection in source code,
+sunlight on crop fields for agroforestry,
+basins of convergence and Julia sets,
+ray tracing in mathematical figures,
+hyperbolic geometry (in VR),
+the roots of the Littlewood polynomials,
+picking numbers in a lottery,
+dynamical systems in arbitrary precision,
+geodesics and shortest paths over surfaces,
+computations in non-commutative quantum algebras,
+Keith numbers,
+drawing L-systems\dots
 
-\subsubsection{Constant perturbation}
+As the last paragraph I, again want to thank Marnix to be my guide during this research, to provide invaluable much appreciated feedback and to give me the freedom to pursue my distractions. But also again, I want to thank Emilie for being my best friend, for listing to all my troubles and for carrying my burdens with me.
 
-\todo{Without being negative: why it is secondary to the constant approximation}
+\vspace{1cm}
 
-\subsubsection{Shooting}
+\begin{flushright}
+    \includegraphics[width=4cm]{img/signature.pdf}\\
+    April 2023
+\end{flushright}
 
-\todo{Shooting vs direct methods, why we need shooting for high eigenvalues}
-
-\subsubsection{Finding eigenvalues within an order of magnitude}
-
-\todo{Like Prüfer}
-
-\subsection{The main idea}
-
-\todo{Some formulas, boundary conditions, propagation, CP?}
 
 
 
