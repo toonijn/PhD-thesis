@@ -175,7 +175,6 @@ The main idea underlying this method is that we want to represent the eigenfunct
     \end{center}
 \end{figure}
 
-\todo{Intervals are connected, not continuous.}
 In this section we are going to construct a new method in which we will bring this continuous approximation to both directions of the domain. For this, we place a grid over the domain $\Omega$, as can be seen in figure \ref{fig:woven_method_grid}. This grid does not need to be equidistant. When developing this new method we strived to allow for maximal flexibility, by avoiding as many restrictions on $\Omega$ as possible. This has as consequence that, because $\Omega$ does not need to be a rectangle, the number of intersections per grid line is not necessarily constant. Even worse, because we do not even require $\Omega$ to be convex, the intersection of a grid line with $\Omega$ may not be connected. Upon formulating and implementing this new method, this varying number of intersections and these unconnected grid lines are some example of difficulties that arise by explicitly allowing more flexibility.
 
 After placing the grid on $\Omega$, the next step is to approximate the unknown eigenfunction $\psi$ as a linear combination of basis functions on each of the grid lines. On the vertical line $x = x_i$, we denote these basis functions as $\beta_k^{(x_i)}(y)$, for each value of $k$. This yields the expression
@@ -633,6 +632,15 @@ When developing a new method, it is instrumental that it is well-tested. This in
 
 These automated tests are extremely valuable during development to quickly notice regressions, as also mentioned in section \ref{sec:c2_implementation_automatic_testing}. But for a thorough mathematical analysis more work is required. In this section we will provide many graphs and figures to evaluate the accuracy of our method. The evaluation of the runtime performance is another can of worms which will be treated in section \ref{sec:c4_nm_runtime}.
 
+Our implementation is build in \cpp{} using \Eigen{} \cite{guennebaud_eigen_2010} for linear algebra, \spectra{} \cite{qiu_yixuan_2022} as eigenvalue solver, and \matslise{3} (see chapter \ref{cha:c2} or \cite{baeyens_fast_2020}) for the computation of one-dimensional basis functions. Installation is possible via \lpython{}'s package system \texttt{pip}.
+% \begin{noindent}
+\begin{minted}{bash}
+pip install strands
+\end{minted}
+% \end{noindent}
+
+As a user guide we provide for all numerical experiments a Python program with which a reader can replicate the experiments on their own computer.
+
 \subsubsection{Harmonic oscillator}\label{sec:c4_numerical_harmonic}
 
 Following section \ref{sec:c4_fd_numerical}, the first example we will consider is the harmonic oscillator with equation
@@ -640,6 +648,19 @@ Following section \ref{sec:c4_fd_numerical}, the first example we will consider 
     -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
 \end{equation}
 on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions.
+
+Using Strands, the first ten eigenvalues of this problem can be found within a second with the following code.
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Rectangle
+
+schrodinger = Schrodinger2D(
+    lambda x, y: x * x + y * y, Rectangle(-9.5, 9.5, -9.5, 9.5),
+    gridSize=(40, 40), maxBasisSize=30)
+print(schrodinger.eigenvalues(10))
+\end{minted}
+% \end{noindent}
+
 
 \begin{figure}
     \begin{center}
@@ -667,7 +688,18 @@ Upon close inspection of the comparison of figure \ref{fig:c4_nm_harmonic_rectan
     \label{fig:c4_nm_harmonic_disc}
 \end{figure}
 
-As a second, highly related experiment we try the harmonic oscillator, equation \eqref{equ:c4_nm_harmonic} on a circular domain around $(0, 0)$ with radius $9.5$. In principle, this is the same problem as before. But in practice, solving Schrödinger problems on non-rectangular domains was not at all possible with other grid-based methods.
+As a second, highly related experiment we try the harmonic oscillator, equation \eqref{equ:c4_nm_harmonic} on a circular domain around $(0, 0)$ with radius $9.5$. In principle, this is the same problem as before. But in practice, solving Schrödinger problems on non-rectangular domains was not at all possible with other grid-based methods. The following code solves this problem on a circular domain.
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Circle
+
+schrodinger = Schrodinger2D(
+    lambda x, y: x * x + y * y, Circle((0, 0), 9.5),
+    gridSize=(40, 40), maxBasisSize=30)
+print(schrodinger.eigenvalues(10))
+\end{minted}
+% \end{noindent}
+Within a second the first ten eigenvalues of this problem are printed, accurate to about $10^{-13}$.
 
 Because we have constructed this method with non-rectangular domains in mind, ours is able to tackle these more exotic problems. Figure \ref{fig:c4_nm_harmonic_disc} answers for this problem the most important question: are the results accurate? The graphs displayed in this figure are calculated in the same way as figure \ref{fig:c4_nm_harmonic_rectangle}. Three different grid sizes and three different maximal basis sizes are considered. Notice that we used the term \emph{maximal} basis size. For non-rectangular domains the number of grid points per grid line varies. Grid lines close to the boundary are short chords containing only a few grid points. As the number of points limits the size of the basis, the true basis size has to vary as well. For our algorithm it is still valuable to place an upper bound on the basis size, especially for those lines that run through the middle of the domain, containing many grid points.
 
@@ -685,6 +717,28 @@ As a last visual experiment with the harmonic oscillator, we will take a look at
 $$
     2, 4, 4, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 10, 12, \dots
 $$
+
+Strands can be used to find and evaluate the eigenfunctions. The following code yields similar graphs as in figure \ref{fig:c4_nm_harmonic_eigenfunctions}.
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Rectangle
+import numpy as np
+import matplotlib.pyplot as plt
+
+xs = np.linspace(-9.5, 9.5, 200)
+ys = np.linspace(-9.5, 9.5, 200)
+X, Y = np.meshgrid(xs, ys)
+
+schrodinger = Schrodinger2D(
+    lambda x, y: x * x + y * y, Rectangle(-9.5, 9.5, -9.5, 9.5),
+    gridSize=(40, 40), maxBasisSize=30)
+
+for E, f in schrodinger.eigenfunctions(10):
+    plt.pcolormesh(X, Y, f(X, Y))
+    plt.show()
+\end{minted}
+% \end{noindent}
+
 Figure \ref{fig:c4_nm_harmonic_eigenfunctions} plots a basis for all eigenfunctions corresponding to eigenvalue $\lambda_6 = \lambda_7 = \lambda_8 = \lambda_9 = 8$. In the left-most column the basis for the eigenfunctions on the square domain $[-5, 5] \times [-5, 5]$ can be seen, and in the right-most column the basis found on a circular domain around zero with radius $5$. We have opted here for a smaller domain, not because of computational cost, on the larger domain these eigenfunctions can be drawn just as quickly. But, because of visual usefulness. On a larger domain, the interesting center part of the image would be a lot smaller and thus less visible.
 
 Upon a first viewing of these eigenfunctions (left and right columns) one may be surprised that these are different. But, as the eigenspace corresponding to eigenvalue $8$ is multidimensional the basis is no longer unique. To be able to compare these results we have introduced the middle column. Here, a linear combination of basis functions from the rectangular domain is calculated such that we obtain the same basis functions as found on the circular domain. This illustrates some of the challenges when trying to compare or numerically verify eigenfunctions.
@@ -699,6 +753,19 @@ on the domain $\Omega$, with homogeneous Dirichlet boundary conditions.
 
 If the domain $\Omega$ is the rectangle $[0, \pi] \times [0, \pi]$ exact solutions can be obtained with separation of variables. This gives $\forall i, j \in \Nplus$ that $i^2 + j^2$ is an eigenvalue of this Schrödinger problem with corresponding eigenfunction $\phi(x, y) = \sin(i x)\sin(j y)$.
 
+Not much has to be changed from the previous code samples to solve this problem.
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Rectangle
+from math import pi
+
+schrodinger = Schrodinger2D(
+    lambda x, y: 0, Rectangle(0, pi, 0, pi),
+    gridSize=(32, 32), maxBasisSize=32)
+print(schrodinger.eigenvalues(10))
+\end{minted}
+% \end{noindent}
+
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/nm_test_zero_rectangle.pdf}
@@ -707,7 +774,7 @@ If the domain $\Omega$ is the rectangle $[0, \pi] \times [0, \pi]$ exact solutio
     \label{fig:c4_nm_zero_test_rectangle}
 \end{figure}
 
-In figure \ref{fig:c4_nm_zero_test_rectangle} the results for this problem are visualized. Unsurprisingly, our method works extremely well for this. The main reason can be found in the fact that the basis functions \matslise{} calculates on each line are exactly $\sin(x)$, $\sin(2x)$, $\sin(3x)$\dots and analogous for $y$. These functions are able to exactly represent the true eigenfunctions $\sin(i x)\sin(j y)$ on each line.
+In figure \ref{fig:c4_nm_zero_test_rectangle} the results for the Schrödinger problem with zero potential are visualized. Unsurprisingly, our method works extremely well for this. The main reason can be found in the fact that the basis functions \matslise{} calculates on each line are exactly $\sin(x)$, $\sin(2x)$, $\sin(3x)$\dots and analogous for $y$. These functions are able to exactly represent the true eigenfunctions $\sin(i x)\sin(j y)$ on each line.
 
 \begin{figure}
     \begin{center}
