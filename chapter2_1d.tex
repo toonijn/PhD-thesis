@@ -1991,7 +1991,7 @@ Here, in the body of the loop, the eigenfunction object \texttt{f} assumes that 
 
 In hindsight, these issues and fixes may seem obvious. But, they highlight some difficulties in getting \lpython{} and \cpp{} to play nicely together.
 
-\subsubsection{Automatic testing}
+\subsubsection{Automatic testing}\label{sec:c2_implementation_automatic_testing}
 
 Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
 
