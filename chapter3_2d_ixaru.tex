@@ -54,7 +54,7 @@ The last theorem we provide for now will give some information about the eigenfu
   For two different eigenvalues $E_m$ and $E_n$, the corresponding eigenfunctions $\psi_m(x, y)$ and $\psi_n(x, y)$ will be orthogonal on $\Omega$.
 
   $$
-    \int_\omega \psi_m(\vb{x}) \psi_n(\vb{x}) \, \dd \vb{x} = 0 \quad \text{ if $E_m \neq E_n$.}
+    \int_\Omega \psi_m(\vb{x}) \psi_n(\vb{x}) \, \dd \vb{x} = 0 \quad \text{ if $E_m \neq E_n$.}
   $$
 \end{theorem}
 
@@ -87,7 +87,7 @@ Linear combinations of basis functions can only be equal if their coefficients a
 \begin{equation}\label{equ:c3_zero_example_ode}
   (i^2 - E) c_i(y) = \dv[2]{c_i}{y}(y) \quad \text{ with $c_i(0) = c_i(\pi) = 0$ for each $i \in \{1, 2, \dots\}$.}
 \end{equation}
-Define $j := \sqrt{E - i^2}$. The ordinary differential equation \eqref{equ:c3_zero_example_ode} will only have solutions if $j$ is a strictly positive integer, specifically: $c_i(y) = \sin\left(\sqrt{E-i^2} y\right)$. This implies that all eigenvalues of \eqref{equ:c3_example_zero_potential} are
+Define $j := \sqrt{E - i^2}$. The ordinary differential equation \eqref{equ:c3_zero_example_ode} will only have solutions that satisfy the given boundary conditions if $j$ is a strictly positive integer, specifically: $c_i(y) = \sin\left(\sqrt{E-i^2} y\right)$. This implies that all eigenvalues of \eqref{equ:c3_example_zero_potential} are
 $$
   E_{i, j} = i^2 + j^2 \quad \text{ for all $i, j \in \{1, 2, \dots\}$}
 $$
@@ -189,7 +189,11 @@ Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normali
   \caption{Let $\vb{N}$ be the upper left $N \times N$ block of $\vb{M}$, with $\vb{M}$ the transition between the bases defined by the Schrödinger problems with potentials $V(x) = (x-1)^2$ and $V(x) = (x+1)^2$. This graph displays $\left\| \vb{N} \transpose{\vb{N}} - I \right\|_2$ as a function of $N$.}\label{fig:c3_orthogonal_m}
 \end{figure}
 
-In the infinite case this matrix $\vb{M}^{(k)}$ is orthogonal. In practice $N$ has to be finite, and $\vb{M}^{(k)}$ is in general no longer orthogonal. Intuitively this means that some information about the solution is lost when transitioning between sectors. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure \ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor drawback, inherent to this method.
+Since in the infinite case
+\begin{equation}\label{equ:c3_m_before_truncation}  
+c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_j^{(k)}}\ket{b_i^{(k+1)}} c^{(k)}_j
+\end{equation}
+exactly, this matrix $\vb{M}^{(k)}$ is orthogonal. However, if the sum on the right hand-side of \eqref{equ:c3_m_before_truncation} is truncated, then ${\vb{M}^{(k)}}^\transposesign$ no longer reverses this transformation. Therefore, $\vb{M}^{(k)}$ is in general no longer orthogonal. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x+1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure \ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor inconvenience, inherent to this method.
 
 With these tools available, all that is left is to formalize how the shooting can be executed. Instead of propagating with a single starting condition (i.e. a column vector $\vb{c}^{(1)}(\ymin)$), all possible initial values (for homogeneous Dirichlet boundary conditions) are propagated at once. Therefore, we propose to start with:
 $$
@@ -245,7 +249,7 @@ with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}
   \end{center}
 \end{figure}
 
-A possible automatic sector selection is visualized in figure \ref{fig:c3_sector_selection_example}. Here we have run our implementation on the problem from section \eqref{sec:c3_experiment_ixaru}. We notice that in the middle of the domain, where the potential $V(x, y) = (1+x^2)(1+y^2)$ is smaller and less steep, the sectors are larger.
+A possible automatic sector selection is visualized in figure \ref{fig:c3_sector_selection_example}. Here we have run our implementation on the problem from section \eqref{sec:c3_experiment_ixaru}. We notice that in the middle of the domain, where the graph of the potential $V(x, y) = (1+x^2)(1+y^2)$ lies lower and is less steep, the sectors are larger.
 
 \subsection{Orthonormalization of eigenfunctions}\label{sec:c3_improvement_orthonormalization}
 
@@ -301,7 +305,7 @@ Calculating the inner product on the whole domain at once is difficult due to th
   Since the basis functions satisfy the Dirichlet boundary conditions\footnote{Note that this proof also works if the basis $\vb{b}$ is assumed to satisfy homogeneous Robin boundary conditions.} $\vb{b}(\xmin) = \vb{b}(\xmax) = \vb{0}$ the last term has to be zero, which proves the theorem.
 \end{proof}
 
-This theorem gives an expression for the inner product of two eigenfunctions on each sector. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
+In this theorem it is assumed that the basis in which the eigenfunctions are expanded is constant throughout the whole domain. In our case, this basis changes in between sectors. Therefore, when computing the inner product of two eigenfunctions in the domain, theorem \ref{the:c3_dot_product} will have to be repeatedly employed on each sector separately. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
 
 \subsection{Calculation of \texorpdfstring{$\vb{V}^{(k)}(y)$}{Vk(y)}}\label{sec:c3_calculate_vk}
 
@@ -403,25 +407,26 @@ with:
   y_2 & = J^{0} h^n - J^{n}  \text{.}
 \end{align*}
 
-Then this recursion can be executed starting with $n$ sufficiently large and with $F^n$, $G^n$, $H^n$ and $J^n$ replaced by 0. \todo{This next section should show that $F^{n} \to 0$ if $n \to \infty$, I don't see how. Alternatively, maybe a Taylor-series?}To show this, let us focus on the computation of the $F$ and $J$ integrals (a similar analysis can be made for the $G$ and $H$ integrals).
-One verifies that
-% expressions %for $F^{n-2}$ and $J^{n-2}$, which can be rewritten as
-\begin{align*} F^{n-2} & = \frac {  1 }{n \left( n-1 \right) }
-  \left[ \left( \theta_i+\theta_j \right)\, F^n + 2\,\theta_i\,\theta_j\, J^n \right]                                                                                                       \\
-          & \hspace{7mm} +  \frac{h^{n-1}}{n-1} \left( {\theta_j}\,G^0+\theta_i\,H^0-{\frac {h \left( \theta_i+\theta_j \right) }{n}} F^0-\frac {2\, h \,\theta_i\,\theta_j}{n} J^0 \right) \\
-  \\
-  J^{n-2} & =  \frac {  1 }{n \left( n-1 \right) }
-  \left[ 2\,  F^n + \left( \theta_i+\theta_j\right)\, J^n \right]                                                                                                                           \\
-          & \hspace{7mm} + \frac{h^{n-1}}{n-1} \left( G^0+ H^0-{\frac {2\,h  }{n}} F^0-\frac {h \,\left( \theta_i+\theta_j \right)}{n} J^0 \right)
-\end{align*}
-Repeated application of these formulae shows that % $F^{n-2k}$ can be expressed as the sum of a polynomial in $h$ and 
-\begin{align*}
-  F^{n-2k} & = \frac{(n-2\,k)!}{n!} \left(P^k_F(\theta_i,\theta_j) F^n + P^k_J(\theta_i,\theta_j) J^n \right) + \mathcal{F}^{n-2k}     \\
-  J^{n-2k} & = \frac{(n-2\,k)!}{n!} \left(Q^{k-1}_F(\theta_i,\theta_j) F^n + Q^k_J(\theta_i,\theta_j) J^n \right) + \mathcal{J}^{n-2k}
-\end{align*}
-whereby $P^k_F$, $P^k_J$, $Q^{k}_F$, $Q^k_J$ are polynomials in $\theta_i$ and $\theta_j$ of degree $k$ and whereby $\mathcal{F}^{n-2k}$ and $\mathcal{J}^{n-2k}$ represent terms that depend on $h$, $n$, $\theta_i$,   $\theta_j$ and the values $F^0$, $G^0$, $H^0$ and $J^0$.
-Since $|F^n|$ and  $|J^n|$ can be bounded by $h^n |F^0|$ and $h^n |J^0|$ respectively, it follows that for sufficiently large values of $n$ and $k$
-$F^{n-2k}$ and $J^{n-2k}$ can be accurately approximated by $\mathcal{F}^{n-2k}$ and $\mathcal{J}^{n-2k}$ respectively.
+In practice, we have found reliable convergence if this recursion is started with $n$ sufficiently large and $F^n$, $G^n$, $H^n$ and $J^n$ replaced by $0$.
+
+%This next section should show that $F^{n} \to 0$ if $n \to \infty$, I don't see how. Alternatively, maybe a Taylor-series?
+% Then this recursion can be executed starting with $n$ sufficiently large and with $F^n$, $G^n$, $H^n$ and $J^n$ replaced by $0$. To show this, let us focus on the computation of the $F$ and $J$ integrals (a similar analysis can be made for the $G$ and $H$ integrals).
+% One verifies that
+% % expressions %for $F^{n-2}$ and $J^{n-2}$, which can be rewritten as
+% \begin{align*} F^{n-2} & = \frac {  1 }{n \left( n-1 \right) }
+%   \left[ \left( \theta_i+\theta_j \right)\, F^n + 2\,\theta_i\,\theta_j\, J^n \right]                                                                                                       \\
+%           & \hspace{7mm} +  \frac{h^{n-1}}{n-1} \left( {\theta_j}\,G^0+\theta_i\,H^0-{\frac {h \left( \theta_i+\theta_j \right) }{n}} F^0-\frac {2\, h \,\theta_i\,\theta_j}{n} J^0 \right) \\
+%   \\
+%   J^{n-2} & =  \frac {  1 }{n \left( n-1 \right) }
+%   \left[ 2\,  F^n + \left( \theta_i+\theta_j\right)\, J^n \right]                                                                                                                           \\
+%           & \hspace{7mm} + \frac{h^{n-1}}{n-1} \left( G^0+ H^0-{\frac {2\,h  }{n}} F^0-\frac {h \,\left( \theta_i+\theta_j \right)}{n} J^0 \right)
+% \end{align*}
+% Repeated application of these formulae shows that % $F^{n-2k}$ can be expressed as the sum of a polynomial in $h$ and 
+% \begin{align*}
+%   F^{n-2k} & = \frac{(n-2\,k)!}{n!} \left(P^k_F(\theta_i,\theta_j) F^n + P^k_J(\theta_i,\theta_j) J^n \right) + \mathcal{F}^{n-2k}     \\
+%   J^{n-2k} & = \frac{(n-2\,k)!}{n!} \left(Q^{k-1}_F(\theta_i,\theta_j) F^n + Q^k_J(\theta_i,\theta_j) J^n \right) + \mathcal{J}^{n-2k}
+% \end{align*}
+% whereby $P^k_F$, $P^k_J$, $Q^{k}_F$, $Q^k_J$ are polynomials in $\theta_i$ and $\theta_j$ of degree $k$ and whereby $\mathcal{F}^{n-2k}$ and $\mathcal{J}^{n-2k}$ represent terms that depend on $h$, $n$, $\theta_i$,   $\theta_j$ and the values $F^0$, $G^0$, $H^0$ and $J^0$. Since $|F^n|$ and  $|J^n|$ can be bounded by $h^n |F^0|$ and $h^n |J^0|$ respectively, it follows that for sufficiently large values of $n$ and $k$, $F^{n-2k}$ and $J^{n-2k}$ can be accurately approximated by $\mathcal{F}^{n-2k}$ and $\mathcal{J}^{n-2k}$ respectively.
 
 Lastly, the other values for $I_{k,l}^n$, with $k, l > 0$, can be computed via the recursion relation between the $\eta$-functions:
 \begin{align*}
@@ -470,13 +475,13 @@ In Newton's method the derivative of the function in question should be availabl
 $$
   \pdv[]{\Cbottom}{E}, \pdv[]{\Cbottom'}{E}, \pdv[]{\Ctop}{E} \text{ and } \pdv[]{\Ctop'}{E}
 $$
-are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself. First note for any invertible matrix $\vb{A}$, since $\vb{0} = \left(\vb{A}\vb{A}^{-1}\right)' = \vb{A}' \vb{A}^{-1} + \vb{A} \left(\vb{A}^{-1}\right)'$, that $\left(\vb{A}^{-1}\right)' = -\vb{A}^{-1} \vb{A}' \vb{A}^{-1}$. Applying this fact together with the product rule yields
+are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself. First note for any invertible matrix $\vb{A}$, since $\vb{0} = \left(\vb{A}\vb{A}^{-1}\right)' = \vb{A}' \vb{A}^{-1} + \vb{A} \left(\vb{A}^{-1}\right)'$, that $\left(\vb{A}^{-1}\right)' = -\vb{A}^{-1} \vb{A}' \vb{A}^{-1}$. It then follows that
 \begin{align*}
   \pdv{\vb{\Phi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
                        & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}\text{.}
 \end{align*}
 
-Since we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue, with respect to $\vb{E}$. The derivatives of the eigenvalues of a matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
+Since we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue with respect to $E$. The derivatives of the eigenvalues of a matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
 
 \begin{theorem}[Lancaster 1964]\label{the:c3_eigenvalue_derivative}
   Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C}^{n\times n}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
@@ -516,6 +521,7 @@ $$
 $$
 
 \begin{figure}
+  \todo{Maybe indicate linear approximation}
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/select_lambda_newton.pdf}
   \end{center}
@@ -528,7 +534,7 @@ Now, we define the scalar function $f(E) : \RR \to \RR$ as
 \end{equation}
 On this function $f(E)$ the classical Newton's method can be used.
 
-In figure \ref{fig:c3_select_lambda_newton} the idea of $f(E)$ from \eqref{equ:c3_mismatch_newton_function} is demonstrated. Assume the blue line and red line each represent an eigenvalue of $\vb{\Phi}(E)$. The regions where this eigenvalue is chosen by $f(E)$ are indicated. Note that by construction, in each step the real eigenvalue with the closest possible root in a linear approximation will be selected.
+In figure \ref{fig:c3_select_lambda_newton} the idea of $f(E)$ from \eqref{equ:c3_mismatch_newton_function} is demonstrated. Assume the blue line and red line each represent an eigenvalue of $\vb{\Phi}(E)$. The regions where this eigenvalue is chosen by $f(E)$ are indicated. The idea is that $f$ selects the function with the closest possible root in a linear approximation.
 
 \subsubsection{A numerical example}
 
@@ -562,7 +568,7 @@ holds within a given accuracy.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{img/chapter3/mismatch_newton.pdf}
-  \caption{The function \eqref{equ:c3_mismatch_newton_function} for problem \eqref{equ:c3_mismatch_ixaru} is plotted. Notice that this graph can also be found as a part of figure \ref{fig:c3_mismatch_rainbow}. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}\label{fig:c3_mismatch_newton}
+  \caption{The function \eqref{equ:c3_mismatch_newton_function} for problem \eqref{equ:c3_mismatch_ixaru} is plotted in blue. In red, we have indicated the smallest real eigenvalue (in absolute value) of $\vb{\Phi}(E)$. In regions where the red curve seems missing, it coincides with the blue curve. At first glance, the striking vertical lines may be assumed to be asymptotes. This is not the case, in these regions $f(E)$ changes very rapidly.}\label{fig:c3_mismatch_newton}
 \end{figure}
 
 In figure \ref{fig:c3_mismatch_newton} the graph of the function $f(E)$ from equation \eqref{equ:c3_mismatch_newton_function} is plotted. Comparing this with figure \ref{fig:c3_mismatch_rainbow}, allows us to get an intuitive understanding of our application of Newton's method. But as can be seen in figure \ref{fig:c3_mismatch_newton}, this method is not perfect. For example, the region in which eigenvalue $E_5$ can be detected is relatively small. If the more straightforward $f(x) = \argmin_{\lambda \in \spectrum(\vb{\Phi}(E)) \cap \RR} \left|\lambda\right|$ was used, this region would be extremely tiny, as can be seen on figure \ref{fig:c3_mismatch_newton}. But still, even with \eqref{equ:c3_mismatch_newton_function}, numerically it would be very unlikely to stumble upon this region, to detect that an eigenvalue was missing. For this reason we have developed a robust way to determine the number of eigenvalues less than the value $E$. This allows us to detect these missing values, and locate them. In the next section (\ref{sec:c3_index_of_e}), we will develop some new theory to locate all eigenvalues reliably.
@@ -1038,7 +1044,7 @@ Consider now the fixed value of $E = 45$. From the analysis in \ref{sec:c3_stand
 
 In the previous section we have made some theoretical advancements. To demonstrate the relevance and effectiveness of the provided theory, we proudly present some numerical results. In summary the obtained results are at least as accurate as the original method in \cite{ixaru_new_2010}, but are significantly faster, even when corrected for the more powerful modern CPUs.
 
-Another large improvement can be found in the `autonomy' of the algorithm. In \cite{ixaru_new_2010} different steps sizes are tabulated. But, since we implemented automatic step size selection, this distinction is no longer relevant. To demonstrate that our improvements facilitate using this method, we will also provide some \lpython{}-code. The example code makes use of the package \pyslisetd{}. This package contains our implementation (in \cpp{}, see the discussion from section \ref{sec:c2_implementation_challenges}) of the earlier described algorithm, together with our improvements.
+Another large improvement can be found in the `autonomy' of the algorithm. In \cite{ixaru_new_2010}, results for different steps sizes are tabulated. Since we implemented automatic step size selection, this distinction is no longer relevant. To demonstrate that our improvements facilitate using this method, we will also provide some \lpython{}-code. The example code makes use of the package \pyslisetd{}. This package contains our implementation (in \cpp{}, see the discussion from section \ref{sec:c2_implementation_challenges}) of the earlier described algorithm, together with our improvements.
 
 Via \texttt{pip}, the package \pyslisetd{} can be installed.
 % \begin{noindent}
@@ -1069,7 +1075,7 @@ $$
 
 Despite this being the easiest Schrödinger problem to consider, it is non-trivial in the sense that the multiplicity of an eigenvalue is rather unpredictable.
 
-In figure \ref{fig:c3_experiment_zero} the relative errors of the first hundred eigenvalues found with \pyslisetd{} are presented. Even for an extremely low number of basis functions used on each sector ($N = 5$), we are still able to reach the most accurate results possible for the first two dozen eigenvalues. However, once the eigenvalue is sufficiently high, it becomes totally wrong, since the relative error is close to $1$.
+In figure \ref{fig:c3_experiment_zero} the relative errors of the first hundred eigenvalues found with \pyslisetd{} are presented. Even for an extremely low number of basis functions used on each sector ($N = 5$), we are still able to reach the most accurate results possible for the first two dozen eigenvalues. However, once the index of the eigenvalue is sufficiently high, the relative error jumps to something close to $1$.
 
 \begin{figure}
   \begin{center}
