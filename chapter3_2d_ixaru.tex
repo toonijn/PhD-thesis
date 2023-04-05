@@ -190,8 +190,8 @@ Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normali
 \end{figure}
 
 Since in the infinite case
-\begin{equation}\label{equ:c3_m_before_truncation}  
-c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_j^{(k)}}\ket{b_i^{(k+1)}} c^{(k)}_j
+\begin{equation}\label{equ:c3_m_before_truncation}
+  c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_j^{(k)}}\ket{b_i^{(k+1)}} c^{(k)}_j
 \end{equation}
 exactly, this matrix $\vb{M}^{(k)}$ is orthogonal. However, if the sum on the right hand-side of \eqref{equ:c3_m_before_truncation} is truncated, then ${\vb{M}^{(k)}}^\transposesign$ no longer reverses this transformation. Therefore, $\vb{M}^{(k)}$ is in general no longer orthogonal. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x+1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure \ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor inconvenience, inherent to this method.
 
@@ -450,7 +450,7 @@ In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in
 
 For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
 
-\todo{Maybe demonstrate how many $M$ are calculated.}
+% Maybe demonstrate how many $M$ are calculated?
 
 
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
@@ -678,21 +678,24 @@ Before proving the main theorem of this section, we provide a kind of Fried\-ric
 \end{lemma}
 \begin{proof}
   For ease of notation, we will assume $j = 1$. Note that this proof is equally valid for any other $j$. Assume also $u \in C^\infty_0(\Omega) \cap H_0^k(\Omega)$. Because of the homogeneous Dirichlet boundary conditions,
-  the fundamental theorem of calculus\footnote{\todo{Fundamental theorem of calculus}} can be used to estimate $|u(\vb{x})|^2$ for each $\vb{x} \in \Omega$
+  the fundamental theorem of calculus\footnote{The fundamental theorem of calculus states that if $f : \RR \to \RR$ is a continuous and differentiable function with $f'(x)$ integrable then
+    $$
+      \int_a^b f'(x) \, \dd x = f(b) - f(a)\text{.}
+    $$} can be used to estimate $|u(\vb{x})|^2$ for each $\vb{x} = (x_1, \dots, x_n) \in \Omega$
   $$
-    \left|u(\vb{x})\right|^2 = \left|\int_{-\infty}^{\vb{x}_1} \pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n)\dd t\right|^2 \text{.}
+    \left|u(\vb{x})\right|^2 = \left|\int_{-\infty}^{x_1} \pdv[]{u}{x_1}\left(t, x_2, \dots, x_{n}\right)I_\Omega(t,x_2, \dots, x_n)\dd t\right|^2 \text{.}
   $$
   In this formula, and throughout the proof, we formally pose that $u(\vb{x}) \equiv 0$ for $\vb{x} \notin \Omega$. Note that the fundamental theorem of calculus is applicable because $u$ is compactly supported and in $C^1$.
 
-  Applying the Cauchy-Schwarz inequality provides some simplifications. Growing the integration domain removes the dependency on $\vb{x}_1$.
+  Applying the Cauchy-Schwarz inequality provides some simplifications. Growing the integration domain removes the dependency on $x_1$.
   \begin{align*}
-    \left|u(\vb{x})\right|^2 & \leq \int_{-\infty}^{\vb{x}_1} I_\Omega(t,\vb{x}_2, \dots, \vb{x}_n) \dd t \int_{-\infty}^{\vb{x}_1} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t \\
-                             & \leq \dirdiam_1(\Omega) \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t,\vb{x}_2, \dots, \vb{x}_n\right)\right|^2\dd t
+    \left|u(\vb{x})\right|^2 & \leq \int_{-\infty}^{x_1} I_\Omega(t,x_2, \dots, x_n) \dd t \int_{-\infty}^{x_1} \left|\pdv[]{u}{x_1}\left(t,x_2, \dots, x_n\right)\right|^2\dd t \\
+                             & \leq \dirdiam_1(\Omega) \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, x_2, \dots, x_n\right)\right|^2\dd t
   \end{align*}
-  with $a = \inf_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$ and $b = \sup_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$. Integrating both sides over $\Omega$, applying Fubini's theorem\footnote{\todo{Fubini's theorem}}, and noting that $b - a \leq \diam(\Omega)$, yields the required expression for $u \in C^\infty_0(\Omega)$.
+  with $a = \inf_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$ and $b = \sup_{\vb{x} \in \Omega}\{\vb{u}_1 \,|\, \vb{u} \in l_{\Omega, 1}(\vb{x})\}$. Integrating both sides over $\Omega$, applying Fubini's theorem\footnote{Fubini's theorem allows (under some easily checked conditions) to reorder the integration order in multidimensional integrals.}, and noting that $b - a \leq \diam(\Omega)$, yields the required expression for $u \in C^\infty_0(\Omega)$.
   \begin{align*}
-    \|u\|_{L^2(\Omega)}^2 & \leq \dirdiam_1(\Omega) \int_\Omega \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, \vb{x}_2, \dots, \vb{x}_{n}\right)\right|^2\dd t \, \dd \vb{x} \\
-                          & = \dirdiam_1(\Omega) \, (b - a) \, \int_{\Omega} \left|\pdv[]{u}{x_1}\left(\vb{x}\right)\right|^2 \dd \vb{x}                                 \\
+    \|u\|_{L^2(\Omega)}^2 & \leq \dirdiam_1(\Omega) \int_\Omega \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, x_2, \dots, x_{n}\right)\right|^2\dd t \, \dd \vb{x} \\
+                          & = \dirdiam_1(\Omega) \, (b - a) \, \int_{\Omega} \left|\pdv[]{u}{x_1}\left(\vb{x}\right)\right|^2 \dd \vb{x}                       \\
                           & \leq \dirdiam_1(\Omega) \, \diam(\Omega) \, \| u \|^2_{H^k(\Omega)}
   \end{align*}
 
@@ -1090,7 +1093,7 @@ The reason for these sudden wrong results can be found in the fact that the Schr
 
 Let us also address a possible concern: why did our method not detect this missing eigenvalue, using theorem \ref{the:c3_counting_eigenvalues}? Our method checks how many times on each sector there was a linear combination of the propagated functions that vanishes. If an insufficient number of basis functions are used, no such vanishing combination will be found, and the index will not be correctly determined. Here, the importance of a sufficiently large basis is apparent.
 
-To illustrate the usability of \pyslisetd{} we present some sample code to solve this Schrödinger problem.
+To illustrate the use of \pyslisetd{} we present some sample code to solve this Schrödinger problem.
 % \begin{noindent}
 \begin{minted}{python}
 from pyslise2d import Pyslise2D
@@ -1110,7 +1113,7 @@ As the zero potential is quite easy for this method, next we will consider the q
 $$
   2, 4, 4, 6, 6, 6, 8, 8, 8, 8, 10, \dots, 10, 12, \dots
 $$
-The method does not support infinite domains, thus we will assume the homogeneous Dirichlet boundary conditions on $\Omega = [-9.5, 9.5] \times [-9.5, 9.5]$. This allows comparison to section \ref{sec:c4_numerical_harmonic}.
+The method does not support infinite domains, thus we will assume homogeneous Dirichlet boundary conditions on $\Omega = [-9.5, 9.5] \times [-9.5, 9.5]$. This allows comparison to section \ref{sec:c4_numerical_harmonic}.
 
 Our implementation is relatively autonomous, there are only two parameters to study. Firstly we can specify a tolerance to influence the automatic sector size selection. And secondly, we can influence the number of basis functions $N$ to use on each sector.
 
@@ -1118,25 +1121,25 @@ Our implementation is relatively autonomous, there are only two parameters to st
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/experiments/harmonic.pdf}
   \end{center}
-  \caption{A comparison of relative error of the first fifty eigenvalues for different basis sizes $N$ and requested tolerances $\text{tol}$. For $N=22$, the algorithm with different tolerances used respectively $19$, $29$ and $40$ sectors.}\label{fig:c3_experiment_harmonic}
+  \caption{A comparison of relative error of the first fifty eigenvalues of the harmonic oscillator problem for different basis sizes $N$ and requested tolerances $\text{tol}$. For $N=22$, the algorithm with different tolerances used respectively $19$, $29$ and $40$ sectors.}\label{fig:c3_experiment_harmonic}
 \end{figure}
 
-In figure \ref{fig:c3_experiment_harmonic} we provide a comparison of the relative error of the first few eigenvalues when varying these two parameters. The first thing we notice is that our implementation has degenerate eigenvalue detection, this can be seen in the equal error for each of these eigenvalues.
+In figure \ref{fig:c3_experiment_harmonic} we provide a comparison of the relative error of the first few eigenvalues when varying these two parameters. The first thing we must remark is that our implementation has degenerate eigenvalue detection, this can be seen in the equal error for each of these eigenvalues.
 
 For a small basis size ($N = 6$) we can observe the same behavior as in figure \ref{fig:c3_experiment_zero}. From a certain point onward, eigenvalues will be plain wrong. For the first fifty eigenvalues this behavior disappears once $N$ is sufficiently large.
 
 When we focus upon the first three eigenvalues we see (as expected) that if we lower the requested tolerance, the eigenvalue approximations become more accurate. However, for higher lying eigenvalues, this relation seems to disappear unexpectedly. This is concerning. It may suggest that there is still somewhere a source of inaccuracy which we are not controlling for. In section \ref{sec:c3_conclusion_hypothesis} we will present some hypotheses and deeper analysis for these results.
 
-Ever the optimist, we also notice that for the first ten eigenvalues, our algorithm reaches an accuracy of $2^{-30} \approx 10^{-9}$. For the first twenty eigenvalues, we reach an accuracy of $2^{-21} \approx 10^{-7}$. These results are nonetheless impressive.
+Ever the optimist, we also notice that for the first ten eigenvalues, our algorithm reaches an accuracy of $2^{-30} \approx 10^{-9}$. For the first twenty eigenvalues, we reach an accuracy of $2^{-21} \approx 10^{-7}$, for all $N$ visualized. These results are nonetheless impressive.
 
 As a reference, the following code can be used to solve this problem.
 % \begin{noindent}
 \begin{minted}{python}
 from pyslise2d import Pyslise2D
 
-problem = Pyslise2D(lambda x, y: x*x + y*y, -9.5, 9.5, -9.5, 9.5
+harmonic = Pyslise2D(lambda x, y: x*x + y*y, -9.5, 9.5, -9.5, 9.5
                     tolerance=1e-8, N=14)
-print(problem.eigenvaluesByIndex(0, 30))
+print(harmonic.eigenvaluesByIndex(0, 30))
 \end{minted}
 % \end{noindent}
 
@@ -1149,7 +1152,7 @@ $$
 $$
 on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions.
 
-For this problem no analytical results are available
+For this problem no analytical results are available.
 
 
 \todo{Add some fluff.}
@@ -1167,10 +1170,10 @@ In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference v
     $E_{4}$         & 8.0312723                    & 8.031272363   \\
     $E_{5}$         & 8.4445814                    & 8.444581756   \\
     $E_{6} = E_{7}$ & 9.9280611                    & 9.928061161   \\
-    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614   \\
-    $E_{10}$        & 12.1032536                   & 12.103253445   \\
-    $E_{11}$        & 12.2011790                   & 12.201179825   \\
-    $E_{12}$        & 13.3323313                   & 13.332332972  
+    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  \\
+    $E_{10}$        & 12.1032536                   & 12.103253445  \\
+    $E_{11}$        & 12.2011790                   & 12.201179825  \\
+    $E_{12}$        & 13.3323313                   & 13.332332972
   \end{tabular}
   \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
 \end{table}
@@ -1246,11 +1249,11 @@ problem.eigenvaluesByIndex(0, 16)
 
 \subsection{Analyzing unexpected numerical behavior}\label{sec:c3_conclusion_hypothesis}
 
-In figure \ref{fig:c3_experiment_harmonic}, we have seen some strange behavior of the relative error of the eigenvalues in function of the tolerance and basis size. It was clear that something unexpected was happening. Ideally for numerical methods, we should observe an increase in accuracy when more accurate intermediate results are used. As a reminder, in figure \ref{fig:c3_experiment_harmonic}, in some cases the relative error of the found eigenvalues did not decrease if a larger basis on each sector or more sectors were used.
+In figure \ref{fig:c3_experiment_harmonic}, we have seen some strange behavior of the relative error of the eigenvalues in function of the tolerance and basis size. In some cases the relative error of the eigenvalues found did not decrease if a larger basis on each sector or more sectors were used. It was clear that something unexpected was happening. Ideally for numerical methods, we should observe an increase in accuracy when more accurate intermediate results are used.
 
-Discovering where accuracy is lost, is a real challenge. As chapter \ref{cha:c2} contains many numerical experiments up to extreme precision, it would be very surprising if the basis functions would be the cause of these inaccuracies. Another possible source could be the propagation of $\vb{c}^{(k)}$ from \eqref{equ:c3_coupled_system} within a sector. Our implementation of \matscs{} has been thoroughly tested. Furthermore, numerical issues here would more likely present as an abundance of sectors. In section \ref{sec:c3_experiments_zero}, we have studied the Schrödinger problem with zero potential. Here our program was able to reach machine precision without much trouble. This likely confirms that basis functions are correctly calculated and that propagation with the coupled of system of Schrödinger equations seems to work.
+Discovering where accuracy is lost, is a real challenge. As chapter \ref{cha:c2} contains many numerical experiments up to extreme precision, it would be very surprising if the basis functions would be the cause of these inaccuracies. Another possible source could be the propagation of $\vb{c}^{(k)}$ from \eqref{equ:c3_coupled_system} within a sector. Our implementation of \matscs{} has been thoroughly tested. Furthermore, numerical issues with the propagation would more likely lead to a large error, which in turn would manifest itself as an abundance of sectors, which is not the case. In section \ref{sec:c3_experiments_zero}, we have studied the Schrödinger problem with zero potential. Here our program was able to reach machine precision without much trouble. This likely confirms that basis functions are correctly calculated and that propagation with the coupled system of Schrödinger equations seems to work.
 
-Of course, no sufficiently interesting program is bug-free. The programs we have developed in this thesis are definitely not an exception. However, bugs in numerical software present themselves most of the time as completely wrong results or slow convergence. The behavior seen in figure \ref{sec:c3_experiments_zero} is atypical, to say the least.
+Of course, no sufficiently interesting program is bug-free. The programs we have developed in this thesis are definitely not an exception. However, bugs in numerical software present themselves most of the time as completely wrong results or slow convergence. The behavior seen in figure \ref{fig:c3_experiment_harmonic} is atypical, to say the least.
 
 \begin{figure}
   \begin{center}
@@ -1259,35 +1262,35 @@ Of course, no sufficiently interesting program is bug-free. The programs we have
   \end{center}
 \end{figure}
 
-Yet, more analysis is warranted. To locate the source of the numerical difficulties, we present figure \ref{fig:c3_harmonic_analysis}. Here we have run our program  for the harmonic oscillator problem from before with a tolerance of $10^{-11}$. Once the computation was executed with the standard \texttt{double}-precision\footnote{Numbers with a $53$ bit mantissa.}. Another time we have repeated the same calculation with the same parameters, but using \texttt{long double}-numbers\footnote{This is the x86 extended precision format with a mantissa of $65$ bit.}. As a tolerance of $10^{-11}$ is well within the range of \texttt{double}-precision numbers, we expect to see (almost) identical results. However, this is not the case. The results obtained with the datatype with higher precision are for most eigenvalues much more accurate. 
+Yet, more analysis is warranted. To locate the source of the numerical difficulties, we present figure \ref{fig:c3_harmonic_analysis}. Here we have run our program  for the harmonic oscillator problem from before with a tolerance of $10^{-11}$. Once the computation was executed with the standard \texttt{double}-precision\footnote{Numbers with a $53$ bit mantissa.}. Another time we have repeated the same calculation with the same parameters, but using \texttt{long double}-numbers\footnote{This is the x86 extended precision format with a mantissa of $65$ bit.}. As a tolerance of $10^{-11}$ is well within the range of \texttt{double}-precision numbers, we expect to see (almost) identical results. However, this is not the case. The results obtained with the datatype with higher precision are for most eigenvalues much more accurate.
 
-Interpreting these results is not straightforward. It would be hard to attribute the difference from figure \ref{fig:c3_harmonic_analysis}. Due to the use of template parameters (see section \ref{sec:c2_generalizing_scalar}), exactly the same code is being executed for all numeric types. It would be also extremely unlikely if this would be a logical or mathematical error, as a higher precision numeric type does reach more accurate results, with all other parameters being equal.
+Interpreting these results is not straightforward. It is hard to exactly determine the source of the differences from figure \ref{fig:c3_harmonic_analysis}. Due to the use of \cpp{}'s template parameters (see section \ref{sec:c2_generalizing_scalar}), exactly the same code is being executed for all numeric types. It would be also extremely unlikely if this would be a logical or mathematical error, as a higher precision numeric type does reach more accurate results, with all other parameters being equal.
 
 So, what can it be? Our best guess is that this is an inherent numerical instability when using the method studied in this chapter. We see many possible sources of this numeric instability, finding the true culprit may be insurmountably difficult. One possibility could be that in the huge formula we implemented for propagation of coupled systems of Schrödinger equations some cancellation occurs. To demonstrate this possibility we take a closer look at a single term in these giant formulae:
 $$
-\dots + \left(-\frac{1}{24}\vb{V_0}\vb{V_1} + \frac{1}{24} \vb{V_1}\vb{V_0}\right) h^4 + \dots \text{.}
+  \dots + \left(-\frac{1}{24}\vb{V_0}\vb{V_1} + \frac{1}{24} \vb{V_1}\vb{V_0}\right) h^4 + \dots \text{.}
 $$
 Here $\vb{V_0}$ and $\vb{V_1}$ are matrices used in the polynomial approximation of the matrix potential $\vb{V}(x)$. If $\vb{V_0}$ and $\vb{V_1}$ almost commute, $\vb{V_0}\vb{V_1}$ and $\vb{V_1}\vb{V_0}$ will be close together, and cancellation becomes an issue. This is only one example of many such terms, commutators are extremely common in these huge expressions.
 
 In section \ref{sec:c3_calculate_vk}, we have developed a technique to symbolically calculate the integrals present in the definition of $\vb{V}^{(k)}(y)$. Here we were careful in ensuring numerical stable recursive formulas. Another possibility for the numeric difficulties could be that we still were not careful enough. It could be that in these calculations a numeric instability becomes impactful if more accuracy is requested.
 
-Or, another possible culprit can maybe be found in the propagation of $\vb{c}^{(k)}(y)$. If many basis functions are used on a sector, there arises a large discrepancy in the behavior of the propagation of different elements of $\vb{c}^{(k)}(y)$. The first elements (corresponding to small eigenvalues) will exhibit an oscillatory behavior, but the last elements (corresponding to much larger eigenvalues) exhibit an exponential behavior. This discrepancy is already partly mitigated by regularly rescaling the propagated matrix, however this rescaling is only (and can be only)done on the boundary of sectors.
+Or, another possible culprit can maybe be found in the propagation of $\vb{c}^{(k)}(y)$. If many basis functions are used on a sector, there arises a large discrepancy in the behavior of the propagation of different elements of $\vb{c}^{(k)}(y)$. The first elements (corresponding to small eigenvalues) will exhibit an oscillatory behavior, but the last elements (corresponding to much larger eigenvalues) exhibit an exponential behavior. This discrepancy is already partly mitigated by regularly rescaling the propagated matrix, however this rescaling is only (and can be only) done on the boundary of sectors.
 
-In summary, we were unable to exactly pinpoint the source of the particular unexpected results of figure \ref{sec:c3_experiments_zero}. However, some possibilities were discussed. More importantly, all these possibilities have in common that they are extremely difficult are nearly impossible to fix.
+In summary, we were unable to exactly pinpoint the source of the particular unexpected results of figure \ref{fig:c3_experiment_harmonic}. However, some possibilities were discussed. More importantly, all these possibilities have in common that they are extremely difficult or nearly impossible to fix.
 
 
 \section{Conclusions}
 
-\todo{}
+In this chapter we have studied the method introduced by Ixaru in \cite{ixaru_new_2010} for two-dimensional time-independent Schrödinger equations. The original work presented an intriguing innovative method accompanied by a promising numerical example. Section \ref{sec:c3_ixarus_method} presents an overview of this method as first described. In section \ref{sec:c3_improvements}, we proudly presented our additions and improvements to this method. In particular, we have devised a way to reliably determine the index of an eigenvalue. For this, we developed some new necessary theory in section \ref{sec:c3_index_of_e}.
 
-\begin{enumerate}
-  \item accuracy
-  \item run time
-  \item numerical stability
-  \item order estimates
-  \item benefits vs. disadvantages
-  \item possible future work
-\end{enumerate}
+Section \ref{sec:c3_experiments} was dedicated to some numerical experiments. In this thesis, in contrast to an article, we have the luxury to take the time for a much deeper dive into some numerical experiments. As such, in this last section, we have unearthed some numerical difficulties present in this method. Attaining extremely high accuracies proved to be difficult. In section \ref{sec:c3_conclusion_hypothesis}, these numerical issues were analyzed.
 
+Now, it is easy to conclude with ``more research is needed''. However, in this thesis we are not interested in such a meaningless cop-out. We are sufficiently brave to add some nuance and (maybe unpopular) opinion. On the one hand, this method is definitely not without merit. It contains many invaluable ideas, making it a unique view onto the subject. On the other hand however, I am internally conflicted about whether this method is worth pursuing. In the next chapter we will start with the analysis of a relatively simple technique based upon a finite difference scheme. We will see that this technique is much easier to implement, is able to reach much higher accuracies, and all this without significantly more computation time.
+
+Concluding this chapter by declaring the last few years of research that we invested in the described method a waste of time, is too harsh. We were able to undoubtedly improve this method and discovered some new, more widely appliable theoretical results in the process.
+
+In scientific research we definitely need new and innovative ideas such as Ixaru's method described in this chapter. These groundbreaking ideas are a breeding ground of and jumping point to more new ideas. During the development of this thesis, I have found one of the more challenging aspects of scientific research to be the evaluation of ideas. With this I mean, recognizing valuable ideas and spending time developing them, but also the opposite: sufficiently early deciding that an idea is maybe not as promising as once hoped.
+
+Let me finally conclude this chapter by writing something one rarely reads in scientific articles: I do not know whether more research is really required.
 
 \stopchapter
