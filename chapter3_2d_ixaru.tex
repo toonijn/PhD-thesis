@@ -66,7 +66,7 @@ These theorems give a very clear picture about what a solution will look like. B
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/example_zero_both.png}
   \end{center}
-  \caption{A 2D and 3D plot of the eigenfunction corresponding to $i = 3$ and $j = 2$ from equation \ref{equ:c3_zero_example_eigenfunctions}, the eigenvalue is $E_{3,2} = 13$.}\label{fig:example_zero}
+  \caption{A 2D and 3D plot of the eigenfunction corresponding to $i = 3$ and $j = 2$ from equation \eqref{equ:c3_zero_example_eigenfunctions}, the eigenvalue is $E_{3,2} = 13$.}\label{fig:example_zero}
 \end{figure}
 
 As an example we consider the Schrödinger problem on the domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions and zero potential. Its equation is given as
@@ -119,7 +119,7 @@ This chapter is dedicated to the study and improvement of the method proposed in
 
 \section{Ixaru's method}\label{sec:c3_ixarus_method}
 
-The main idea of Ixaru's method is built on the well established technique (by among others Titchmarsh \cite{titchmarsh_eigenfunction_1962}) of writing a solution as a linear combination of well-chosen one dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that, to represent an eigenfunction along the whole of the domain, many basis functions are necessary to ensure accurate values. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, they suggest splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article \cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
+The main idea of Ixaru's method is built on the well established technique (by among others Titchmarsh \cite{titchmarsh_eigenfunction_1962}) of writing a solution as a linear combination of well-chosen one-dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that, to represent an eigenfunction along the whole of the domain, many basis functions are necessary to ensure accurate values. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, he suggests splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article \cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
 $$
   \ymin = y_0 < y_1 < y_2 < \dots < y_k < \dots < y_{K-1} < y_{K} = \ymax\text{.}
 $$
@@ -143,7 +143,7 @@ Ideally, the used basis on sector $k$ should be related to the resulting eigenfu
 \end{equation}
 with boundary conditions $b_i^{(k)}(\xmin) = b_i^{(k)}(\xmax) = 0$. The function $\bar{V}^{(k)}(x)$ is a constant (in the $y$-direction) approximation of the potential $V$ on the $k^\text{th}$ sector.
 
-Using this basis is extremely promising. The basis functions are oscillatory for regions where $\bar{V}$ is small, and have an exponential behavior when $\bar{V}$ is large. This same behavior is expected for the two-dimensional eigenfunctions as well. For a potential function which becomes large, the two-dimensional eigenfunction is expected to be most present in the regions where $V(x, y)$ is small. The chosen one-dimensional basis functions $b_i^(k)(x)$ express this same behavior.
+Using this basis is extremely promising. The basis functions are oscillatory for regions where $\bar{V}$ is small, and have an exponential behavior when $\bar{V}$ is large. This same behavior is expected for the two-dimensional eigenfunctions as well. For a potential function which becomes large, the two-dimensional eigenfunction is expected to be most present in the regions where $V(x, y)$ is small. The chosen one-dimensional basis functions $b_i^{(k)}(x)$ express this same behavior.
 
 For the choice of $\bar{V}(x)$, in \cite{ixaru_new_2010} $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used. We will use this as well, for now. Later, we will remark that in some cases other choices may be beneficial.
 
@@ -158,7 +158,7 @@ In this expression $\vb{V}^{(k)}$ is an $N\times N$ matrix depending on $y$:
   \vb{V}^{(k)}_{ij}(y) = \int_{\xmin}^{\xmax} b_i^{(k)}(x) b_j^{(k)}(x) \left(V(x, y) - \bar{V}^{(k)}(x)\right) \dd x + \delta_{ij} \lambda_i^{(k)} \text{.}
 \end{equation}
 
-The system of ordinary differential equations given in \eqref{equ:c3_coupled_system} is a coupled system of Schrö\-dinger equations. For coupled systems, there are implementations of constant perturbation methods available \lilix{}\cite{ixaru_lilix_2002} or \matscs{}\cite{ledoux_numerical_2007} for example.
+The system of ordinary differential equations given in \eqref{equ:c3_coupled_system} is a coupled system of Schrö\-dinger equations. For coupled systems, there are implementations of constant perturbation methods available \lilix{} \cite{ixaru_lilix_2002} or \matscs{} \cite{ledoux_numerical_2007} for example.
 
 For the accurate computation of the integral in \eqref{equ:c3_v_matrix} we have developed specialized formulae. These will be presented later on in section \ref{sec:c3_calculate_vk}.
 
@@ -253,23 +253,23 @@ A possible automatic sector selection is visualized in figure \ref{fig:c3_sector
 
 \subsection{Orthonormalization of eigenfunctions}\label{sec:c3_improvement_orthonormalization}
 
-For the one dimensional case, we know from theory that eigenfunctions corresponding to different eigenvalues are necessarily orthogonal. In theorem \ref{the:c3_eigs_othogonal} we have seen that eigenfunctions for different eigenvalues will always be orthogonal. But up to now, nothing has been stated about eigenfunctions corresponding to the same eigenvalue. For degenerate eigenvalues, the eigenspace will be multidimensional.
+For the one-dimensional case, we know from theory that eigenfunctions corresponding to different eigenvalues are necessarily orthogonal. In theorem \ref{the:c3_eigs_othogonal} we have seen that eigenfunctions for different eigenvalues will always be orthogonal. But up to now, nothing has been stated about eigenfunctions corresponding to the same eigenvalue. For degenerate eigenvalues, the eigenspace will be multidimensional.
 
-Ideally, the eigenfunctions returned by are program should form an orthonormal basis. For this we need to normalize eigenfunctions, and ensure that the returned basis of a multidimensional eigenspace is orthogonal. To execute normalization, the inner product $\bra{u}\ket{u} := \int_\Omega u^2$  of an eigenfunction $u$ with itself should be computed. To orthogonalize two linear-independent eigenfunctions in the same eigenspace, a Gram-Schmidt process can be used. For this process, there has to be a way to compute the inner product $\bra{u}\ket{v}$ of two functions $u$ and $v$ in this eigenspace.
+Ideally, the eigenfunctions returned by our program should form an orthonormal basis. For this we need to normalize eigenfunctions, and ensure that the returned basis of a multidimensional eigenspace is orthogonal. To execute normalization, the inner product $\bra{u}\ket{u} := \int_\Omega u^2$  of an eigenfunction $u$ with itself should be computed. To orthogonalize two linear independent eigenfunctions in the same eigenspace, a Gram-Schmidt process can be used. For this process, there has to be a way to compute the inner product $\bra{u}\ket{v}$ of two functions $u$ and $v$ in this eigenspace.
 
 To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases the inner product of two functions should be computable. One way would be to numerically estimate this value with some quadrature rules. In principle this is a valid approach, but in practice, this is quite computationally expensive. Therefore, we have constructed in theorem \ref{the:c3_dot_product} specialized formulae to compute these inner products.
 
-Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem \ref{the:c3_dot_product} is formulated with the assumptions these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domains, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one dimensional Sturm-Liouville problems.
+Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem \ref{the:c3_dot_product} is formulated with the assumptions that these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domain, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one-dimensional Sturm-Liouville problems.
 
 \begin{theorem}\label{the:c3_dot_product}
-  Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section \ref{sec:c3_ixarus_method}, on a single sector).
+  Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one-dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section \ref{sec:c3_ixarus_method}, on a single sector).
   \begin{align*}
     \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \\
     \psi_b(x, y) = \transpose{\vb{b}(x)} \vb{c_b}(y) = \sum_i b_i(x) c_{b, i}(y)
   \end{align*}
   On a rectangular domain $[\xmin, \xmax] \times [\ymin, \ymax]$ the inner product of these two functions can be expressed as
   $$
-    \bra{\psi_a}\ket{\psi_b} = \int_\xmin^\xmax \int_\ymin^\ymax \psi_a\psi_b \, \dd y \, \dd x = \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=y_\ymax} \text{,}
+    \bra{\psi_a}\ket{\psi_b} = \int_\xmin^\xmax \int_\ymin^\ymax \psi_a\psi_b \, \dd y \, \dd x = \left. \left(\pdv{\transpose{\vb{c_a}}}{E} \vb{c_b}' - \transpose{\vb{c_b}}\pdv{\vb{c_a}'}{E} \right) \right|_{y=\ymin}^{y=\ymax} \text{,}
   $$
   with $\vb{c_a}' = \dv[]{\vb{c_a}}{y}$ and $\vb{c_b}' = \dv[]{\vb{c_b}}{y}$.
 \end{theorem}
@@ -305,7 +305,7 @@ Calculating the inner product on the whole domain at once is difficult due to th
   Since the basis functions satisfy the Dirichlet boundary conditions\footnote{Note that this proof also works if the basis $\vb{b}$ is assumed to satisfy homogeneous Robin boundary conditions.} $\vb{b}(\xmin) = \vb{b}(\xmax) = \vb{0}$ the last term has to be zero, which proves the theorem.
 \end{proof}
 
-In this theorem it is assumed that the basis in which the eigenfunctions are expanded is constant throughout the whole domain. In our case, this basis changes in between sectors. Therefore, when computing the inner product of two eigenfunctions in the domain, theorem \ref{the:c3_dot_product} will have to be repeatedly employed on each sector separately. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
+In this theorem it is assumed that the basis in which the eigenfunctions are expanded, is constant throughout the whole domain. In our case, this basis changes in between sectors. Therefore, when computing the inner product of two eigenfunctions on the domain, theorem \ref{the:c3_dot_product} will have to be repeatedly employed on each sector separately, with $\ymin = y_{k-1}$ and $\ymax = y_k$. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
 
 \subsection{Calculation of \texorpdfstring{$\vb{V}^{(k)}(y)$}{Vk(y)}}\label{sec:c3_calculate_vk}
 
@@ -380,7 +380,7 @@ we obtain
   % \right. \\  &\hspace{54mm} \left.
   - \theta_j \eta_{-1}(Z_i)\eta_{0}(Z_j) \right) \dd \delta                                                                                                   \\
         & =h^{n} F^0 - \frac{n}{\theta_i-\theta_j}\left(\theta_i H^{n-1} - \theta_j G^{n-1}\right) \text{.}                                                   \\
-  \intertext{With similar computations we obtain following formulae.}
+  \intertext{With similar computations we obtain the following formulae.}
   G^{n} & = \int_{0}^{h}\eta_{-1}(Z_i)\eta_{0}(Z_j) \delta^{n+1} \dd \delta                                                                                   \\
         & = h^{n} G^0 + \frac{n}{\theta_i - \theta_j}\int_0^h \delta^{n-1} \left( \eta_{-1}(Z_i)\eta_{-1}(Z_j)
   %		\right.             \\               %    & \hspace{54mm} \left.
@@ -450,10 +450,12 @@ In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in
 
 For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
 
+\todo{Maybe demonstrate how many $M$ are calculated.}
+
 
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
 
-In section \ref{sec:c3_ixarus_method} we have studied a method to determine, for a given value $E$, whether it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation \eqref{equ:c3_psi_e} becomes singular. In \cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about one would go about finding such values for $E$.
+In section \ref{sec:c3_ixarus_method} we have studied a method to determine, for a given value $E$, whether it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation \eqref{equ:c3_psi_e} becomes singular. In \cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about how one would go about finding such values for $E$.
 
 In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g. \cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by repeatedly halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different signs on the end points of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
 
@@ -463,7 +465,7 @@ $$
 $$
 For single roots, this method has a faster rate of convergence. Choosing initial values is also easier, because a value $x_0$ should be chosen only to be `sufficiently close' to a true root. One of the biggest drawbacks of this method is that the derivative of $f(x)$ should be available. For complicated functions, this can be difficult. Extensions of this method exist for which the derivative is not necessary, the secant method for example.
 
-In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions $\RR^n \to \RR^n$ for which roots are uniquely defined. In our case, we are interested in when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ become zero. This does not map directly on any of these classical root-finding algorithms.
+In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions $\RR^n \to \RR^n$ for which roots are uniquely defined. In our case, we are interested in the situation when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ becomes zero. This does not map directly on any of these classical root-finding algorithms.
 
 To combat these issues with the classical algorithms, we propose a small modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation \eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that the matrix $\vb{\Phi}(E)$, as defined by \eqref{equ:c3_psi_e}, is singular.
 $$
@@ -484,7 +486,7 @@ are available. This allows us to also compute the derivative of $\vb{\Phi}$ itse
 Since we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also valuable to be able to compute the derivative of an eigenvalue with respect to $E$. The derivatives of the eigenvalues of a matrix-function are already known for a long time \cite{lancaster_eigenvalues_1964}.
 
 \begin{theorem}[Lancaster 1964]\label{the:c3_eigenvalue_derivative}
-  Let $\vb{A}(x)$ be a matrix functions $\mathbb{C} \to \mathbb{C}^{n\times n}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
+  Let $\vb{A}(x)$ be a matrix function $\mathbb{C} \to \mathbb{C}^{n\times n}$ such that each coefficient is continuously differentiable with respect to $x$ in the point $x_0$. Furthermore, assume $\vb{A}(x_0)$ to be diagonalizable\footnote{In \cite{lancaster_eigenvalues_1964}, it is noted that different, less stringent, assumptions may be made on the structure of $\vb{A}(x)$: ``This is equivalent to saying that every eigenvalue of [$\vb{A}(x_0)$] has only linear elementary divisors; or that [$\vb{A}(x_0)$] is diagonable, non-derogatory, non-defective, or similar to a diagonal matrix. This assumption could be replaced by the less restrictive condition that only the eigenvalue [$\lambda$] should have linear elementary divisors.''}.
 
   Let $\lambda$ be a simple eigenvalue of $\vb{A}(x_0)$ with left and right eigenvectors $\vb{v}$, $\vb{u}$ respectively. It now holds that
   $$
@@ -517,7 +519,7 @@ $$
 
 With the values for all these derivatives, all tools are available to formulate our proposed modified Newton's scheme, in order to let a crude initial guess $E_0$ converge to a true eigenvalue of \eqref{equ:c3_schrodinger_2d}. To simplify the notation we introduce the matrix-operator $\spectrum$ which returns the spectrum of a matrix. This operator is defined on the $n \times n$-matrix $\vb{A}$ as
 $$
-  \spectrum(\vb{A}) := \left\{\lambda \in \CC \, | \, \exists \vb{u} \in \CC^n : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
+  \spectrum(\vb{A}) := \left\{\lambda \in \CC \, \middle| \, \exists \vb{u} \in \CC^n \setminus \{\vb{0}\} : \vb{A} \vb{u} = \lambda \vb{u} \right\}\text{.}
 $$
 
 \begin{figure}
@@ -594,7 +596,7 @@ Throughout mathematical physics there are many problems dependent on, or consist
   \end{center}
 \end{table}
 
-Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one dimensional problems, such as regular Sturm-Liouville problems with linear separated boundary conditions on bounded domains, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
+Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one-dimensional problems, such as regular Sturm-Liouville problems with linear separated boundary conditions on bounded domains, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
 % Fun fact: Richard Courant maried the daughter of Carl Runge
 
 \begin{figure}
@@ -660,11 +662,11 @@ $$
   \|u\|_{H^k(\Omega)} := \left(\sum_{|\alpha| \leq k} \int_\Omega \left| D^\alpha u \right|^2\right)^{\frac{1}{2}}\text{.}
 $$
 
-The function space $C^\infty(\Omega)$ consists of all infinitely differentiable defined on $\Omega$. And, $C_0^\infty(\Omega)$ consists of all infinitely differentiable functions $f$ defined on $\Omega$ such that $f(\vb{x}) = 0$ for all $\vb{x} \in \dOmega$.
+The function space $C^\infty(\Omega)$ consists of all infinitely differentiable functions defined on $\Omega$. And, $C_0^\infty(\Omega)$ consists of all infinitely differentiable functions $f$ defined on $\Omega$ such that $f(\vb{x}) = 0$ for all $\vb{x} \in \dOmega$.
 
 The subspace $ H^k_0(\Omega)$ of $H^k(\Omega)$ is the closure of $C_0^\infty(\Omega)$ in $H^k(\Omega)$.
 
-Before proving the main theorem of this section, we provide a kind of Fried\-richs's inequality to estimate a lower bound for $\| u \|_{H^k(\Omega)}$ in terms of $\| u \|_{L^2(\Omega)}$, and the diameter and any directional diameter of $\Omega$.
+Before proving the main theorem of this section, we provide a kind of Fried\-richs's inequality to estimate a lower bound for $\| u \|_{H^k(\Omega)}$ in terms of $\| u \|_{L^2(\Omega)}$, and the diameter\footnote{The diameter of a domain $\Omega$ is defined as $\diam\Omega := \sup_{\vb{x},\vb{y}\in \Omega} \|\vb{x} - \vb{y}\|_2$.} and any directional diameter of $\Omega$.
 
 \begin{lemma}
   \label{lem:friederichs_like}
@@ -716,7 +718,7 @@ Now we are able to prove lemma \ref{lem:c3_eigenvalues_curves}. This prepares th
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  Already in 1924 Courant and Hilbert \cite[Vol I. Chapter V. Paragraph 13]{courant_methods_2008} noted the continuity of the spectrum given perturbations of the elliptic operator. Hale described (e.g.\ \cite{hale_eigenvalues_2005}) how to translate regular perturbations in the domain to perturbations in the operator. Our set of diffeomorphic domains satisfies the necessary assumptions formulated by Hale, so continuity is guaranteed.
+  Already in 1924 Courant and Hilbert \cite[Vol I. Chapter V. Paragraph 13]{courant_methods_2008} noted the continuity of the spectrum under perturbations of the elliptic operator. Hale described (e.g.\ \cite{hale_eigenvalues_2005}) how to translate regular perturbations in the domain to perturbations in the operator. Our set of diffeomorphic domains satisfies the necessary assumptions formulated by Hale, so continuity is guaranteed.
 
   That $\lambda_{\epsilon, i}$ is a decreasing function of $\epsilon$, can be shown by application of \cite[Vol I, Chapter  VI, paragraph 2, Theorem 3]{courant_methods_2008} \emph{``Under the boundary condition $u = 0$ the $n^\text{th}$ eigenvalue for a domain $G$ never exceeds the $n^\text{th}$ eigenvalue for a subdomain of $G$".} The strictness is addressed in a footnote by this theorem: \emph{"In fact, it is always smaller when we are dealing with a proper subdomain."}.
 
@@ -739,7 +741,7 @@ Now we are able to prove lemma \ref{lem:c3_eigenvalues_curves}. This prepares th
 \end{figure}
 
 As an example, in figure \ref{fig:c3_counting_eigenvalue_graph} the spectrum of a Schrödinger operator is plotted as a function of the nested sequence of domains $[-5.5; 5.5] \times [-5.5; y_{\text{max}}]$. Each curve corresponds to an eigenvalue. The figure suggests that all of these lines are continuous, decreasing, and unbounded for $y_{\text{max}} \to -5.5^{+}$, in accordance with lemma \ref{lem:c3_eigenvalues_curves}. A horizontal line corresponding to a fixed value $E$ will intersect each curve corresponding to a lower eigenvalue on the whole domain. This number of
-intersection thus gives the number of eigenvalues lower than this given value $E$. If $E$ itself is an eigenvalue, then we have also found its index.
+intersections thus gives the number of eigenvalues lower than this given value $E$. If $E$ itself is an eigenvalue, then we have also found its index.
 
 The graph from figure \ref{fig:c3_counting_eigenvalue_graph} and the notion of a horizontal line with fixed value of $E$, give rise to following theorem.
 
@@ -760,9 +762,9 @@ While propagating a solution one can keep track of how many times the boundary c
 
 \subsection{Examples}\label{sec:c3_counting_examples}
 
-We provide a few examples. The first example illustrates that our result is a more general formulation for a well known theorem for the one-dimensional problem. In the second example we will do some symbolic calculations for a disc-shaped domain. The third example will demonstrate our implemention of theorem \ref{the:c3_counting_eigenvalues} in the method from section \ref{sec:c3_ixarus_method}. And in the last example we will take a look at a much more exotic family of domains to illustrate the applicability of our theorem to use-cases far beyond what our numerical method is capable of.
+We provide a few examples. The first example illustrates that our result is a more general formulation of a well known theorem for the one-dimensional problem. In the second example we will do some symbolic calculations for a disc-shaped domain. The third example will demonstrate our implemention of theorem \ref{the:c3_counting_eigenvalues} in the method from section \ref{sec:c3_ixarus_method}. And in the last example we will take a look at a much more exotic family of domains to illustrate the applicability of our theorem to use-cases far beyond what our numerical method is capable of.
 
-\subsubsection{One dimensional Sturm-Liouville equation}
+\subsubsection{One-dimensional Sturm-Liouville equation}
 
 Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the regular Sturm-Liouville equation
 $$
@@ -1070,7 +1072,7 @@ $$
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/experiments/zero.pdf}
   \end{center}
-  \caption{The relative error for the first hundred eigenvalues of the zero potential Schrödinger problem on the square $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions. Degenerate eigenvalues are connected.}\label{fig:c3_experiment_zero}
+  \caption{The relative error for the first hundred eigenvalues of the zero potential Schrödinger problem on the square $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions. Degenerate eigenvalues are connected. If a color seems missing for a value, it coincides with another drawn point.}\label{fig:c3_experiment_zero}
 \end{figure}
 
 Despite this being the easiest Schrödinger problem to consider, it is non-trivial in the sense that the multiplicity of an eigenvalue is rather unpredictable.
@@ -1084,7 +1086,7 @@ In figure \ref{fig:c3_experiment_zero} the relative errors of the first hundred 
   \caption{When using $N = 5$. On the left: the found $22^\text{nd}$ eigenfunction. On the right: the missing $23^\text{th}$ eigenfunction.}\label{fig:c3_experiment_zero_missing}
 \end{figure}
 
-The reason for these sudden wrong results can be found in the fact that the zero potential is definitely an easy problem for this method. Upon close inspection, we have found that \pyslisetd{} only uses a total of three sectors on the whole domain, independent of the requested accuracy. On each sector exactly the same one-dimensional problem is solved, which entails exactly the same basis functions $b_i(x) = \sin(i x)$. And coincidentally, the two-dimensional eigenfunction corresponding to $E = i^2 + j^2$ can be written as $\psi(x, y) = c(y) \sin(i x)$. In summary for this method, by construction the Schrödinger problem with zero potential get solved exactly. Yet, for $N=5$ we see that $E_{22} = E_{23}$ is not found correctly. Notice that $E_{22} = E_{23} = 37 = 1^2 + 6^2$. When, only $5$ basis functions are considered on a sector, the necessary function $\sin(6 x)$ will not be present, and therefore this eigenvalue can not be correctly found. As an illustration, figure \ref{fig:c3_experiment_zero_missing} visualizes this missing eigenfunction.
+The reason for these sudden wrong results can be found in the fact that the Schrödinger problem with zero potential on a rectangular domain is definitely an easy problem for this method. Upon close inspection, we have found that \pyslisetd{} only uses a total of three sectors on the whole domain, independent of the requested accuracy. On each sector exactly the same one-dimensional problem is solved, yielding exactly the same basis functions $b_i(x) = \sin(i x)$. And coincidentally, the two-dimensional eigenfunction corresponding to $E = i^2 + j^2$ can be written as $\psi(x, y) = c(y) \sin(i x)$ for a $y$-dependent function $c(y)$. In summary for this method, by construction the Schrödinger problem with zero potential gets solved exactly. Yet, for $N=5$ we see that $E_{22} = E_{23}$ is not found correctly. Notice that $E_{22} = E_{23} = 37 = 1^2 + 6^2$. When only $5$ basis functions are considered on a sector, the necessary function $\sin(6 x)$ will not be present, and therefore this eigenvalue can not be correctly found. As an illustration, figure \ref{fig:c3_experiment_zero_missing} visualizes this missing eigenfunction.
 
 Let us also address a possible concern: why did our method not detect this missing eigenvalue, using theorem \ref{the:c3_counting_eigenvalues}? Our method checks how many times on each sector there was a linear combination of the propagated functions that vanishes. If an insufficient number of basis functions are used, no such vanishing combination will be found, and the index will not be correctly determined. Here, the importance of a sufficiently large basis is apparent.
 
