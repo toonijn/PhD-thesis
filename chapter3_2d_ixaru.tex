@@ -523,7 +523,6 @@ $$
 $$
 
 \begin{figure}
-  \todo{Maybe indicate linear approximation}
   \begin{center}
     \includegraphics[width=\textwidth]{img/chapter3/select_lambda_newton.pdf}
   \end{center}
@@ -1152,31 +1151,7 @@ $$
 $$
 on the square domain $[-5.5, 5.5] \times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions.
 
-For this problem no analytical results are available.
-
-
-\todo{Add some fluff.}
-
-In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference values calculated by Ixaru in \cite{ixaru_new_2010}. There the computation took $45$ seconds. Our values can be computed within $1.4$ seconds on an Intel i7-8700K.
-
-\begin{table}
-  \centering
-  \begin{tabular}{l|n{2}{7}n{2}{10}}
-                    & {Ixaru\cite{ixaru_new_2010}} & {Our results} \\
-    \hline
-    $E_{0}$         & 3.1959181                    & 3.195918111   \\
-    $E_{1} = E_{2}$ & 5.5267439                    & 5.526744074   \\
-    $E_{3}$         & 7.5578033                    & 7.557803572   \\
-    $E_{4}$         & 8.0312723                    & 8.031272363   \\
-    $E_{5}$         & 8.4445814                    & 8.444581756   \\
-    $E_{6} = E_{7}$ & 9.9280611                    & 9.928061161   \\
-    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  \\
-    $E_{10}$        & 12.1032536                   & 12.103253445  \\
-    $E_{11}$        & 12.2011790                   & 12.201179825  \\
-    $E_{12}$        & 13.3323313                   & 13.332332972
-  \end{tabular}
-  \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
-\end{table}
+For this problem no analytical results are available. However, in \cite{ixaru_new_2010} numerical results are reported.
 
 By using \texttt{pyslise2d}, the code to solve this problem is quite straightforward.
 % \begin{noindent}
@@ -1192,47 +1167,75 @@ problem.eigenvaluesByIndex(0, 12)
 \end{minted}
 % \end{noindent}
 
+\begin{table}
+  \centering
+  \begin{tabular}{ln{2}{7}n{2}{10}}
+    \toprule
+                    & {Ixaru\cite{ixaru_new_2010}} & {Our results} \\
+    \midrule
+    $E_{0}$         & 3.1959181                    & 3.195918111   \\
+    $E_{1} = E_{2}$ & 5.5267439                    & 5.526744074   \\
+    $E_{3}$         & 7.5578033                    & 7.557803572   \\
+    $E_{4}$         & 8.0312723                    & 8.031272363   \\
+    $E_{5}$         & 8.4445814                    & 8.444581756   \\
+    $E_{6} = E_{7}$ & 9.9280611                    & 9.928061161   \\
+    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  \\
+    $E_{10}$        & 12.1032536                   & 12.103253445  \\
+    $E_{11}$        & 12.2011790                   & 12.201179825  \\
+    $E_{12}$        & 13.3323313                   & 13.332332972  \\
+    \bottomrule
+  \end{tabular}
+  \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
+\end{table}
+
+In table \ref{tab:ixaru_eigenvalues} our results are compared to the reference values calculated by Ixaru in \cite{ixaru_new_2010}. There the computation took $45$ seconds. Our values were computed within $1.4$ seconds on an Intel i7-8700K. Blindly comparing these run-times is ill-informed as the hardware is significantly different. Regardless, we are quite satisfied with the speed our program is able to achieve.
+
+Upon close inspection of table \ref{tab:ixaru_eigenvalues}, we remark that our results agree with these from \cite{ixaru_new_2010} to all digits, except sometimes the last (two).
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/ixaru.pdf}
+  \end{center}
+  \caption{A comparison of relative error of the first thirty eigenvalues of the Schrödinger problem with Ixaru's potential from section \ref{sec:c3_experiment_ixaru} for different basis sizes $N$ and requested tolerances.}\label{fig:c3_experiment_ixaru}
+\end{figure}
+
+Alternative to a table of values, we plot the relative errors of the found eigenvalues for different basis sizes $N$ and requested tolerances in figure \ref{fig:c3_experiment_ixaru}. As we observed numerical issues in the previous experiment, here the reference values were not computed with \pyslisetd{}, rather we employed our method from the next chapter. Some remarks can be made on figure \ref{fig:c3_experiment_ixaru}. First, the same numerical issues as for the harmonic oscillator can be observed. The relative errors seem to plateau around $10^{-8}$, independent of which accuracy is requested, or the basis size used. Second, in all panels, we can observe a clear trend in the blue curve with $N = 6$: if the index of the eigenvalue becomes larger, the accuracy decreases. For the red curve with $N = 12$,  a similar trend can be suspected in the eigenvalues with index close to $30$.
+
+Drawing conclusions with any certainty from these graphs is difficult. We believe these graphs to support the analysis of section \ref{sec:c3_conclusion_hypothesis}.
+
 \subsection{Hénon-Heiles}\label{sec:c3_experiment_henon}
 
-\todo{Add some fluff.}
-
-Another interesting example is that of the Hénon-Heiles potential. The corresponding Schrödinger problem is given by:
+Another interesting example is that with the Hénon-Heiles potential. The corresponding Schrödinger problem is given by:
 $$
-  -\frac{1}{2}\nabla^2 \psi + \left(\frac{1}{2}\left(x^2 + y^2\right) + \frac{1}{12\sqrt{5}} y \left(3 x^2  - y^2\right)\right)\psi = E \psi \text{.}
+  -\nabla^2 \psi + \left(x^2 + y^2 + \frac{\sqrt{5}}{30} y \left(3 x^2  - y^2\right)\right)\psi = E \psi \text{.}
 $$
 
-Following \cite{braun_efficient_1996}, we report the first eigenvalues on the square $[-6, 6] \times [-6, 6]$ in table \ref{tab:henon_heiles_eigenvalues}. The computation only took $1.3$ seconds, and the results are identical, within the available precision in \cite{braun_efficient_1996}.
+Following \cite{braun_efficient_1996}, we impose homogeneous Dirichlet boundary conditions on the square $[-6, 6] \times [-6, 6]$. Our results are reported in table \ref{tab:henon_heiles_eigenvalues}. The computation only took $1.3$ seconds, and the results are identical, within the available precision in \cite{braun_efficient_1996}.
 
 \begin{table}
   \centering
-  \begin{tabular}{l|n{1}{6}n{1}{10}n{1}{1}}
-                      & {Braun et al.\cite{braun_efficient_1996}} & {Our results} & {Difference} \\
-    \hline
-    $E_{0}$           & 0.998595                                  & 0.9985947661  & 2.3e-7       \\
-    $E_{1} = E_{2}$   & 1.990077                                  & 1.9900767814  & 2.2e-7       \\
-    $E_{3}$           & 2.956243                                  & 2.9562429806  & 1.9e-8       \\
-    $E_{4} = E_{5}$   & 2.985326                                  & 2.9853263715  & 3.7e-7       \\
-    $E_{6} = E_{7}$   & 3.925964                                  & 3.9259638565  & 1.4e-7       \\
-    $E_{8}$           & 3.982417                                  & 3.9824172948  & 2.9e-7       \\
-    $E_{9}$           & 3.985761                                  & 3.9857610624  & 6.2e-8       \\
-    $E_{10}$          & 4.870144                                  & 4.8701435890  & 4.1e-7       \\
-    $E_{11} = E_{12}$ & 4.898644                                  & 4.8986454644  & 1.5e-6       \\
-    $E_{13} = E_{14}$ & 4.986251                                  & 4.9862512850  & 2.8e-7       \\
-    $E_{15}$          & 5.817019                                  & 5.8170190699  & 7.0e-8       \\
-    $E_{16}$          & 5.817027                                  & 5.8170279899  & 9.9e-7       \\
+  \begin{tabular}{ln{1}{6}n{1}{10}}
+    \toprule
+                      & {Braun et al. \cite{braun_efficient_1996}} & {Our results} \\
+    \midrule
+    $E_{0}$           & 0.998595                                  & 0.9985947661  \\
+    $E_{1} = E_{2}$   & 1.990077                                  & 1.9900767814  \\
+    $E_{3}$           & 2.956243                                  & 2.9562429806  \\
+    $E_{4} = E_{5}$   & 2.985326                                  & 2.9853263715  \\
+    $E_{6} = E_{7}$   & 3.925964                                  & 3.9259638565  \\
+    $E_{8}$           & 3.982417                                  & 3.9824172948  \\
+    $E_{9}$           & 3.985761                                  & 3.9857610624  \\
+    $E_{10}$          & 4.870144                                  & 4.8701435890  \\
+    $E_{11} = E_{12}$ & 4.898644                                  & 4.8986454644  \\
+    $E_{13} = E_{14}$ & 4.986251                                  & 4.9862512850  \\
+    $E_{15}$          & 5.817019                                  & 5.8170190699  \\
+    $E_{16}$          & 5.817027                                  & 5.8170279899  \\
+    \bottomrule
   \end{tabular}
   \caption{\label{tab:henon_heiles_eigenvalues}  The first few eigenvalues of the problem with potential $V(x,y) = x^2 + y^2 + \frac{1}{6\sqrt{5}} y \left(3 x^2  - y^2\right)$ on the domain $[-6; 6] \times [-6; 6]$. The results are reported divided by $2$ to provide compatibility with \cite{braun_efficient_1996}.}
 \end{table}
 
-With this method, also the eigenfunctions can be computed. This is demonstrated in figure \ref{fig:henon_heiles_eigenfunction}.
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=.85\linewidth]{img/chapter3/henon_heiles_eigenfunctions.png}
-    \caption{\label{fig:henon_heiles_eigenfunction} The first 12 eigenfunctions of the Hénon-Heiles potential.}
-  \end{center}
-\end{figure}
-
-With our implementation, the code looks as follows.
+By now the code for solving this problem will be familiar.
 
 % \begin{noindent}
 \begin{minted}{python}
@@ -1240,12 +1243,22 @@ from pyslise2d import Pyslise2D
 from math import sqrt
 
 def V(x, y):
-    return x*x + y*y + 1/(6*sqrt(5)) * y * (3*x*x- y*y)
+    return x*x + y*y + sqrt(5)/30 * y * (3*x*x- y*y)
 
 problem = Pyslise2D(V, -6,6, -6,6, tolerance=1e-8)
 problem.eigenvaluesByIndex(0, 16)
 \end{minted}
 % \end{noindent}
+
+With our program, also the eigenfunctions can be computed. This is demonstrated in figure \ref{fig:henon_heiles_eigenfunction}.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\linewidth]{img/chapter3/experiments/henon_heiles_eigenfunctions.png}
+    \caption{\label{fig:henon_heiles_eigenfunction} The first 12 eigenfunctions of the Schrödinger problem with the Hénon-Heiles potential on $[-6, 6]\times[-6,6]$.}
+  \end{center}
+\end{figure}
+
+Here we have opted to not include similar figures to visualize the relative errors as in the previous experiments. These graphs do not let us gain any more new insights.
 
 \subsection{Analyzing unexpected numerical behavior}\label{sec:c3_conclusion_hypothesis}
 
@@ -1289,7 +1302,7 @@ Now, it is easy to conclude with ``more research is needed''. However, in this t
 
 Concluding this chapter by declaring the last few years of research that we invested in the described method a waste of time, is too harsh. We were able to undoubtedly improve this method and discovered some new, more widely appliable theoretical results in the process.
 
-In scientific research we definitely need new and innovative ideas such as Ixaru's method described in this chapter. These groundbreaking ideas are a breeding ground of and jumping point to more new ideas. During the development of this thesis, I have found one of the more challenging aspects of scientific research to be the evaluation of ideas. With this I mean, recognizing valuable ideas and spending time developing them, but also the opposite: sufficiently early deciding that an idea is maybe not as promising as once hoped.
+In scientific research we definitely need new and innovative ideas such as Ixaru's method, as described in this chapter. These groundbreaking ideas are a breeding ground of and jumping point to more new ideas. During the development of this thesis, I have found one of the more challenging aspects of scientific research to be the evaluation of ideas. With this I mean, recognizing valuable ideas and spending time developing them, but also the opposite: sufficiently early deciding that an idea is maybe not as promising as once hoped.
 
 Let me finally conclude this chapter by writing something one rarely reads in scientific articles: I do not know whether more research is really required.
 
