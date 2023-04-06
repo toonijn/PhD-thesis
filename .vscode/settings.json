@@ -20,7 +20,9 @@
     "\\javascript{}": "dummy",
     "\\java{}": "dummy",
     "\\csharp{}": "dummy",
-    "\\rust{}": "dummy"
+    "\\rust{}": "dummy",
+    "\\oneD{}": "dummy",
+    "\\twoD{}": "dummy",
   },
   "ltex.enabled": [
     "context",
