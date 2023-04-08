@@ -20,54 +20,7 @@
 
 \input{chapter4_2d_new.tex}
 
-\chapter*{Closing remarks}
-
-Looking back at this thesis, and the researching years preceding it, fills me with many emotions: both positive, as well as less positive. First and foremost, I am quite proud of the results we were able to achieve. In chapter \ref{cha:c2}, we have started from a well-established and thoroughly studied technique for one-dimensional Schrödinger equations, and we improved upon known results. Both theoretical and practical advances were made. In chapter \ref{cha:c3}, we have taken a relatively new technique and build upon it. Our implementation advances the use of this technique with some new features. For these, we took some theoretical strides. One of the results I am most proud of in this thesis is theorem \ref{the:c3_counting_eigenvalues}. Five years ago, when I implemented this new technique for the first time in \matlab{}, I was disappointed that it was impossible to ensure one has found all eigenvalues in a given range. In my master's thesis I have voiced this missing feature as a possible idea for future work. Privately, my promotor and I were rather pessimistic if this issue could ever be fixed. We believed that this method was too complicated to be able to give any guarantees on the index of eigenvalues. Despite this pessimism, I am proud that we have persevered and developed this new theorem \ref{the:c3_counting_eigenvalues}.
-
-During the research for chapters \ref{cha:c2} and \ref{cha:c3}, at times I was quite demotivated. Although we were advancing and building improvements, both techniques were not \emph{mine}. I had difficulties finding ownership. The real low-point in my PhD-research was in August 2020. I was browsing through the literature and found an article which was able to solve the two-dimensional Schrödinger equations faster and more accurate than we ever could. Unavoidably, many existential questions were raised. Getting through this \emph{crisis of faith} was definitely not easy. It took some time, but a few long months later, I found renewed inspiration and \emph{goesting}\footnote{This is a very Flemish word. It loosely translates to `with an enthusiastic motivation'.}. In my archives, the earliest draft I can find for ideas for a new method for two-dimensional Schrödinger equations dates from February 2021. And in the subsequent years I have learned that, maybe unsurprisingly, developing a new method is hard. We went through many iterations. In this chapter, you can read the (for now) final version.
-
-
-\subsection{Looking forward}
-
-Writing about what the future will bring is, what we would call in Dutch, looking at coffee grounds\footnote{In English, more commonly: reading tea leaves.}. Without sounding overly ambitious: I hope our new method and our implementation may be useful for someone somewhere.
-
-As all things in life, our new method is not perfect. One of the more user-friendly features of our improvements to the method from chapter \ref{cha:c3}, is the ability to automatically select the needed sector sizes to ensure a requested accuracy. In this chapter, the grid size is still an open parameter. The relation of this size to the numerical accuracy is not yet thoroughly researched. Also, in section \ref{sec:c4_strands}, we were adamant that our new technique works on non-uniform grids with varying basis sizes on each grid line. Yet, we studied this only to a limited extent. Ideally, some automatic  grid selection should be implemented. In vaguely terms, on regions of the domain where the sought eigenfunctions are interesting, the used grid should be denser. Implementing a heuristic for this may be straightforward, but being able to guarantee that a given accuracy is obtained with a particular grid is difficult. Another improvement to this technique may be found in the choice of basis functions on grid lines. On the line $x = x_i$, in this chapter, we solve a one-dimensional Schrödinger problem with potential $\frac{1}{2} V(x_i, y)$. In each grid point, the value of the potential is split between both intersecting grid lines. In principle, this split does not need to be equal. Maybe other choices can be defended as well.
-
-Besides direct improvements to the method itself, we believe more fundamentally different ideas can be explored. Does the grid need to be square? How can this method be used to solve time-dependent Schrödinger equations\footnote{For one-dimensional time-dependent problems, \matslise{2} is used in \cite{ledoux_accurate_2014}.}? Can this technique be extended to general linear operators? What changes when solving three-dimensional problems?
-
-Concerning the three-dimensional problem, we have studied some preparatory ideas. Following the two-dimensional method, we place a rectangular grid on the domain, with three grid lines per grid point. As basis, we could use eigenfunctions of one-dimensional Schrödinger problems with a three-way split of the potential. For example, on the line $x = x_i \land y = y_j$ we solve the one-dimensional Schrödinger problem with potential $\frac{1}{3} V(x_i, y_j, z)$. To find the eigenvalues we have to solve (analogous to \eqref{equ:c4_nm_matrix_compact})
-$$
-    \vb{B_x} \vb{\Lambda_x}\vb{c_x} + \vb{B_y} \vb{\Lambda_y}\vb{c_y} + \vb{B_z} \vb{\Lambda_z}\vb{c_z} = E \vb{B_x} \vb{c_x} = E \vb{B_y} \vb{c_y} = E \vb{B_z} \vb{c_z}\text{.}
-$$
-The technique to solve this equation as described in section \ref{sec:c4_matrix_least_squares}, generalizes elegantly for more dimensions. In summary, approximating eigenvalues is quite straightforward. The largest issues we have found in a first exploratory study is the computation of an eigenfunction in arbitrary points. No longer can we use the same trick to solve a much smaller Schrödinger problem with calculated boundary conditions. Eigenfunction solutions are only known upon the grid lines, not on the planer faces of each of the grid cells.
-
-On a more personal note, the researching for and the writing of this thesis has taught me a great deal. Some lessons were a confirmation of things I already knew. For example, I really like solving problems. When a new challenge crosses my path, far too often do I think: ``It could not be \emph{that} hard, right?'' And, after spending anything between a few hours and a few years trying to solve the problem, I have to conclude: ``Well, it definitely is that hard.''
-
-One of the other lessons I learned about myself is that I like collaborating. In researching this thesis, it was almost always only my promotor and I. Now, I am very fortunate to get along really well\footnote{Of course, I hope (and do believe) that this is symmetric.} with my promotor. Yet, many times I felt that I was missing some more people to collaborate with, to bounce ideas around with, to just talk with...
-
-The last lesson I want to share is that I get easily distracted with interesting problems. During the past five years, far too many times I was very busy not doing my PhD-research. All these distractions are out of the scope of this text. However, if you, the reader, want to talk with me, and don't know what about, then just ask me something about:
-mathematical origami,
-plagiarism detection in source code,
-sunlight on crop fields for agroforestry,
-basins of convergence and Julia sets,
-ray tracing in mathematical figures,
-hyperbolic geometry (in VR),
-the roots of the Littlewood polynomials,
-picking numbers in a lottery,
-dynamical systems in arbitrary precision,
-geodesics and shortest paths over surfaces,
-computations in non-commutative quantum algebras,
-Keith numbers,
-drawing L-systems\dots
-
-As the last paragraph, I want to thank Marnix once again to be my guide during this research, to provide invaluable much appreciated feedback and to give me the freedom to pursue my distractions. But also again, I want to thank Emilie for being my best friend, for listening to all my troubles and for carrying my burdens with me.
-
-\vspace{1cm}
-
-\begin{flushright}
-    \includegraphics[width=4cm]{img/signature.pdf}\\
-    April 2023
-\end{flushright}
+\input{chapter_closing_remarks.tex}
 
 \cleardoublepage
 

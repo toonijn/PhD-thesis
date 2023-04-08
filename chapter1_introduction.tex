@@ -18,7 +18,7 @@ A good starting point is to take a look at numbers. Counting things is universal
 
 In historic texts, we find already references to (positive) fractions, as early as Ancient Egypt, around 1000 BC. So after $\NN$ the next numbers that were `discovered', were the positive rational numbers $\QQ^+$. And soon thereafter some irrational numbers were found. The most prominent example is probably $\sqrt{2}$, the length of the diagonal of the unit square. But it is a bit too generous to say that this was the discovery of the real numbers. It is more accurate to say that there was a notion of algebraic numbers $\QQbar$. These are the numbers that are solutions of polynomial equations, like $x^2 = 2$. But only around the year 900, the Egyptian mathematician Abū Kāmil Shujā ibn Aslam started to accept these solutions as numbers in and of itself.
 
-The mathematical invention that may have had the most impact in our daily lives, may also be unnoticed by many: the Hindu-Arabic numeral system. This is a way of writing down numbers, invented between the first and fourth century. Most numeral systems were not made for large numbers or were cumbersome to work with. Only the best of mathematicians could do computation in those systems, especially multiplication was difficult. The Hindu-Arabic numeral system solved this by being positional based. This means that the last digits is the one's place, the digit before that ten's, then hundred's, and so on. This allows for a compact way to write down large numbers, that still allows easy computation through arithmetic manipulations. Our modern numeral system is a direct descendant of the Hindu-Arabic numeral system. Compare for example the Roman numeral \uppercase\expandafter{\romannumeral 3846\relax} to our modern equivalent $3846$. And to help illustrate this point, try squaring both numbers.
+The mathematical invention that may have had the most impact in our daily lives, may also be unnoticed by many: the Hindu--Arabic numeral system. This is a way of writing down numbers, invented between the first and fourth century. Most numeral systems were not made for large numbers or were cumbersome to work with. Only the best of mathematicians could do computation in those systems, especially multiplication was difficult. The Hindu--Arabic numeral system solved this by being positional based. This means that the last digits is the one's place, the digit before that ten's, then hundred's, and so on. This allows for a compact way to write down large numbers, that still allows easy computation through arithmetic manipulations. Our modern numeral system is a direct descendant of the Hindu--Arabic numeral system. Compare for example the Roman numeral \uppercase\expandafter{\romannumeral 3846\relax} to our modern equivalent $3846$. And to help illustrate this point, try squaring both numbers.
 
 From the sixteenth century onwards mathematics in Europe started to flourish. For our purposes, the next stride towards the real numbers was made by Simon Stevin from Bruges. He created a way to write real numbers as a decimal expansion. It was Stevin who introduced the concept of `digits behind the decimal point'. In this same century the complex numbers were discovered. And later in 1637, it was René Descartes who coined the terms `real' and `imaginary' numbers.
 
@@ -50,7 +50,7 @@ And the developments from the nineteenth century continued into the twentieth. G
 
 Most\footnote{Mathematically, we can even say `almost all'.} differential equation can not be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, symbolic results are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's\footnote{Both forward and backward.} method from 1768. This is a simple method, yet Cauchy proved convergence. This convergence assures, that if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
 
-Later, in the middle of the nineteenth century multistep methods were developed. And at the end of that century, Runge published the first Runge-Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
+Later, in the middle of the nineteenth century multistep methods were developed. And at the end of that century, Runge published the first Runge--Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
 
 What strikes me the most is that all these methods were developed long before computers were invented. This implies that the first applications of these methods required an unfathomable amount of manual computation. Now, we are spoiled, and computers do all the numerical heavy lifting for us\footnote{Regularly I feel very fortunate to be a PhD-student now, and not then. I assume that, before computers, many tedious computations must have been assigned to students.}. Back then, the term `computer' did exist, but it was a profession, not a device.
 
@@ -62,7 +62,26 @@ In the most general formulation, an $n$-dimensional $k^\text{th}$ order ordinary
 $$
 f\left(x, y, {\pdv[]{y}{x}}, {\pdv[2]{y}{x}}, \dots, {\pdv[k]{y}{x}}\right) = 0
 $$
-expresses a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$.
+expresses a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$. In most cases, this equation alone is unsufficient to determine a unique solutions $y(x)$. For this, some boundary conditions can be imposed on $y$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
+
+\paragraph{Integrals} The problem of determining primitive functions $F(x)$ can be rewritten as an ordinary differential equation:
+$$
+F(x) = \int f(x) \,\dd x \quad \iff \quad \dv[]{F}{x} = f(x)\text{.}
+$$
+Definite integrals can similarly be formulated as an ordinary differential, however a boundary condition has to be imposed:
+$$
+\int_a^b f(x) \dd x = F(b) \quad \text{ with } \dv[]{F}{x} = f(x) \text{ and } F(a) = 0\text{.}
+$$
+
+Mathematically, this is a valid example. Intuitively however, this seems rather trivial.
+
+\paragraph{Brachistochrone curve} Mathematicians love challenging each other. This is true today, as much as it was in 300 years ago. In 1696 posed Johann Bernoulli the Brachistochrone problem. Which curve follows the slide between point $A$ and $B$, such that a frictionlessly sliding bead gets fastest from $A$ to $B$ under uniform gravity. There are many strategies for solving this problem. In one such solutions, the following differential equation arises:
+$$
+{\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
+$$
+with $D$ a parameter.
+
+
 
 \todo{All norms are $L_2$.}
 

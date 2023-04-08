@@ -219,7 +219,7 @@ This concludes our overview of the method described by Ixaru in \cite{ixaru_new_
 
 \section{Our improvements}\label{sec:c3_improvements}
 
-As we have seen with the rise of constant perturbation methods for the one-dimensional Sturm-Liouville equation, research builds upon previous work. With this in mind we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily our work done in \cite{baeyens_fast_2020}.
+As we have seen with the rise of constant perturbation methods for the one-dimensional Sturm--Liouville equation, research builds upon previous work. With this in mind we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily our work done in \cite{baeyens_fast_2020}.
 
 We have made four large improvements and present them here in no particular order. First in section \ref{sec:c3_improvement_automatic_sectors}, we made the program able to automatically choose the optimal sector size. This automatic sector selection allows for a user to only need to specify the required accuracy of the results. In section \ref{sec:c3_improvement_orthonormalization}, we were able to construct a formula to compute the inner product of two eigenfunctions. This formula allows us to normalize eigenfunctions and to construct an orthogonal basis of the eigenspace for degenerate eigenvalues. Section \ref{sec:c3_calculate_vk} is dedicated to the computation of the integral in equation \eqref{equ:c3_v_matrix}. And the last improvement we present here is a robust way to locate eigenvalues in section \ref{sec:c3_locating_e}. For this last improvement we had to develop some new theoretical results, which we will cover in section \ref{sec:c3_index_of_e}.
 
@@ -255,11 +255,11 @@ A possible automatic sector selection is visualized in figure \ref{fig:c3_sector
 
 For the one-dimensional case, we know from theory that eigenfunctions corresponding to different eigenvalues are necessarily orthogonal. In theorem \ref{the:c3_eigs_othogonal} we have seen that eigenfunctions for different eigenvalues will always be orthogonal. But up to now, nothing has been stated about eigenfunctions corresponding to the same eigenvalue. For degenerate eigenvalues, the eigenspace will be multidimensional.
 
-Ideally, the eigenfunctions returned by our program should form an orthonormal basis. For this we need to normalize eigenfunctions, and ensure that the returned basis of a multidimensional eigenspace is orthogonal. To execute normalization, the inner product $\bra{u}\ket{u} := \int_\Omega u^2$  of an eigenfunction $u$ with itself should be computed. To orthogonalize two linear independent eigenfunctions in the same eigenspace, a Gram-Schmidt process can be used. For this process, there has to be a way to compute the inner product $\bra{u}\ket{v}$ of two functions $u$ and $v$ in this eigenspace.
+Ideally, the eigenfunctions returned by our program should form an orthonormal basis. For this we need to normalize eigenfunctions, and ensure that the returned basis of a multidimensional eigenspace is orthogonal. To execute normalization, the inner product $\bra{u}\ket{u} := \int_\Omega u^2$  of an eigenfunction $u$ with itself should be computed. To orthogonalize two linear independent eigenfunctions in the same eigenspace, a Gram--Schmidt process can be used. For this process, there has to be a way to compute the inner product $\bra{u}\ket{v}$ of two functions $u$ and $v$ in this eigenspace.
 
 To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases the inner product of two functions should be computable. One way would be to numerically estimate this value with some quadrature rules. In principle this is a valid approach, but in practice, this is quite computationally expensive. Therefore, we have constructed in theorem \ref{the:c3_dot_product} specialized formulae to compute these inner products.
 
-Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem \ref{the:c3_dot_product} is formulated with the assumptions that these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domain, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one-dimensional Sturm-Liouville problems.
+Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem \ref{the:c3_dot_product} is formulated with the assumptions that these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domain, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one-dimensional Sturm--Liouville problems.
 
 \begin{theorem}\label{the:c3_dot_product}
   Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one-dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section \ref{sec:c3_ixarus_method}, on a single sector).
@@ -448,7 +448,7 @@ Secondly we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are qui
 
 In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
 
-For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss-Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
+For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss--Kronrod formulae are used. These have a proven track record \cite{piessens_quadpack_1983}.
 
 % Maybe demonstrate how many $M$ are calculated?
 
@@ -595,7 +595,7 @@ Throughout mathematical physics there are many problems dependent on, or consist
   \end{center}
 \end{table}
 
-Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one-dimensional problems, such as regular Sturm-Liouville problems with linear separated boundary conditions on bounded domains, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
+Up until now there was no method, that the authors know of, to reliably determine the exact number of eigenvalues lower than a given value $E$ for multidimensional problems. The best known result is already almost a century old: Courant's nodal domain theorem \cite[Vol I, Chapter  VI, paragraph 2, Theorem 2]{courant_methods_2008}. This theorem states that for an eigenfunction $u$ with corresponding eigenvalue $\lambda$, there are at least as many eigenvalues, counted with multiplicity, less than $\lambda$ as the number of nodal domains of $u$ minus one \cite[Theorem 1.1]{berard_nodal_2014}. A nodal domain is defined as a largest connected set of the domain on which the eigenfunction $u$ does not become zero. The nodal domain theorem gives, when an eigenvalue $\lambda$ with corresponding eigenfunction is known, a lower bound on the number of eigenvalues less than $\lambda$. However, only for restricted classes of one-dimensional problems, such as regular Sturm--Liouville problems with linear separated boundary conditions on bounded domains, this value is exact. In table \ref{tab:courant_harmonic} this fact is demonstrated by showing that the number of nodal domains of an eigenfunction does not lead to an exact estimate for the index of the corresponding eigenvalue.
 % Fun fact: Richard Courant maried the daughter of Carl Runge
 
 \begin{figure}
@@ -686,7 +686,7 @@ Before proving the main theorem of this section, we provide a kind of Fried\-ric
   $$
   In this formula, and throughout the proof, we formally pose that $u(\vb{x}) \equiv 0$ for $\vb{x} \notin \Omega$. Note that the fundamental theorem of calculus is applicable because $u$ is compactly supported and in $C^1$.
 
-  Applying the Cauchy-Schwarz inequality provides some simplifications. Growing the integration domain removes the dependency on $x_1$.
+  Applying the Cauchy--Schwarz inequality provides some simplifications. Growing the integration domain removes the dependency on $x_1$.
   \begin{align*}
     \left|u(\vb{x})\right|^2 & \leq \int_{-\infty}^{x_1} I_\Omega(t,x_2, \dots, x_n) \dd t \int_{-\infty}^{x_1} \left|\pdv[]{u}{x_1}\left(t,x_2, \dots, x_n\right)\right|^2\dd t \\
                              & \leq \dirdiam_1(\Omega) \int_{a}^{b} \left|\pdv[]{u}{x_1}\left(t, x_2, \dots, x_n\right)\right|^2\dd t
@@ -766,13 +766,13 @@ While propagating a solution one can keep track of how many times the boundary c
 
 We provide a few examples. The first example illustrates that our result is a more general formulation of a well known theorem for the one-dimensional problem. In the second example we will do some symbolic calculations for a disc-shaped domain. The third example will demonstrate our implemention of theorem \ref{the:c3_counting_eigenvalues} in the method from section \ref{sec:c3_ixarus_method}. And in the last example we will take a look at a much more exotic family of domains to illustrate the applicability of our theorem to use-cases far beyond what our numerical method is capable of.
 
-\subsubsection{One-dimensional Sturm-Liouville equation}
+\subsubsection{One-dimensional Sturm--Liouville equation}
 
-Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the regular Sturm-Liouville equation
+Let $\lambda_i$ be the $i^{\text{th}}$ eigenvalue\footnote{The first eigenvalue is denoted as $\lambda_0$, the second as $\lambda_1$\dots}, with eigenfunction $y_i(x)$, of the regular Sturm--Liouville equation
 $$
   -\dv{x} \left( p(x) \dv{y_i}{x} \right) + q(x) y_i = \lambda_i w(x) y_i
 $$
-on the interval $[a, b]$ with homogeneous Dirichlet boundary conditions $y_i(a) = y_i(b) = 0$. Defining the series of domains $\Omega_\epsilon = [a, a + \epsilon\,(b-a)]$, allows us to apply theorem \ref{the:c3_counting_eigenvalues}. Thus, there should be $i$ intervals $\Omega_{\epsilon_j}$, smaller than $[a, b]$, on which $\lambda_i$ is an eigenvalue. As eigenfunctions are unique, up to a scaling factor, $y_i$ should have exactly $i$ zeros inside $[a, b]$. This is a well-known property in Sturm-Liouville theory, see theorem \ref{the:c2_kth_eigen_k_roots}. This fact is also illustrated in figure \ref{fig:c3_counting_sturm_liouville} for the Bessel equation.
+on the interval $[a, b]$ with homogeneous Dirichlet boundary conditions $y_i(a) = y_i(b) = 0$. Defining the series of domains $\Omega_\epsilon = [a, a + \epsilon\,(b-a)]$, allows us to apply theorem \ref{the:c3_counting_eigenvalues}. Thus, there should be $i$ intervals $\Omega_{\epsilon_j}$, smaller than $[a, b]$, on which $\lambda_i$ is an eigenvalue. As eigenfunctions are unique, up to a scaling factor, $y_i$ should have exactly $i$ zeros inside $[a, b]$. This is a well-known property in Sturm--Liouville theory, see theorem \ref{the:c2_kth_eigen_k_roots}. This fact is also illustrated in figure \ref{fig:c3_counting_sturm_liouville} for the Bessel equation.
 
 \begin{figure}
   \begin{center}
@@ -781,7 +781,7 @@ on the interval $[a, b]$ with homogeneous Dirichlet boundary conditions $y_i(a) 
   \end{center}
 \end{figure}
 
-Multiple shooting procedures \cite{baeyens_fast_2020,ledoux_matslise_2016,ixaru_cp_2000} have been developed that implement this well-known property for Sturm-Liouville problems using the Prüfer transformation \cite{pruefer_neue_1926}.
+Multiple shooting procedures \cite{baeyens_fast_2020,ledoux_matslise_2016,ixaru_cp_2000} have been developed that implement this well-known property for Sturm--Liouville problems using the Prüfer transformation \cite{pruefer_neue_1926}.
 
 \subsubsection{Standing waves on a disc}\label{sec:c3_standing_waves_on_disc}
 
@@ -1203,9 +1203,9 @@ Alternative to a table of values, we plot the relative errors of the found eigen
 
 Drawing conclusions with any certainty from these graphs is difficult. We believe these graphs to support the analysis of section \ref{sec:c3_conclusion_hypothesis}.
 
-\subsection{Hénon-Heiles}\label{sec:c3_experiment_henon}
+\subsection{Hénon--Heiles}\label{sec:c3_experiment_henon}
 
-Another interesting example is that with the Hénon-Heiles potential. The corresponding Schrödinger problem is given by:
+Another interesting example is that with the Hénon--Heiles potential. The corresponding Schrödinger problem is given by:
 $$
   -\nabla^2 \psi + \left(x^2 + y^2 + \frac{\sqrt{5}}{30} y \left(3 x^2  - y^2\right)\right)\psi = E \psi \text{.}
 $$
@@ -1254,7 +1254,7 @@ With our program, also the eigenfunctions can be computed. This is demonstrated 
 \begin{figure}
   \begin{center}
     \includegraphics[width=\linewidth]{img/chapter3/experiments/henon_heiles_eigenfunctions.png}
-    \caption{\label{fig:henon_heiles_eigenfunction} The first 12 eigenfunctions of the Schrödinger problem with the Hénon-Heiles potential on $[-6, 6]\times[-6,6]$.}
+    \caption{\label{fig:henon_heiles_eigenfunction} The first 12 eigenfunctions of the Schrödinger problem with the Hénon--Heiles potential on $[-6, 6]\times[-6,6]$.}
   \end{center}
 \end{figure}
 

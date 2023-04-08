@@ -34,39 +34,39 @@ These three types of boundary conditions are what is called \emph{separated cond
 
 Note that homogeneous Dirichlet or Neumann boundary conditions can always be written as homogeneous Robin boundary conditions. So when studying the one-dimensional time-independent Schrödinger equation it is more general to consider homogeneous Robin boundary conditions. Periodic (or generalized periodic) boundary conditions are less common and problems with these boundary conditions lose some of the nice properties which are guaranteed for separated conditions. This case will be studied later in section \ref{sec:c2_periodic}.
 
-\subsection{Properties of the Sturm-Liouville equation}\label{sec:c2_slp_properties}
+\subsection{Properties of the Sturm--Liouville equation}\label{sec:c2_slp_properties}
 
 Before developing numerical methods for solving the one-dimensional time-independent Schrödinger equation, it is important to build a strong theoretical foundation. The goal is to build a thorough understanding of the Schrödinger equation and to use this intuition to develop efficient and accurate numerical algorithms to solve this equation.
 
-In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm-Liouville theory. As Sturm-Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more impactful to study. In this section, we will follow the tradition from the literature and study the Sturm-Liouville equation. Many more details and examples of Sturm-Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
+In the scientific literature it is quite rare to find studies about the one-dimensional Schrödinger equation itself. Most, if not all, relevant articles and books cover the more general topic of Sturm--Liouville theory. As Sturm--Liouville equations are a generalization of Schrödinger equations they are more widely applicable, and as such more impactful to study. In this section, we will follow the tradition from the literature and study the Sturm--Liouville equation. Many more details and examples of Sturm--Liouville theory can be found in relevant textbooks, for example \cite[Chapter~5]{sagan_boundary_1961}.
 
-The Sturm-Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the domain $\Omega \subseteq \RR$:
+The Sturm--Liouville equation is also a linear ordinary differential equation posed as a boundary value eigenproblem, given by the following equation on the domain $\Omega \subseteq \RR$:
 \begin{equation}\label{equ:c2_sturm_liovuille_equation}
     -(p(x) y'(x))' + q(x) y(x) = \lambda w(x) y(x)\text{.}
 \end{equation}
-The functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $\Omega$. These functions define the Sturm-Liouville problem. If the domain is a bounded interval $\Omega = [a, b]$, and if $p(x)$, $q(x)$ and $w(x)$ are continuous, $p(x)$ is differentiable and $p(x) > 0$ and $w(x) > 0$ over the whole domain $[a, b]$, then the problem is called a \emph{regular} Sturm-Liouville problem.
+The functions $p(x)$, $q(x)$ and $w(x)$ are given on the domain $\Omega$. These functions define the Sturm--Liouville problem. If the domain is a bounded interval $\Omega = [a, b]$, and if $p(x)$, $q(x)$ and $w(x)$ are continuous, $p(x)$ is differentiable and $p(x) > 0$ and $w(x) > 0$ over the whole domain $[a, b]$, then the problem is called a \emph{regular} Sturm--Liouville problem.
 
-A solution of a Sturm-Liouville problem consists of an eigenvalue $\lambda$ with corresponding eigenfunction $y(x)$, which satisfy \eqref{equ:c2_sturm_liovuille_equation} on $[a, b]$. For now, we will study the Sturm-Liouville equation with homogeneous Robin boundary conditions:
+A solution of a Sturm--Liouville problem consists of an eigenvalue $\lambda$ with corresponding eigenfunction $y(x)$, which satisfy \eqref{equ:c2_sturm_liovuille_equation} on $[a, b]$. For now, we will study the Sturm--Liouville equation with homogeneous Robin boundary conditions:
 \begin{equation}\label{equ:c2_sturm_liovuille_boundary}
     \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 \end{equation}
 
-Note that the Schrödinger equation with homogeneous Robin boundary conditions is a special case of the Sturm-Liouville equation, specifically when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
+Note that the Schrödinger equation with homogeneous Robin boundary conditions is a special case of the Sturm--Liouville equation, specifically when $p(x) = 1$, $q(x) = V(x)$ and $w(x) = 1$.
 
-Many theorems can be formulated about self-adjoint linear operators\footnote{A self-adjoint linear operator is a concept from functional analysis. A regular Sturm-Liouville problem is equivalent with finding the spectrum of a specific linear self-adjoint operator. The powerful mathematical machinery of functional analysis can thus be valuable for us as well.}. For now, we provide a few specific theorems about Sturm-Liouville equations. The proofs for some of these theorems are quite extensive and require a thorough understanding of functional analysis. In this work, we will not provide these proofs.
+Many theorems can be formulated about self-adjoint linear operators\footnote{A self-adjoint linear operator is a concept from functional analysis. A regular Sturm--Liouville problem is equivalent with finding the spectrum of a specific linear self-adjoint operator. The powerful mathematical machinery of functional analysis can thus be valuable for us as well.}. For now, we provide a few specific theorems about Sturm--Liouville equations. The proofs for some of these theorems are quite extensive and require a thorough understanding of functional analysis. In this work, we will not provide these proofs.
 
-For implementing methods to find solutions, it is valuable to study what a solution would look like. Since the solutions of a Sturm-Liouville problem are eigenvalues with corresponding eigenfunctions, solutions will consist of a possibly complex number $\lambda \in \CC$ with a corresponding function $y : [a, b] \to \CC$. The fact that these could be complex values impacts our study significantly. So, let us first prove that solutions can always be real.
+For implementing methods to find solutions, it is valuable to study what a solution would look like. Since the solutions of a Sturm--Liouville problem are eigenvalues with corresponding eigenfunctions, solutions will consist of a possibly complex number $\lambda \in \CC$ with a corresponding function $y : [a, b] \to \CC$. The fact that these could be complex values impacts our study significantly. So, let us first prove that solutions can always be real.
 
 \begin{theorem}\label{the:c2_real_eigenvalues}
-    Let $p(x)$, $q(x)$ and $w(x)$ define a regular Sturm-Liouville problem on $[a, b]$.
+    Let $p(x)$, $q(x)$ and $w(x)$ define a regular Sturm--Liouville problem on $[a, b]$.
 
-    All eigenvalues of the Sturm-Liouville problem with real homogeneous Robin boundary condition \eqref{equ:c2_sturm_liovuille_boundary} are real. Corresponding eigenfunctions can always be scaled such that they are real.
+    All eigenvalues of the Sturm--Liouville problem with real homogeneous Robin boundary condition \eqref{equ:c2_sturm_liovuille_boundary} are real. Corresponding eigenfunctions can always be scaled such that they are real.
 \end{theorem}
 
 Knowing we only need to find real solutions simplifies our work. The next theorem allows us to get a grasp on the number of eigenvalues we need to find.
 
 \begin{theorem}\label{the:c2_slp_countable}
-    The number of eigenvalues of a regular Sturm-Liouville problem with homogeneous Robin boundary conditions are countable. All eigenvalues have a lower bound, no upper bound and are unique. This implies that these can be written as:
+    The number of eigenvalues of a regular Sturm--Liouville problem with homogeneous Robin boundary conditions are countable. All eigenvalues have a lower bound, no upper bound and are unique. This implies that these can be written as:
     $$
         \lambda_0 < \lambda_1 < \lambda_2 < \dots \to \infty \text{.}
     $$
@@ -87,29 +87,29 @@ This last theorem is essential. It enables us to formulate questions such as: ``
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter2/slp_count_roots.pdf}
     \end{center}
-    \caption{The first four eigenfunctions of the Sturm-Liouville problem with $p(x) = 1$, $q = \sqrt{|x|}$, $w(x) = 1+x^2$ and homogeneous Dirichlet boundary conditions on $[-\pi, \pi]$. The roots of each of these functions are indicated.}
+    \caption{The first four eigenfunctions of the Sturm--Liouville problem with $p(x) = 1$, $q = \sqrt{|x|}$, $w(x) = 1+x^2$ and homogeneous Dirichlet boundary conditions on $[-\pi, \pi]$. The roots of each of these functions are indicated.}
     \label{fig:c2_sturm_liovuille_k_roots}
 \end{figure}
 
-Even stronger: Sturm-Liouville theory provides a way to characterize the index of an eigenvalue by means of the eigenfunction only.
+Even stronger: Sturm--Liouville theory provides a way to characterize the index of an eigenvalue by means of the eigenfunction only.
 
 \begin{theorem}\label{the:c2_kth_eigen_k_roots}
     The eigenfunction $y_k(x)$ corresponding to the $k^{\text{th}}$ eigenvalue $\lambda_k$ has exactly $k$ zeros in the interior of the domain $\left[a, b\right]$.
 \end{theorem}
 
-This theorem is illustrated in figure \ref{fig:c2_sturm_liovuille_k_roots}. Here we see the first few eigenfunctions of a Sturm-Liouville problem. Later on we will use the term ``highly oscillatory eigenfunction'', theorem \ref{the:c2_kth_eigen_k_roots} explains why this is justified. If $k$ becomes large, the eigenfunction will have many zeros and therefore will oscillate heavily. This can also already be seen on the last panel of figure \ref{fig:c2_sturm_liovuille_k_roots}.
+This theorem is illustrated in figure \ref{fig:c2_sturm_liovuille_k_roots}. Here we see the first few eigenfunctions of a Sturm--Liouville problem. Later on we will use the term ``highly oscillatory eigenfunction'', theorem \ref{the:c2_kth_eigen_k_roots} explains why this is justified. If $k$ becomes large, the eigenfunction will have many zeros and therefore will oscillate heavily. This can also already be seen on the last panel of figure \ref{fig:c2_sturm_liovuille_k_roots}.
 
-With these four theorems in the back of our minds we will be able to develop numerical methods for solving Sturm-Liouville and Schrödinger problems. As stated in the beginning of this section, we have given a very brief overview of the theorems that are relevant for us. If the reader is interested in more details, or in a rigorous theoretical framework many textbooks are available, for example \cite{sagan_boundary_1961,al-gwaiz_sturmliouville_2008,zettl_sturmliouville_2012,guenther_sturmliouville_2018}.
+With these four theorems in the back of our minds we will be able to develop numerical methods for solving Sturm--Liouville and Schrödinger problems. As stated in the beginning of this section, we have given a very brief overview of the theorems that are relevant for us. If the reader is interested in more details, or in a rigorous theoretical framework many textbooks are available, for example \cite{sagan_boundary_1961,al-gwaiz_sturmliouville_2008,zettl_sturmliouville_2012,guenther_sturmliouville_2018}.
 
-Throughout this thesis, and the research preceding it, we have not and will not focus on the applicability of the Sturm-Liouville equation. This is definitely not due to a lack of applications. It is rather the opposite: Sturm-Liouville equations pop up in an innumerable diversity of fields. Many real-world problems can be stated as or reduced to differential equations and in particular to the Sturm-Liouville equation.
+Throughout this thesis, and the research preceding it, we have not and will not focus on the applicability of the Sturm--Liouville equation. This is definitely not due to a lack of applications. It is rather the opposite: Sturm--Liouville equations pop up in an innumerable diversity of fields. Many real-world problems can be stated as or reduced to differential equations and in particular to the Sturm--Liouville equation.
 
 % Some real-world examples of this equation \cite[Chapter~8]{guenther_sturmliouville_2018}?
 
 \subsection{Liouville's transformation}\label{sec:c2_liouville_transformation}
 
-In \cite{liouville_second_1837} Liouville introduced a transformation from a Sturm-Liouville problem to a Schrödinger problem. Here we provide just the transformation, with some remarks on how to implement it. For a derivation the original work by Liouville \cite{liouville_second_1837} can be consulted, or a more clear text in the context of \matslise{} can be found in \cite{ledoux_study_2007}. In this last work, the implementation also gets some attention.
+In \cite{liouville_second_1837} Liouville introduced a transformation from a Sturm--Liouville problem to a Schrödinger problem. Here we provide just the transformation, with some remarks on how to implement it. For a derivation the original work by Liouville \cite{liouville_second_1837} can be consulted, or a more clear text in the context of \matslise{} can be found in \cite{ledoux_study_2007}. In this last work, the implementation also gets some attention.
 
-In this subsection we change the notation a little from \eqref{equ:c2_sturm_liovuille_equation}. Let us consider the Sturm-Liouville equation
+In this subsection we change the notation a little from \eqref{equ:c2_sturm_liovuille_equation}. Let us consider the Sturm--Liouville equation
 \begin{equation}\label{equ:c2_liouville_slp}
     -(p(r) z'(r))' + q(r) z(r) = \lambda w(r) z(r)\text{,}
 \end{equation}
@@ -148,9 +148,9 @@ Evaluating these functions up to the maximal precision available may seem overki
 
 \section{Background about Matslise}\label{sec:c2_background}
 
-Numerical methods for ordinary differential equations as \emph{initial value} problems are already many centuries old, starting with Euler's method. Numerical methods as a research topic by itself really took off a little more than a century ago. In particular, linear multistep methods and Runge-Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
+Numerical methods for ordinary differential equations as \emph{initial value} problems are already many centuries old, starting with Euler's method. Numerical methods as a research topic by itself really took off a little more than a century ago. In particular, linear multistep methods and Runge--Kutta methods were described around 1900. First they were applied and calculated by hand, later on ``calculating machines'' \cite{milne_numerical_1926} were used. Nowadays, modern computers do all the tedious computations.
 
-For ordinary differential equations as \emph{boundary value} problems, such as the Sturm-Liouville equations, the story is different. There still are only a few general methods for such problems. For linear ordinary differential equations, one of the more popular choices is a method based upon finite differences.
+For ordinary differential equations as \emph{boundary value} problems, such as the Sturm--Liouville equations, the story is different. There still are only a few general methods for such problems. For linear ordinary differential equations, one of the more popular choices is a method based upon finite differences.
 
 \begin{figure}
     \begin{center}
@@ -173,11 +173,11 @@ This simplification yields a linear system in the variables $y(x_1), \dots, y(x_
 
 In this general technique constructing higher order methods is rather straightforward. One only has to use a more accurate finite difference approximation. However, these methods become increasingly computationally expensive as more accuracy is required. In our case, accurately determining higher eigenvalues requires significantly more computation time.
 
-\subsection{Finite difference scheme for the Sturm-Liouville equation}
+\subsection{Finite difference scheme for the Sturm--Liouville equation}
 
 Until around 1990 the best methods \cite{andrew_correction_1985,vandenberghe_accurate_1991} for approximating solutions to the Sturm-Liouville problem looked at the simpler form of the Schrödinger equation and employed a finite difference scheme. After solving the approximating linear algebra problem, some corrections can be applied to improve the accuracy of higher eigenvalues. The authors of \cite{andrew_correction_1985,vandenberghe_accurate_1991} experimented with several finite difference approximations. First classical formulae were tried, later on highly tuned exponential fitted formulae were developed to better handle the oscillatory nature of the eigenfunctions.
 
-To illustrate this class of finite difference methods for Sturm-Liouville equations we will develop a simple version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general advantages but also disadvantages of this technique. For completeness, we recall the Sturm-Liouville equation from \eqref{equ:c2_sturm_liovuille_equation}:
+To illustrate this class of finite difference methods for Sturm--Liouville equations we will develop a simple version ourselves. This will allow us to appreciate the nuances of these methods more, and it will give us some ideas about the general advantages but also disadvantages of this technique. For completeness, we recall the Sturm--Liouville equation from \eqref{equ:c2_sturm_liovuille_equation}:
 $$
     -(p(x)y')' + q(x) y = \lambda w(x) y\text{.}
 $$
@@ -237,7 +237,7 @@ To find the eigenvalues of \eqref{equ:c2_finite_difference_matrix_problem} one c
     \label{fig:c2_fd_k_error}
 \end{figure}
 
-As a numerical experiment of this method we will take a look at the following Sturm-Liouville equation:
+As a numerical experiment of this method we will take a look at the following Sturm--Liouville equation:
 \begin{equation}\label{equ:c2_fd_test_problem}
     -\left((1+x)^2 y \right)' + (x^2 - 2) y = \lambda e^x y
 \end{equation}
@@ -251,7 +251,7 @@ for this method applied to problem \eqref{equ:c2_fd_test_problem}. This shows us
 
 \subsection{CP-methods}
 
-The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm-Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions of the one-dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
+The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In \cite{ledoux_solving_2010} a brief historical overview is given of the application of CP-methods to Sturm--Liouville problems. In this thesis we will take the time to take a closer look at the earlier methods. They will provide us a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was \cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions of the one-dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from \cite{canosa_new_1970}.
 
 For this, we will only consider the Schrödinger equation
 \begin{equation}\label{equ:c2_cpm_schrodinger}
@@ -615,7 +615,7 @@ In \cite{canosa_new_1970} the eigenvalue differential equation was translated in
 \begin{figure}
     \begin{center}
         \includegraphics[width=\linewidth]{img/chapter2/shooting_schematic.pdf}
-        \caption{Multiple shooting procedures are applied to a Sturm-Liouville equation with homogeneous Dirichlet boundary conditions. $E^{(0)}$ is a possible first eigenvalue guess, $E^{(1)}$ and $E^{(2)}$ are consecutive adjustments. Notice that for $E^{(2)}$ a differentiable function in the matching point $x_m$ is found.}
+        \caption{Multiple shooting procedures are applied to a Sturm--Liouville equation with homogeneous Dirichlet boundary conditions. $E^{(0)}$ is a possible first eigenvalue guess, $E^{(1)}$ and $E^{(2)}$ are consecutive adjustments. Notice that for $E^{(2)}$ a differentiable function in the matching point $x_m$ is found.}
         \label{fig:c2_shooting_schematic}
     \end{center}
 \end{figure}
@@ -674,13 +674,13 @@ To know if the guess for $E$ was correct we need to find a scaling of $y_\text{L
     e(E) = y_\text{L}(x_m) y_\text{R}'(x_m) - y_\text{L}'(x_m) y_\text{R}(x_m)\text{.}
 \end{equation}
 
-The goal now is to find all zero-values of this function. For this, we use the Newton-Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $Z(\delta) = \eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the derivatives needed. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence of $E$ to true eigenvalues $\lambda$, for which $e(\lambda) = 0$.
+The goal now is to find all zero-values of this function. For this, we use the Newton--Raphson method. Computing the derivative $\dv[]{e(E)}{E}$ is far from trivial. But in theorem \ref{the:c2_perturbation_terms} we see the dependence on $E$ of each $u(h)$ and $v(h)$ through $Z(\delta) = \eta_i\left((V(x) - E)\delta^2\right)$. In theorem \ref{the:c2_eta_functions} we provided the derivatives needed. These can be used to also compute the derivative of $e(E)$ with respect to $E$. This allows for fast convergence of $E$ to true eigenvalues $\lambda$, for which $e(\lambda) = 0$.
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter2/prufer/shooting_convergence_float128.pdf}
     \end{center}
-    \caption{Using shooting, the relative error of estimates for different eigenvalues of \eqref{ref:equ_shooting_paine} is plotted with respect to the number of iterations of the Newton-Raphson procedure.}\label{fig:c2_shooting_convergence}
+    \caption{Using shooting, the relative error of estimates for different eigenvalues of \eqref{ref:equ_shooting_paine} is plotted with respect to the number of iterations of the Newton--Raphson procedure.}\label{fig:c2_shooting_convergence}
 \end{figure}
 
 As an example we consider one of Paine's problems from \cite{paine_correction_1981}. On the domain $[0, \pi]$, we will solve the Schrödinger equation
@@ -699,7 +699,7 @@ with homogeneous Dirichlet boundary conditions. In \cite{paine_correction_1981},
     \end{tabular}
 \end{center}
 
-In figure \ref{fig:c2_shooting_convergence}, the convergence of the Newton-Raphson procedure is visualized. We have started with the guesses $3$, $18$ and $102$ to find the respective eigenvalues $\lambda_0 \approx \numprint{4.896669}$, $\lambda_2 \approx \numprint{16.019267}$  and $\lambda_9 \approx \numprint{107.116676}$. From the graphs we see that the convergence is definitely faster than linear. After at most merely six iteration steps we have reached the maximal precision of the \texttt{double} datatype ($10^{-16} \approx 2^{-53}$) and with one more iteration we reach close to the maximal precision of the \texttt{float128} datatype ($10^{-34} \approx 2^{-112}$). In a table, it becomes clear that the convergence has a quadratic behavior. Here the relative errors are tabulated from the second iteration onward.
+In figure \ref{fig:c2_shooting_convergence}, the convergence of the Newton--Raphson procedure is visualized. We have started with the guesses $3$, $18$ and $102$ to find the respective eigenvalues $\lambda_0 \approx \numprint{4.896669}$, $\lambda_2 \approx \numprint{16.019267}$  and $\lambda_9 \approx \numprint{107.116676}$. From the graphs we see that the convergence is definitely faster than linear. After at most merely six iteration steps we have reached the maximal precision of the \texttt{double} datatype ($10^{-16} \approx 2^{-53}$) and with one more iteration we reach close to the maximal precision of the \texttt{float128} datatype ($10^{-34} \approx 2^{-112}$). In a table, it becomes clear that the convergence has a quadratic behavior. Here the relative errors are tabulated from the second iteration onward.
 
 \begin{center}
     \begin{tabular}{r|n{1}{0}n{1}{0}n{1}{0}n{1}{0}n{1}{0}n{1}{0}}
@@ -726,7 +726,7 @@ To combat this issue and to provide a reliable way to even count the roots of hi
         y(x) = \frac{1}{\sqrt{S(x)}} \rho(x) \sin(\theta(x)) \quad\text{ and }\quad p(x)y'(x) = \sqrt{S(x)} \rho(x) \cos(\theta(x))
     \end{equation}
     with $\tan\theta(a) = -\frac{S(a)\beta_a}{\alpha_a}$, $\theta(a) \in \left[0, \pi\right[$ and $S(x)$ a strictly positive scaling function to ensure numerical stability.
-    Here $y(x)$ is a solution of the Sturm-Liouville equation
+    Here $y(x)$ is a solution of the Sturm--Liouville equation
     $$
         -\dv[]{p(x)y'(x)}{x} + q(x) y(x) = E w(x) y(x)
     $$
@@ -737,7 +737,7 @@ To combat this issue and to provide a reliable way to even count the roots of hi
         k = \frac{1}{\pi}\left(\theta(b) - \theta_b\right) \text{,}
     $$
     with $\tan\theta_b = -\frac{S(b)\beta_b}{\alpha_b}$ and $\theta_b \in \left]0, \pi\right]$.
-    If $k$ is an integer, then $y(x)$ has $k$ roots in the interior of the domain and satisfies the Sturm-Liouville problem. In other words, $\lambda_k = E$ is the $k^\text{th}$ eigenvalue.
+    If $k$ is an integer, then $y(x)$ has $k$ roots in the interior of the domain and satisfies the Sturm--Liouville problem. In other words, $\lambda_k = E$ is the $k^\text{th}$ eigenvalue.
 
     $y(x)$ has $k$ roots in $[a, b]$ and $E$ is the $k^\text{th}$ eigenvalue.
 \end{theorem}
@@ -746,7 +746,7 @@ Imposing that $\theta(x)$ and $\rho(x)$ are continuous functions, ensures that \
 \begin{equation}\label{equ:c2_prufer_theta_up_to_pi}
     \theta(x) = \atan\frac{S(x)y(x)}{p(x) y'(x)} + j\pi
 \end{equation}
-with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine which value should be taken for $j$. To compute $\theta(x)$ efficiently and reliably we substitute \eqref{equ:c2_prufer_theta} into the Sturm-Liouville equation. This yields:
+with $j$ integer. If $\theta(x)$ has to be continuous we can uniquely determine which value should be taken for $j$. To compute $\theta(x)$ efficiently and reliably we substitute \eqref{equ:c2_prufer_theta} into the Sturm--Liouville equation. This yields:
 \begin{equation}\label{equ:c2_prufer_theta_ode}
     \theta' = \frac{S}{p} \cos^2(\theta) + \frac{Ew - q}{S}\sin^2\theta + \frac{S'}{S}\sin(\theta)\cos(\theta)\text{.}
 \end{equation}
@@ -769,11 +769,11 @@ As an illustration of this scaled Prüfer transformation with equation \eqref{eq
 
 In the previous section we have studied the background of constant perturbation methods. From here on we develop our additions to these well-established methods. Some of these results were published in \cite{baeyens_fast_2020}, particularly this section \ref{sec:c2_matslise3} and some numerical experiments: \ref{sec:c2_numerical_experiments_mathieu}, \ref{sec:c2_numerical_experiments_coffey_evans} and \ref{sec:c2_numerical_experiments_hydrogen}. The other numerical experiments from \ref{sec:c2_numerical_experiments} take a closer look at our improvements to the algorithm since \cite{baeyens_fast_2020}. In section \ref{sec:c2_periodic}, we present how the constant perturbation method can be used to solve periodic boundary conditions as well. And, later on in section \ref{sec:c2_the_implementation} we take a deep dive into how our new efficient implementation is built.
 
-In 2005 the first version of \matslise{} \cite{ledoux_cp_2004,ledoux_matslise_2005}, a \matlab{} package for solving Sturm-Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm-Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
+In 2005 the first version of \matslise{} \cite{ledoux_cp_2004,ledoux_matslise_2005}, a \matlab{} package for solving Sturm--Liouville problems (SLP), was published. This program was a modern take on the successful constant perturbation (CP) method based code SLCPM12 \cite{ixaru_slcpm12_1999}. It was the first implementation of CP methods in the user-friendly and then modern numerical computing environment \matlab{}. Up to that point most, if not all, of these programs for solving Sturm--Liouville problems (SLCPM12, SLEIGN, SLEDGE, \dots) \cite{ixaru_slcpm12_1999,bailey_sleign2_2001,eastham_sledge_1996} were written in \fortran{}.
 
-\matslise{} provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm-Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
+\matslise{} provided a graphical user interface that made it easy for all researchers to effectively solve the Sturm--Liouville equation without any knowledge of a particular programming language. Before it's release, if one wanted to solve a particular SLP, sufficient knowledge of \fortran{} was needed to implement the problem at hand.
 
-In 2016 a new version, \matslise{2} \cite{ledoux_matslise_2016}, was released. In this whole new version of \matslise{} generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm-Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
+In 2016 a new version, \matslise{2} \cite{ledoux_matslise_2016}, was released. In this whole new version of \matslise{} generalized CP methods for SLP were implemented. These new methods enabled one to solve the SLP without explicitly transforming the equation to the Liouville normal form. Avoiding this normalization also made it possible to solve new types of Sturm--Liouville problems. As of this writing \matslise{2} has been downloaded over a thousand times, according to SourceForge. This number proves the need of current research to solve the SLP equation.
 
 As the original \matslise{} modernized the implementation of SLCPM12, the need to remodernize this proven package has become apparent in our attempt to use the \matslise{} routines to solve the multidimensional Schrödinger equation, following the ideas of Ixaru in \cite{ixaru_new_2010}. This approach requires the fast and accurate computation of both the eigenvalues and the corresponding eigenfunctions of several 1D Schrödinger-problems. The \matslise{2} version however mainly focuses on the fast and accurate computation of eigenvalues and the graphical representation of the eigenfunction. In \matslise{2} the eigenfunctions can be computed quite accurate and fast, but only in a limited set of points (depending on the partition of the integration interval). The accurate computation of the eigenfunction over the whole integration interval however is time-consuming in the implementation of \matslise{2}.
 
@@ -1000,7 +1000,7 @@ For the applications we have in mind, this approach is too time-consuming. We de
 
 \section{Periodic \texorpdfstring{\oneD}{1D} Schrödinger equation}\label{sec:c2_periodic}
 
-In contrast to (separated) Robin boundary conditions, in this section we will study the case of generalized periodic boundary conditions. Assume we are solving a regular Sturm-Liouville equation
+In contrast to (separated) Robin boundary conditions, in this section we will study the case of generalized periodic boundary conditions. Assume we are solving a regular Sturm--Liouville equation
 \begin{equation}\label{equ:c2_periodic_sturm_liouville}
     -\dv[]{p(x)y'(x)}{x} + q(x)y(x) = \lambda w(x) y(x)
 \end{equation}
@@ -1015,7 +1015,7 @@ on a domain $[a, b]$, with generalized periodic boundary conditions:
 
 In expression \eqref{equ:c2_periodic_boundary_conditions}, $\vb{K}$ is assumed to be a $2 \times 2$ real matrix with determinant $1$\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
 
-In section \ref{sec:c2_slp_properties} we have provided some theorems about regular Sturm-Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem \ref{the:c2_real_eigenvalues} is also applicable here: all eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
+In section \ref{sec:c2_slp_properties} we have provided some theorems about regular Sturm--Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem \ref{the:c2_real_eigenvalues} is also applicable here: all eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
 
 Following section \ref{sec:c2_background} and \ref{sec:c2_matslise3}, due to the Liouville-transformation (from section \ref{sec:c2_liouville_transformation}), it is sufficient to only consider Schrödinger problems with $p(x) = w(x) = 1$.
 
@@ -1059,22 +1059,22 @@ The following lemma and theorems with proofs can be found in \cite{binding_prufe
 For the following theorems we need to distinguish between $k_{12} < 0 \lor k_{12} = 0 < k_{11}$ and the opposite. Let us call the former the periodic case, and the latter the antiperiodic case.
 
 \begin{theorem}[Binding and Volkmer 2012]
-    For each eigenvalue $\lambda$ of the Sturm-Liouville equation \eqref{equ:c2_periodic_sturm_liouville} subject to generalized periodic boundary conditions, either $m(\lambda) = k\pi$ or $M(\lambda) = k\pi$ with $k$ integer. In the periodic case, $k$ will be even, in the antiperiodic case, $k$ will be odd.
+    For each eigenvalue $\lambda$ of the Sturm--Liouville equation \eqref{equ:c2_periodic_sturm_liouville} subject to generalized periodic boundary conditions, either $m(\lambda) = k\pi$ or $M(\lambda) = k\pi$ with $k$ integer. In the periodic case, $k$ will be even, in the antiperiodic case, $k$ will be odd.
 \end{theorem}
 
-The last theorem gives us a coupling between the function $m(E), M(E)$ and the eigenvalues of the Sturm-Liouville problem. To reliably determine the index of an eigenvalue we also need the converse theorem.
+The last theorem gives us a coupling between the function $m(E), M(E)$ and the eigenvalues of the Sturm--Liouville problem. To reliably determine the index of an eigenvalue we also need the converse theorem.
 
 \begin{theorem}[Binding and Volkmer 2012]\label{the:c2_prufer_periodic_index}
     Define $\lambda_k^{+}$ to be the unique value for which $m(\lambda_k^{+}) = k\pi$ and $\lambda_k^{-}$ to be the unique value such $M(\lambda_k^{-}) = k\pi$. There is no value $\lambda_0^{-}$.
     \begin{itemize}
-        \item If $k$ is even (for the periodic case) or odd (for the antiperiodic case), then all values $\lambda^{\pm}_k$ are eigenvalues of the corresponding Sturm-Liouville problem.
+        \item If $k$ is even (for the periodic case) or odd (for the antiperiodic case), then all values $\lambda^{\pm}_k$ are eigenvalues of the corresponding Sturm--Liouville problem.
         \item There are no other eigenvalues.
         \item $\lambda_k^{+} < \lambda_{k+1}^{-}$ for each $k \geq 0$.
         \item An eigenfunction belonging to $\lambda_k^{\pm}$ has exactly $k$ zeros in the interval $\left[a, b\right[$.
     \end{itemize}
 \end{theorem}
 
-This theorem characterizes all eigenvalues of regular Sturm-Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). Also, an eigenvalue has at most multiplicity two. Furthermore, it is known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
+This theorem characterizes all eigenvalues of regular Sturm--Liouville problems with periodic boundary conditions. The eigenvalues are countable. They have a lower bound: $\lambda^+_0$ (for the periodic case) and $\lambda^+_1$ (for the antiperiodic case). Also, an eigenvalue has at most multiplicity two. Furthermore, it is known that $\lambda^{\pm}_k \to \infty$ if $k \to \infty$.
 
 \begin{figure}
     \begin{center}
@@ -1389,15 +1389,15 @@ In this scenario the difference in efficiency becomes apparent. \pyslise{} is tw
 
 It is remarkable that for the eigenvalues $\pyslise{}$ was more accurate than required. For the eigenfunctions, the situation is reversed. This reversion can be explained by the fact that \pyslise{} is able to reuse the same grid (which was accurate to the required tolerance), but \matslise{2} computes a new partition with the grid points used for the computation of the eigenvalue together with all requested evaluation points of the eigenfunction. This grid is much denser, and thus unnecessarily more accurate.
 
-\subsection{Coffey-Evans problem}\label{sec:c2_numerical_experiments_coffey_evans}
+\subsection{Coffey--Evans problem}\label{sec:c2_numerical_experiments_coffey_evans}
 
-Another, more challenging problem is the Coffey-Evans equation \cite{pryce_error_1986}.
+Another, more challenging problem is the Coffey--Evans equation \cite{pryce_error_1986}.
 \begin{equation}
   -y''(x) + (\beta^2\sin^2(2x)-2\beta\cos(2x))y(x) = \lambda y(x)\text{,}\label{equ:c2_coffey_evans}
 \end{equation}
 with $x \in [-\frac{\pi}{2}, \frac{\pi}{2}]$ and homogeneous Dirichlet boundary condition.
 
-The Coffey-Evans equation has two interesting features: first, it is a symmetric problem, and second it has triplets of close eigenvalues and the closeness increases dramatically as the parameter $\beta$ increases. Accurately discriminating these close but different eigenvalues is a challenge.
+The Coffey--Evans equation has two interesting features: first, it is a symmetric problem, and second it has triplets of close eigenvalues and the closeness increases dramatically as the parameter $\beta$ increases. Accurately discriminating these close but different eigenvalues is a challenge.
 
 To exploit this symmetry, \texttt{PysliseHalf} can be used. Besides this, the few lines of Python needed to find the first eigenvalues are very similar to the other examples.
 
@@ -1466,7 +1466,7 @@ Besides the numerical results, also the computational running time is reported i
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{Eigenvalues for the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}), with absolute errors obtained by \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab4}
+    \caption{Eigenvalues for the Coffey--Evans problem~(\ref{equ:c2_coffey_evans}), with absolute errors obtained by \matslise{2} and \pyslise{} with a tolerance of $10^{-8}$.}\label{tab:c2_tab4}
 \end{table}
 
 \begin{table}
@@ -1520,14 +1520,14 @@ Besides the numerical results, also the computational running time is reported i
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_ce_eigenfunctions} Maximum error in $100$ equidistant points of the eigenfunction corresponding to each of first eight eigenvalues for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
+    \caption{\label{tab:c2_ce_eigenfunctions} Maximum error in $100$ equidistant points of the eigenfunction corresponding to each of first eight eigenvalues for the Coffey--Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=5$, $\beta=15$ and $\beta=25$.}
 \end{table}
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=1\textwidth]{img/chapter2/pyslise_test/coffey_evans_eigenfunctions.pdf}
     \end{center}
-    \caption{A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey-Evans problem~(\ref{equ:c2_coffey_evans}) with $\beta=25$.}\label{fig:coffey_evans_eigenfunctions}
+    \caption{A plot of the eigenfunctions $y_2$, $y_3$ and $y_4$ of the Coffey--Evans problem~(\ref{equ:c2_coffey_evans}) with $\beta=25$.}\label{fig:coffey_evans_eigenfunctions}
 \end{figure}
 
 As seen previously, eigenfunctions can be visualized. If we want to recreate graphs similar to figure \ref{fig:coffey_evans_eigenfunctions}, the following code can be used.
@@ -1558,7 +1558,7 @@ From the theory we expect that the time needed to evaluate the eigenfunction doe
             \bottomrule
         \end{tabular}
     \end{center}
-    \caption{\label{tab:c2_tab6} Computational time used to evaluate the first ten eigenfunctions in $n$ equidistant points for the Coffey-Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=15$.}
+    \caption{\label{tab:c2_tab6} Computational time used to evaluate the first ten eigenfunctions in $n$ equidistant points for the Coffey--Evans problem (\ref{equ:c2_coffey_evans}) with $\beta=15$.}
 \end{table}
 
 \subsection{Truncated hydrogen potential}\label{sec:c2_numerical_experiments_hydrogen}
@@ -1583,7 +1583,7 @@ print(hydrogen.eigenvaluesByIndex(0, 10, (0, 1), (0, 1)))
 
 The potential is unbounded for the left endpoint of the integration interval, thus this is a non-regular problem. \matslise{2} is well-suited to solve such singular problems. It contains many checks to identify and routines to work around singularities of the problem. For efficiency reasons, \pyslise{} does not have these extra features.
 
-Despite these missing features, \pyslise{} can still solve the problem. It is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as \matslise{} and approximately four times faster (in contrast to 20 times for the Mathieu en Coffey-Evans problems).
+Despite these missing features, \pyslise{} can still solve the problem. It is even faster and more accurate. We do note that speedup is less significant than for non-singular problems. In table \ref{tab:c2_tab7} we see that \pyslise{} is at least as accurate as \matslise{} and approximately four times faster (in contrast to 20 times for the Mathieu en Coffey--Evans problems).
 
 \begin{table}
     \begin{center}
@@ -1682,9 +1682,9 @@ In \cite{andrew_correction_1989} the first twenty eigenvalues are computed to fo
 As an illustration we present the graph of the first three eigenfunctions in figure \ref{fig:c2_periodic_eigenfunctions}.
 
 
-\subsection{Sturm-Liouville problems}\label{sec:c2_experiment_sturm_liouville}
+\subsection{Sturm--Liouville problems}\label{sec:c2_experiment_sturm_liouville}
 
-As a last example we present the following Sturm-Liouville problem from \cite{siedlecki_sturmliouville_2016}:
+As a last example we present the following Sturm--Liouville problem from \cite{siedlecki_sturmliouville_2016}:
 $$
     -\left((1+x)^2 y'(x)\right)' + \left(x^2 - 2\right) y(x) = \lambda e^x y(x)
 $$
@@ -1743,7 +1743,7 @@ Later on in chapters \ref{cha:c3} and \ref{cha:c4} we develop methods to solve t
 
 This need for speed drove us away from \matslise{} or \matslise{2}. These are efficient and accurate packages which mainly focus on the computation of the eigenvalues with automatic regularity detection. In our case, we need a package that allows the fast and accurate solution of the eigenvalues as well as of the eigenfunctions of regular one-dimensional Schrödinger-problems. We investigate possible bottlenecks of performance of the \matslise{2} package and its routines.
 
-Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm-Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. The mesh is then used for all eigenvalue computations. This means that all evaluations of the coefficient functions $C_i^{(q)}$ from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such as \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily implement their Sturm-Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
+Let us start with the computation of the eigenvalues. The original \matslise{} package as well as its successor \matslise{2} are highly optimized packages, in the sense that they are designed to compute the eigenvalues of various types of regular and irregular Schrödinger and Sturm--Liouville problems as efficiently as possible. For this, only one coarse mesh, typically consisting of only a few mesh points, is determined. The mesh is then used for all eigenvalue computations. This means that all evaluations of the coefficient functions $C_i^{(q)}$ from theorem \ref{the:c2_perturbation_terms} are performed during the construction of the mesh and are saved for later reuse. This makes the actual computation of the eigenvalues, at least in an interpreted language such as \matlab{}, as fast as possible. For the actual computation of the eigenvalues, the main bottleneck of performance of \matslise{2} is \matlab{}. This environment creates an interpreted language which is inherently slower than a compiled one like \fortran{} or \texttt{C}. However, using \matlab{} has the great benefit of being user-friendly. Even less seasoned programmers are able to easily implement their Sturm--Liouville problem. In \matslise{2}, a graphical user interface is provided to aid in specifying the user's problem, without any programming knowledge needed.
 
 Since we wanted to reimplement \matslise{} into a faster compiled language, we had to consider what we would gain but also what we would lose. Speed and efficiency only go so far if the program is implemented in a prohibitively difficult package to use. As stated, one of the great strengths of \matslise{2} is its ease of use. We were hesitant to use compiled languages for this reason.
 
@@ -1992,7 +1992,7 @@ Eigenvalue 6:  49.0104182494238719005911294  (error: 9.8e-25)
     \label{fig:c2_mathieu_quad_code}
 \end{figure}
 
-In our implementation we have also adopted this philosophy by using templates to allow for any scalar type. This means that \matslise{3} is not only able to solve Sturm-Liouville equations in \texttt{double}-precision (like \matslise{2}) but also in the more accurate \texttt{long double}-precision. We even have enabled support for a $128$ bits floating point  numeric type by using Boost's \cite{boost_float128_} \texttt{boost::multiprecision::float128} type.
+In our implementation we have also adopted this philosophy by using templates to allow for any scalar type. This means that \matslise{3} is not only able to solve Sturm--Liouville equations in \texttt{double}-precision (like \matslise{2}) but also in the more accurate \texttt{long double}-precision. We even have enabled support for a $128$ bits floating point  numeric type by using Boost's \cite{boost_float128_} \texttt{boost::multiprecision::float128} type.
 
 Unfortunately, \lpython{} only has support for the double type. So, if we want to leverage this higher precision, we will have to write a \cpp{} program. As an example, in figure \ref{fig:c2_mathieu_quad_code} we provide the code to find the first few eigenvalues of the Mathieu problem from section \ref{sec:c2_numerical_experiments_mathieu} in quadruple precision ($128$ bit).
 
@@ -2024,7 +2024,7 @@ In hindsight, these issues and fixes may seem obvious. But, they highlight some 
 
 Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming, there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
 
-We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework, and we implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration tests where a Sturm-Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
+We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework, and we implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration tests where a Sturm--Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
 
 \begin{itemize}
     \item Some simple unit-tests of some auxiliary procedures \begin{itemize}
@@ -2032,7 +2032,7 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework, and we
               \item The evaluation of the $\eta_i$-funtions in many points for all scalar types.
               \item The domain and the Schrödinger potential after Liouville's transformation applied to $p(x) = \cos(x)$, $q(x) = 0$ and $w(x) = \tan(x) \sin(x)$.
           \end{itemize}
-    \item Some Sturm-Liouville problems with exact known eigenvalues \begin{itemize}
+    \item Some Sturm--Liouville problems with exact known eigenvalues \begin{itemize}
               \item The Schrödinger problem with $V(x) = 0$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenfunctions are compared in many points to the analytical solution.
               \item The Schrödinger problem with $V(x) = x^2$ on $\left[-15, 15\right]$ with homogeneous Dirichlet boundary conditions. The first $50$ eigenvalues and the orthonormality of the eigenfunctions are verified, in \texttt{double}, \texttt{long double} and \texttt{float128}.
               \item Klotter's problem \cite{klotter_technische_1978} with $p(x) = 1$, $q(x) = \frac{3}{4x^2}$ and $w(x) = \frac{64\pi^2}{9 x^6}$ on $\left[\frac{8}{7}, 8\right]$.
@@ -2040,9 +2040,9 @@ We have chosen to use \catch{} \cite{_catchorg_2023} as a test framework, and we
     \item Some Schrödinger problems with eigenvalues found in the literature and with \matslise{2}\begin{itemize}
               \item The Mathieu problem $V(x)= 2\cos(2x)$ on $[0, \pi]$. The first $200$ eigenvalues and the orthonormality of the eigenfunctions are checked, in \texttt{double}, \texttt{long double} and \texttt{float128}. The first and fourth eigenfunctions are compared in different values computed with \matslise{2}.
               \item Marletta's problem: $V(x) = 3\frac{x-31}{4(x+1)(x+4)^2}$ on $[0,12]$ with $y(0) = 0$ and $5 y(12) + 8 y'(12) = 0$.
-              \item The Coffey-Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types.
+              \item The Coffey--Evans problem: $V(x) = -2 \beta \cos(2x) + \beta^2 \sin^2(2x)$ on $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ with homogeneous Dirichlet boundary conditions and half-range reduction for $\beta \in \{20, 25\}$ with all scalar types.
           \end{itemize}
-    \item Sturm-Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise{2} was used to provide more accurate values.
+    \item Sturm--Liouville problems from \cite{siedlecki_sturmliouville_2016} are checked to their reported values. For the second and third problem, the reported results in \cite{siedlecki_sturmliouville_2016} are not as accurate as we desire, so \matslise{2} was used to provide more accurate values.
           \begin{itemize}
               \item $p(x)=1$, $q(x)=0$ and $w(x)=(1+x)^{-2}$ with homogeneous Dirichlet boundary conditions on $[0, 1]$.
               \item $p=(1+x)^2$, $q(x) = x^2-2$ and $w(x) = \exp(x)$ on $[0, 1]$ with homogeneous Dirichlet boundary conditions left and homogeneous Neumann conditions on the right.
@@ -2065,13 +2065,13 @@ All these tests can be easily run during development. They are automatically run
 
 \section{Future work}
 
-In this section we have introduced and improved upon the constant perturbation method for Sturm-Liouville problems, and more specifically time-independent one-dimensional Schrödinger equations. In section \ref{sec:c2_matslise3} we started from the complicated propagation formulae, and complicated them even further by explicitly keeping the dependence on $\delta$. These even more intimidating formulae enabled us to evaluate eigenfunctions extremely efficiently, as seen in the numerical experiments in section \ref{sec:c2_numerical_experiments}.
+In this section we have introduced and improved upon the constant perturbation method for Sturm--Liouville problems, and more specifically time-independent one-dimensional Schrödinger equations. In section \ref{sec:c2_matslise3} we started from the complicated propagation formulae, and complicated them even further by explicitly keeping the dependence on $\delta$. These even more intimidating formulae enabled us to evaluate eigenfunctions extremely efficiently, as seen in the numerical experiments in section \ref{sec:c2_numerical_experiments}.
 
 Besides this new theoretical advancement, and the efficient implementation accompanying it (as detailed in section \ref{sec:c2_the_implementation}), we also applied the constant perturbation method to periodic problems in section \ref{sec:c2_periodic}. As far as we have found in the literature, problems with non-separated boundary conditions were not yet tackled with CP-methods. Furthermore, implementations that are able to solve problems with periodic boundary conditions are rare. So, we believe the results from section \ref{sec:c2_periodic} can be published as a separate article. Regarding `future work', this is a concrete example.
 
 In the next chapters we will use the method and the implementation developed here to solve time-independent two-dimensional Schrödinger problems. Our advancements in this chapter were invaluable in the developments from the next chapters.
 
-Since the constant-perturbation methods are well-established and thoroughly researched, it is hard to fundamentally improve them. Many researchers already advanced this topic. However, we still see some opportunities to apply constant perturbation in more general Sturm-Liouville problems. One of the first assumptions we made when introducing the CP-methods was that the domain $\Omega = [a, b]$ is a bounded interval. If one was interested in solving Sturm-Liouville problems on infinite domains ($\left[0, +\infty\right[$ or $\left]-\infty, +\infty\right[$ for example), the domain had to be truncated. For Schrödinger problems where the potential quickly diverges to $+\infty$, this truncation does not pose a big issue. However, for problems with potentials such as the hydrogen potential (from section \ref{sec:c2_numerical_experiments_hydrogen}), eigenvalues close to, but less than zero, are very sensitive to this truncation. Mitigating this is difficult. If the domain is chosen too small, boundary effects change the computed eigenvalues. If the domain is too large, selecting the optimal step size is difficult. 
+Since the constant-perturbation methods are well-established and thoroughly researched, it is hard to fundamentally improve them. Many researchers already advanced this topic. However, we still see some opportunities to apply constant perturbation in more general Sturm--Liouville problems. One of the first assumptions we made when introducing the CP-methods was that the domain $\Omega = [a, b]$ is a bounded interval. If one was interested in solving Sturm--Liouville problems on infinite domains ($\left[0, +\infty\right[$ or $\left]-\infty, +\infty\right[$ for example), the domain had to be truncated. For Schrödinger problems where the potential quickly diverges to $+\infty$, this truncation does not pose a big issue. However, for problems with potentials such as the hydrogen potential (from section \ref{sec:c2_numerical_experiments_hydrogen}), eigenvalues close to, but less than zero, are very sensitive to this truncation. Mitigating this is difficult. If the domain is chosen too small, boundary effects change the computed eigenvalues. If the domain is too large, selecting the optimal step size is difficult. 
 
 As a possible avenue for future research, we believe that CP-methods can be used on truly infinite domains, without truncation. Now, we always propagate solutions from the end points of the interval to a matching point somewhere in the interior. But in principle, we could also propagate solutions from the middle of the domain to the end points. On an infinite domain there will not be two endpoints. This does not need to be a problem, as we can propagate solutions until we find convergence for both the eigenfunction and its derivative to zero. I suspect that implementing this will be far from trivial. The program should be able to dynamically add more steps in both directions if larger eigenvalues are requested. 
 
