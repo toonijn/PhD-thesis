@@ -2,6 +2,10 @@
 \input{util.tex}
 \startchapter{1}
 
+\undefinedlabel{cha:c2}{2}
+\undefinedlabel{cha:c3}{3}
+\undefinedlabel{cha:c4}{4}
+
 \chapter{Introduction to differential equations}
 
 Differential equations recall in most mathematicians many feelings. Some only shiver by the mere idea of them, some of my colleagues in the more algebraic, (finite) geometric or discrete fields come to mind. Others, myself included, rejoice at the thought of studying them.
@@ -62,7 +66,7 @@ In the most general formulation, an $n$-dimensional $k^\text{th}$ order ordinary
 $$
 f\left(x, y, {\pdv[]{y}{x}}, {\pdv[2]{y}{x}}, \dots, {\pdv[k]{y}{x}}\right) = 0
 $$
-expresses a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$. In most cases, this equation alone is unsufficient to determine a unique solutions $y(x)$. For this, some boundary conditions can be imposed on $y$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
+expresses a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$. In most cases, this equation alone is unsufficient to determine a unique solutions $y(x)$. For this, some initial or boundary conditions can be imposed on $y$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
 
 \paragraph{Integrals} The problem of determining primitive functions $F(x)$ can be rewritten as an ordinary differential equation:
 $$
@@ -75,17 +79,45 @@ $$
 
 Mathematically, this is a valid example. Intuitively however, this seems rather trivial.
 
-\paragraph{Brachistochrone curve} Mathematicians love challenging each other. This is true today, as much as it was in 300 years ago. In 1696 posed Johann Bernoulli the Brachistochrone problem. Which curve follows the slide between point $A$ and $B$, such that a frictionlessly sliding bead gets fastest from $A$ to $B$ under uniform gravity. There are many strategies for solving this problem. In one such solutions, the following differential equation arises:
+\paragraph{Swinging pendulum} Due to Newton's laws of motion, physical system often give rise to second order ordinary differential equations. One such example is a pendulum. Here, a mass is suspended such that it can swing freely back and forth. Let $\theta(t)$ be the angle by which the mass is displaced from its hanging resting position at time $t$. The movement of the pendulum is described by
+$$
+\dv[2]{\theta}{t} + \frac{g}{l} \sin(\theta) = 0\text{,}
+$$
+with $g$ the gravitational constant, and $l$ the distance between the fixed point and the mass. As initial conditions at time $t_0$, $\theta(t_0)$ represents the displacement angle at $t_0$ and $\theta'(t_0)$ represents some initial angular velocity with which the mass is released.
+
+\paragraph{Brachistochrone curve} Mathematicians love challenging each other. This is true today, as much as it was 300 years ago. In 1696 posed Johann Bernoulli the Brachistochrone problem: on which curve slides a frictionless bead the fastest from point $A$ to $B$? There are many strategies for solving this problem. In one such solutions, the following differential equation arises:
 $$
 {\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
 $$
 with $D$ a parameter.
 
+\paragraph{Lotka--Volterra equations} In biological modelling, dynamical systems can describe many real-world situations. One such a system are the Lotka-Volterra equations. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of de predatory species (for example foxes). The Lotka--Volterra equations are
+$$
+\begin{cases}
+    \dv[]{x}{t} = \alpha x - \beta x y \\
+    \dv[]{y}{t} = \delta x y - \gamma y \\
+\end{cases}\text{.}
+$$
+The constants $\alpha$, $\beta$, $\gamma$ and $\delta$ are parameters which describe the particular siituation under study. Typically, as initial conditions a researchers suplies the population sizes of both species at the start of the simulation.
 
+\subsection{Sturm--Liouville problems}
 
-\todo{All norms are $L_2$.}
+These were only a few short examples from a myriad of real-world applications. In chapter \ref{cha:c2} we will focus upon the numerical solution of a particular class of second-order linear ordinary differential equation: Sturm--Liouville equations.
+
+A Sturm--Liouville problem is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$.
+$$
+-{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y
+$$
+This problem is only well-defined if appropriate boundary condtions are provided as well. For more details about differnent types of boundary conditions we refer the reader to the introduction in chapter \ref{cha:c2}.
+
+One striking particularity of these problems is that, besides $y(x)$, $\lambda$ is an unknown as well. Solutions for $\lambda$ are called eigenvalues and the corresponding solution for $y(x)$ is what is called an eigenfunction. 
+
+Differential equations can be approached from many different angles. Some researchers take a pure theoretical approach, where many powerful results are proven. Other researchers start with real-world applications and consider differential equations as simply a tool in there toolbox to tackle their problems. The approach we have chosen falls somewhere in between. From the beginning we set out to develop and implement numerical methods for particaular differential equations. To build a useful and accuracte method, many theoretical results are needed. However, also practical feasibility and computational efficiency are essential\footnote{Personally, I feel this is the true strength of this thesis. Neither the theoretical advancements we made, nor the efficiency of our implementation are perfect. However, I believe the powerfull combination of the two to be the real innovation.}.
+
 
 \section{Partial differential equations}
+
+
 
 \subsection{Time-dependent problems}
 
