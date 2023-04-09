@@ -1092,15 +1092,21 @@ $$
     \delta_2(E) - \pi < m(E) \text{ and } M(E) < \delta_1(E) + \pi \text{.}
 $$
 
-Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_1$ and $E_2$ such that
-\todo{Maybe add a figure.}
-$$
-    \delta_1(E_1) + \pi = k \pi \text{ and } \delta_2(E_2) - \pi = k \pi\text{.}
-$$
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter2/prufer/periodic_find_ep_em.pdf}
+    \end{center}
+    \caption{The functions $\delta_2(E) - \pi$ and $\delta_1(E) + \pi$ for the periodic Schrödinger problem with $q(x) = 3x^2(\pi - x)$ on $[0, \pi]$. The search intervals from \eqref{equ:c2_periodic_search_interval} are highlighted in red.}\label{fig:c2_periodic_find_ep_em}
+\end{figure}
 
-By construction, we know for certain that the interval $[E_1, E_2]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues. The last issue left is that the matching error defined in \eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition, propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
+Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_k^{-}$ and $E_k^{+}$ such That
+\begin{equation}\label{equ:c2_periodic_search_interval}
+    \delta_1(E_k^{-}) + \pi = k \pi \text{ and } \delta_2(E_k^{+}) - \pi = k \pi\text{.}
+\end{equation}
 
-For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. But since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$. Call $u_L(x)$ the solutions propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question can be reformulated as: does there exist a linear combination $\vb{c}$ such that
+By construction, we know for certain that the interval $[E_k^{-}, E_k^{+}]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and it contains no other eigenvalues. In figure \ref{fig:c2_periodic_find_ep_em}, these intervals are visulaized. The last issue left is that the matching error defined in \eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition, propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
+
+For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. However since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$. Call $u_L(x)$ the solutions propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question can be reformulated as: does there exist a linear combination $\vb{c}$ such that
 $$
     \begin{pmatrix}
         u_L(x_m)  & v_L(x_m)  \\
