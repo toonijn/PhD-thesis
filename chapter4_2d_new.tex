@@ -143,14 +143,14 @@ To combat this issue, on the boundary of the domain asymmetric schemes could be 
 \begin{center}
     \input{img/chapter4/fd_coefficients.tex}
 \end{center}
-There are two difficulties when using these formulae. Firstly, to reach the required order, one extra point should be used. And secondly, when using asymmetric formulae the matrix from \eqref{equ:c4_fd_sparse_matrix} looses its symmetry as well. In principle this should not matter. But, in practice, many sparse matrix eigenvalue solvers are much more efficient when working with a real symmetric matrix.
+There are two difficulties when using these formulae. Firstly, to reach the required order, one extra point should be used. And secondly, when using asymmetric formulae the matrix from \eqref{equ:c4_fd_sparse_matrix} looses its symmetry as well. In principle this should not matter. In practice however, many sparse matrix eigenvalue solvers are much more efficient when working with a real symmetric matrix.
 
-\paragraph{Hénon--Heiles} \todo{Lastly, ...}
+% \paragraph{Hénon--Heiles} Lastly, ...
 
 
 \subsubsection{Computational cost of the method}
 
-Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, however, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
+Finite differences are employed in many real-world applications, as they are easy to implement, yet are able to reach high accuracies. In practice, it is rare to see these very high orders used. In this setting these high orders seem to be very well applicable.
 
 Yet, these finite difference methods are not without issues. One of the most prominent drawbacks is the expensive computations involved. To get accurate results, high orders combined with fine grids have to be used. This results in huge sparse matrices, and only thanks to their sparsity algorithms are able to compute the eigenvalues. Now, for higher order schemes, the matrices become less sparse, and as such more expensive to work with.
 
@@ -444,7 +444,7 @@ To solve \eqref{equ:c4_nm_sparse_system}, a matrix-free eigenvalue solver\footno
 
 In any case, we want to exclude the null spaces of $\vb{Z_x}$ and $\vb{Z_y} \vb{P}$ to be considered. Let the columns of $\vb{K_x}$ be a basis of the null space of $\vb{Z_x}$ and the columns of $\vb{K_y}$ a basis of the null space of $\vb{Z_y}\vb{P}$. Following \cite{saad_numerical_2011,mackey_deflation_2008}, let us define $\vb{D} := \left(\vb{I} - \vb{K_y} \vb{K_y}^\transposesign\right) \left(\vb{I} - \vb{K_x} \vb{K_x}^\transposesign\right)$ as what we call the deflation matrix. Applying this operator $\vb{D}$ to any vector orthogonally projects it out of the null spaces to their orthogonal complement. We need to ensure that the operator of which we are searching eigenvalues only returns vectors which are orthogonal to the unwanted space. On the other hand, we also want to ensure that when solving linear systems, the incoming vectors are orthogonal to the null space. With this in mind, we propose to find the smallest real strictly positive eigenvalues of
 $$
-  \vb{D} \left(\vb{A} - \sigma \vb{I}\right) \vb{D}
+    \vb{D} \left(\vb{A} - \sigma \vb{I}\right) \vb{D}
 $$
 or the largest real positive eigenvalues of
 \begin{equation}\label{equ:c4_approx_eigs_shift_invert}
@@ -769,13 +769,15 @@ Another often used test problem is the Hénon--Heiles system. In the context of 
 We refer back to section \ref{sec:c3_experiment_henon}, where we also considered this potential.
 
 \begin{figure}
-    \begin{center}
-      \includegraphics[width=.5\textwidth]{img/chapter4/henon_contour.pdf}
-    \end{center}
-    \todo{Remake with correct scale and tick labels.}
-    \caption{A contour plot from the potential of Hénon--Heiles problem as in equation \eqref{equ:c4_henon_heiles_potential}.}
-    \label{fig:c4_henon_contour}
-  \end{figure}
+    \begin{minipage}[b]{.5\textwidth}
+        \includegraphics[width=\textwidth]{img/chapter4/henon_contour.pdf}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{.49\textwidth}
+        \caption{A contour plot of the potential of the Hénon--Heiles problem as in equation \eqref{equ:c4_henon_heiles_potential}.}
+        \label{fig:c4_henon_contour}
+    \end{minipage}
+\end{figure}
 
 In \cite{wang_new_2009}, the authors remark to take care when choosing the size of the domain. This should not be too small to allow the eigenfunctions to converge to zero on the boundary. But it should neither be too large, because this can generate some physically nonsensical eigenvalues. In \cite{wang_new_2009}, the authors simply use the domain $[-10, 10] \times [-10, 10]$ and leave it at that. Looking at the available literature about this problem we find for example \cite{davis_semiclassical_1979}. Here, the proposed method does not use a clear defined boundary, but uses basis functions with infinite support. However, the interesting regions of these basis functions are only present in a radius, much smaller than $10$, around zero. \cite{braun_efficient_1996} limits their grid to a $[-6, 6] \times [-6, 6]$ domain, and in \cite{baeyens_improvements_2022}, the authors follow \cite{braun_efficient_1996}. For this experiment we will also use a $[-10, 10] \times [-10, 10]$ domain. A contour plot of this potential can be seen in figure \ref{fig:c4_henon_contour}.
 
