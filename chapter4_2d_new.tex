@@ -8,6 +8,7 @@
 \undefinedlabel{sec:c3_experiment_henon}{3.x.x}
 \undefinedlabel{sec:c3_calculate_vk}{3.x.x}
 \undefinedlabel{the:c3_counting_eigenvalues}{3.x}
+\undefinedlabel{sec:c3_conclusion_hypothesis}3.x{}
 
 \longchapter[Strands: a new method]{Strands: a new method for \twoD time-independent Schrödinger equations}\label{cha:c4}
 
@@ -126,7 +127,7 @@ For one-dimensional problems the behavior of the error with respect to $k$ has a
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_zero.pdf}
     \end{center}
-    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of a Schrödinger problem with a zero potential on the rectangular $[0, \pi] \times [0, \pi]$ domain with homogeneous Dirichlet boundary conditions \eqref{equ:c4_fd_zero}. This error is computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalues are connected.}
+    \caption{These graphs display the relative error of each of the first $100$ eigenvalues of a Schrödinger problem with a zero potential on the rectangular domain $[0, \pi] \times [0, \pi]$ with homogeneous Dirichlet boundary conditions \eqref{equ:c4_fd_zero}. This error is computed for different values of $h = \eta$ and $N_x = N_y$. Repeated eigenvalues are connected.}
     \label{fig:c4_fd_zero}
 \end{figure}
 
@@ -758,7 +759,11 @@ For non-rectangular domains with the zero potential, the story is different. Let
 
 The relative errors of the first hundred eigenvalues found with our new method are shown in figure \ref{fig:c4_nm_zero_test_disc}. We have tested this with the grid size and maximal basis size both equal to $32$, $64$ or $128$. The results are less impressive than for rectangular domains as the maximal accuracy reached is somewhere around $10^{-6}$. But nevertheless being able to compute these values at all is quite unique.
 
-\todo{May be something about `why' these results are wrong.}
+Determining the source of these inaccuracies is difficult. The graphs are reminiscent of those in figure \ref{fig:c4_fd_zero} where we used a high order finite difference scheme. There, the high order scheme (wrongly) assumed the eigenfunctions to be identically zero outside of the domain. In our case, no such assumption is made. 
+
+The behavior we observe in figure \ref{fig:c4_nm_zero_test_disc} is similar to the discussion from section \ref{sec:c3_conclusion_hypothesis}. The method we studied in chapter \ref{cha:c3} was unable to further improve accuracy, even if parameters which should result in more accurate approximations were used. In the results we are reviewing here, a similar situation can be observed. The eigenvalues found with $N=K=128$ are not consistently more accurate than the values found with $N=K=64$. In section \ref{sec:c3_conclusion_hypothesis}, we conclude that there was a fundamental shortcomming with the method. Luckily, these issues are for Strands only in this experiment present. 
+
+\todo{Maybe a hypothesis about `why' these results are wrong.}
 
 \subsubsection{Hénon--Heiles potential}\label{sec:c4_numerical_henon_heiles}
 
