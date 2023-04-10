@@ -8,7 +8,8 @@
 \undefinedlabel{sec:c3_experiment_henon}{3.x.x}
 \undefinedlabel{sec:c3_calculate_vk}{3.x.x}
 \undefinedlabel{the:c3_counting_eigenvalues}{3.x}
-\undefinedlabel{sec:c3_conclusion_hypothesis}3.x{}
+\undefinedlabel{sec:c3_conclusion_hypothesis}{3.x}
+\undefinedlabel{sec:c3_experiment_ixaru}{3.x.x}
 
 \longchapter[Strands: a new method]{Strands: a new method for \twoD time-independent Schrödinger equations}\label{cha:c4}
 
@@ -812,6 +813,29 @@ In figure \ref{fig:c4_nm_henon_test} the relative errors obtained with our metho
 Ignoring these special cases allows us to interpret the graphs from figure \ref{fig:c4_nm_henon_test}. Even on a small grid $N = 48$ we are able to accurately determine the eigenvalues. We also see that for the high eigenvalues increasing the grid size or basis size seems to have no effect. This is unexpected and seems to indicate that maybe the reference values are not perfect. The relative error for these high eigenvalues is $< 2^{-32} \approx 10^{-10}$ which is nonetheless extremely accurate.
 
 \subsubsection{Ixaru's potential}\label{sec:c4_numerical_ixaru}
+
+Next, we will consider the following Schrödinger problem
+$$
+-\nabla \psi + (1+x**2)(1+y**2) \psi = E\psi
+$$
+on $[-5.5, 5.5]\times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions, as in \cite{ixaru_new_2010} and section \ref{sec:c3_experiment_ixaru}.
+
+The eigenvalues can be approximated with the following code.
+
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Rectangle
+
+def V(x, y):
+    return (x**2 + 1) * (y**2 + 1)
+
+ixaru = Schrodinger2D(V, Rectangle(-5.5, 5.5, -5.5,5.5),
+                      gridSize=(30, 30), maxBasisSize=20)
+print(ixaru.eigenvalues(13))
+\end{minted}
+% \end{noindent}
+
+This program runs in under half a second and the resulting approximations agree up to all digits reported in \cite{ixaru_new_2010}.
 
 \todo{Ixaru's}
 
