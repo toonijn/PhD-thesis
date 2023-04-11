@@ -13,6 +13,28 @@
 \section*{English summary}
 \addcontentsline{toc}{section}{English summary}
 
+An $n$-dimensional time-independent Schrödinger equation is a linear second order partial differential equation given by
+\begin{equation}\label{equ:sum_en_schrodinger}
+-\nabla^2 \psi(\vb{x}) + V(\vb{x}) \psi(\vb{x}) = E\vb{x}\text{.}
+\end{equation}
+In this expression, $V$ is a provided potential functions defined on the domain $\Omega \subseteq \RR^n$. When solving this equation, the goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ that satisfy the Schrödinger equation~\eqref{equ:sum_en_schrodinger} in combination with provided boundary conditions. In such a solution $E$ is called the eigenvalue, with corresponding eigenfunction $\psi$.
+
+For the one-dimensional case, Schrödinger equations are a special case of Sturm--Liouville equations:
+\begin{equation}\label{equ:sum_en_sl}
+    -(p(x), y'(x))' + q(x) y(x) = \lambda w(x) y(x) \text{.}
+\end{equation}
+In this equation $p(x)$, $q(x)$ and $w(x)$ are given functions on a connected domain $[a, b] \subseteq \RR$. Here, $\lambda$ is the unknown eigenvalue with corresponding eigenfunction $y$.
+
+In chapter \ref{cha:c2}, an existing numerical method for approximating eigenvalues and eigenfunctions of \eqref{equ:sum_en_sl} is studied. Here regular Sturm--Liouville problems on $[a, b]$ are considered with homogeneous Robin boundary conditions:
+$$
+\alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
+$$
+This constant-perturbation method is able to reach extremely accurate results, for small as well as high eigenvalues.
+
+\todo{Why is ours better?}
+
+\todo{Two-dimensional problems.}
+
 % LTeX: language=nl-BE
 \section*{Nederlandse samenvatting}
 \addcontentsline{toc}{section}{Nederlandse samenvatting}
