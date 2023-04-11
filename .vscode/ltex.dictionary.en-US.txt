@@ -91,3 +91,7 @@ interpolant
 Sturm
 Hénon
 Heiles
+Kutta
+Brachistochrone
+Lotka
+Volterra

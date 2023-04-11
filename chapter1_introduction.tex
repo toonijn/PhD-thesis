@@ -20,7 +20,7 @@ In this section, we will walk through an abridged version of the history of diff
 
 A good starting point is to take a look at numbers. Counting things is universal and timeless, as such the natural numbers $\NN$ are a jumping point to all the other numbers. In modern mathematics, the next logical step is to introduce the integers $\ZZ$. Historically however, only throughout the Middle Ages became negative numbers and the concept of zero widely accepted as numbers themselves. The first texts about negative numbers are from Chinese mathematicians somewhere between the second and seventh century AD. Later on, Indian and Islamic mathematicians calculated with negative numbers as well.
 
-In historic texts, we find already references to (positive) fractions, as early as Ancient Egypt, around 1000 BC (maybe even earlier). So after $\NN$ the next numbers that were `discovered', were the positive rational numbers $\QQ^+$. And soon thereafter some irrational numbers were found. The most prominent example is probably $\sqrt{2}$, the length of the diagonal of the unit square. But it is a bit too generous to say that this was the discovery of the real numbers. It is more accurate to say that there was a (geometric) notion of algebraic numbers $\QQbar$. These are the numbers that are solutions of polynomial equations, like $x^2 = 2$. However only around the year 900, the Egyptian mathematician Abū Kāmil Shujā ibn Aslam started to accept these solutions as numbers in and of itself.
+In historic texts, we find already references to (positive) fractions, as early as Ancient Egypt, around 1000 BC (maybe even earlier). So after $\NN$ the next numbers that were `discovered', were the positive rational numbers $\QQ^+$. And soon thereafter some irrational numbers were found. The most prominent example is probably $\sqrt{2}$, the length of the diagonal of the unit square. But it is a bit too generous to say that this was the discovery of the real numbers. It is more accurate to say that there was a (geometric) notion of algebraic numbers $\QQbar$. These are the numbers that are solutions of polynomial equations, like $x^2 = 2$. However, only around the year 900, the Egyptian mathematician Abū Kāmil Shujā ibn Aslam started to accept these solutions as numbers in and of itself.
 
 The mathematical invention that may have had the most impact in our daily lives may also be unnoticed by many: the Hindu--Arabic numeral system. This is a way of writing down numbers, invented between the first and fourth century. Most numeral systems were not made for large numbers or were cumbersome to work with. Only the best of mathematicians could do computation in those systems; especially multiplication was difficult. The Hindu--Arabic numeral system solved this by being positional based. This means that the last digits is the one's place, the digit before that ten's, then hundred's, and so on. This allows for a compact way to write down large numbers that still allows easy computation through arithmetic manipulations. Our modern numeral system is a direct descendant of the Hindu--Arabic numeral system. Compare for example the Roman numeral \uppercase\expandafter{\romannumeral 3846\relax} to our modern equivalent $3846$. And to help illustrate this point, try squaring both numbers.
 
@@ -38,7 +38,7 @@ The notations
 $$
     \int f(x) \, \dd x \quad \text{ and } \quad \dv[]{f(x)}{x}
 $$
-for the integral and the derivative of a function $f$ were introduced by Liebniz. Newton introduced the notation
+for the integral and the derivative of a function $f$ were introduced by Leibniz. Newton introduced the notation
 $$
     \dot{f}
 $$
@@ -54,7 +54,7 @@ And the developments from the nineteenth century continued into the twentieth. G
 
 \subsection{Advent of computing}
 
-Most\footnote{Mathematically, we can even say `almost all'.} differential equation cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, symbolic results are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as well as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures, that if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
+Most\footnote{Mathematically, we can even say `almost all'.} differential equation cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, symbolic results are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures, that if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
 
 Later, in the middle of the nineteenth century multistep methods were developed. And at the end of that century, Runge published the first Runge--Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
 
@@ -64,43 +64,43 @@ Throughout the twentieth century, with the rise of computing devices, the use an
 
 \section{Ordinary differential equations}
 
-In the most general formulation, an $n$-dimensional $k^\text{th}$ order ordinary differential equation 
-$$
-f\left(x, y, {\pdv[]{y}{x}}, {\pdv[2]{y}{x}}, \dots, {\pdv[k]{y}{x}}\right) = 0
-$$
-expresses a constraint on an unknown sufficiently differentiable function $y : \Omega \to \RR$ with $\Omega \subseteq \RR$ and $f: \RR^{k+1} \to \RR$. In most cases, this equation alone is unsufficient to determine a unique solutions $y(x)$. For this, some initial or boundary conditions can be imposed on $y$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
+In the most general formulation, an $n$-dimensional $k^\text{th}$ order \emph{ordinary differential equation}
+\begin{equation}\label{equ:c1_ode_def}
+    \vb{f}\left(x, \vb{y}, {\pdv[]{\vb{y}}{x}}, {\pdv[2]{\vb{y}}{x}}, \dots, {\pdv[k]{\vb{y}}{x}}\right) = \vb{0}
+\end{equation}
+expresses $n$ constraints on an unknown sufficiently differentiable function $\vb{y} : \Omega \to \RR^n$ with $\Omega \subseteq \RR$ and $\vb{f}: \Omega \times (\RR^n)^{k+1} \to \RR^n$. In most cases, this equation alone is insufficient to determine a unique solution $\vb{y}(x)$. For this, some initial or boundary conditions can be imposed on $\vb{y}$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
 
-\paragraph{Integrals} The problem of determining primitive functions $F(x)$ can be rewritten as an ordinary differential equation:
+\paragraph{Integrals} The problem of determining primitive functions $F(x)$ can be rewritten as a one-dimensional first order ordinary differential equation:
 $$
-F(x) = \int f(x) \,\dd x \quad \iff \quad \dv[]{F}{x} = f(x)\text{.}
+    F(x) = \int f(x) \,\dd x \quad \iff \quad \dv[]{F}{x} = f(x)\text{.}
 $$
-Definite integrals can similarly be formulated as an ordinary differential, however a boundary condition has to be imposed:
+Definite integrals can similarly be formulated as a differential equation, however a boundary condition has to be imposed:
 $$
-\int_a^b f(x) \dd x = F(b) \quad \text{ with } \dv[]{F}{x} = f(x) \text{ and } F(a) = 0\text{.}
+    \int_a^b f(x) \dd x = F(b) \quad \text{ with } \dv[]{F}{x} = f(x) \text{ and } F(a) = 0\text{.}
 $$
 
 Mathematically, this is a valid example. Intuitively however, this seems rather trivial.
 
 \paragraph{Swinging pendulum} Due to Newton's laws of motion, physical system often give rise to second order ordinary differential equations. One such example is a pendulum. Here, a mass is suspended such that it can swing freely back and forth. Let $\theta(t)$ be the angle by which the mass is displaced from its hanging resting position at time $t$. The movement of the pendulum is described by
 $$
-\dv[2]{\theta}{t} + \frac{g}{l} \sin(\theta) = 0\text{,}
+    \dv[2]{\theta}{t} + \frac{g}{l} \sin(\theta) = 0\text{,}
 $$
 with $g$ the gravitational constant, and $l$ the distance between the fixed point and the mass. As initial conditions at time $t_0$, $\theta(t_0)$ represents the displacement angle at $t_0$ and $\theta'(t_0)$ represents some initial angular velocity with which the mass is released.
 
 \paragraph{Brachistochrone curve} Mathematicians love challenging each other. This is true today, as much as it was 300 years ago. In 1696 posed Johann Bernoulli the Brachistochrone problem: on which curve slides a frictionless bead the fastest from point $A$ to $B$? There are many strategies for solving this problem. In one such solutions, the following differential equation arises:
 $$
-{\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
+    {\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
 $$
 with $D$ a parameter.
 
-\paragraph{Lotka--Volterra equations} In biological modelling, dynamical systems can describe many real-world situations. One such a system are the Lotka-Volterra equations. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of de predatory species (for example foxes). The Lotka--Volterra equations are
+\paragraph{Lotka--Volterra equations} In biological modelling, dynamical systems can describe many real-world situations. The Lotka--Volterra equations make up one such system. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of the predatory species (for example foxes). The Lotka--Volterra equations are
 $$
-\begin{cases}
-    \dv[]{x}{t} = \alpha x - \beta x y \\
-    \dv[]{y}{t} = \delta x y - \gamma y \\
-\end{cases}\text{.}
+    \begin{cases}
+        \dv[]{x}{t} = \alpha x - \beta x y  \\
+        \dv[]{y}{t} = \delta x y - \gamma y \\
+    \end{cases}\text{.}
 $$
-The constants $\alpha$, $\beta$, $\gamma$ and $\delta$ are parameters which describe the particular siituation under study. Typically, as initial conditions a researchers suplies the population sizes of both species at the start of the simulation.
+In this two-dimensional first order ordinary differential equation, the constants $\alpha$, $\beta$, $\gamma$ and $\delta$ are parameters which describe the particular characteristics of the situation. Typically, as initial conditions, a researcher supplies the population sizes of both species at the start of the simulation.
 
 \subsection{Sturm--Liouville problems}
 
@@ -108,21 +108,49 @@ These were only a few short examples from a myriad of real-world applications. I
 
 A Sturm--Liouville problem is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$.
 $$
--{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y
+    -{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y
 $$
-This problem is only well-defined if appropriate boundary condtions are provided as well. For more details about differnent types of boundary conditions we refer the reader to the introduction in chapter \ref{cha:c2}.
+This problem is only well-defined if appropriate boundary conditions are provided as well. For more details about different types of boundary conditions we refer the reader to the introduction in chapter \ref{cha:c2}.
 
-One striking particularity of these problems is that, besides $y(x)$, $\lambda$ is an unknown as well. Solutions for $\lambda$ are called eigenvalues and the corresponding solution for $y(x)$ is what is called an eigenfunction. 
+One striking particularity of these problems is that, besides $y(x)$, $\lambda$ is an unknown as well. Solutions for $\lambda$ are called eigenvalues and the corresponding solution for $y(x)$ is what is called an eigenfunction.
 
-Differential equations can be approached from many different angles. Some researchers take a pure theoretical approach, where many powerful results are proven. Other researchers start with real-world applications and consider differential equations as simply a tool in there toolbox to tackle their problems. The approach we have chosen falls somewhere in between. From the beginning we set out to develop and implement numerical methods for particaular differential equations. To build a useful and accuracte method, many theoretical results are needed. However, also practical feasibility and computational efficiency are essential\footnote{Personally, I feel this is the true strength of this thesis. Neither the theoretical advancements we made, nor the efficiency of our implementation are perfect. However, I believe the powerfull combination of the two to be the real innovation.}.
+Differential equations can be approached from many angles. Some researchers take a pure theoretical approach, where many powerful results are proven. Other researchers start with real-world applications and consider differential equations as simply a tool in the toolbox to tackle their problems. The approach we have chosen falls somewhere in between. From the beginning we set out to develop and implement numerical methods for particular differential equations. To build a useful and accurate method, many theoretical results are needed. However, also practical feasibility and computational efficiency are essential.\footnote{Personally, I feel this is the true strength of this thesis. Neither the theoretical advancements we made, nor the efficiency of our implementation are perfect. However, I believe the powerful combination of the two to be the real innovation.}
 
 
 \section{Partial differential equations}
 
+One of the main characterizing properties of ordinary differential equations is that there is only a single independent variable. In equation \eqref{equ:c1_ode_def}, $x$ is this independent variable. A \emph{partial} differential equation is a generalization which allows multiple independent variables. As these equations are commonly used in physical problems, the independent variables are mostly time $t$ and space $x, y, z, \dots$, or more general $x_1, x_2, \dots, x_n$.
 
+Providing a clean general one-formula definition of partial differential equations is quite cumbersome, and not at all instructive. Therefore, let us immediately take a look at some examples.
+
+\paragraph{The heat equation} Conductive heat transfer (among many other diffusive phenomena) is described by the heat equation. Let $f(t, x)$ be the temperature along an insulated metal rod, physical laws dictate this functions satisfies
+$$
+    {\pdv[]{f}{t}} = \alpha \pdv[]{f}{x}\text{.}
+$$
+As in the case of ordinary differential equations, to uniquely define a partial differential problem, boundary and or initial conditions have to be imposed.
+
+\todo{Some more examples}
 
 \subsection{Time-dependent problems}
 
 \subsection{Eigenvalue-eigenfunction problems}
+
+\section{Notation}
+
+Throughout this thesis we try to follow common notations present in the literature. However, different authors prefer different notations. For example from a physics perspective, $\bra{f}\ket{g}$ is extremely common. In mathematical analysis this notation is rarer. There, $\langle f, g \rangle$ or $f \cdot g$ are more frequently used. For clarity, in this section we give an overview of the notational conventions used in this work.
+
+\begin{description}[leftmargin=4cm, labelsep=0cm, style=multiline, itemsep=2mm, topsep=6mm]
+    \item [$\begin{array}{@{}l} \NN, \ZZ, \QQ, \RR, \CC\\\NN^+, \QQ^+, \RR^+\end{array}$] The set of the natural numbers, the integers, the rational numbers, the real numbers and the complex numbers respectively. A superscript plus indicates the subset of only strictly positive numbers.
+    \item [$\begin{array}{@{}l} a, b, c, \dots \\ \alpha, \beta, \gamma, \dots \end{array}$] Lowercase variables are assumed to be scalars.
+    \item [$\vb{u}, \vb{v}, \dots$] Lowercase bold variables are assumed to be vectors.
+    \item [$\vb{B}, \vb{M}, \vb{\Lambda}, \dots$] Uppercase bold variables are assumed to be matrices.
+    \item [$\displaystyle\|\vb{x}\|_p $] The $L_p(\RR^n)$-norm: $\left(\sum_{i=1}^{n} \left|x_i\right|^p\right)^\frac{1}{p}$.
+    \item [$\displaystyle\|\vb{x}\| = \|\vb{x}\|_2$] By default, norms are assumed to be euclidean.
+    \item [$\nabla f = \left(\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots\right)^\transposesign$] The gradient of a function is computed with respect to the space variables (not time).
+    \item [$\Delta f = \nabla^2 f = \nabla \cdot \nabla f$] The Laplacian of a function is calculated as ${\pdv[2]{f}{x_1}} + {\pdv[2]{f}{x_2}} + \dots$.
+    \item [$\dOmega$] For a domain $\Omega \in \RR^n$, the boundary $\dOmega$ is defined as $\overline{\Omega} \cap \overline{\Omega^c}$ (this is the intersection of the closure of $\Omega$ with the closure of the complement of $\Omega$.).
+    \item [$\displaystyle\bra{f\,}\ket{\,g}$] For functions $f, g : \Omega \to \CC$ defined on $\Omega \subseteq \RR^n$, their inner product is calculated as $\int_\Omega f(\vb{x}) \overline{g(\vb{x})} \,\dd \vb{x}$.
+\end{description}
+
 
 \stopchapter
