@@ -95,3 +95,5 @@ Kutta
 Brachistochrone
 Lotka
 Volterra
+Raphson
+Kronrod

@@ -23,6 +23,7 @@
     "\\rust{}": "dummy",
     "\\oneD{}": "dummy",
     "\\twoD{}": "dummy",
+    "\\texttt{}": "dummy",
   },
   "ltex.enabled": [
     "context",
@@ -36,7 +37,8 @@
   ],
   "ltex.latex.environments": {
     "python": "ignore",
-    "minted": "ignore"
+    "minted": "ignore",
+    "algorithmic": "ignore"
   },
   "latex-workshop.latex.tools": [
     {
