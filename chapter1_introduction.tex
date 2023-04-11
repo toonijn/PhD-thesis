@@ -92,6 +92,7 @@ $$
     {\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
 $$
 with $D$ a parameter.
+% Image?
 
 \paragraph{Lotka--Volterra equations} In biological modelling, dynamical systems can describe many real-world situations. The Lotka--Volterra equations make up one such system. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of the predatory species (for example foxes). The Lotka--Volterra equations are
 $$
@@ -123,17 +124,46 @@ One of the main characterizing properties of ordinary differential equations is 
 
 Providing a clean general one-formula definition of partial differential equations is quite cumbersome, and not at all instructive. Therefore, let us immediately take a look at some examples.
 
-\paragraph{The heat equation} Conductive heat transfer (among many other diffusive phenomena) is described by the heat equation. Let $f(t, x)$ be the temperature along an insulated metal rod, physical laws dictate this functions satisfies
+\paragraph{The heat equation} Conductive heat transfer (among many other diffusive phenomena) is described by the heat equation. Let $f(t, x)$ be the temperature along an insulated metal rod with $x \in [0, 1]$ and $t \in \left[0, \infty\right[$. Physical laws dictate that this function satisfies
 $$
-    {\pdv[]{f}{t}} = \alpha \pdv[]{f}{x}\text{.}
+    {\pdv[]{f}{t}} = \alpha \pdv[2]{f}{x}\text{.}
 $$
-As in the case of ordinary differential equations, to uniquely define a partial differential problem, boundary and or initial conditions have to be imposed.
+In this expression, $\alpha$ is a parameter. As is the case for ordinary differential equations, to uniquely define a partial differential problem, boundary and or initial conditions have to be imposed. If for example the rod is heated at one side to $500\,\text{K}$, and cooled at the other to $250\,\text{K}$, then this can be expressed as $f(t, 0) = 500$ and $f(t, 1)=250$ for all $\left]0, \infty\right[$. However, this is still insufficient to properly define the problem. Initial conditions have to be provided for $t=0$. These should express the temperature throughout the rod at the beginning of the simulation. For example, if the experiment is started with the rod at room temperature $300\,\text{K}$, then this is captured as $f(0, x) = 300$ for all $x \in [0, 1]$.
 
-\todo{Some more examples}
+This problem can be easily generalized to higher dimensional situations. Assume a similar experiment is conducted with a metal unit sphere. Let $g : \left[0, \infty\right[ \times \Omega : (t, x, y, z) \to g(t, x, y, z)$ be the temperature throughout this sphere $\Omega := \left\{(x, y, z)^\transposesign \in \RR^3 | x^2 + y^2 + z^2 \leq 1\right\}$. Physics dictate this $g$ satisfies:
+$$
+{\pdv[]{g}{t}} = \alpha\left(\pdv[2]{g}{x} + \pdv[2]{g}{y} + \pdv[2]{g}{z}\right) = \alpha \nabla^2 g \text{.}
+$$
+Again, appropriate boundary and initial conditions have to be specified.
 
-\subsection{Time-dependent problems}
+\paragraph{Gauss's law for magnetism} Classical electromagnetism states that no magnetic monopoles exist. Mathematically this can be expressed as: at all times, the magnetic field $\vb{B} : \RR^3 \to \RR^3$ is divergence-free. Writing this as a partial differential equation makes this clear:
+\begin{equation}\label{equ:c1_gauss_magnets}
+    \nabla \cdot \vb{B} = 0 \quad\iff\quad \pdv[]{\vb{B}}{x} + \pdv[]{\vb{B}}{y} + \pdv[]{\vb{B}}{z} = 0\text{.}    
+\end{equation}
 
-\subsection{Eigenvalue-eigenfunction problems}
+This is a first-order three-dimensional linear partial differential equation. It illustrates that many laws and theories in physics can be formulated as (partial) differential equations.
+
+In engineering, computer models of real-world situation are invaluable in making decisions. All of these models have to be based on (our understanding of) the world around us and the physical laws governing it. Partial differential equations are therefore essential in many of these models. If one wants to simulate magnetism, then equation~\eqref{equ:c1_gauss_magnets} may be sufficient. However, if electricity is also involved, then the more general (and much more complicated) equations of Maxwell have to be solved.
+
+% Image?
+
+\paragraph{Incompressible Navier--Stokes equations} To simulate the flow of incompressible fluids\footnote{The flow of water is a straightforward example. Also, these equations can handle slow flowing wind, as pressure can be assumed constant. If pressure cannot be neglected, then the compressible equations should be used.}, the incompressible Navier--Stokes equations can be used. Let $\vb{u} : \RR \times \RR^3 \to \RR^3$ express the flow vector at each moment $t$ in each point $(x, y, z)$. For incompressible flow, $\vb{u}$ has to satisfy
+\begin{align*}
+    & \pdv[]{\vb{u}}{t} = \nabla^2\vb{u} - (\vb{u}\cdot \nabla)\vb{u} + \vb{f} \\
+    &\quad\text{ while }\nabla\cdot \vb{u} = 0\text{.}
+\end{align*}
+
+As one may already suspect, for most\footnote{Again, mathematically, we can say `almost all'.} partial differential equation, numerical methods need to be developed. In state-of-the-art modelling software many tools are available. As in many of these programs complicated geometries are supported (such as the blades of a wind turbine, or the CAD-model of a bridge for example), numerical simulation methods based upon finite element techniques are preferred. These methods create a triangular mesh (or tetrahedral mesh for three-dimensional problems) of the domain, and use approximations on each of the cells of this mesh. In general, these techniques can be employed for an extremely diverse set of problems, albeit with an exceptionally high computational cost.
+
+\subsection{Time-independent Schrödinger problems}
+
+In this thesis, and in particular chapters~\ref{cha:c2} and~\ref{cha:c3}, we will be solving two-dimensional time-independent Schrödinger equations. These are defined by a potential $V(x, y)$ on a domain $\Omega \subseteq \RR^2$. The goal is to find all functions $\psi : \Omega \to \CC$ and values $E \in \CC$ such that
+$$
+-\nabla^2\psi + V(x, y) \psi = E \psi\text{,}
+$$
+with appropriate boundary conditions.
+
+As many partial differential equations, the Schrödinger equation has its origins in physics. More specifically, the time-dependent Schrödinger equations describes wave functions in quantum mechanics. As I am a mathematician, I am not at all qualified to give any introduction to such an immensely complicated physics subject. Fortunately, in this thesis we are not concerned with the `why'\footnote{This is an easy-to-make statement as a mathematician. However, it is a dangerous statement for a scientist (which we most definitely are). Being blind to the applications is immoral. Quantum mechanics, and more generally our understanding of physics, has two sides. On the one hand, it obviously improves uncountable many lives immeasurably, directly and maybe even more so indirectly. On the other hand, not all human inventions have been for the better. The most incomprehensibly destructive weapons, for example, have only been possible due to advances in nuclear physics. As we are developing algorithms and methods for solving Schrödinger equations, implicitly (and by acknowledging this, now explicitly as well) we put our trust in the researchers who will be using our tools. So, to any user benefitting from our work, let this footnote be my plea to use it morally and responsibly.} of this equation; we are only trying to solve it.
 
 \section{Notation}
 
