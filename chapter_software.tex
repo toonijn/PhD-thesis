@@ -1,0 +1,38 @@
+% !TeX root = chapter_software.tex
+\input{util.tex}
+\startchapter{0}
+
+\undefinedlabel{cha:c2}{2}
+\undefinedlabel{cha:c3}{3}
+\undefinedlabel{cha:c4}{4}
+
+\chapter*{Developed software}
+\addcontentsline{toc}{chapter}{Overview of developed software}
+
+All developed software consists out of \cpp{}-source files together with a \lpython{}-packages. This \lpython{}-package provides a user-friendly interface to the efficiently implemented \cpp{}-code. To build upon this code, \lpython{} is an optional dependency. All Schrödinger problems can also be expressed using only \cpp{}.
+
+\subsection*{Matslise 3.0 --- pyslise}
+
+Solving one-dimensional Sturm--Liouville and Schrödinger problems with homogenous Robin or periodic boundary conditions. See chapter \ref{cha:c2}.
+
+\url{https://github.com/twist-numerical/matslise} \\
+\url{https://pypi.org/project/pyslise/}
+
+
+\subsection*{Matslise 2D --- pyslise2d}
+
+Approximating eigenvalues and eigenfunctions of two-dimensional Schrödinger problems on rectangular domains with homogenous Dirichlet boundary conditions, using the method from chapter \ref{cha:c3}.
+
+\url{https://github.com/twist-numerical/matslise2d} \\
+\url{https://pypi.org/project/pyslise2d/}
+
+
+\subsection*{Strands --- strands}
+
+Approximating eigenvalues and eigenfunctions of two-dimensional Schrödinger problems on general bounded domains with homogenous Dirichlet boundary conditions, using the method from chapter \ref{cha:c4}.
+
+\url{https://github.com/twist-numerical/strands} \\
+\url{https://pypi.org/project/Strands/}
+
+
+\stopchapter
