@@ -1,0 +1,24 @@
+· Ik ben meer fan van “Summary in English” en “Nederlandstalige samenvatting”, maar dat kan een kwestie van smaak zijn.
+· Provided -> given
+· The domain -> a domain
+· In such a solution -> For such a solution,
+· Eigenfunction y -> eigenfunction y(x)
+· Existing : geen fan van, de nietsvermoedende lezer weet nog niet dat je wil benadrukken dat deze methode al bestond en dat andere methodes jouw uitvinding zijn. Als het een bekende methode is, zou ik gaan voor “well-known”, anders weet ik niet zo direct een goed alternatief.
+· Implementation Matslise 3.0 -> implementation which we call Matslise 3.0
+· The python-package -> a python-package named
+· Possible, -> possible (zonder komma)
+· New -> novel,
+· Generalized: zorg ervoor dat je dit consequent met z schrijft doorheen je thesis. Met s mag ook, dat is dan Brits i.p.v. Amerikaans Engels, maar het moet wel consequent zijn. (Ik zeg niet dat je het niet consequent doet, ik merk het maar op.)
+· As far as we can tell, a -> to the best of our knowledge, that a
+· These kinds -> this type
+· Making sure -> to make sure
+· (from chapter 3) -> , discussed in chapter 3, (Ik schrijf zelf trouwens altijd Chapter 3 met hoofdletter, maar wellicht hoeft dat niet.)
+· Based upon -> based on (komt verderop nog eens voor)
+· Ideas -> concepts
+· We make -> dit mag misschien wel wat trotser, bv. “we introduce” of “we establish”
+· Are found -> have been found/obtained
+· The second method -> A second method
+· Strands: misschien ook in het lettertype van Matslise 3.0?
+· Als je echt eens gek wil doen: python-package with the same name -> homonymous python-package
+· By using -> Through the use of
+· collocation ideas -> notions of collocation (ik weet niet wat je bedoelt met “collocation”, maar dit zal wel jargon zijn, vermoed ik?)
