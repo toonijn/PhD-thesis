@@ -1,4 +1,4 @@
-% !TeX root = chapter_software.tex
+% !TeX root = chapter_summary.tex
 \input{util.tex}
 \startchapter{0}
 
@@ -17,7 +17,7 @@ An $n$-dimensional time-independent Schrödinger equation is a linear second ord
 \begin{equation}\label{equ:sum_en_schrodinger}
 -\nabla^2 \psi(\vb{x}) + V(\vb{x}) \psi(\vb{x}) = E\vb{x}\text{.}
 \end{equation}
-In this expression, $V$ is a provided potential functions defined on the domain $\Omega \subseteq \RR^n$. When solving this equation, the goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ that satisfy the Schrödinger equation~\eqref{equ:sum_en_schrodinger} in combination with provided boundary conditions. In such a solution $E$ is called the eigenvalue, with corresponding eigenfunction $\psi$.
+In this expression, $V$ is a provided potential function defined on the domain $\Omega \subseteq \RR^n$. When solving this equation, the goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ that satisfy the Schrödinger equation~\eqref{equ:sum_en_schrodinger} in combination with provided boundary conditions. In such a solution $E$ is called the eigenvalue, with corresponding eigenfunction $\psi$.
 
 For the one-dimensional case, Schrödinger equations are a special case of Sturm--Liouville equations:
 \begin{equation}\label{equ:sum_en_sl}
@@ -25,15 +25,17 @@ For the one-dimensional case, Schrödinger equations are a special case of Sturm
 \end{equation}
 In this equation $p(x)$, $q(x)$ and $w(x)$ are given functions on a connected domain $[a, b] \subseteq \RR$. Here, $\lambda$ is the unknown eigenvalue with corresponding eigenfunction $y$.
 
-In chapter \ref{cha:c2}, an existing numerical method for approximating eigenvalues and eigenfunctions of \eqref{equ:sum_en_sl} is studied. Here regular Sturm--Liouville problems on $[a, b]$ are considered with homogeneous Robin boundary conditions:
+In chapter~\ref{cha:c2}, the existing constant-perturbation method for approximating eigenvalues and eigenfunctions of~\eqref{equ:sum_en_sl} is studied. Here regular Sturm--Liouville problems on $[a, b]$ are considered with homogeneous Robin boundary conditions:
 $$
 \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 $$
-This constant-perturbation method is able to reach extremely accurate results, for small as well as high eigenvalues.
+This constant-perturbation method is able to reach extremely accurate results, for small as well as high eigenvalues. With this method, we build a new \cpp{}-implementation \matslise{3} accompanied by the \lpython{}-package \pyslise{}. The new implementation is up to $100$ times faster than \matslise{2} when calculating eigenvalues. For the evaluation of eigenfunctions, our program is even up to a $1000$ times faster. These speed-ups are possible, due to the development and calculation of new more complicated propagation formulae.
 
-\todo{Why is ours better?}
+We also consider (generalized) periodic boundary conditions. This is the first time, as far as we can tell, a constant-perturbation method is used for these kinds of problems. The main challenge here is making sure \emph{all} requested eigenvalues are found.
 
-\todo{Two-dimensional problems.}
+In chapters~\ref{cha:c3} and~\ref{cha:c4}, two methods for the approximation of eigenvalues and eigenfunctions of the time-independent two-dimensional Schrödinger equation~\eqref{equ:sum_en_schrodinger}  are studied. The first method (from chapter~\ref{cha:c3}) is an existing method developed by Ixaru based upon constant-perturbation ideas. It is limited to Schrödinger problems on rectangular domains with homogeneous Dirichlet boundary conditions. Throughout that chapter, we make some improvements to this method. Most notably, we develop a technique to reliably determine the index of an eigenvalue. This enables us to ensure all requested eigenvalues are found.
+
+The second method for approximating eigenvalues and eigenfunctions of time-independent two-dimensional Schrödinger equations with homogeneous Dirichlet boundary conditions on (possibly non-rectangular) domains can be found in chapter \ref{cha:c4}. Here, we are inspired by a simple method based upon a finite difference scheme. This leads us to develop Strands, a \cpp{}-program accompanied by a \lpython{}-package with the same name. By using collocation ideas with well-chosen basis functions (inspired by chapter~\ref{cha:c3}), this new method is able to reach much more accurate results, with a similar computational cost.
 
 % LTeX: language=nl-BE
 \section*{Nederlandse samenvatting}
