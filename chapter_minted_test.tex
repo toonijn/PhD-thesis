@@ -1,0 +1,73 @@
+% !TeX root = chapter_minted_test.tex
+\input{util.tex}
+\startchapter{1}
+
+\subsection{Bash}
+
+% \begin{noindent}
+\begin{minted}{bash}
+pip install strands
+\end{minted}
+% \end{noindent}
+
+\subsection{Python}
+% \begin{noindent}
+\begin{minted}{python}
+from strands import Schrodinger2D, Rectangle
+import numpy as np
+import matplotlib.pyplot as plt
+
+xs = np.linspace(-9.5, 9.5, 200)
+ys = np.linspace(-9.5, 9.5, 200)
+X, Y = np.meshgrid(xs, ys)
+
+# Test
+
+schrodinger = Schrodinger2D(
+    lambda x, y: x * x + y * y, Rectangle(-9.5, 9.5, -9.5, 9.5),
+    gridSize=(40, 40), maxBasisSize=30)
+
+for E, f in schrodinger.eigenfunctions(10):
+    plt.pcolormesh(X, Y, f(X, Y))
+    plt.show()
+\end{minted}
+% \end{noindent}
+
+\subsection{C++}
+% \begin{noindent}
+\begin{minted}{c++}
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/math/constants/constants.hpp>
+#include <boost/multiprecision/float128.hpp>
+#include <matslise/matslise.h>
+
+using boost::math::constants::pi;
+using boost::multiprecision::float128;
+
+float128 mathieuPotential(float128 x) {
+    // Test comment
+    return 2 * cos(2 * x);
+}
+
+int main() {
+    /*
+        Block comment
+    */
+    matslise::Matslise<float128> problem(
+            &mathieuPotential, 0, pi<float128>(), 1e-25q);
+
+    auto boundary = matslise::Y<float128>::Dirichlet();
+    auto eigs = problem.eigenvaluesByIndex(0, 7, boundary);
+    for (auto [i, E]: eigs) {
+        float128 error = problem.eigenvalueError(E, boundary, i);
+        std::cout << boost::format(
+                "Eigenvalue %1$d:%2$30.25f  (error: %3$.1e)")
+                        % i % E % error << std::endl;
+    }
+    return 0;
+}
+\end{minted}
+% \end{noindent}
+
+\stopchapter
