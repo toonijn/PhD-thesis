@@ -24,6 +24,7 @@
     "\\oneD{}": "dummy",
     "\\twoD{}": "dummy",
     "\\texttt{}": "dummy",
+    "\\setminted{}": "dummy"
   },
   "ltex.enabled": [
     "context",
