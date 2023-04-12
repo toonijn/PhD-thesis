@@ -13,13 +13,13 @@
 
 \longchapter[A shooting method]{A shooting method for \twoD{} time-independent Schrödinger equations}\label{cha:c3}
 
-There are many general purpose methods available for solving partial differential equations. Each method has its own benefits and disadvantages. As a rule of thumb one can say that a method which is very general and widely applicable, will be less efficient or less accurate or both, than a method which is specifically tuned for the problem at hand. With that in mind, there is a real advantage to gain when investing time and research into a highly tuned optimized method for a specific problem.
+There are many general purpose methods available for solving partial differential equations. Each method has its own benefits and disadvantages. As a rule of thumb, one can say that a method that is very general and widely applicable, will be less efficient or less accurate or both, than a method that is specifically tuned for the problem at hand. With that in mind, there is a real advantage to gain when investing time and research into a highly-tuned optimized method for a specific problem.
 
 In this and the next chapter we will study two-dimensional time-independent Schrödinger equations
 \begin{equation}\label{equ:c3_schrodinger_2d}
   -\nabla^2\psi(x, y) + V(x, y) \psi(x, y) = E \psi(x, y)
 \end{equation}
-on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogeneous Dirichlet boundary conditions, this means $\forall (x, y) \in \dOmega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain and the boundary conditions, defines the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $E$ for which a function $\psi(x, y)$  exists such that they together satisfy the Schrödinger problem~\eqref{equ:c3_schrodinger_2d}. Such a value $E$ is called an \emph{eigenvalue} corresponding to the \emph{eigenfunction} $\psi(x, y)$.
+on the domain $\Omega = [\xmin, \xmax]\times[\ymin, \ymax]$. We will only consider homogeneous Dirichlet boundary conditions, this means $\forall (x, y) \in \dOmega : \psi(x, y) = 0$. The function $V: \RR^2 \to \RR$ is called the potential function. This potential, together with the domain and the boundary conditions, define the Schrödinger problem. When \emph{solving} the time-independent Schrödinger equation, one is searching for values for $E$ for which a function $\psi(x, y)$  exists such that they together satisfy the Schrödinger problem~\eqref{equ:c3_schrodinger_2d}. Such a value $E$ is called an \emph{eigenvalue} corresponding to the \emph{eigenfunction} $\psi(x, y)$.
 
 From a functional analysis perspective, the Schrödinger problem can also be interpreted as finding the eigenvalues and eigenfunctions of the \emph{Hamiltonian} $\hamiltonian$, this is the linear functional operator:
 $$
@@ -27,11 +27,11 @@ $$
 $$
 defined on the domain $\Omega$ with given boundary conditions.
 
-Theoretically, working within the functional analysis framework is extremely useful. Many powerful results are available for all kinds of operators on all kinds of domains. In our case we are interested in self-adjoint elliptic operators, for if $V(x, y)$ is bounded and continuous then the Hamiltonian is self-adjoint and elliptic. Proving this here is non-trivial. Not because it is a particular difficult proof, in some textbooks this is merely an example of proven theorems, rather since all proofs require a thoroughly developed functional analysis framework. As an example of this framework: in the series of books starting with~\cite{reed_functional_1980}, the authors start with defining functional spaces and provide some basic topological ideas to finally, after almost 200 pages, define a functional operator. It takes another 50 pages before they consider the spectrum of such an operator. So, in these 250 pages they were able to define very rigorously the needed concepts. Only in the fourth volume~\cite{reed_iv_1978}, all parts of the puzzle are available to prove the Hamiltonian operator is self-adjoint. This self-adjointness in turn implies many theorems proven in volume two~\cite{reed_ii_1975}.
+Theoretically, working within the functional analysis framework is extremely useful. Many powerful results are available for all kinds of operators on all kinds of domains. In our case, we are interested in self-adjoint elliptic operators, for if $V(x, y)$ is bounded and continuous then the Hamiltonian is self-adjoint and elliptic. Proving this here is non-trivial. Not because it is a particular difficult proof, in some textbooks this is merely an example of proven theorems, rather since all proofs require a thoroughly developed functional analysis framework. As an example of this framework: in the series of books starting with~\cite{reed_functional_1980}, the authors start with defining functional spaces and provide some basic topological ideas to finally, after almost 200 pages, define a functional operator. It takes another 50 pages before they consider the spectrum of such an operator. So, in these 250 pages they were able to define very rigorously the needed concepts. Only in the fourth volume~\cite{reed_iv_1978}, all parts of the puzzle are available to prove the Hamiltonian operator is self-adjoint. This self-adjointness in turn implies many theorems proven in volume two~\cite{reed_ii_1975}.
 
-Even though numerical methods are able to take a few theoretical shortcuts\footnote{For example, if we numerically approximate the integral $\int_a^b f(x)\,\dd x$ we use our favorite quadrature rule and plugin the function $f$. We are not concerned if $f$ is sufficiently integrable. We are not concerned that $f$ could be not \emph{almost everywhere} continuous. The only thing we need is to be able to evaluate $f$ in the points required by the quadrature rule.}, having a thorough understanding of the theory can be quite instructive. For now, we will not provide the functional analysis background, or rigorous proofs for the properties of Hamiltonian operators. However, we will state some useful theorems specifically for the Schrödinger problem at hand. The theorems we provide here are all special cases of more general results from functional analysis, proofs for these can be found in many textbooks, for example~\cite{reed_functional_1980} and other books in the series.
+Even though numerical methods are able to take a few theoretical shortcuts\footnote{For example, if we numerically approximate the integral $\int_a^b f(x)\,\dd x$ we use our favorite quadrature rule and input the function $f$. We are not concerned if $f$ is sufficiently integrable. We are not concerned that $f$ could be not \emph{almost everywhere} continuous. The only thing we need is to be able to evaluate $f$ in the points required by the quadrature rule.}, having a thorough understanding of the theory can be quite instructive. For now, we will not provide the functional analysis background, or rigorous proofs for the properties of Hamiltonian operators. However, we will state some useful theorems specifically for the Schrödinger problem at hand. The theorems we provide here are all special cases of more general results from functional analysis, proofs for these can be found in many textbooks, for example~\cite{reed_functional_1980} and other books in the series.
 
-But first let us define a \emph{regular} Schrödinger problem\footnote{The definition we provide here is only for two-dimensional problems. Changing the number of dimensions will not alter the provided theorems.} to be equation~\eqref{equ:c3_schrodinger_2d} defined on a bounded Lipschitz\footnote{Formally, a Lipschitz domain has a Lipschitz continuous boundary. Intuitively, a Lipschitz domain has a ``sufficiently regular" boundary.~\cite{dacorogna_introduction_2008}} domain $\Omega \subseteq \RR$ with linear, real and continuous boundary conditions and let $V(x, y) : \Omega \to \RR$ be continuous (and therefore bounded) on $\Omega$. With this in hand, we can state analogous theorems as in the one-dimensional case.
+But first, let us define a \emph{regular} Schrödinger problem\footnote{The definition we provide here is only for two-dimensional problems. Changing the number of dimensions will not alter the provided theorems.} to be equation~\eqref{equ:c3_schrodinger_2d} defined on a bounded Lipschitz\footnote{Formally, a Lipschitz domain has a Lipschitz continuous boundary. Intuitively, a Lipschitz domain has a `sufficiently regular' boundary~\cite{dacorogna_introduction_2008}.} domain $\Omega \subseteq \RR$ with linear, real and continuous boundary conditions and let $V(x, y) : \Omega \to \RR$ be continuous (and therefore bounded) on $\Omega$. With this in hand, we can state analogous theorems as in the one-dimensional case.
 
 \begin{theorem}\label{the:c3_real_eigenvalues}
   All eigenvalues of a regular Schrödinger problem are real. Corresponding eigenfunctions can always be scaled such that they are real.
@@ -113,13 +113,13 @@ A visualization of the eigenfunctions is found in figure~\ref{fig:example_zero}.
 
 The eigenvalue corresponding to the eigenfunction from figure~\ref{fig:example_zero} has multiplicity two. Another linear independent eigenfunction can be found by swapping $x$ and $y$.
 
-For almost all potential functions $V$ however, the corresponding Schrödinger equation can not be solved symbolically. So when one is interested in solutions, one has to resort to numerical methods. When only the ground state, that is the lowest eigenvalue, or maybe only few of the lowest eigenvalues are required, general numerical methods may suffice. Some examples of such techniques are finite difference based methods, or a finite element analysis. When higher eigenvalues are required, the eigenfunctions become more and more oscillatory. For the one-dimensional problem we have seen that general methods have difficulties with highly oscillatory functions. These same difficulties are expected for two-dimensional problems. In chapter~\ref{cha:c4} we will study such a more general method, and develop our own method.
+For almost all potential functions $V$ however, the corresponding Schrödinger equation cannot be solved symbolically. So when one is interested in solutions, one has to resort to numerical methods. When only the ground state, that is the lowest eigenvalue, or maybe only few of the lowest eigenvalues are required, general numerical methods may suffice. Some examples of such techniques are finite difference based methods, or a finite element analysis. When higher eigenvalues are required, the eigenfunctions become more and more oscillatory. For the one-dimensional problem we have seen that general methods have difficulties with highly oscillatory functions. These same difficulties are expected for two-dimensional problems. In chapter~\ref{cha:c4}, we will study such a more general method, and develop our own method.
 
 This chapter is dedicated to the study and improvement of the method proposed in~\cite{ixaru_new_2010} by Ixaru. In section~\ref{sec:c3_ixarus_method}, we will follow~\cite{ixaru_new_2010} and study the method itself. Later on, in section~\ref{sec:c3_improvements} we will highlight some challenges with using this method, and propose some improvements. Section~\ref{sec:c3_index_of_e} contains the new theory we have developed to determine the index of an eigenfunction. And lastly, in section~\ref{sec:c3_experiments} some numerical experiments are presented.
 
 \section{Ixaru's method}\label{sec:c3_ixarus_method}
 
-The main idea of Ixaru's method is built on the well established technique (by, among others, Titchmarsh~\cite{titchmarsh_eigenfunction_1962}) of writing a solution as a linear combination of well-chosen one-dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that, to represent an eigenfunction along the whole of the domain, many basis functions are necessary to ensure accurate values. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, he suggests splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article~\cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
+The main idea of Ixaru's method is built on the well-established technique (by, among others, Titchmarsh~\cite{titchmarsh_eigenfunction_1962}) of writing a solution as a linear combination of well-chosen one-dimensional basis functions $b_i(x)$: $\psi(x, y) = \sum_{i=1}^\infty b_i(x) c_i(y)$. A disadvantage of this known technique is that many basis functions are necessary to represent an eigenfunction accurately along the whole of the domain. Ixaru mitigates this by proposing multiple sets of basis functions, depending on the position in the domain. More concretely, he suggests splitting the domain into $K$ different sectors along the $y$-axis\footnote{In the original article~\cite{ixaru_new_2010}, the domain is split along the $x$-axis. But for notational purposes, it is more convenient to split along the $y$-axis. Analogous for the 3d version of the method, the split would happen along the $z$-axis.}:
 $$
   \ymin = y_0 < y_1 < y_2 < \dots < y_k < \dots < y_{K-1} < y_{K} = \ymax\text{.}
 $$
@@ -132,12 +132,12 @@ This split in sectors is illustrated in figure~\ref{fig:c3_2dsectors}.
   \end{center}
 \end{figure}
 
-On each sector $k$ (with domain $[\xmin, \xmax]\times[y_{k-1}, y_k]$) a solution $\psi(x, y)$ will be approximated as a linear combination of $N$ basis functions:
+On each sector $k$ (with domain $[\xmin, \xmax]\times[y_{k-1}, y_k]$), a solution $\psi(x, y)$ will be approximated as a linear combination of $N$ basis functions:
 \begin{equation}\label{equ:c3_lincomb_basis}
   \psi(x, y) \approx \sum_{i=1}^{N} b_i^{(k)}(x) c_i^{(k)}(y) = \transpose{{\vb{b}^{(k)}}}(x) \, \vb{c}^{(k)}(y) \text{.}
 \end{equation}
 
-Ideally, the used basis on sector $k$ should be related to the resulting eigenfunction on this sector. Of course, the eigenfunction is unknown, so using these, is not an option. In principle, there are many bases to choose from, a Fourier-basis is possible, or some basis based upon orthogonal polynomials. But, these well-known choices do not take advantage of the shape of the potential in the sector. In~\cite{ixaru_new_2010}, the author proposes to use the eigenfunctions from the following one-dimensional Schrödinger problem:
+Ideally, the used basis on sector $k$ should be related to the resulting eigenfunction on this sector. Of course, the eigenfunction is unknown, so using it is not an option. In principle, there are many bases to choose from, a Fourier-basis is possible, or some basis based upon orthogonal polynomials. But, these well-known choices do not take advantage of the shape of the potential in the sector. In~\cite{ixaru_new_2010}, the author proposes to use the eigenfunctions from the following one-dimensional Schrödinger problem:
 \begin{equation}\label{equ:c3_one_dimensional_schrodinger}
   -\pdv[2]{b_i^{(k)}}{x} + \bar{V}^{(k)}(x)b_i^{(k)}(x) = \lambda_i^{(k)} b_i^{(k)}(x)
 \end{equation}
@@ -145,10 +145,9 @@ with boundary conditions $b_i^{(k)}(\xmin) = b_i^{(k)}(\xmax) = 0$. The function
 
 Using this basis is extremely promising. The basis functions are oscillatory for regions where $\bar{V}$ is small, and have an exponential behavior when $\bar{V}$ is large. This same behavior is expected for the two-dimensional eigenfunctions as well. For a potential function which becomes large, the two-dimensional eigenfunction is expected to be most present in the regions where $V(x, y)$ is small. The chosen one-dimensional basis functions $b_i^{(k)}(x)$ express this same behavior.
 
-For the choice of $\bar{V}(x)$ in~\cite{ixaru_new_2010}, $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used. We will use this as well, for now. Later, we will remark that in some cases other choices may be beneficial.
+In~\cite{ixaru_new_2010}, $\bar{V}^{(k)}(x) := V\left(x, \frac{y_{k-1} + y_k}{2}\right)$ is used as the potential of the one-dimen\-sional problem on sector $k$. We will use this as well, for now. Later, we will remark that in some cases other choices may be beneficial.
 
 Just like the constant perturbation methods for one-dimensional problems, this method employs shooting to locate the eigenvalues. To do so, for a fixed value of $E$, formulae are needed to propagate solutions from the bottom of the domain (along $y = \ymin$) upwards, and from the top of the domain ($y = \ymax$) downwards. So, given a solution at the beginning of sector $k$ expressed in the basis $b_i^{(k)}$: $ \psi(x, y_{k-1}) = \sum_{i=1}^{N} b_i^{(k)}(x)\, c_i^{(k)}(y_{k-1}) $, an expression is constructed to compute $c^{(k)}_i(y_k)$ at the end of the sector. Substituting~\eqref{equ:c3_lincomb_basis} into~\eqref{equ:c3_schrodinger_2d} using~\eqref{equ:c3_one_dimensional_schrodinger} gives rise to
-
 \begin{equation}\label{equ:c3_coupled_system}
   -\pdv[2]{\vb{c}^{(k)}}{y} + \vb{V}^{(k)}(y) \vb{c}^{(k)}(y) = E \vb{c}^{(k)}(y) \text{.}
 \end{equation}
@@ -162,13 +161,13 @@ The system of ordinary differential equations given in~\eqref{equ:c3_coupled_sys
 
 For the accurate computation of the integral in~\eqref{equ:c3_v_matrix} we have developed specialized formulae. These will be presented later on in section~\ref{sec:c3_calculate_vk}.
 
-To be able to propagate a solution along the whole domain, it is vital to have an expression to transfer solutions between consecutive sectors. Eigenfunctions should be continuous and continuously differentiable. To ensure this when transitioning between sectors we impose for all values $x \in [\xmin, \xmax]$:
+To be able to propagate a solution along the whole domain, it is vital to have an expression to transfer solutions between consecutive sectors. Eigenfunctions should be continuous and continuously differentiable. To ensure this when transitioning between sectors, we impose for all values $x \in [\xmin, \xmax]$:
 \begin{align*}
   \transpose{\vb{b}^{(k)}}(x) \, \vb{c}^{(k)}(y_k)                   & =\, \transpose{\vb{b}^{(k+1)}}(x) \, \vb{c}^{(k+1)}(y_k)                            \\
   \text{and}\quad
   \transpose{\vb{b}^{(k)}}(x)\,\pdv{\vb{c}^{(k)}}{y}\left(y_k\right) & = \transpose{\vb{b}^{(k+1)}}(x)\,\pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) \text{.}
 \end{align*}
-Multiplying both sides with $\vb{b}^{(k)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$, gives
+Multiplying both sides with $\vb{b}^{(k)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$ yields
 \begin{align*}
   \vb{c}^{(k+1)}(y_k)                       & = \vb{M}^{(k)} \vb{c}^{(k)}(y_k)                       \\
   \pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) & = \vb{M}^{(k)} \pdv[]{\vb{c}^{(k)}}{y}\left(y_k\right)
@@ -177,7 +176,7 @@ with
 $$
   \vb{M}^{(k)}_{ij} = \bra{b_{i}^{(k)}}\ket{b_{j}^{(k+1)}} = \int_\xmin^\xmax b_i^{(k)}(x) b_j^{(k+1)}(x) \dd x \text{.}
 $$
-Here we assumed the orthogonal basis $\left\{b_i^{(k)}(x)\right\}$ to be normalized $\bra{b_{i}^{(k)}}\ket{b_{j}^{(k)}} = \delta_{ij}$, or in matrix notation:
+Here we assumed the orthogonal basis $\{b_i^{(k)}(x)\}$ to be normalized $\langle b_{i}^{(k)} | b_{j}^{(k)} \rangle = \delta_{ij}$, or in matrix notation:
 \begin{equation}\label{equ:c3_b_orthonormal}
   \int_\xmin^\xmax \transpose{\vb{b}} \vb{b}\,\dd x = \vb{I}\text{.}
 \end{equation}
@@ -215,11 +214,11 @@ In~\cite{ixaru_new_2010}, $\Cbottom$ and $\Ctop$ are implicitly assumed to be no
 \end{equation}
 has a zero eigenvalue. Each linear independent eigenvector of $\vb{\Phi}(E)$ corresponding to eigenvalue $0$ implies a linear independent eigenfunction $\psi(x, y)$ of the Schrödinger equation. Conversely, each eigenfunction of the Schrödinger equation corresponding to $E$ will emit a singular vector for~\eqref{equ:c3_psi_e}. Therefore, the geometric multiplicity of the zero eigenvalue of this matrix is the same as the multiplicity of $E$ as an eigenvalue of~\eqref{equ:c3_schrodinger_2d}. In the original article no details are provided about how one should find the values of $E$ for which the matrix $\vb{\Phi}(E)$ becomes singular. Later, in section~\ref{sec:c3_locating_e}, we will present our method for finding those values. In section~\ref{sec:c3_index_of_e}, we will go even further and demonstrate a technique which allows to determine the index of the eigenvalue in question.
 
-This concludes our overview of the method described by Ixaru in~\cite{ixaru_new_2010}. There are a few differences between our overview and the method as described in~\cite{ixaru_new_2010}. Most notably, as stated in the beginning, we have swapped the roles of $x$ and $y$. Ixaru split the domain in sectors along the $x$-axis. To highlight the recursive nature of this method, we have chosen to apply the split along the $y$-axis. To use this method for three-dimensional problems, we split the domain along the $z$-axis, and for the basis functions on each sector we solve the two-dimensional Schrödinger problem in the $x\,y$-plane. For each of these two-dimensional problems we split the domain along the $y$-axis, and solve some one-dimensional Schrödinger problems along the $x$-axis.
+This concludes our overview of the method described by Ixaru in~\cite{ixaru_new_2010}. There are a few differences between our overview and the method as described in~\cite{ixaru_new_2010}. Most notably, as stated in the beginning, we have swapped the roles of $x$ and $y$. To highlight the recursive nature of this method, we have chosen to apply the split along the $y$-axis. To use this method for three-dimensional problems, we split the domain along the $z$-axis, and for the basis functions on each sector we solve the two-dimensional Schrödinger problem in the $x\,y$-plane. For each of these two-dimensional problems, we split the domain along the $y$-axis and solve some one-dimensional Schrödinger problems along the $x$-axis.
 
 \section{Our improvements}\label{sec:c3_improvements}
 
-As we have seen with the rise of constant perturbation methods for the one-dimensional Sturm--Liouville equation, research builds upon previous work. With this in mind we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily our work done in~\cite{baeyens_fast_2020}.
+The numerical experiment in~\cite{ixaru_new_2010} makes this method seem promising. However, we have identified some possibilities where Ixaru's method can be expanded or improved. This section follows primarily our work from~\cite{baeyens_fast_2020}.
 
 We have made four large improvements and present them here in no particular order. First in section~\ref{sec:c3_improvement_automatic_sectors}, we make the program able to automatically choose the optimal sector size. This automatic sector selection allows for a user to only need to specify the required accuracy of the results. In section~\ref{sec:c3_improvement_orthonormalization}, we construct a formula to compute the inner product of two eigenfunctions. This formula allows us to normalize eigenfunctions and to construct an orthogonal basis of the eigenspace for degenerate eigenvalues. Section~\ref{sec:c3_calculate_vk} is dedicated to the computation of the integral in equation~\eqref{equ:c3_v_matrix}. And the last improvement we present here is a robust way to locate eigenvalues in section~\ref{sec:c3_locating_e}. For this last improvement we have to develop some new theoretical results, which we will cover in section~\ref{sec:c3_index_of_e}.
 
@@ -228,15 +227,15 @@ We have made four large improvements and present them here in no particular orde
 
 \subsection{Automatic optimal sector size}\label{sec:c3_improvement_automatic_sectors}
 
-When developing numerical methods (for any problem, not only for differential equations), it is most user-friendly to ask a user to only specify to which accuracy results are required. Everything else should be automatic\footnote{For example, an implementation of an adaptive quadrature rule should let the user specify only the function which to integrate, and the accuracy required. No extra parameters, such as the initial number of grid points or the order of the method for example, should be required. But ideally, a user who is experimenting or wants more control should be able to specify any of these extra parameters.}. In \matslise{3}, we have followed \matslise{2}, which has automatic sector size built in. It would improve the usability of this two-dimensional method if we include something similar.
+When developing numerical methods (for any problem, not only for differential equations), it is most user-friendly to ask a user to only specify to which accuracy results are required. Everything else should be automatic\footnote{For example, an implementation of an adaptive quadrature rule should let the user specify only the function to integrate and the accuracy required. No extra parameters, such as the initial number of grid points or the order of the method for example, should be required. But ideally, a user who is experimenting or wants more control should be able to specify any of these extra parameters.}. In \matslise{3}, we have followed \matslise{2}, which has automatic sector size built in. The usability of this two-dimensional method improves if we include something similar.
 
-We could use the same ideas that \matslise{} is using, the only difference is the way we compute the error for a given sector. In the one-dimensional case, the difference between the 16th and 18th order propagation matrix is used to estimate the error. Here, we are propagating on each sector a coupled system of Schrödinger equations. This propagation is implemented with an adaptation of \matscs{}~\cite{ledoux_numerical_2007}. In this adaptation two different propagation methods are implemented: a $10^\text{th}$ order and $8^\text{th}$ order method. The difference between the corresponding propagation matrices can be used to estimate the error that will be made on this sector.
+The same ideas from \matslise{} can be used here as well. The only minor difference is the way we compute the error for a given sector. In the one-dimensional case, the difference between the $16^\text{th}$ and $18^\text{th}$ order propagation matrix is used to estimate the error. In Ixaru's method we are propagating a coupled system of Schrödinger equations on each sector. This propagation is implemented with an adaptation of \matscs{}~\cite{ledoux_numerical_2007}. In this adaptation, the difference between propagating with a $8^\text{th}$ order and a $10^\text{th}$ order method is used as an error estimate.
 
 In theory and in practice this works beautifully, but some optimizations are still possible. The selection algorithm works by guessing an initial sector size $s_0$. When the error is too large, a smaller sector size $s_1$ is chosen and the process starts over. One big disadvantage of this method is that when a sector was computed with an error that is too large, all computations are thrown away and everything is recomputed. This is quite wasteful when the sector size is only slightly adjusted. One of the things we can reuse are the basis functions. Initially these are computed as the solution of
 $$
-  -\pdv[2]{b_i}{x} + V(x, \bar{y}) = \lambda_i b_i
+  -\pdv[2]{b_i}{x} + V(x, \bar{y}) = \lambda_i b_i\text{,}
 $$
-with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}{2}$ then it is maybe not necessary to recompute these basis functions. In our testing we have seen that the algorithm is not very sensitive to when $\frac{s_1}{2}$ is no longer considered close to $\frac{s_0}{2}$. We have chosen the heuristic that $y_k + \frac{s_1}{3} \leq \bar{y} \leq y_k + \frac{2 s_1}{3}$. Intuitively this means that our program reuses the basis functions $b_i$ as long as the corresponding $\bar{y}$ is situated within the middle third of a sector. Another big advantage of not needing to recompute the basis functions is that the expensive recursive expressions, which we will see in section~\ref{sec:c3_calculate_vk}, for the integrals $\int_{0}^{h} b_i(\delta)b_j(\delta)\delta^n \dd \delta $ can be reused as well.
+with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}{2}$ then it is maybe not necessary to recompute these basis functions. In our testing, we have seen that the algorithm is not very sensitive to when $\frac{s_1}{2}$ is no longer considered close to $\frac{s_0}{2}$. We have chosen the heuristic that $y_k + \frac{s_1}{3} \leq \bar{y} \leq y_k + \frac{2 s_1}{3}$. Intuitively this means that our program reuses the basis functions $b_i$ as long as the corresponding $\bar{y}$ is situated within the middle third of a sector. Another big advantage of not needing to recompute the basis functions is that the expensive recursive expressions for the integrals $\int_{0}^{h} b_i(\delta)b_j(\delta)\delta^n \dd \delta $ can be reused as well. These expressions will be calculated in section~\ref{sec:c3_calculate_vk}.
 
 \begin{figure}
   \begin{center}
@@ -259,13 +258,13 @@ Ideally, the eigenfunctions returned by our program should form an orthonormal b
 
 To normalize an eigenfunction or to orthogonalize eigenfunctions, in both cases the inner product of two functions should be computable. One way would be to numerically estimate this value with some quadrature rules. In principle this is a valid approach, but in practice, this is quite computationally expensive. Therefore in theorem~\ref{the:c3_dot_product}, we construct specialized formulae to compute these inner products.
 
-Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $b_i^{(k)}$ for different sectors. To combat this, theorem~\ref{the:c3_dot_product} is formulated with the assumptions that these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domain, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one-dimensional Sturm--Liouville problems.
+Calculating the inner product on the whole domain at once is difficult due to the changes in the used basis $\{b_i^{(k)}\}$ for different sectors. To combat this, theorem~\ref{the:c3_dot_product} is formulated with the assumptions that these $b_i^{(k)}(x)$ are constant in the $y$-direction. To compute the inner product of two eigenfunctions on the whole domain, the theorem can be repeatedly applied on each sector. The proof of this theorem follows the same idea used for the normalization of solutions found with a constant perturbation method for one-dimensional Sturm--Liouville problems.
 
 \begin{theorem}\label{the:c3_dot_product}
   Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one-dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section~\ref{sec:c3_ixarus_method}, on a single sector).
   \begin{align*}
-    \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \\
-    \psi_b(x, y) = \transpose{\vb{b}(x)} \vb{c_b}(y) = \sum_i b_i(x) c_{b, i}(y)
+    \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \text{,}\\
+    \psi_b(x, y) = \transpose{\vb{b}(x)} \vb{c_b}(y) = \sum_i b_i(x) c_{b, i}(y) \text{.}
   \end{align*}
   On a rectangular domain $[\xmin, \xmax] \times [\ymin, \ymax]$ the inner product of these two functions can be expressed as
   $$
@@ -285,14 +284,14 @@ Calculating the inner product on the whole domain at once is difficult due to th
     \intertext{The second equation can be multiplied with $ \pdv[]{\psi_a}{E}$ to result in}
     -\pdv{\psi_a}{E} \nabla^2\psi_b  + V(x, y)\psi_b\,\pdv{\psi_a}{E}   & = E \psi_b\pdv{\psi_a}{E} \text{.}
   \end{align*}
-  The difference of these last two expressions can be integrated over the domain $[\xmin, \xmax]\times[\ymin, \ymax]$ to obtain an expression for the inner product $\bra{\psi_a}\ket{\psi_b}$. For brevity of notation we omit the integration domain, this is assumed to be $[\xmin, \xmax] \times [\ymin, \ymax]$.
+  The difference of these last two expressions can be integrated over the domain $[\xmin, \xmax]\times[\ymin, \ymax]$ to obtain an expression for the inner product $\bra{\psi_a}\ket{\psi_b}$. For brevity of notation, we omit the integration domain, this is assumed to be $[\xmin, \xmax] \times [\ymin, \ymax]$.
 
   \begin{align*}
     \iint \psi_a\,\psi_b = & \iint\pdv{\psi_a}{E}\nabla^2\psi_b - \iint \psi_b\nabla^2\pdv{\psi_a}{E}                                                                                                                                               \\
     \intertext{The right-hand side can be calculated by applying Green's second identity\footnotemark}\noalign{\footnotetext{Let $f: \Omega \to \RR$ and $g: \Omega \to \RR$ be twice differentiable functions on $\Omega \subseteq \RR^d$. Green's second identity tells us
-        $$
+        $
           \int_\Omega f \nabla^2 g - g \nabla^2 f \dd \Omega = \oint_{\dOmega} \left(f \nabla g - g \nabla f\right) \cdot \dd \vb{n} \text{,}
-        $$
+        $
         with $\vb{n}$ the normal of $\dOmega$.}}
     =                      & \oint \left(\pdv{\psi_a}{E} \nabla \psi_b \cdot \vb{n} -  \psi_b \nabla \pdv{\psi_a}{E} \cdot \vb{n} \right) \text{.}                                                                                                  \\
     \intertext{This can be written explicitly on the integration domain as}
@@ -305,7 +304,7 @@ Calculating the inner product on the whole domain at once is difficult due to th
   Since the basis functions satisfy the Dirichlet boundary conditions\footnote{Note that this proof also works if the basis $\vb{b}$ is assumed to satisfy homogeneous Robin boundary conditions.} $\vb{b}(\xmin) = \vb{b}(\xmax) = \vb{0}$ the last term has to be zero, which proves the theorem.
 \end{proof}
 
-In this theorem it is assumed that the basis in which the eigenfunctions are expanded, is constant throughout the whole domain. In our case, this basis changes in between sectors. Therefore, when computing the inner product of two eigenfunctions on the domain, theorem~\ref{the:c3_dot_product} will have to be repeatedly employed on each sector separately, with $\ymin = y_{k-1}$ and $\ymax = y_k$. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
+In this theorem, it is assumed that the basis in which the eigenfunctions are expanded is constant throughout the whole domain. In our case, this basis changes between sectors. Therefore, when computing the inner product of two eigenfunctions on the domain, theorem~\ref{the:c3_dot_product} will have to be repeatedly employed on each sector separately, with $\ymin = y_{k-1}$ and $\ymax = y_k$. Summing these values across all sectors gives the inner product over the whole domain. This value, in turn, can be used to normalize an eigenfunction or orthogonalize different eigenfunctions for the same eigenvalue.
 
 \subsection{Calculation of \texorpdfstring{$\vb{V}^{(k)}(y)$}{Vk(y)}}\label{sec:c3_calculate_vk}
 
@@ -315,7 +314,7 @@ In~\cite{ixaru_new_2010}, the author points out that not only the values of the 
 
 In our case, the story is quite different. Because of our improvements to \matslise{}, we can improve accuracy even further. In particular, the computation of $b_i^{(k)}(x)$ is now efficiently possible in arbitrary points. This allows us to use off-the-shelf adaptive quadrature rules, to ensure accuracy. As this was only a first test to approximate $\vb{V}^{(k)}(x)$, we did not use specialized exponentially fitted methods. When profiling our implementation we found that the time to execute these quadrature formulae was almost negligible.
 
-So in practice, there was little need to improve even further, with more complicated quadrature formulae from~\cite{ixaru_operations_1997,kim_quadrature_2002,conte_modified_2016}. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$ are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewisely. As such, it is reasonable to assume that a piecewise sixteenth degree polynomial can also be accurately fitted on this function $V(x, y)$, if the same grid as for $\bar{V}^{(k)}$ is used.
+So in practice, there was little need to improve even further, with the more complicated quadrature formulae from~\cite{ixaru_operations_1997,kim_quadrature_2002,conte_modified_2016}. But, as numerical analysts, we were still curious if some more fundamental improvements were possible. After all, the eigenfunctions $b_i^{(k)}(x)$ are approximated piecewise by a truncated series in the step size $\delta$ and the special functions $\eta_{-1}$, $\eta_{0}$, $\dots$ But also, the function $\bar{V}^{(k)}$ is already approximated by a sixteenth degree polynomial. The only `wildcard', so to speak, is the unknown general function $V(x, y)$, for a fixed value of $y$. In the middle of the $k^\text{th}$ sector, this function is approximated piecewisely. As such, it is reasonable to assume that a piecewise sixteenth degree polynomial can also be accurately fitted on this function $V(x, y)$, if the same grid as for $\bar{V}^{(k)}$ is used.
 
 More formal, let us split the interval $[\xmin, \xmax]$ into the same partition that \matslise{3} used for the piecewise approximation $\xmin = x_0, x_1, \dots, x_K = \xmax$. For a fixed value of $y$ on the section $[x_{l-1}, x_l]$, the potential $V(x, y)$ can be approximated by a sixteenth order polynomial, just like $\bar{V}^{(k)}(x)$. We thus approximate $V(x, y) - \bar{V}^{(k)}(x)$ on $[x_{l-1}, x_l]$ by a polynomial $q_l(x)$. This means that to compute~\eqref{equ:c3_v_matrix}, it is sufficient to be able to evaluate
 \begin{equation}\label{equ:vk_quad_sector1d}
@@ -323,7 +322,7 @@ More formal, let us split the interval $[\xmin, \xmax]$ into the same partition 
 \end{equation}
 with $h := x_l-x_{l-1}$.
 
-In chapter~\ref{cha:c2} we have provided expressions for $b_i^{(k)}(x_{l-1}+\delta)$ as a function of $\delta$ and $Z_i := \delta^2\left(\bar{V}^{(k)}_{l,0}- \lambda^{(k)}_i\right)$:
+In chapter~\ref{cha:c2}, we have provided expressions for $b_i^{(k)}(x_{l-1}+\delta)$ as a function of $\delta$ and $Z_i := \delta^2\left(\bar{V}^{(k)}_{l,0}- \lambda^{(k)}_i\right)$:
 $$
   b_i^{(k)}(x_{l-1}+\delta) = \sum_{m=-1} c_m(\delta) \eta_m(Z_i)\text{.}
 $$
@@ -333,7 +332,7 @@ Thus, to reconstruct the value of~\eqref{equ:vk_quad_sector1d}, it is sufficient
 \begin{equation}\label{equ:c3_eta_eta_inegral}
   I_{k,l}^n := \int_0^h \eta_k(Z_i) \eta_l(Z_j) \delta^n \dd \delta
 \end{equation}
-for all appropriate $k$, $l$ and $n$. In the next section we will develop recursive formulae for this expression.
+for all appropriate $k$, $l$ and $n$. In the next section, we will develop recursive formulae for this expression.
 
 \subsubsection{Weighted integral of product of two \texorpdfstring{$\eta$}{eta}-functions}
 
@@ -343,27 +342,27 @@ $$
 $$
 if the first values of~\eqref{equ:c3_eta_eta_inegral} are known for all $n$, the others follow. So we calculate four integrals symbolically (denote $\theta_i := \bar{V}_0^{(m)} -  \lambda_i$ and $\hat{Z}_i = h^2\theta_i$):
 \begin{align*}
-  F^0 := I_{-1,-1}^0 & = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right)   \\
-  G^0 := I_{-1, 0}^1 & = \frac{-1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_i \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right) \\
-  H^0 := I_{0, -1}^1 & = \frac{1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_j \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right)  \\
-  J^0 := I_{0,0}^{2} & = \frac{h}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{0}(\hat{Z}_j) - \eta_{0}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j)\right)
+  F^0 := I_{-1,-1}^0 & = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right) \text{,}  \\
+  G^0 := I_{-1, 0}^1 & = \frac{-1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_i \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right) \text{,} \\
+  H^0 := I_{0, -1}^1 & = \frac{1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_j \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right) \text{,}  \\
+  J^0 := I_{0,0}^{2} & = \frac{h}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{0}(\hat{Z}_j) - \eta_{0}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j)\right) \text{.}
 \end{align*}
 In the case where $i = j$, these values are given as
 \begin{align*}
-  F^0 := I_{-1,-1}^0 & = \frac{h}{2} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) + 1\right)             \\
-  G^0 := I_{-1, 0}^1 & = \frac{h^2}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i)^2 - 1\right)                   \\
-  H^0 := I_{0, -1}^1 & = G^0                                                                               \\
-  J^0 := I_{0,0}^{2} & = \frac{h^3}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) - 1\right)
+  F^0 := I_{-1,-1}^0 & = \frac{h}{2} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) + 1\right) \text{,}            \\
+  G^0 := I_{-1, 0}^1 & = \frac{h^2}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i)^2 - 1\right) \text{,}                  \\
+  H^0 := I_{0, -1}^1 & = G^0 \text{,}                                                                              \\
+  J^0 := I_{0,0}^{2} & = \frac{h^3}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) - 1\right) \text{.}
 \end{align*}
 
 
 We next show that it is possible, by partial integration, to compute formulae for $F^{n}:=I_{-1,-1}^{n}$ and $J^{n}:=I_{0,0}^{n+2}$ using values for $G^{n-1}:=I_{-1,0}^{n}$ and $H^{n-1}:=I_{0,-1}^{n}$. Analogous, formulae for $G^{n}$ and $H^{n}$ use the values of $F^{n-1}$ and $J^{n-1}$. Let us consider the case of $F^{n}$. Differentiating both sides of
 $$
-  \int^{h}_0 \eta_{-1}(Z_i)\eta_{-1}(Z_j)\dd \delta = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right)
+  \int^{h}_0 \eta_{-1}(Z_i)\eta_{-1}(Z_j)\dd \delta = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right)\text{,}
 $$
 with respect to $h$, and replacing $h$ by $\delta$, gives:
 $$
-  \eta_{-1}(Z_i)\eta_{-1}(Z_j) = \pdv[]{}{\delta}\left(\frac{\delta}{\theta_i - \theta_j}\left(\theta_i \eta_0(Z_i)\eta_{-1}(Z_j) - \theta_j \eta_{-1}(Z_i)\eta_0(Z_j)\right)\right) \,.
+  \eta_{-1}(Z_i)\eta_{-1}(Z_j) = \pdv[]{}{\delta}\left(\frac{\delta}{\theta_i - \theta_j}\left(\theta_i \eta_0(Z_i)\eta_{-1}(Z_j) - \theta_j \eta_{-1}(Z_i)\eta_0(Z_j)\right)\right) \text{.}
 $$
 Then, the partial integration formula
 $$
@@ -371,7 +370,7 @@ $$
 $$
 is applied to $g(\delta) = \delta^{n}$ and $f'(\delta) = \eta_{-1}(Z_i)\eta_{-1}(Z_j)$. Since
 $$
-  f(\delta) = \frac{\delta}{\theta_i - \theta_j}\left(\theta_i \eta_0(Z_i)\eta_{-1}(Z_j) - \theta_j \eta_{-1}(Z_i)\eta_0(Z_j)\right)\,,
+  f(\delta) = \frac{\delta}{\theta_i - \theta_j}\left(\theta_i \eta_0(Z_i)\eta_{-1}(Z_j) - \theta_j \eta_{-1}(Z_i)\eta_0(Z_j)\right)\text{,}
 $$
 we obtain
 \begin{align*}
@@ -379,8 +378,8 @@ we obtain
         & =h^{n} F^0 - \frac{n}{\theta_i - \theta_j}\int_{0}^{h} \delta^{n} \left( \theta_i \eta_{0}(Z_i)\eta_{-1}(Z_j)
   % \right. \\  &\hspace{54mm} \left.
   - \theta_j \eta_{-1}(Z_i)\eta_{0}(Z_j) \right) \dd \delta                                                                                                   \\
-        & =h^{n} F^0 - \frac{n}{\theta_i-\theta_j}\left(\theta_i H^{n-1} - \theta_j G^{n-1}\right) \text{.}                                                   \\
-  \intertext{With similar computations we obtain the following formulae.}
+        & =h^{n} F^0 - \frac{n}{\theta_i-\theta_j}\left(\theta_i H^{n-1} - \theta_j G^{n-1}\right)\text{.}                                                   \\
+  \intertext{With similar computations we obtain the following formulae}
   G^{n} & = \int_{0}^{h}\eta_{-1}(Z_i)\eta_{0}(Z_j) \delta^{n+1} \dd \delta                                                                                   \\
         & = h^{n} G^0 + \frac{n}{\theta_i - \theta_j}\int_0^h \delta^{n-1} \left( \eta_{-1}(Z_i)\eta_{-1}(Z_j)
   %		\right.             \\               %    & \hspace{54mm} \left.
@@ -389,10 +388,10 @@ we obtain
   H^{n} & = h^{n} H^0 - \frac{n }{\theta_i - \theta_j}\left( F^{n-1} - \theta_j J^{n-1}\right) + \frac{h^{n}}{\theta_i - \theta_j}                            \\
   J^{n} & = \int_{0}^{h}\eta_{0}(Z_i)\eta_{0}(Z_j) \delta^{n+2} \dd \delta                                                                                    \\
         & = h^{n} J^0 - \frac{n }{\theta_i - \theta_j}\int_0^h \delta^{n} \left( \eta_{-1}(Z_i)\eta_{0}(Z_j) - \eta_{0}(Z_i)\eta_{-1}(Z_j) \right) \dd \delta \\
-        & = h^{n} J^0 - \frac{n }{\theta_i - \theta_j}\left( G^{n-1} - H^{n-1} \right)
+        & = h^{n} J^0 - \frac{n }{\theta_i - \theta_j}\left( G^{n-1} - H^{n-1} \right)\text{.}
 \end{align*}
 
-Calculating these values for increasing $n$ can be a numerically unstable process. It is a more stable algorithm to reverse the recursion with decreasing values of $n$. This gives rise to the recursion:
+Calculating these values for increasing $n$ can be a numerically unstable process. A more stable algorithm is made by reversing the recursion with decreasing values of $n$. This gives rise to the recursion:
 \begin{align*}
   F^{n-1} & = \frac{1}{n}\left( x_1 \theta_i + x_2 \theta_j + h^n \right) \\
   J^{n-1} & = \frac{1}{n}\left( x_1  + x_2\right)                         \\
@@ -431,22 +430,22 @@ In practice, we have found reliable convergence when starting this recursion wit
 Lastly, the other values for $I_{k,l}^n$, with $k, l > 0$, can be computed via the recursion relation between the $\eta$-functions:
 \begin{align*}
   I_{k, l}^n & = \frac{1}{\theta_i} \left(I_{k-2,l}^{n-2} - (2k - 1) I_{k-1,l}^{n-2}\right) \\
-  I_{k, l}^n & = \frac{1}{\theta_j} \left(I_{k,l-2}^{n-2} - (2l - 1) I_{k,l-1}^{n-2}\right) \\
+  I_{k, l}^n & = \frac{1}{\theta_j} \left(I_{k,l-2}^{n-2} - (2l - 1) I_{k,l-1}^{n-2}\right)\text{.}
 \end{align*}
 
 In summary, the formulae developed here can now be used to determine values for~\eqref{equ:c3_eta_eta_inegral}, for all $n$, $k$ and $l$.
 
 \subsubsection{Calculation of \texorpdfstring{$\vb{M}^{(k)}$}{M(k)}}
 
-In the previous section we obtained formulae to compute~\eqref{equ:vk_quad_sector1d}. In principle, these formulae could also be extended to compute overlap integrals
+In the previous section, we have obtained formulae to compute~\eqref{equ:vk_quad_sector1d}. In principle, these formulae could also be extended to compute overlap integrals
 $$
   \vb{M}_{ij}^{(k)} = \int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x\text{,}
 $$
 but there are a few hurdles. First, we would like to use the automatic sector selection algorithm in \matslise{}, as this has the big advantage of ensuring the requested accuracy. Using this automatic sector selection has the consequence of choosing a different partition along the $x$-axis for different sectors in the $y$-direction. However, since $\vb{M}^{(k)}$ requires basis functions on two different sectors, it would be very cumbersome to construct appropriate formulae.
 
-Second, we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are quite expensive to compute. For $\vb{V}^{(k)}(y)$ this cost can be justified by also reducing function evaluations of the potential $V(x, y)$.
+Second, we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are quite expensive to compute. For $\vb{V}^{(k)}(y)$, this cost can be justified by also reducing function evaluations of the potential $V(x, y)$.
 
-In the case of $\vb{M}^{(k)}$ a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
+In the case of $\vb{M}^{(k)}$, a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
 
 For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss--Kronrod formulae are used. These have a proven track record~\cite{piessens_quadpack_1983}.
 
@@ -455,9 +454,9 @@ For these reasons we have opted to use classical quadrature rules to compute $\i
 
 \subsection{Locating eigenvalues}\label{sec:c3_locating_e}
 
-In section~\ref{sec:c3_ixarus_method} we have studied a method to determine, for a given value $E$, whether it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation~\eqref{equ:c3_psi_e} becomes singular. In~\cite{ixaru_new_2010} it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about how one can find such values for $E$.
+In section~\ref{sec:c3_ixarus_method}, we have studied a method to determine, for a given value $E$, whether it is an eigenvalue. This $E$ will only be an eigenvalue if the matrix from equation~\eqref{equ:c3_psi_e} becomes singular. In~\cite{ixaru_new_2010}, it is suggested to keep track of the smallest (in modulus) eigenvalue of $\Psi(E)$. No information is provided about how one can find such values for $E$.
 
-In the literature many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g.~\cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by repeatedly halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different signs on the end points of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
+In the literature, many methods to find roots of functions are available. In introductory textbooks to scientific computing (e.g.~\cite[Chapter~5]{heath_scientific_2002}), the most well-known methods are presented. One of the easiest to implement is the method of interval bisection. In this method the root of a scalar function $f : \RR \to \RR$ is determined by repeatedly halving a search interval. The position of the root can be tracked by ensuring the function $f$ has different signs on the end points of the search interval. This requires that an initial guess for the interval already contains one root. But also, notice that the method will not work when the initial search interval contains two roots, or a root with higher multiplicity for example.
 
 Another well-known technique is Newton's method. Here, the root of a scalar function $f$ can be approximated by iterating the following scheme:
 $$
@@ -467,9 +466,9 @@ For single roots, this method has a faster rate of convergence. Choosing initial
 
 In all these well-known methods, the problem is that they only can be used to find a single root, not all roots. Furthermore, they only work on scalar function $\RR \to \RR$ or vector-functions $\RR^n \to \RR^n$ for which roots are uniquely defined. In our case, we are interested in the situation when any of the eigenvalues of $\eqref{equ:c3_psi_e}$ becomes zero. This does not map directly on any of these classical root-finding algorithms.
 
-To combat these issues with the classical algorithms, we propose a small modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation~\eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that the matrix $\vb{\Phi}(E)$, as defined by~\eqref{equ:c3_psi_e}, is singular.
+To combat these issues with the classical algorithms, we propose a small modification to Newton's method. Suppose an inaccurate approximation $E_0$ of an eigenvalue of the Schrödinger equation~\eqref{equ:c3_schrodinger_2d} is given. Starting from this approximation, we want a fast converging algorithm to find the true eigenvalue $E$. As stated earlier, $E$ is an eigenvalue if and only if it is a value such that the matrix $\vb{\Phi}(E)$, as defined by~\eqref{equ:c3_psi_e}, is singular.
 $$
-  \vb{\Phi}(E) := \Cbottom'\Cbottom^{-1} - \Ctop'\Ctop^{-1}
+  \vb{\Phi}(E) := \Cbottom'\Cbottom^{-1} - \Ctop'\Ctop^{-1}\text{.}
 $$
 In other words, the matrix $\vb{\Phi}(E)$ has to have a zero eigenvalue.
 
@@ -477,7 +476,7 @@ In Newton's method, the derivative of the function in question should be availab
 $$
   \pdv[]{\Cbottom}{E}, \pdv[]{\Cbottom'}{E}, \pdv[]{\Ctop}{E} \text{ and } \pdv[]{\Ctop'}{E}
 $$
-are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself. First, note for any invertible matrix $\vb{A}$, since $\vb{0} = \left(\vb{A}\vb{A}^{-1}\right)' = \vb{A}' \vb{A}^{-1} + \vb{A} \left(\vb{A}^{-1}\right)'$, that $\left(\vb{A}^{-1}\right)' = -\vb{A}^{-1} \vb{A}' \vb{A}^{-1}$. It then follows that
+are available. This allows us to also compute the derivative of $\vb{\Phi}$ itself. First note, for any invertible matrix $\vb{A}$ that $\left(\vb{A}^{-1}\right)' = -\vb{A}^{-1} \vb{A}' \vb{A}^{-1}$, since $\vb{0} = \left(\vb{A}\vb{A}^{-1}\right)' = \vb{A}' \vb{A}^{-1} + \vb{A} \left(\vb{A}^{-1}\right)'$. It then follows that
 \begin{align*}
   \pdv{\vb{\Phi}}{E} = & \left(\pdv{\Cbottom'}{E} - \Cbottom'\Cbottom^{-1}\pdv{\Cbottom}{E}\right) \Cbottom^{-1} \\
                        & - \left(\pdv{\Ctop'}{E} - \Ctop'\Ctop^{-1}\pdv{\Ctop}{E}\right) \Ctop^{-1}\text{.}
@@ -499,7 +498,7 @@ Since we want to find roots within the eigenvalues of $\vb{\Phi}$, it is also va
   \begin{equation}\label{equ:c3_eigenvalue_derivative_equ1}
     \transpose{\vb{v}}\vb{A}(x_0)\vb{u}  = \lambda \transpose{\vb{v}}\vb{u}\text{.}
   \end{equation}
-  Because all involved variables are dependent on $x$, and we will only take the value (or the value of the derivative) in $x_0$, we will, to ease notation, omit this $x$ dependency and implied evaluation in the point $x_0$. Furthermore, we will denote the derivative with respect to $x$ with a prime $'$. This allows us to write down the derivative of both sides of~\eqref{equ:c3_eigenvalue_derivative_equ1}. These derivatives can further be simplified by using the product rule when applied to matrix multiplications:
+  Because all involved variables are dependent on $x$, and we will only take the value (or the value of the derivative) in $x_0$, we will, to ease notation, omit this $x$ dependency and implied evaluation in the point $x_0$. Furthermore, we will denote the derivative with respect to $x$ with a prime ``$'$''. This allows us to write down the derivative of both sides of~\eqref{equ:c3_eigenvalue_derivative_equ1}. These derivatives can further be simplified by using the product rule when applied to matrix multiplications:
   \begin{align*}
     \left(\transpose{\vb{v}}\vb{A}(x_0)\vb{u}\right)'                                                                    & = \left(\lambda \transpose{\vb{v}}\vb{u}\right)'                                                                      \\
     \implies \quad {\transpose{\vb{v}}}'\vb{A}\vb{u} + \transpose{\vb{v}}\vb{A}'\vb{u} + \transpose{\vb{v}}\vb{A}\vb{u}' & = \lambda' \transpose{\vb{v}}\vb{u} + \lambda {\transpose{\vb{v}}}'\vb{u} + \lambda \transpose{\vb{v}}\vb{u}'\text{.}
@@ -1085,7 +1084,7 @@ In figure~\ref{fig:c3_experiment_zero}, the relative errors of the first hundred
   \caption{When using $N = 5$. On the left: the found $22^\text{nd}$ eigenfunction. On the right: the missing $23^\text{th}$ eigenfunction.}\label{fig:c3_experiment_zero_missing}
 \end{figure}
 
-The reason for these sudden wrong results can be found in the fact that the Schrödinger problem with zero potential on a rectangular domain is definitely an easy problem for this method. Upon close inspection, we have found that \pyslisetd{} only uses a total of three sectors on the whole domain, independent of the requested accuracy. On each sector, exactly the same one-dimensional problem is solved, yielding exactly the same basis functions $b_i(x) = \sin(i x)$. And coincidentally, the two-dimensional eigenfunction corresponding to $E = i^2 + j^2$ can be written as $\psi(x, y) = c(y) \sin(i x)$ for a $y$-dependent function $c(y)$. In summary for this method, by construction, the Schrödinger problem with zero potential gets solved exactly. Yet, for $N=5$ we see that $E_{22} = E_{23}$ is not found correctly. Notice that $E_{22} = E_{23} = 37 = 1^2 + 6^2$. When only five basis functions are considered on a sector, the necessary function $\sin(6 x)$ will not be present, and therefore this eigenvalue can not be correctly found. As an illustration, figure~\ref{fig:c3_experiment_zero_missing} visualizes this missing eigenfunction.
+The reason for these sudden wrong results can be found in the fact that the Schrödinger problem with zero potential on a rectangular domain is definitely an easy problem for this method. Upon close inspection, we have found that \pyslisetd{} only uses a total of three sectors on the whole domain, independent of the requested accuracy. On each sector, exactly the same one-dimensional problem is solved, yielding exactly the same basis functions $b_i(x) = \sin(i x)$. And coincidentally, the two-dimensional eigenfunction corresponding to $E = i^2 + j^2$ can be written as $\psi(x, y) = c(y) \sin(i x)$ for a $y$-dependent function $c(y)$. In summary for this method, by construction, the Schrödinger problem with zero potential gets solved exactly. Yet, for $N=5$ we see that $E_{22} = E_{23}$ is not found correctly. Notice that $E_{22} = E_{23} = 37 = 1^2 + 6^2$. When only five basis functions are considered on a sector, the necessary function $\sin(6 x)$ will not be present, and therefore this eigenvalue cannot be correctly found. As an illustration, figure~\ref{fig:c3_experiment_zero_missing} visualizes this missing eigenfunction.
 
 Let us also address a possible concern: why did our method not detect this missing eigenvalue, using theorem~\ref{the:c3_counting_eigenvalues}? Our method checks how many times there was a linear combination of the propagated functions that vanishes. If an insufficient number of basis functions are used, no such vanishing combination will be found, and the index will not be correctly determined. Here, the importance of a sufficiently large basis is apparent.
 
