@@ -239,10 +239,11 @@ with $\bar{y} = y_{k} + \frac{s_0}{2}$. But if $\frac{s_1}{2} \approx \frac{s_0}
 
 \begin{figure}
   \begin{center}
-    \begin{minipage}{.59\textwidth}
+    \begin{minipage}[b]{.59\textwidth}
       \includegraphics[width=\textwidth]{img/chapter3/sector_example.pdf}
     \end{minipage}
-    \begin{minipage}{.4\textwidth}
+    \hfill
+    \begin{minipage}[b]{.4\textwidth}
       \caption{A possible sector selection for problem~\ref{sec:c3_experiment_ixaru} with potential $V(x, y) = (1+x^2)(1+y^2)$. The blue lines indicate sector boundaries. The red lines visualize the piecewise approximation used by \matslise{3} for each of the $x$-directional problems.}\label{fig:c3_sector_selection_example}
     \end{minipage}
   \end{center}
@@ -978,7 +979,7 @@ We will place an $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This g
   {\pdv[2]{\phi}{t}}(\alpha_i, t_j)        & \approx \frac{1}{h_t^2}\left( \phi_{i,j+1} - 2 \phi_{i,j} + \phi_{i,j-1} \right)\text{.}
 \end{align*}
 
-When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulas becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote $\vb{I}_n$ as the $n \times n$ identity matrix. Furthermore, a diagonal matrix with $a_1, \dots, a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and an $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the notation of the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$.
+When working with finite difference schemes, especially for a more  advanced operator such as $\mathcal{D}$, writing out all formulae becomes quite tedious. Therefore, it is much more comprehensive if we introduce some matrix notation. Let us denote $\vb{I}_n$ as the $n \times n$ identity matrix. Furthermore, a diagonal matrix with $a_1, \dots, a_n$ on the diagonal will be denoted as $\diag_n(a_1, \dots, a_n)$, and an $n \times n$ tridiagonal Toeplitz matrix, with $c_{0}$ on the main diagonal, $c_{-1}$ below it and $c_1$ above it, will be denoted as $\tridiag_{n}(c_{-1}, c_{0}, c_1)$. To aid the notation of the finite difference approximations we introduce $\vb{D}^{(1)}_n = \frac{1}{2}\tridiag_n(-1,0,1)$ and $\vb{D}^{(2)}_n = \tridiag_n(1,-2,1)$.
 
 The Kronecker product of a $k \times l$ matrix $\vb{A}$ and an $m \times n$ matrix $\vb{B}$ is defined as the $km \times ln$ block matrix:
 $$
@@ -1200,7 +1201,7 @@ Alternative to a table of values, we plot the relative errors of the found eigen
 
 Drawing conclusions with any certainty from these graphs is difficult. We believe these graphs to support the analysis of section~\ref{sec:c3_conclusion_hypothesis}.
 
-\subsection{The Hénon--Heiles potential}\label{sec:c3_experiment_henon}
+\subsection{The H\texorpdfstring{é}{e}non--Heiles potential}\label{sec:c3_experiment_henon}
 
 Another interesting example is the Hénon--Heiles potential. The corresponding Schrödinger problem is given by:
 $$
