@@ -1134,8 +1134,11 @@ As a reference, the following code can be used to solve this problem.
 \begin{minted}{python}
 from pyslise2d import Pyslise2D
 
-harmonic = Pyslise2D(lambda x, y: x*x + y*y, -9.5, 9.5, -9.5, 9.5
-                    tolerance=1e-8, N=14)
+def V(x, y):
+    return x * x + y * y
+
+harmonic = Pyslise2D(V, -9.5, 9.5, -9.5, 9.5
+                     tolerance=1e-8, N=14)
 print(harmonic.eigenvaluesByIndex(0, 30))
 \end{minted}
 % \end{noindent}
@@ -1241,7 +1244,7 @@ from pyslise2d import Pyslise2D
 from math import sqrt
 
 def V(x, y):
-    return x*x + y*y + sqrt(5)/30 * y * (3*x*x- y*y)
+    return x*x + y*y + sqrt(5)/30 * y * (3*x*x - y*y)
 
 problem = Pyslise2D(V, -6,6, -6,6, tolerance=1e-8)
 problem.eigenvaluesByIndex(0, 16)

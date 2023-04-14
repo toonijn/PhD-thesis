@@ -623,7 +623,7 @@ Using Strands, the first ten eigenvalues of this problem can be found within a s
 from strands import Schrodinger2D, Rectangle
 
 schrodinger = Schrodinger2D(
-    lambda x, y: x * x + y * y, Rectangle(-9.5, 9.5, -9.5, 9.5),
+    lambda x, y: x*x + y*y, Rectangle(-9.5, 9.5, -9.5, 9.5),
     gridSize=(40, 40), maxBasisSize=30)
 print(schrodinger.eigenvalues(10))
 \end{minted}
@@ -700,7 +700,7 @@ ys = np.linspace(-9.5, 9.5, 200)
 X, Y = np.meshgrid(xs, ys)
 
 harmonic = Schrodinger2D(
-    lambda x, y: x**2 + y**2, Rectangle(-9.5, 9.5, -9.5, 9.5),
+    lambda x, y: x*x + y*y, Rectangle(-9.5, 9.5, -9.5, 9.5),
     gridSize=(40, 40), maxBasisSize=30)
 
 for E, f in harmonic.eigenfunctions(10):
@@ -767,7 +767,7 @@ Determining the source of these inaccuracies is difficult. The graphs are remini
 
 Another often used test problem is the Hénon--Heiles system. In the context of time-independent two-dimensional Schrödinger equations the potential in question is given as:
 \begin{equation}\label{equ:c4_henon_heiles_potential}
-    V(x, y) = x^2 + y^2 + \frac{\sqrt{5}}{30}(3 x y^2 - x^3)\text{.}
+    V(x, y) = x^2 + y^2 + \frac{\sqrt{5}}{30}(3 y x^2 - y^3)\text{.}
 \end{equation}
 We refer back to section~\ref{sec:c3_experiment_henon}, where we also considered this potential.
 
@@ -790,11 +790,12 @@ The code for solving this problem should be familiar by now.
 from strands import Schrodinger2D, Rectangle
 from math import sqrt
 
-schrodinger = Schrodinger2D(
-    lambda x, y: x**2 + y**2 + sqrt(5)/30*(3 * x * y**2 - x**3),
-    Rectangle(-10, 10, -10, 10),
-    gridSize=(48, 48), maxBasisSize=32)
-print(schrodinger.eigenvalues(10))
+def V(x, y):
+    return x*x + y*y + sqrt(5)/30 * y * (3*x*x - y*y)
+
+henon = Schrodinger2D(V, Rectangle(-10, 10, -10, 10),
+                      gridSize=(48, 48), maxBasisSize=32)
+print(henon.eigenvalues(10))
 \end{minted}
 % \end{noindent}
 

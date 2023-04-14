@@ -982,16 +982,14 @@ $$
     C_i  = \sum_{j=0}^{16} d_{i, j} \delta^j,
 $$
 where $d_{i, j}$ is a polynomial of degree $16-j$ in $h$ with coefficients in $V_1, \dots, V_{16}$. As an example we give a small taste of what $d_{4, 9}$ looks like:
-
-\begin{eqnarray*}
-    d_{4, 9}& =&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
-    &  & \qquad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
-    &  & \qquad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
-    &  & \qquad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
-    &  & \qquad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
-    &  & + h^6 (\,\dots)  + \dots
-\end{eqnarray*}
-
+\begin{align*}
+    d_{4, 9} =\,&  h^7 \left (0.03125 \, V_{2}^{4} + 0.40625 \, V_{1} V_{2}^{2} V_{3} + 0.21875 \, V_{1}^{2} V_{3}^{2} + 0.46875 \, V_{1}^{2} V_{2} V_{4} \right. \\
+      & \quad + 0.1875 \, V_{1}^{3} V_{5} - 67.8125 \, V_{3}^{2} V_{4} - 74.375 \, V_{2} V_{4}^{2} - 158.375 \, V_{2} V_{3} V_{5}         \\
+      & \quad - 196.875 \, V_{1} V_{4} V_{5} - 96.5625 \, V_{2}^{2} V_{6} - 218.875 \, V_{1} V_{3} V_{6} - 275.0 \, V_{1} V_{2} V_{7}     \\
+      & \quad - 199.125 \, V_{1}^{2} V_{8} + 159909.75 \, V_{1} V_{11} + 101029.5 \, V_{10} V_{2} + 27184.5 \, V_{6}^{2}                  \\
+      & \quad \left.+ 56164.5 \, V_{5} V_{7} + 62181.0 \, V_{4} V_{8} + 74868.75 \, V_{3} V_{9} \right)                                                 \\
+     & + h^6 (\,\dots)  + \dots
+\end{align*}
 
 Although these coefficients can all be computed analytically, it was far from practical to implement these very long formulae in software. Since one was mainly interested in the computation of the eigenvalues, the matrix elements in the propagation matrix were in fact only implemented for $\delta=h$, in which case the formulae could be significantly simplified, which in turn had a positive impact on the computation speed.
 
@@ -1237,14 +1235,14 @@ from pyslise import Pyslise
 def V(x):
     return 0 if abs(x) < 1 else 30
 
-problem = Pyslise(V, -2, 2, tolerance=1e-12)
-print(problem.eigenvaluesByIndex(0, 5, (0, 1), (0, 1)))
+well = Pyslise(V, -2, 2, tolerance=1e-12)
+print(well.eigenvaluesByIndex(0, 5, (0, 1), (0, 1)))
 \end{minted}
 % \end{noindent}
 This program gives the correct results, but it used $15$ subintervals. Those intervals are visualized in figure~\ref{fig:c2_matslise_jumps_without}. If we change the line with the construction of the \texttt{Pyslise} object to
 % \begin{noindent}
 \begin{minted}{python}
-problem = Pyslise(V, -2, 2, tolerance=1e-12, jumps=[-1, 1])
+well = Pyslise(V, -2, 2, tolerance=1e-12, jumps=[-1, 1])
 \end{minted}
 % \end{noindent}
 only $3$ subintervals are used. For completeness, we have visualized these 3 subintervals in figure~\ref{fig:c2_matslise_jumps_with}.
@@ -1265,7 +1263,7 @@ import numpy as np
 x = np.linspace(-2, 2, 200)
 
 plt.plot(x, np.vectorize(V)(x))
-for i, E, f in problem.eigenpairsByIndex(0, 5, (0, 1), (0, 1)):
+for i, E, f in well.eigenpairsByIndex(0, 5, (0, 1), (0, 1)):
     plt.plot(x, E + f(x)[0,:])
 \end{minted}
 % \end{noindent}
@@ -1644,9 +1642,9 @@ Another difference can be found in the output:
 % \begin{noindent}
 \begin{minted}{python}
 [
-    (0, 2.0294161514952878, 1), (1, 6.500490696092834, 1),
-    ...,
-    (18, 326.5881759903209, 1), (19, 402.5834632545595, 1)
+  (0, 2.0294161514952878, 1), (1, 6.500490696092834, 1),
+  ...,
+  (18, 326.5881759903209, 1), (19, 402.5834632545595, 1)
 ]
 \end{minted}
 % \end{noindent}
@@ -1661,8 +1659,8 @@ then the following output is generated.
 % \begin{noindent}
 \begin{minted}{python}
 [
-    (999, 1000002.5873939216, 2), (1001, 1004006.5873655227, 2),
-    (1003, 1008018.5849614257, 2), (1005, 1012038.5812170412, 2)
+  (999, 1000002.5873939216, 2), (1001, 1004006.5873655227, 2),
+  (1003, 1008018.5849614257, 2), (1005, 1012038.5812170412, 2)
 ]
 \end{minted}
 % \end{noindent}
@@ -1710,8 +1708,8 @@ def q(x):
 def w(x):
     return exp(x)
     
-sturm_liouville = SturmLiouville(p, q, w, 0, 1, tolerance=1e-8)
-print(sturm_liouville.eigenvaluesByIndex(0, 10, (0, 1), (1, 0)))
+slp = SturmLiouville(p, q, w, 0, 1, tolerance=1e-8)
+print(slp.eigenvaluesByIndex(0, 10, (0, 1), (1, 0)))
 \end{minted}
 % \end{noindent}
 
@@ -1863,14 +1861,14 @@ Tu[4, 10] = (
   + 16956*v3*v6 + 21978*v2*v7 + 137709/4*v1*v8 - 18706545/2*v11
   + h*(-43/48*v1*v1*v2*v2 - 2/3*v1*v1*v1*v3 + 11427/80*v2*v3*v3
   + 12517/80*v2*v2*v4 + 1443/4*v1*v3*v4 + 1697/4*v1*v2*v5
-  + 4781/16*v1*v1*v6 - 57765/2*v5*v5 - 60447*v4*v6 - 70110*v3*v7
-  - 92169*v2*v8 - 144144*v1*v9 + 93532725/2*v12
+  + 4781/16*v1*v1*v6 - 57765/2*v5*v5 - 60447*v4*v6
+  - 70110*v3*v7 - 92169*v2*v8 - 144144*v1*v9 + 93532725/2*v12
   + h*(-1/3840*v1*v1*v1*v1*v1 + 31/32*v1*v2*v2*v2
   + 313/96*v1*v1*v2*v3 + 61/48*v1*v1*v1*v4 - 1809/16*v3*v3*v3
   - 2943/4*v2*v3*v4 - 7319/16*v1*v4*v4 - 34047/80*v2*v2*v5
   - 7811/8*v1*v3*v5 - 11823/10*v1*v2*v6 - 67137/80*v1*v1*v7
-  + 192726*v5*v6 + 208521*v4*v7 + 247401*v3*v8 + 1311453/4*v2*v9
-  + 2045043/4*v1*v10 - 392837445/2*v13
+  + 192726*v5*v6 + 208521*v4*v7 + 247401*v3*v8
+  + 1311453/4*v2*v9 + 2045043/4*v1*v10 - 392837445/2*v13
   + h*(1/768*v1*v1*v1*v1*v2
   - 23/64*v2*v2*v2*v2 - 77/16*v1*v2*v2*v3 - 517/192*v1*v1*v3*v3
   - 181/32*v1*v1*v2*v4 - 217/96*v1*v1*v1*v5 + 6161/8*v3*v3*v4
