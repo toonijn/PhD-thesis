@@ -827,15 +827,41 @@ from strands import Schrodinger2D, Rectangle
 def V(x, y):
     return (x**2 + 1) * (y**2 + 1)
 
-ixaru = Schrodinger2D(V, Rectangle(-5.5, 5.5, -5.5,5.5),
+ixaru = Schrodinger2D(V, Rectangle(-5.5, 5.5, -5.5, 5.5),
                       gridSize=(30, 30), maxBasisSize=20)
 print(ixaru.eigenvalues(13))
 \end{minted}
 % \end{noindent}
 
-This program runs in under half a second and the resulting approximations agree up to all digits reported in~\cite{ixaru_new_2010}.
+This program runs in under half a second. The resulting approximations agree up to all digits reported in~\cite{ixaru_new_2010}.
 
-\todo{Ixaru's}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_test_ixaru.pdf}
+    \end{center}
+    \caption{These graphs display the relative errors when we compare the results from our method with those from~\cite{wang_new_2009} for the Hénon--Heiles system on the domain $[-10, 10]\times[-10, 10]$. For the parameters $N = K = 32$ and $N = K = 48$, our method found some physically nonsensical eigenvalues and therefore are missing from the plots.}
+    \label{fig:c4_nm_henon_test}
+\end{figure}
+
+Since 
+
+
+For future reference, we provide the first $26$ eigenvalues we have found with $N = 90$ and $K = 40$.
+
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}n{2}{12}@{\hspace{15mm}}r@{\hspace{3pt}}n{2}{12}}
+    $E_{0} =$ & 3.195918085200 & $E_{12} =$ & 13.332331271155 \\
+    $E_{1} = E_{2} =$ & 5.526743874395 & $E_{13} = E_{14} =$ & 14.348268533253 \\
+    $E_{3} =$ & 7.557803326786 & $E_{15} =$ & 14.450478721981 \\
+    $E_{4} =$ & 8.031272340314 & $E_{16} =$ & 14.580556315644 \\
+    $E_{5} =$ & 8.444581361570 & $E_{17} = E_{18} =$ & 16.151419224568 \\
+    $E_{6} = E_{7} =$ & 9.928061056952 & $E_{19} =$ & 16.517192463374 \\
+    $E_{8} =$ & 11.311817050618 & $E_{20} =$ & 16.564871925909 \\
+    $E_{9} =$ & 11.311817050619 & $E_{21} = E_{22} =$ & 17.894578279407 \\
+    $E_{10} =$ & 12.103253578719 & $E_{23} =$ & 18.583391734468 \\
+    $E_{11} =$ & 12.201178967971 & $E_{24} = E_{25} =$ & 18.756204273611
+\end{tabular}
+\end{center}
 
 \subsection{Runtime analysis}\label{sec:c4_nm_runtime}
 
