@@ -1910,7 +1910,7 @@ long double sqrtl(long double arg);
 \end{minted}
 % \end{noindent}
 
-The \texttt{C}-standard has to provide three different functions for three different floating point types: \texttt{float} is $32$ bits wide, \texttt{double} is $64$ bits wide and \texttt{long double} is commonly\footnote{The \texttt{C} and \cpp {}-standards give surprisingly vague definitions of numeric types. For example: the \texttt{int}-type is guaranteed to be \emph{at least} $16$ bits wide. The two floating point types \texttt{float} and \texttt{double} are atypical in the sense that they are guaranteed to be the IEEE-754 binary32 and binary64 formats respectively. For the \texttt{long double} type, the specification is less strict: \emph{``extended precision floating-point type. Matches IEEE-754 binary128 format if supported, otherwise matches IEEE-754 binary64-extended format if supported, otherwise matches some non-IEEE-754 extended floating-point format as long as its precision is better than binary64 and range is at least as good as binary64, otherwise matches IEEE-754 binary64 format.''} On x86 systems, this is a $80$ bit wide floating point type with a 15 bits exponent and 64 bits significand.} $80$ bits wide.
+The \texttt{C}-standard has to provide three different functions for three different floating point types: \texttt{float} is $32$ bits wide, \texttt{double} is $64$ bits wide and \texttt{long double} is commonly\footnote{The \texttt{C} and \cpp{}-standards give surprisingly vague definitions of numeric types. For example: the \texttt{int}-type is guaranteed to be \emph{at least} $16$ bits wide. The two floating point types \texttt{float} and \texttt{double} are atypical in the sense that they are guaranteed to be the IEEE-754 binary32 and binary64 formats respectively. For the \texttt{long double} type, the specification is less strict: \emph{``extended precision floating-point type. Matches IEEE-754 binary128 format if supported, otherwise matches IEEE-754 binary64-extended format if supported, otherwise matches some non-IEEE-754 extended floating-point format as long as its precision is better than binary64 and range is at least as good as binary64, otherwise matches IEEE-754 binary64 format.''} On x86 systems, this is a $80$ bit wide floating point type with a 15 bits exponent and 64 bits significand.} $80$ bits wide.
 
 It is cumbersome to have to differentiate between which function to call, depending on which argument types are used. In \cpp{} this is solved more elegantly, by allowing function overloads depending on the supplied arguments. But \cpp{} goes even further, a programmer can build a function for different types with the same code. For example, the following code implements the simple operations $x^2 + y^2$, for all possible types all at once.
 % \begin{noindent}
@@ -1972,7 +1972,7 @@ int main() {
     auto boundary = matslise::Y<float128>::Dirichlet();
     auto eigs = problem.eigenvaluesByIndex(0, 7, boundary);
     for (auto [i, E]: eigs) {
-        float128 error = problem.eigenvalueError(E, boundary, i);
+        auto error = problem.eigenvalueError(E, boundary, i);
         std::cout << boost::format(
                 "Eigenvalue %1$d:%2$30.25f  (error: %3$.1e)")
                         % i % E % error << std::endl;
@@ -2029,7 +2029,7 @@ In hindsight, these issues and fixes may seem obvious. However, they highlight s
 
 Another challenge we want to focus on is an often underappreciated issue in mathematical software development. When programming, there is an almost universal truth: all software contains bugs. An art in writing software is maximizing the chance you catch bugs early. One of the best tools available for this is automatic tests. These tests should be extremely easy to run and require no input from the programmer whatsoever. They should just result in a pass/fail condition. Using a well established test framework makes writing tests a breeze, and encourages implementing more tests when new functionality is added or when new edge-cases are discovered.
 
-We have chosen to use \catch{}~\cite{_catchorg_2023} as a test framework, and we implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration tests where a Sturm--Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
+We have chosen to use \catch{}~\cite{horenovsky_catch2_2023} as a test framework, and we implemented $43$ test scenarios with over $\numprint{2000000}$ conditions to check. These tests range from simple unit-tests to ensure the Legendre-polynomials are computed correctly or that our program is able to evaluate the $\eta_i$ functions in all floating point types, to full integration tests where a Sturm--Liouville problem is solved, and the accuracy is verified. As a summary we provide a small description of some of these automatic tests.
 
 \begin{itemize}
     \item Some simple unit-tests of some auxiliary procedures. \begin{itemize}

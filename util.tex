@@ -1,4 +1,5 @@
 % !TeX root = thesis.tex
+% LTeX: enabled=false
 \ifdefined\UtilIncluded
   \renewcommand{\startchapter}[1]{}
   \renewcommand{\stopchapter}{}
@@ -6,7 +7,8 @@
 \else
 
 \newcommand{\startchapter}[1]{\begin{document}\setcounter{chapter}{#1}\addtocounter{chapter}{-1}}
-\newcommand{\stopchapter}{\begin{uCJK}\printbibliography[title=Bibliography,heading=bibintoc]\end{uCJK}\end{document}}
+\newcommand{\stopchapter}{\printbibliography[title=Bibliography,heading=bibintoc]
+\end{document}}
 
 
 \documentclass{book}
@@ -37,7 +39,6 @@
 \usepackage{bookmark}
 \usepackage{lmodern}
 \usepackage{ifthen}
-\usepackage{biblatex}
 \usepackage{microtype}
 \usepackage{mleftright}
 \usepackage{algpseudocode}
@@ -50,53 +51,53 @@
 \usepackage{nicefrac}
 \usepackage[outputdir=build]{minted} % Code highlighting
 \usepackage{csquotes}
-\usepackage{bxcjkjatype} % Japanese in bibliography
-\usepackage{fancyhdr}
 \usepackage{microtype} % Better interword spacing?
+
+% Some footer-header magic
+\usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
 \fancyhead[CO]{\leftmark}
 \fancyhead[CE]{\rightmark}
-
-
+\setlength{\headheight}{13pt}
 
 \makeatletter
 \newcommand{\padnum}[2]{%
   \ifnum#1>1 \ifnum#2<10 0\fi
-  \ifnum#1>2 \ifnum#2<100 0\fi
-  \ifnum#1>3 \ifnum#2<1000 0\fi
-  \ifnum#1>4 \ifnum#2<10000 0\fi
-  \ifnum#1>5 \ifnum#2<100000 0\fi
-  \ifnum#1>6 \ifnum#2<1000000 0\fi
-  \ifnum#1>7 \ifnum#2<10000000 0\fi
-  \ifnum#1>8 \ifnum#2<100000000 0\fi
-  \ifnum#1>9 \ifnum#2<1000000000 0\fi
-  \fi\fi\fi\fi\fi\fi\fi\fi\fi
+    \ifnum#1>2 \ifnum#2<100 0\fi
+      \ifnum#1>3 \ifnum#2<1000 0\fi
+        \ifnum#1>4 \ifnum#2<10000 0\fi
+          \ifnum#1>5 \ifnum#2<100000 0\fi
+            \ifnum#1>6 \ifnum#2<1000000 0\fi
+              \ifnum#1>7 \ifnum#2<10000000 0\fi
+                \ifnum#1>8 \ifnum#2<100000000 0\fi
+                  \ifnum#1>9 \ifnum#2<1000000000 0\fi
+                  \fi\fi\fi\fi\fi\fi\fi\fi\fi
   \expandafter\@firstofone\expandafter{\number#2}%
 }
 \makeatother
 
 \ifdefined\mainthesisfile
-% \newcommand{\flipbookpath}[1]{flipbook/pdf/#1.pdf}
-\newcounter{oddpagecounter}
-\setcounter{oddpagecounter}{8}
-\fancyfoot[OR]{%
+  % \newcommand{\flipbookpath}[1]{flipbook/pdf/#1.pdf}
+  \newcounter{oddpagecounter}
+  \setcounter{oddpagecounter}{8}
+  \fancyfoot[OR]{%
     \stepcounter{oddpagecounter}%
     % \includegraphics[width=2cm]{flipbook/pdf/\padnum{4}{\value{oddpagecounter}}.pdf}
-}
-%\includegraphics[width=\paperwidth]{\flipbookpath{\padzeroes[2]{\decimal{oddpagecounter}}}}
+  }
+  %\includegraphics[width=\paperwidth]{\flipbookpath{\padzeroes[2]{\decimal{oddpagecounter}}}}
 
-%\usepackage{flipbook}
-%\usepackage{fancyhdr}
-%\fancyfoot[RO]{                           % Flipbook at right foot in odd pages
-%\setlength\unitlength{1cm}                % Specify the units
-%  \begin{picture}(0,0)                    % New picture
-%    \put(-0.2,-2){                        % Position of the picture
-%      \fbImageF{./flipbook/pdf/}{png}{width=2cm} % Insert numbered picture in increasing order. Directory: ./Fig/Flipbook. Prefix of all pictures: image_ (in fact image_1, image_2, ...). Extension of the pictures: png. 
-%     }
-% \end{picture}
-%}
+  %\usepackage{flipbook}
+  %\usepackage{fancyhdr}
+  %\fancyfoot[RO]{                           % Flipbook at right foot in odd pages
+  %\setlength\unitlength{1cm}                % Specify the units
+  %  \begin{picture}(0,0)                    % New picture
+  %    \put(-0.2,-2){                        % Position of the picture
+  %      \fbImageF{./flipbook/pdf/}{png}{width=2cm} % Insert numbered picture in increasing order. Directory: ./Fig/Flipbook. Prefix of all pictures: image_ (in fact image_1, image_2, ...). Extension of the pictures: png. 
+  %     }
+  % \end{picture}
+  %}
 \fi
 
 
@@ -130,8 +131,44 @@
 % do not break footnotes
 \interfootnotelinepenalty=10000
 
-
+% make bibliography
+\usepackage[giveninits=true,date=year,maxnames=4,isbn=false]{biblatex}
+\DeclareSourcemap{ % Ugly hack to hard-code the japanese
+  \maps[datatype=bibtex]{
+    \map[overwrite]{
+      \step[fieldsource=entrykey, match=\regexp{binding_prufer_2013\b}, final]
+      \step[fieldset=journaltitle, fieldvalue=\\\includegraphics{img/bibliography/binding.pdf}]
+    }
+  }
+}
+\setcounter{biburllcpenalty}{7000} % Aggressive breaking of urls
+\setcounter{biburlucpenalty}{8000}
 \addbibresource{references.bib}
+\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
+\newbibmacro*{bbx:parunit}{%
+  \ifbibliography
+  {\setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \clearlist{pageref}%
+    \setunit{\adddot\par\nobreak}}
+  {}}
+\renewbibmacro*{doi+eprint+url}{%
+  \usebibmacro{bbx:parunit}% Added
+  \iftoggle{bbx:doi}
+  {\printfield{doi}}
+  {\iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {\iftoggle{bbx:url}
+      {\usebibmacro{url+urldate}}
+      {}}}}
+\renewbibmacro*{url+urldate}{%
+  \usebibmacro{bbx:parunit}% Added
+  \iftoggle{bbx:url}
+  {\usebibmacro{url}}
+  {}}
+\DeclareFieldFormat[article]{url}{The url}
+
+
 
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -142,7 +179,8 @@
 \DeclareRobustCommand{\oneD}{{1{\relsize{-1}D}}\xspace}
 \DeclareRobustCommand{\twoD}{{2{\relsize{-1}D}}\xspace}
 \DeclareRobustCommand{\threeD}{{3{\relsize{-1}D}}\xspace}
-\DeclareRobustCommand{\cpp}{{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}\textbf{++}}}\xspace}}
+%\DeclareRobustCommand{\cpp}{{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}\textbf{++}}}\xspace}}
+\DeclareRobustCommand{\cpp}{\texttt{C++}}
 \pdfstringdefDisableCommands{%
   \def\cpp{C++}%
   \def\oneD{1D}%
