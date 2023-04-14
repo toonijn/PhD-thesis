@@ -42,8 +42,6 @@ orthonormality
 Marletta
 Klotter
 subintervals
-eigenvaluesByIndex
-eigenpairsByIndex
 pyslise
 PyslisePeriodic
 PysliseHalf

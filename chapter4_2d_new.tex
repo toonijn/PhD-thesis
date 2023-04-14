@@ -545,7 +545,7 @@ with appropriate choices for $a$ and $b$ such that each $f_i$ lies within the gr
 
 \begin{center}
     \begin{tabular}{@{}ccc|c|ccc@{}}
-        $\alpha_{-3}$                               & $\alpha_{-2}$            & $\alpha_{-1}$            & $\alpha_{0}$            & $\alpha_{1}$             & $\alpha_{2}$             & $\alpha_{3}$             \\ \hline
+        $\alpha_{-3}$                      & $\alpha_{-2}$   & $\alpha_{-1}$   & $\alpha_{0}$   & $\alpha_{1}$    & $\alpha_{2}$    & $\alpha_{3}$    \\ \hline
         \rule{0pt}{3ex}                    &                 & $\frac{11}{12}$ & $\frac{-5}{3}$ & $\frac{1}{2}$   & $\frac{1}{3}$   & $\frac{-1}{12}$ \\
         \rule{0pt}{3ex}                    & $\frac{-1}{12}$ & $\frac{4}{3}$   & $\frac{-5}{2}$ & $\frac{4}{3}$   & $\frac{-1}{12}$ &                 \\
         \rule{0pt}{3ex}    $\frac{-1}{12}$ & $\frac{1}{3}$   & $\frac{1}{2}$   & $\frac{-5}{3}$ & $\frac{11}{12}$ &                 &
@@ -565,9 +565,9 @@ $$
 With this finite difference approximation~\eqref{equ:c4_interpolation_schrodinger} can now be approximated as a nine-dimensional linear system with for each $m, n \in \{1,2,3\}$:
 $$
     \left\{\begin{array}{@{}r@{}l}
-        &\,\:\vdots                                                                                                                                                                                                 \\
-        {\displaystyle \sum_{l=0}^4 \frac{D_{m, l}}{\Delta x_i^2}\psi^{(i,j)}_{l, n} + \sum_{l=0}^4 \frac{D_{n, l}}{\Delta y_j^2}\psi^{(i,j)}_{m, l}} &\,{\displaystyle =  \left(V(x^{(i)}_m, y^{(j)}_n) - E\right)\psi^{(i,j)}_{m, n}} \\
-        &\,\:\vdots
+                                                                                                                                                      & \,\:\vdots                                                                       \\
+        {\displaystyle \sum_{l=0}^4 \frac{D_{m, l}}{\Delta x_i^2}\psi^{(i,j)}_{l, n} + \sum_{l=0}^4 \frac{D_{n, l}}{\Delta y_j^2}\psi^{(i,j)}_{m, l}} & \,{\displaystyle =  \left(V(x^{(i)}_m, y^{(j)}_n) - E\right)\psi^{(i,j)}_{m, n}} \\
+                                                                                                                                                      & \,\:\vdots
     \end{array}\right.
 $$
 The nine unknown variables are $\psi^{(i, j)}_{m, n}$ for $m, n \in \{1,2,3\}$. The step sizes $\Delta x_i$ and $\Delta x_j$ are defined as $\left(x_{i+1} - x_{i}\right) / K$ and $\left(y_{i+1} - y_{i}\right) / K$ respectively. Notice that for all $m, n \in \{0,1,\dots, K\}$, if any of $m, n \in \{0, 4\}$, the values $\psi^{(i, j)}_{m, n}$ are known, as they can be computed as the boundary values.
@@ -758,7 +758,7 @@ For non-rectangular domains with the zero potential, the story is different. Let
 
 The relative errors of the first hundred eigenvalues found with our new method are shown in figure~\ref{fig:c4_nm_zero_test_disc}. We have tested this with the grid size and maximal basis size both equal to $32$, $64$ or $128$. The results are less impressive than for rectangular domains as the maximal accuracy reached is somewhere around $10^{-6}$. But nevertheless, being able to compute these values at all is quite unique.
 
-The behavior we observe in figure~\ref{fig:c4_nm_zero_test_disc} is similar to the discussion from section~\ref{sec:c3_conclusion_hypothesis}. There, the method we studied was unable to further improve accuracy, even if parameters which should result in more accurate approximations were used. In the results we are reviewing here, a similar situation can be observed. The eigenvalues found with $N=K=128$ are not consistently more accurate than the values found with $N=K=64$. In section~\ref{sec:c3_conclusion_hypothesis}, we concluded that it was a fundamental shortcoming of the method. Luckily, these issues are for Strands only present in this experiment. 
+The behavior we observe in figure~\ref{fig:c4_nm_zero_test_disc} is similar to the discussion from section~\ref{sec:c3_conclusion_hypothesis}. There, the method we studied was unable to further improve accuracy, even if parameters which should result in more accurate approximations were used. In the results we are reviewing here, a similar situation can be observed. The eigenvalues found with $N=K=128$ are not consistently more accurate than the values found with $N=K=64$. In section~\ref{sec:c3_conclusion_hypothesis}, we concluded that it was a fundamental shortcoming of the method. Luckily, these issues are for Strands only present in this experiment.
 
 Determining the source of these inaccuracies is difficult. The graphs are reminiscent of those in figure~\ref{fig:c4_fd_zero} where we used a high order finite difference scheme. There, the high order scheme (wrongly) assumed the eigenfunctions to be identically zero outside the domain. In our case, no such assumption is explicitly made. Implicitly however, for grid-lines close to the boundary of the disc, only a few basis functions are available. On these lines, it is thus impossible to accurately represent the sought eigenfunctions. We suspect this to introduce unwanted boundary effects. It would explain the similarities between figure~\ref{fig:c4_nm_zero_test_disc} and figure~\ref{fig:c4_fd_zero}.
 
@@ -814,11 +814,12 @@ Ignoring these special cases allows us to interpret the graphs from figure~\ref{
 
 Next, we will consider the following Schrödinger problem
 $$
--\nabla \psi + (1+x^2)(1+y^2) \psi = E\psi
+    -\nabla \psi + (1+x^2)(1+y^2) \psi = E\psi
 $$
 on $[-5.5, 5.5]\times [-5.5, 5.5]$ with homogeneous Dirichlet boundary conditions, as in~\cite{ixaru_new_2010} and section~\ref{sec:c3_experiment_ixaru}.
 
-The eigenvalues can be approximated with the following code.
+The eigenvalues can be approximated with the following code. This program runs in less than a second. The resulting approximations agree up to all digits reported in~\cite{ixaru_new_2010}.
+
 
 % \begin{noindent}
 \begin{minted}{python}
@@ -828,40 +829,66 @@ def V(x, y):
     return (x**2 + 1) * (y**2 + 1)
 
 ixaru = Schrodinger2D(V, Rectangle(-5.5, 5.5, -5.5, 5.5),
-                      gridSize=(30, 30), maxBasisSize=20)
+                      gridSize=(40, 40), maxBasisSize=30)
 print(ixaru.eigenvalues(13))
 \end{minted}
 % \end{noindent}
 
-This program runs in under half a second. The resulting approximations agree up to all digits reported in~\cite{ixaru_new_2010}.
+\begin{table}
+    \begin{center}
+        \begin{tabular}{r@{\hspace{3pt}}n{2}{12}@{\hspace{15mm}}r@{\hspace{3pt}}n{2}{12}}
+            $E_{0} =$         & 3.195918085200  & $E_{12} =$          & 13.332331271155 \\
+            $E_{1} = E_{2} =$ & 5.526743874395  & $E_{13} = E_{14} =$ & 14.348268533253 \\
+            $E_{3} =$         & 7.557803326786  & $E_{15} =$          & 14.450478721981 \\
+            $E_{4} =$         & 8.031272340314  & $E_{16} =$          & 14.580556315644 \\
+            $E_{5} =$         & 8.444581361570  & $E_{17} = E_{18} =$ & 16.151419224568 \\
+            $E_{6} = E_{7} =$ & 9.928061056952  & $E_{19} =$          & 16.517192463374 \\
+            $E_{8} =$         & 11.311817050618 & $E_{20} =$          & 16.564871925909 \\
+            $E_{9} =$         & 11.311817050619 & $E_{21} = E_{22} =$ & 17.894578279407 \\
+            $E_{10} =$        & 12.103253578719 & $E_{23} =$          & 18.583391734468 \\
+            $E_{11} =$        & 12.201178967971 & $E_{24} = E_{25} =$ & 18.756204273611
+        \end{tabular}
+    \end{center}
+    \caption{Reference eigenvalues of the problem from section~\ref{sec:c4_numerical_ixaru}, computed with $N=90$ and $K=40$.}\label{tab:c4_ixaru_reference}
+\end{table}
 
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/nm_test_ixaru.pdf}
     \end{center}
-    \caption{These graphs display the relative errors when we compare the results from our method with those from~\cite{wang_new_2009} for the Hénon--Heiles system on the domain $[-10, 10]\times[-10, 10]$. For the parameters $N = K = 32$ and $N = K = 48$, our method found some physically nonsensical eigenvalues and therefore are missing from the plots.}
-    \label{fig:c4_nm_henon_test}
+    \caption{These graphs display the relative errors for Ixaru's problem in section~\ref{sec:c4_numerical_ixaru} for the first $25$ eigenvalues. For $N=20$, the results for $K=35$ are omitted, as these are exactly the same as for $K=20$.}
+    \label{fig:c4_nm_ixaru_test}
 \end{figure}
 
-Since 
+In figure~\ref{fig:c4_nm_ixaru_test}, we study the relative error of the first $25$ eigenvalues. Since no sufficiently accurate eigenvalues are available, we have to calculate the reference values ourselves. For this, we use Strands with $N=90$ and $K=40$. This computation takes a little less than one minute. We provide these reference eigenvalues in table~\ref{tab:c4_ixaru_reference}.
 
+The interpretation of the relative errors from figure~\ref{fig:c4_nm_ixaru_test} is similar to previous discussions. Our method is able to reach close to machine precision, with relatively little computational work. The used grids don't need to be dense to obtain these results. Visually, we notice that the relative error for the higher eigenvalues with $N=50$ and $K=35$ is close to $10^{-9} \approx 2^{-30}$.
 
-For future reference, we provide the first $26$ eigenvalues we have found with $N = 90$ and $K = 40$.
+As a last example program, we compute three eigenfunctions corresponding to the highest computed eigenvalues $E_{23}$, $E_{24}$ and $E_{25}$. The graphs for these eigenfunctions can be found in figure~\ref{fig:c4_nm_ixaru_eigenfunctions}. We notice the clear oscillatory behavior of these functions. To generate similar graphs yourself the following code can be used.
 
-\begin{center}
-\begin{tabular}{r@{\hspace{3pt}}n{2}{12}@{\hspace{15mm}}r@{\hspace{3pt}}n{2}{12}}
-    $E_{0} =$ & 3.195918085200 & $E_{12} =$ & 13.332331271155 \\
-    $E_{1} = E_{2} =$ & 5.526743874395 & $E_{13} = E_{14} =$ & 14.348268533253 \\
-    $E_{3} =$ & 7.557803326786 & $E_{15} =$ & 14.450478721981 \\
-    $E_{4} =$ & 8.031272340314 & $E_{16} =$ & 14.580556315644 \\
-    $E_{5} =$ & 8.444581361570 & $E_{17} = E_{18} =$ & 16.151419224568 \\
-    $E_{6} = E_{7} =$ & 9.928061056952 & $E_{19} =$ & 16.517192463374 \\
-    $E_{8} =$ & 11.311817050618 & $E_{20} =$ & 16.564871925909 \\
-    $E_{9} =$ & 11.311817050619 & $E_{21} = E_{22} =$ & 17.894578279407 \\
-    $E_{10} =$ & 12.103253578719 & $E_{23} =$ & 18.583391734468 \\
-    $E_{11} =$ & 12.201178967971 & $E_{24} = E_{25} =$ & 18.756204273611
-\end{tabular}
-\end{center}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/chapter4/nm_ixaru_eigenfunctions.png}
+    \end{center}
+    \caption{Eigenfunctions corresponding to the eigenvalues $E_{23}$, $E_{24}$ and $E_{25}$. As $E_{24} = E_{25}$, any linear combination of the two rightmost eigenfunctions is an eigenfunction as well.}
+    \label{fig:c4_nm_ixaru_eigenfunctions}
+\end{figure}
+
+% \begin{noindent}
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+xs = np.linspace(-5.5, 5.5, 200)
+ys = np.linspace(-5.5, 5.5, 200)
+X, Y = np.meshgrid(xs, ys)
+
+for E, f in ixaru.eigenfunctions(26)[23:]:
+    plt.pcolormesh(X, Y, f(X, Y))
+    plt.show()
+\end{minted}
+% \end{noindent}
+
 
 \subsection{Runtime analysis}\label{sec:c4_nm_runtime}
 
