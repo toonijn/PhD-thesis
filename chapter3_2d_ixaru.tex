@@ -167,7 +167,7 @@ To be able to propagate a solution along the whole domain, it is vital to have a
   \text{and}\quad
   \transpose{\vb{b}^{(k)}}(x)\,\pdv{\vb{c}^{(k)}}{y}\left(y_k\right) & = \transpose{\vb{b}^{(k+1)}}(x)\,\pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) \text{.}
 \end{align*}
-Multiplying both sides with $\vb{b}^{(k+1)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$ yields
+Multiplying both sides with $\vb{b}^{(k+1)}(x)$ and integrating along the $x$-axis yields
 \begin{align*}
   \vb{c}^{(k+1)}(y_k)                       & = \vb{M}^{(k)} \vb{c}^{(k)}(y_k)                       \\
   \pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) & = \vb{M}^{(k)} \pdv[]{\vb{c}^{(k)}}{y}\left(y_k\right)
@@ -190,7 +190,7 @@ Here we assumed the orthogonal basis $\{b_i^{(k+1)}(x)\}$ to be normalized $\lan
 
 Since in the infinite case
 \begin{equation}\label{equ:c3_m_before_truncation}
-  c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_j^{(k)}}\ket{b_i^{(k+1)}} c^{(k)}_j
+  c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_i^{(k+1)}}\ket{b_j^{(k)}} c^{(k)}_j
 \end{equation}
 exactly, this matrix $\vb{M}^{(k)}$ is orthogonal. However, if the sum is truncated, then the equality in~\eqref{equ:c3_m_before_truncation} no longer holds and ${\vb{M}^{(k)}}^\transposesign$ no longer reverses this transformation. Therefore, $\vb{M}^{(k)}$ is in general no longer orthogonal. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x+1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure~\ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor inconvenience, inherent to this method.
 

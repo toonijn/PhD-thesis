@@ -53,7 +53,7 @@ The developments from the nineteenth century continued into the twentieth. Great
 
 \subsection{Advent of computing}
 
-Most\footnote{Mathematically, we can even say `almost all'.} differential equations cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, analytical solutions are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures that, if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
+Most\footnote{Mathematically, we can even say `almost all'.} differential equations cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, analytical solutions are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures that, if sufficiently small steps are taken, arbitrarily accurate approximations can be obtained.
 
 Later, in the middle of the nineteenth century multistep methods were developed. And at the end of that century, Runge published the first Runge--Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
 
@@ -106,9 +106,9 @@ In this two-dimensional first order ordinary differential system, the constants 
 
 These were only a few short examples from a myriad of real-world applications. In chapter~\ref{cha:c2} we will focus upon the numerical solution of a particular class of second-order linear ordinary differential equations: Sturm--Liouville equations.
 
-A Sturm--Liouville equation is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$.
+A Sturm--Liouville equation is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$:
 $$
-    -{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y
+    -{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y\text{.}
 $$
 This problem is only well-defined if appropriate boundary conditions are provided as well. For more details about different types of boundary conditions we refer the reader to the introduction in chapter~\ref{cha:c2}.
 
@@ -119,7 +119,7 @@ Differential equations can be approached from many angles. Some researchers take
 
 \section{Partial differential equations}
 
-One of the main characterizing properties of ordinary differential equations is that there is only a single independent variable. In equation~\eqref{equ:c1_ode_def}, $x$ is this independent variable. A \emph{partial} differential equation is a generalization which allows multiple independent variables. As these equations are commonly used in physical problems, the independent variables are mostly temporal $t$ and space coordinates $x, y, z, \dots$, or more general $x_1, x_2, \dots, x_n$.
+One of the main characterizing properties of ordinary differential equations is that there is only a single independent variable. In equation~\eqref{equ:c1_ode_def}, $x$ is this independent variable. A \emph{partial} differential equation is a generalization which allows multiple independent variables. As these equations are commonly used in physical problems, the independent variables are most commonly the temporal coordinate $t$ and the spatial coordinates $x, y, z, \dots$, or more general $x_1, x_2, \dots, x_n$.
 
 Providing a clean general one-formula definition of partial differential equations is quite cumbersome, and not at all instructive. Therefore, let us immediately take a look at some examples.
 
@@ -129,7 +129,7 @@ $$
 $$
 In this expression, $\alpha$ is a parameter. As is the case for ordinary differential equations, to uniquely define a partial differential problem, boundary and or initial conditions have to be imposed. If for example the rod is heated at one side to $500\,\text{K}$, and cooled at the other to $250\,\text{K}$, then this can be expressed as $f(t, 0) = 500$ and $f(t, 1)=250$ for all $\left]0, \infty\right[$. However, this is still insufficient to properly define the problem. Initial conditions have to be provided for $t=0$. These should express the temperature throughout the rod at the beginning of the simulation. For example, if the experiment is started with the rod at room temperature $300\,\text{K}$, then this is captured as $f(0, x) = 300$ for all $x \in [0, 1]$.
 
-This problem can be easily generalized to higher dimensional situations. Assume a similar experiment is conducted with a metal unit sphere. Let $g : \left[0, \infty\right[ \times \Omega : (t, x, y, z) \to g(t, x, y, z)$ be the temperature throughout this sphere $\Omega := \left\{(x, y, z) \in \RR^3 | x^2 + y^2 + z^2 \leq 1\right\}$. Physics dictate that this $g$ satisfies:
+This problem can be easily generalized to higher dimensional situations. Assume a similar experiment is conducted with a metal unit sphere. Let $g : \left[0, \infty\right[ \times \Omega : (t, x, y, z) \to g(t, x, y, z)$ be the temperature throughout this sphere $\Omega := \left\{(x, y, z) \in \RR^3 | x^2 + y^2 + z^2 \leq 1\right\}$. Physics dictates that this $g$ satisfies:
 $$
 {\pdv[]{g}{t}} = \alpha\left(\pdv[2]{g}{x} + \pdv[2]{g}{y} + \pdv[2]{g}{z}\right) = \alpha \nabla^2 g \text{.}
 $$
