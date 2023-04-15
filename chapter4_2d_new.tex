@@ -449,9 +449,7 @@ or the largest real positive eigenvalues of
 \begin{equation}\label{equ:c4_approx_eigs_shift_invert}
     \vb{D} \left(\vb{A} - \sigma \vb{I}\right)^{-1} \vb{D}\text{.}
 \end{equation}
-In practice, it is important to note that this product most likely will be a dense matrix. When using a matrix-free sparse eigenvalue solver this can be implemented as a few sparse matrix-vector products, which is much more efficient. In section~\ref{sec:c4_nm_runtime} we will take a closer look at how both solving strategies perform. In summary, this operation looks like the pseudocode in algorithm~\ref{alg:c4_deflation}.
-
-
+In practice, it is important to note that this product most likely will be a dense matrix. When using a matrix-free sparse eigenvalue solver this can be implemented as a few sparse matrix-vector products, which is much more efficient. As an example, the pseudocode for finding eigenvalues with the operation from equation~\eqref{equ:c4_approx_eigs_shift_invert} can be found  in algorithm~\ref{alg:c4_deflation}.
 \begin{algorithm}
     \begin{algorithmic}
         \State Compute the sparse LU decomposition of $\vb{A} - \sigma \vb{I}$
@@ -466,6 +464,8 @@ In practice, it is important to note that this product most likely will be a den
     \end{algorithmic}
     \caption{The pseudocode of the algorithm to apply projection deflation with a matrix-free eigenvalue solver in shift-invert mode, see equation~\eqref{equ:c4_approx_eigs_shift_invert}.}\label{alg:c4_deflation}
 \end{algorithm}
+
+In section~\ref{sec:c4_nm_runtime}, we will take a closer look at how both solving strategies perform.
 
 In summary, we have studied three techniques to solve~\eqref{equ:c4_new_method_first_matrix_problem}. With all three techniques, we were able to approximate the sought eigenvalues. However, only with the last technique, we were able to build a sparse implementation. This method is significantly faster than the other two, without loosing.
 

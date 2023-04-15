@@ -445,7 +445,7 @@ Surprisingly, during the writing of this thesis my copromotor mentioned he recog
 
 \begin{theorem} For all $m \in \{-1, 0, 1, \dots\}$ is $\eta_m(Z)$ a special case of generalized hypergeometric function\footnote{Chapter 16 of~\cite{nist_dlmf} is dedicated to these functions, with many known properties.}:
     \begin{equation}\label{equ:c4_eta_as_hypergeometric}
-        \eta_m(Z) = 2^{m+1}(m+1)! {}_0 F_1\left(\genfrac..{0pt}{}{ - }{m+\frac{3}{2}}; \frac{Z}{4}\right)
+        \eta_m(Z) = 2^{m+1}(m+1)!\, {}_0F_1\left(\genfrac..{0pt}{}{ - }{m+\frac{3}{2}}; \frac{Z}{4}\right)
     \end{equation}
     Consequently if $m \geq 0$, this can also be expressed with modified Bessel functions of the first kind $I_\alpha$:
     $$
@@ -484,7 +484,7 @@ Surprisingly, during the writing of this thesis my copromotor mentioned he recog
     with $z = m + 1 > 0$ we get the required expression.
 \end{proof}
 
-Although, this relation between the $\eta$-functions and other special functions has never (as far as we can tell) been published before, it only has limited added value. The developed theory of the last forty years is still equally valid and valuable.
+Although this relation between the $\eta$-functions and other special functions has never (as far as we can tell) been published before, it only has limited added value. The developed theory of the last forty years is still equally valid and valuable.
 
 With the theory about the family of $\eta$-functions in hand, we are able to solve equations~\eqref{equ:c2_p0_reference} and~\eqref{equ:c2_pq_definition} symbolically. The following theorem from~\cite{ixaru_numerical_1984} captures these symbolic calculations for $p_q(\delta)$. As these formulae have been instrumental to our work (especially for section~\ref{sec:c2_matslise3}), we will provide a proof.
 
@@ -1010,7 +1010,7 @@ on a domain $[a, b]$, with generalized periodic boundary conditions:
     \end{pmatrix}\text{.}
 \end{equation}
 
-In expression~\eqref{equ:c2_periodic_boundary_conditions}, $\vb{K}$ is assumed to be a $2 \times 2$ real matrix with determinant $1$\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
+In expression~\eqref{equ:c2_periodic_boundary_conditions}, $\vb{K}$ is assumed to be a $2 \times 2$ real matrix with determinant $1$~\cite{binding_prufer_2013}. If $\vb{K} = \vb{I}$, these boundary conditions are called \emph{periodic}, if $\vb{K} = -\vb{I}$ then they are called \emph{antiperiodic}.
 
 In section~\ref{sec:c2_slp_properties}, we have provided some theorems about regular Sturm--Liouville problems with homogeneous (separated) Robin boundary conditions. From all these theorems, only theorem~\ref{the:c2_real_eigenvalues} is also applicable here: all eigenvalues are real, and eigenfunctions can always be scaled to be real as well.
 
@@ -1096,24 +1096,24 @@ $$
     \caption{The functions $\delta_2(E) - \pi$ and $\delta_1(E) + \pi$ for the periodic Schrödinger problem with $q(x) = 3x^2(\pi - x)$ on $[0, \pi]$. The search intervals from~\eqref{equ:c2_periodic_search_interval} are highlighted in red.}\label{fig:c2_periodic_find_ep_em}
 \end{figure}
 
-Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_k^{-}$ and $E_k^{+}$ such That
+Suppose we want to find eigenvalues $\lambda_k^{-}$ and $\lambda_k^{+}$. Now we search for the values $E_k^{-}$ and $E_k^{+}$ such that
 \begin{equation}\label{equ:c2_periodic_search_interval}
     \delta_1(E_k^{-}) + \pi = k \pi \text{ and } \delta_2(E_k^{+}) - \pi = k \pi\text{.}
 \end{equation}
 
 By construction, we know for certain that the interval $[E_k^{-}, E_k^{+}]$ now contains $\lambda_k^{-}$ and $\lambda_k^{+}$, and that it contains no other eigenvalues. In figure~\ref{fig:c2_periodic_find_ep_em}, these intervals are visualized. The last issue left is that the matching error defined in~\eqref{equ:c2_matching_error} no longer exists. There, we started with a single fixed initial condition, propagated this to the matching point and verified that the resulting eigenfunction is continuous and continuously differentiable.
 
-For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. However since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$. Call $u_L(x)$ the solution propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question can be reformulated as: does there exist a linear combination $\vb{c}$ such that
+For the periodic problem, no initial values are known. So, if any initial condition exists such that the resulting eigenfunction is indeed smooth in the matching point, then the corresponding value for $E$ is an eigenvalue of the periodic Schrödinger problem. We are not able to propagate all initial conditions. However since we are working with a linear differential equation, the problem can be translated into finding any linear combination of $u(x)$ (with $u(a) = 0$ and $u'(a)=1$) and $v(x)$ (with $v(a) = 1$ and $v'(a)=0$) such that the function is smooth in the matching point $x_m$, while satisfying the boundary conditions. Call $u_L(x)$ the solution propagated from the left-hand side of the domain and $u_R(x)$ the solution propagated from the right-hand side of the domain, and analogous for $v_L(x)$ and $v_R(x)$. Now the question can be reformulated as: do there exist linear combinations $\vb{c_L}$ and $\vb{c_R}$ such that $\vb{c_L} = \vb{K}\vb{c_R}$ and
 $$
     \begin{pmatrix}
         u_L(x_m)  & v_L(x_m)  \\
         u'_L(x_m) & v'_L(x_m)
-    \end{pmatrix} \vb{K} \vb{c} = \begin{pmatrix}
+    \end{pmatrix} \vb{c_L} = \begin{pmatrix}
         u_R(x_m)  & v_R(x_m)  \\
         u'_R(x_m) & v'_R(x_m)
-    \end{pmatrix}\vb{c}
-    \text{?}
+    \end{pmatrix}\vb{c_R}\text{?}
 $$
+
 Or, in other words: find values for $E$ such that
 \begin{equation}\label{equ:c2_periodic_match_matrix}
     \vb{M}(E) := \begin{pmatrix}
@@ -2076,6 +2076,6 @@ In the next chapters we will use the method and the implementation developed her
 
 Since the constant perturbation methods are well-established and thoroughly researched, it is hard to fundamentally improve them. Many researchers already advanced this topic. However, we still see some opportunities to apply constant perturbation in more general Sturm--Liouville problems. One of the first assumptions we made when introducing the CP-methods was that the domain $\Omega = [a, b]$ is a bounded interval. If one is interested in solving Sturm--Liouville problems on infinite domains ($\left[0, +\infty\right[$ or $\left]-\infty, +\infty\right[$ for example), the domain has to be truncated. For Schrödinger problems where the potential quickly diverges to $+\infty$, this truncation does not pose a big issue. However, for problems with potentials such as the hydrogen potential (from section~\ref{sec:c2_numerical_experiments_hydrogen}), eigenvalues close to, but less than, zero are very sensitive to this truncation. Mitigating this is difficult. If the domain is chosen too small, boundary effects change the computed eigenvalues. If the domain is too large, selecting the optimal step size is difficult.
 
-As a possible avenue for future research, we believe that CP-methods can be used on truly infinite domains, without truncation. Now, we always propagate solutions from the end points of the interval to a matching point somewhere in the interior. But in principle, we could also propagate solutions from the middle of the domain to the end points. On an infinite domain there will not be two endpoints. This does not need to be a problem, as we can propagate solutions until we find convergence for both the eigenfunction and its derivative to zero. I suspect that implementing this will be far from trivial. The program should be able to dynamically add more steps in both directions if larger eigenvalues are requested.
+As a possible avenue for future research, we believe that CP-methods can be used on truly infinite domains, without truncation. Up to now, solutions are always propagated from the end points of the interval to a matching point somewhere in the interior. But in principle, we could also propagate solutions from the middle of the domain to the end points. On an infinite domain there will not be two endpoints. This does not need to be a problem, as we can propagate solutions until we find convergence for both the eigenfunction and its derivative to zero. I suspect that implementing this will be far from trivial. The program should be able to dynamically add more steps in both directions if larger eigenvalues are requested.
 
 \stopchapter

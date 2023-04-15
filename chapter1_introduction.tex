@@ -5,6 +5,7 @@
 \undefinedlabel{cha:c2}{2}
 \undefinedlabel{cha:c3}{3}
 \undefinedlabel{cha:c4}{4}
+\undefinedlabel{the:c2_real_eigenvalues}{2.x}
 
 \chapter{Introduction to differential equations}
 
@@ -46,25 +47,25 @@ for the derivative of $f$. In mathematical texts this notation is less common, b
 
 For many examples of how the theory of calculus and especially differential equations have developed throughout the last 400 years, we refer the interested reader to~\cite{archibald_history_2005}. One of these examples explains what Newton probably understood by integrals and quadratures, and how these were computed. Another example is concerned with how the works of d'Alembert evolved.
 
-The first differential equations, as we know them now, were studied shortly after Newton's work. Leibniz himself, and the Bernoulli brothers came across differential equations in the context of geometry and mechanics. In the eighteenth century the multivariate theory of Leibniz was extended and the first partial differential equations were written down. In the nineteenth century from the theoretical side, more results about the existence of solutions to differential equation were found. From the practical side, many more applications were found. Not only in mechanics, but also in heat transfer, optics, fluid flow and electricity and magnetism were differential equations instrumental. The equations of Navier and Stokes or the laws of Maxwell, to name a few, were developed. We refer to \cite{simmons_differential_2016}, for a more detailed view on the great minds of mathematics who build our modern understanding of calculus.
+The first differential equations, as we know them now, were studied shortly after Newton's work. Leibniz himself and the Bernoulli brothers came across differential equations in the context of geometry and mechanics. In the eighteenth century the multivariate theory of Leibniz was extended and the first partial differential equations were written down. In the nineteenth century from the theoretical side, more results about the existence of solutions of differential equation were found. From the practical side, many more applications were found. Not only in mechanics, but also in heat transfer, optics, fluid flow and electricity and magnetism were differential equations instrumental. The equations of Navier and Stokes or the laws of Maxwell, to name a few, were developed. We refer to \cite{simmons_differential_2016} for a more detailed view on the great minds of mathematics who build our modern understanding of calculus.
 
-The developments from the nineteenth century continued into the twentieth. Great new theoretical strides were made, and many new applications were found. Most notably, for this thesis at least, in quantum mechanics with Schrödinger's equation.
+The developments from the nineteenth century continued into the twentieth. Great new theoretical strides were made, and many new applications were found. Most notably, for this thesis at least, in quantum mechanics, Schrödinger's equation~\cite{schroedinger_quantisierung_1926} was developed.
 
 \subsection{Advent of computing}
 
-Most\footnote{Mathematically, we can even say `almost all'.} differential equations cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, symbolic results are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures, that if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
+Most\footnote{Mathematically, we can even say `almost all'.} differential equations cannot be explicitly solved. For ordinary linear differential equations with constant coefficients, for example, analytical solutions are available. But if one of the coefficients is not a constant, these formulae fail. For this reason, numerical methods for differential equations were developed. These methods do not solve the equation in the strictest sense, but they are able to approximate solutions arbitrarily accurate. The first numerical method is Euler's method\footnote{Both the forward Euler method as the backward version.} from 1768. Albeit simple, in the nineteenth century Cauchy proved it to converge. This convergence assures that, if sufficiently small steps are taken, any accuracy for the approximated solution can be obtained.
 
 Later, in the middle of the nineteenth century multistep methods were developed. And at the end of that century, Runge published the first Runge--Kutta method. These `new' methods were of higher order than the simpler methods and therefore could take larger steps to reach sufficiently accurate results.
 
 What strikes me the most is that all these methods were developed long before computers were invented. This implies that the first applications of these methods required an unfathomable amount of manual computation. Now, we are spoiled, and computers do all the numerical heavy lifting for us.\footnote{Regularly I feel very fortunate to be a PhD-student now, and not then. I assume that, before computers, many tedious computations must have been assigned to students.} Back then, the term `computer' did exist, but it was a profession, not a device.
 
-Throughout the twentieth century, with the rise of computing devices, the use and applicability of these numerical methods for ordinary differential equations exploded. We were able to reach never-before-seen accuracies in fractions of the time it would have costed only a few decades earlier. This explosion in computational power still continues. Now, the speed of affordable consumer desktop computers can be measured in teraFLOPS\footnote{`FLOPS' is a measure of how many \emph{fl}oating point \emph{o}perations \emph{p}er \emph{s}econd a computer can execute. A computer with a speed of $1$ teraFLOPS can execute one trillion floating point operations each second.}. For example, my university computer (Intel i7-8700K and an NVIDIA Quadro P2000) has a combined rated speed of a little over 3 teraFLOPS. Almost all of this speed comes from its graphics processing unit, with the CPU only contributing $0.06$ teraFLOPS. This already indicates that FLOPS is an imperfect unit. Writing a program that is able to use \emph{all} these FLOPS is prohibitively difficult.
+Throughout the twentieth century, with the rise of computing devices, the use and applicability of these numerical methods for ordinary differential equations exploded. We were able to reach never-before-seen accuracies in fractions of the time it would have costed only a few decades earlier. This explosion in computational power still continues. Now, the speed of affordable consumer desktop computers can be measured in teraFLOPS\footnote{`FLOPS' is a measure of how many \emph{fl}oating point \emph{o}perations \emph{p}er \emph{s}econd a computer can execute. A computer with a speed of $1$ teraFLOPS can execute one trillion ($10^{12}$) floating point operations each second.}. For example, my university computer (Intel i7-8700K and an NVIDIA Quadro P2000) has a combined rated speed of a little over 3 teraFLOPS. Almost all of this speed comes from its graphics processing unit, with the CPU only contributing $0.06$ teraFLOPS. This already indicates that FLOPS is an imperfect unit. Writing a program that is able to use \emph{all} these FLOPS is prohibitively difficult.
 
 \section{Ordinary differential equations}
 
 In the most general formulation, an $n$-dimensional $k^\text{th}$ order \emph{ordinary differential equation}
 \begin{equation}\label{equ:c1_ode_def}
-    \vb{f}\left(x, \vb{y}, {\pdv[]{\vb{y}}{x}}, {\pdv[2]{\vb{y}}{x}}, \dots, {\pdv[k]{\vb{y}}{x}}\right) = \vb{0}
+    \vb{f}\left(x, \vb{y}, {\dv[]{\vb{y}}{x}}, {\dv[2]{\vb{y}}{x}}, \dots, {\dv[k]{\vb{y}}{x}}\right) = \vb{0}
 \end{equation}
 expresses $n$ constraints on an unknown sufficiently differentiable function $\vb{y} : \Omega \to \RR^n$ with $\Omega \subseteq \RR$ and $\vb{f}: \Omega \times (\RR^n)^{k+1} \to \RR^n$. In most cases, this equation alone is insufficient to determine a unique solution $\vb{y}(x)$. For this, some initial or boundary conditions can be imposed on $\vb{y}$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
 
@@ -72,7 +73,7 @@ expresses $n$ constraints on an unknown sufficiently differentiable function $\v
 $$
     F(x) = \int f(x) \,\dd x \quad \iff \quad \dv[]{F}{x} = f(x)\text{.}
 $$
-Definite integrals can similarly be formulated as a differential equation, however a boundary condition has to be imposed:
+A definite integral can similarly be formulated as a differential equation, however a boundary condition has to be imposed:
 $$
     \int_a^b f(x) \dd x = F(b) \quad \text{ with } \dv[]{F}{x} = f(x) \text{ and } F(a) = 0\text{.}
 $$
@@ -99,26 +100,26 @@ $$
         \dv[]{y}{t} = \delta x y - \gamma y \\
     \end{cases}\text{.}
 $$
-In this two-dimensional first order ordinary differential equation, the constants $\alpha$, $\beta$, $\gamma$ and $\delta$ are parameters which describe the particular characteristics of the situation. Typically, as initial conditions, a researcher supplies the population sizes of both species at the start of the simulation.
+In this two-dimensional first order ordinary differential system, the constants $\alpha$, $\beta$, $\gamma$ and $\delta$ are parameters which describe the particular characteristics of the situation. Typically, as initial conditions, a researcher supplies the population sizes of both species at the start of the simulation.
 
 \subsection{Sturm--Liouville problems}
 
 These were only a few short examples from a myriad of real-world applications. In chapter~\ref{cha:c2} we will focus upon the numerical solution of a particular class of second-order linear ordinary differential equations: Sturm--Liouville equations.
 
-A Sturm--Liouville problem is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$.
+A Sturm--Liouville equation is defined by three functions $p(x)$, $q(x)$ and $w(x)$ on a domain $\Omega \subseteq \RR$.
 $$
     -{\dv[]{}{x}}\left(p(x) \dv[]{y}{x}\right) + q(x) y = \lambda w(x) y
 $$
 This problem is only well-defined if appropriate boundary conditions are provided as well. For more details about different types of boundary conditions we refer the reader to the introduction in chapter~\ref{cha:c2}.
 
-One striking particularity of these problems is that, besides $y(x)$, $\lambda$ is an unknown as well. Solutions for $\lambda$ are called eigenvalues and the corresponding solution for $y(x)$ is what is called an eigenfunction.
+One striking particularity of these problems is that, besides $y(x)$, the constant $\lambda$ is an unknown as well. Solutions for $\lambda$ are called eigenvalues and the corresponding solution for $y(x)$ is what is called an eigenfunction.
 
 Differential equations can be approached from many angles. Some researchers take a pure theoretical approach, where many powerful results are proven. Other researchers start with real-world applications and consider differential equations as simply a tool in the toolbox to tackle their problems. The approach we have chosen falls somewhere in between. From the beginning we set out to develop and implement numerical methods for particular differential equations. To build a useful and accurate method, many theoretical results are needed. However, also practical feasibility and computational efficiency are essential.\footnote{Personally, I feel this is the true strength of this thesis. Neither the theoretical advancements we made, nor the efficiency of our implementation are perfect. However, I believe the powerful combination of the two to be the real innovation.}
 
 
 \section{Partial differential equations}
 
-One of the main characterizing properties of ordinary differential equations is that there is only a single independent variable. In equation~\eqref{equ:c1_ode_def}, $x$ is this independent variable. A \emph{partial} differential equation is a generalization which allows multiple independent variables. As these equations are commonly used in physical problems, the independent variables are mostly time $t$ and space $x, y, z, \dots$, or more general $x_1, x_2, \dots, x_n$.
+One of the main characterizing properties of ordinary differential equations is that there is only a single independent variable. In equation~\eqref{equ:c1_ode_def}, $x$ is this independent variable. A \emph{partial} differential equation is a generalization which allows multiple independent variables. As these equations are commonly used in physical problems, the independent variables are mostly temporal $t$ and space coordinates $x, y, z, \dots$, or more general $x_1, x_2, \dots, x_n$.
 
 Providing a clean general one-formula definition of partial differential equations is quite cumbersome, and not at all instructive. Therefore, let us immediately take a look at some examples.
 
@@ -128,7 +129,7 @@ $$
 $$
 In this expression, $\alpha$ is a parameter. As is the case for ordinary differential equations, to uniquely define a partial differential problem, boundary and or initial conditions have to be imposed. If for example the rod is heated at one side to $500\,\text{K}$, and cooled at the other to $250\,\text{K}$, then this can be expressed as $f(t, 0) = 500$ and $f(t, 1)=250$ for all $\left]0, \infty\right[$. However, this is still insufficient to properly define the problem. Initial conditions have to be provided for $t=0$. These should express the temperature throughout the rod at the beginning of the simulation. For example, if the experiment is started with the rod at room temperature $300\,\text{K}$, then this is captured as $f(0, x) = 300$ for all $x \in [0, 1]$.
 
-This problem can be easily generalized to higher dimensional situations. Assume a similar experiment is conducted with a metal unit sphere. Let $g : \left[0, \infty\right[ \times \Omega : (t, x, y, z) \to g(t, x, y, z)$ be the temperature throughout this sphere $\Omega := \left\{(x, y, z)^\transposesign \in \RR^3 | x^2 + y^2 + z^2 \leq 1\right\}$. Physics dictate this $g$ satisfies:
+This problem can be easily generalized to higher dimensional situations. Assume a similar experiment is conducted with a metal unit sphere. Let $g : \left[0, \infty\right[ \times \Omega : (t, x, y, z) \to g(t, x, y, z)$ be the temperature throughout this sphere $\Omega := \left\{(x, y, z) \in \RR^3 | x^2 + y^2 + z^2 \leq 1\right\}$. Physics dictate that this $g$ satisfies:
 $$
 {\pdv[]{g}{t}} = \alpha\left(\pdv[2]{g}{x} + \pdv[2]{g}{y} + \pdv[2]{g}{z}\right) = \alpha \nabla^2 g \text{.}
 $$
@@ -155,7 +156,7 @@ As one may already suspect, for most\footnote{Again, mathematically, we can say 
 
 \subsection{Time-independent Schrödinger problems}
 
-In this thesis, and in particular chapters~\ref{cha:c2} and~\ref{cha:c3}, we will be solving two-dimensional time-independent Schrödinger equations~\cite{schroedinger_quantisierung_1926}. These are defined by a potential $V(x, y)$ on a domain $\Omega \subseteq \RR^2$. The goal is to find all functions $\psi : \Omega \to \CC$ and values $E \in \CC$ such that
+In this thesis, and in particular chapters~\ref{cha:c2} and~\ref{cha:c3}, we will be solving two-dimensional time-independent Schrödinger equations~\cite{schroedinger_quantisierung_1926}. These are defined by a potential $V(x, y)$ on a domain $\Omega \subseteq \RR^2$. The goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ such that\footnote{In principle, $\psi$ and $E$ could be complex valued. In theorem~\ref{the:c2_real_eigenvalues}, we will pose that all solutions are real.}
 $$
 -\nabla^2\psi + V(x, y) \psi = E \psi\text{,}
 $$

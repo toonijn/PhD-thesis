@@ -167,18 +167,18 @@ To be able to propagate a solution along the whole domain, it is vital to have a
   \text{and}\quad
   \transpose{\vb{b}^{(k)}}(x)\,\pdv{\vb{c}^{(k)}}{y}\left(y_k\right) & = \transpose{\vb{b}^{(k+1)}}(x)\,\pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) \text{.}
 \end{align*}
-Multiplying both sides with $\vb{b}^{(k)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$ yields
+Multiplying both sides with $\vb{b}^{(k+1)}(x)$ and integrating along the $x$-axis for each $i \in \{1, \dots, N\}$ yields
 \begin{align*}
   \vb{c}^{(k+1)}(y_k)                       & = \vb{M}^{(k)} \vb{c}^{(k)}(y_k)                       \\
   \pdv[]{\vb{c}^{(k+1)}}{y}\left(y_k\right) & = \vb{M}^{(k)} \pdv[]{\vb{c}^{(k)}}{y}\left(y_k\right)
 \end{align*}
 with
 $$
-  \vb{M}^{(k)}_{ij} = \bra{b_{i}^{(k)}}\ket{b_{j}^{(k+1)}} = \int_\xmin^\xmax b_i^{(k)}(x) b_j^{(k+1)}(x) \dd x \text{.}
+  \vb{M}^{(k)}_{ij} = \bra{b_{i}^{(k+1)}}\ket{b_{j}^{(k)}} = \int_\xmin^\xmax b_i^{(k+1)}(x) b_j^{(k)}(x) \dd x \text{.}
 $$
-Here we assumed the orthogonal basis $\{b_i^{(k)}(x)\}$ to be normalized $\langle b_{i}^{(k)} | b_{j}^{(k)} \rangle = \delta_{ij}$, or in matrix notation:
+Here we assumed the orthogonal basis $\{b_i^{(k+1)}(x)\}$ to be normalized $\langle b_{i}^{(k+1)} | b_{j}^{(k+1)} \rangle = \delta_{ij}$, or in matrix notation:
 \begin{equation}\label{equ:c3_b_orthonormal}
-  \int_\xmin^\xmax \transpose{\vb{b}} \vb{b}\,\dd x = \vb{I}\text{.}
+  \int_\xmin^\xmax \vb{b}^{(k+1)} \transpose{\vb{b}^{(k+1)}}\,\dd x = \vb{I}\text{.}
 \end{equation}
 
 \begin{figure}
@@ -192,7 +192,7 @@ Since in the infinite case
 \begin{equation}\label{equ:c3_m_before_truncation}
   c^{(k+1)}_i = \sum_{i=0}^{\infty} \bra{b_j^{(k)}}\ket{b_i^{(k+1)}} c^{(k)}_j
 \end{equation}
-exactly, this matrix $\vb{M}^{(k)}$ is orthogonal. However, if the sum on the right hand-side of~\eqref{equ:c3_m_before_truncation} is truncated, then ${\vb{M}^{(k)}}^\transposesign$ no longer reverses this transformation. Therefore, $\vb{M}^{(k)}$ is in general no longer orthogonal. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x+1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure~\ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor inconvenience, inherent to this method.
+exactly, this matrix $\vb{M}^{(k)}$ is orthogonal. However, if the sum is truncated, then the equality in~\eqref{equ:c3_m_before_truncation} no longer holds and ${\vb{M}^{(k)}}^\transposesign$ no longer reverses this transformation. Therefore, $\vb{M}^{(k)}$ is in general no longer orthogonal. As an extreme example consider the transition matrix $\vb{M}$ from the basis defined by $-b_i'' + (x-1)^2 b_i = \lambda_i b_i$ to the basis defined by $-b_i'' + (x+1)^2 b_i = \lambda_i b_i$. The infinite matrix $\vb{M}$ is orthogonal, any finite upper left block of $\vb{M}$ is not orthogonal. This is demonstrated in figure~\ref{fig:c3_orthogonal_m}. This loss of orthogonality is a minor inconvenience, inherent to this method.
 
 With these tools available, all that is left is to formalize how the shooting can be executed. Instead of propagating with a single starting condition (i.e. a column vector $\vb{c}^{(1)}(\ymin)$), all possible initial values (for homogeneous Dirichlet boundary conditions) are propagated at once. Therefore, we propose to start with:
 $$
@@ -440,15 +440,15 @@ In summary, the formulae developed here can now be used to determine values for~
 
 In the previous section, we have obtained formulae to compute~\eqref{equ:vk_quad_sector1d}. In principle, these formulae could also be extended to compute overlap integrals
 $$
-  \vb{M}_{ij}^{(k)} = \int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x\text{,}
+  \vb{M}_{ij}^{(k)} = \int_{\xmin}^{\xmax}b_i^{(k+1)}(x)b_j^{(k)}(x)\dd x\text{,}
 $$
 but there are a few hurdles. First, we would like to use the automatic sector selection algorithm in \matslise{}, as this has the big advantage of ensuring the requested accuracy. Using this automatic sector selection has the consequence of choosing a different partition along the $x$-axis for different sectors in the $y$-direction. However, since $\vb{M}^{(k)}$ requires basis functions on two different sectors, it would be very cumbersome to construct appropriate formulae.
 
 Second, we noted that these recursive expressions for $\vb{V}^{(k)}(y)$ are quite expensive to compute. For $\vb{V}^{(k)}(y)$, this cost can be justified by also reducing function evaluations of the potential $V(x, y)$.
 
-In the case of $\vb{M}^{(k)}$, a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k)}_i(x)$ very cheaply in arbitrary points.
+In the case of $\vb{M}^{(k)}$, a similar justification is hard to find because in \matslise{3} it is now possible to evaluate $b^{(k+1)}_i(x)$ and $b^{(k)}_j(x)$ very cheaply in arbitrary points.
 
-For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k)}(x)b_j^{(k+1)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss--Kronrod formulae are used. These have a proven track record~\cite{piessens_quadpack_1983}.
+For these reasons we have opted to use classical quadrature rules to compute $\int_{\xmin}^{\xmax}b_i^{(k+1)}(x)b_j^{(k)}(x)\dd x$. To ensure sufficiently accurate integration results, the 31-points adaptive Gauss--Kronrod formulae are used. These have a proven track record~\cite{piessens_quadpack_1983}.
 
 % Maybe demonstrate how many $M$ are calculated?
 
