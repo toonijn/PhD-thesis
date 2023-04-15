@@ -127,7 +127,7 @@ WORKDIR /home/student/
 RUN git clone https://gitlab.com/libeigen/eigen.git
 RUN git clone --recursive https://github.com/twist-numerical/matslise.git \
     && cd matslise \
-    && git checkout e7c180fe64f5fc2f9752073f44845cd88418f16e
+    && git checkout 945a6cbdd15894aaa9939e5eaeeb07fbeb3b8db5
 RUN git clone --recursive https://github.com/twist-numerical/matslise2d.git \
     && cd matslise2d \
     && git checkout f623a1bd1a2f573ed7d8ff36ccda542f5d1635e6
