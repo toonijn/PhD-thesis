@@ -2,6 +2,7 @@
   "latex-workshop.latex.outDir": "%DIR%/build",
   "ltex.latex.commands": {
     "\\DeclareRobustCommand{}{}": "ignore",
+    "\\fontfamily{}": "ignore",
     "\\texorpdfstring{}{}": "dummy",
     "\\undefinedlabel{}{}": "dummy",
     "\\cpp{}": "dummy",
@@ -12,6 +13,8 @@
     "\\mathematica{}": "dummy",
     "\\matlab{}": "dummy",
     "\\matslise{}": "dummy",
+    "\\matscs{}": "dummy",
+    "\\strands{}": "dummy",
     "\\pyslise{}": "dummy",
     "\\pyslisetd{}": "dummy",
     "\\sage{}": "dummy",

@@ -97,3 +97,5 @@ Raphson
 Kronrod
 monopoles
 decompositions
+ARPACK
+ChatGPT
