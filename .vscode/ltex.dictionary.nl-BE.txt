@@ -5,3 +5,5 @@ perturbatie
 eigenfuncties
 schrödingervergelijking
 schrödingervergelijkingen
+Dirichlet-randvoorwaarden
+Ixaru
