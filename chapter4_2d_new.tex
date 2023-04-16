@@ -617,7 +617,7 @@ Following section~\ref{sec:c4_fd_numerical}, the first example we will consider 
 \end{equation}
 on the domain $[\numprint{-9.5}, \numprint{9.5}] \times [\numprint{-9.5}, \numprint{9.5}]$ with homogeneous Dirichlet boundary conditions.
 
-Using Strands, the first ten eigenvalues of this problem can be found within a second with the following code.
+Using \strands{}, the first ten eigenvalues of this problem can be found within a second with the following code.
 % \begin{noindent}
 \begin{minted}{python}
 from strands import Schrodinger2D, Rectangle
@@ -688,7 +688,7 @@ $$
     2, 4, 4, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 10, 12, \dots
 $$
 
-Strands can be used to find and evaluate the eigenfunctions. The following code yields similar graphs as in figure~\ref{fig:c4_nm_harmonic_eigenfunctions}.
+\strands{} can be used to find and evaluate the eigenfunctions. The following code yields similar graphs as in figure~\ref{fig:c4_nm_harmonic_eigenfunctions}.
 % \begin{noindent}
 \begin{minted}{python}
 from strands import Schrodinger2D, Rectangle
@@ -758,7 +758,7 @@ For non-rectangular domains with the zero potential, the story is different. Let
 
 The relative errors of the first hundred eigenvalues found with our new method are shown in figure~\ref{fig:c4_nm_zero_test_disc}. We have tested this with the grid size and maximal basis size both equal to $32$, $64$ or $128$. The results are less impressive than for rectangular domains as the maximal accuracy reached is somewhere around $10^{-6}$. But nevertheless, being able to compute these values at all is quite unique.
 
-The behavior we observe in figure~\ref{fig:c4_nm_zero_test_disc} is similar to the discussion from section~\ref{sec:c3_conclusion_hypothesis}. There, the method we studied was unable to further improve accuracy, even if parameters which should result in more accurate approximations were used. In the results we are reviewing here, a similar situation can be observed. The eigenvalues found with $N=K=128$ are not consistently more accurate than the values found with $N=K=64$. In section~\ref{sec:c3_conclusion_hypothesis}, we concluded that it was a fundamental shortcoming of the method. Luckily, these issues are for Strands only present in this experiment.
+The behavior we observe in figure~\ref{fig:c4_nm_zero_test_disc} is similar to the discussion from section~\ref{sec:c3_conclusion_hypothesis}. There, the method we studied was unable to further improve accuracy, even if parameters which should result in more accurate approximations were used. In the results we are reviewing here, a similar situation can be observed. The eigenvalues found with $N=K=128$ are not consistently more accurate than the values found with $N=K=64$. In section~\ref{sec:c3_conclusion_hypothesis}, we concluded that it was a fundamental shortcoming of the method. Luckily, these issues are for \strands{} only present in this experiment.
 
 Determining the source of these inaccuracies is difficult. The graphs are reminiscent of those in figure~\ref{fig:c4_fd_zero} where we used a high order finite difference scheme. There, the high order scheme (wrongly) assumed the eigenfunctions to be identically zero outside the domain. In our case, no such assumption is explicitly made. Implicitly however, for grid-lines close to the boundary of the disc, only a few basis functions are available. On these lines, it is thus impossible to accurately represent the sought eigenfunctions. We suspect this to introduce unwanted boundary effects. It would explain the similarities between figure~\ref{fig:c4_nm_zero_test_disc} and figure~\ref{fig:c4_fd_zero}.
 
@@ -861,7 +861,7 @@ print(ixaru.eigenvalues(13))
     \label{fig:c4_nm_ixaru_test}
 \end{figure}
 
-In figure~\ref{fig:c4_nm_ixaru_test}, we study the relative error of the first $25$ eigenvalues. Since no sufficiently accurate eigenvalues are available, we have to calculate the reference values ourselves. For this, we use Strands with $N=90$ and $K=40$. This computation takes a little less than one minute. We provide these reference eigenvalues in table~\ref{tab:c4_ixaru_reference}.
+In figure~\ref{fig:c4_nm_ixaru_test}, we study the relative error of the first $25$ eigenvalues. Since no sufficiently accurate eigenvalues are available, we have to calculate the reference values ourselves. For this, we use \strands{} with $N=90$ and $K=40$. This computation takes a little less than one minute. We provide these reference eigenvalues in table~\ref{tab:c4_ixaru_reference}.
 
 The interpretation of the relative errors from figure~\ref{fig:c4_nm_ixaru_test} is similar to previous discussions. Our method is able to reach close to machine precision, with relatively little computational work. The used grids don't need to be dense to obtain these results. Visually, we notice that the relative error for the higher eigenvalues with $N=50$ and $K=35$ is close to $10^{-9} \approx 2^{-30}$.
 
@@ -949,7 +949,7 @@ When first developing the ideas for this method, I always saw it as a loom, with
 \begin{center}
     \begin{minipage}{.8\textwidth}
         \begin{description}
-            \item[\textbf{Strands}] \hfill\\ \textbf{St}anding waves app\textbf{r}oxim\textbf{a}tions for the $\bm{n}$-\textbf{d}imensional \textbf{S}chrödinger problem (with $n = 2$ and maybe in the future $n = 3$).
+            \item[\textbf{\texttt{Strands}}] \hfill\\ \textbf{St}anding waves app\textbf{r}oxim\textbf{a}tions for the $\bm{n}$-\textbf{d}imensional \textbf{S}chrödinger problem (with $n = 2$ and maybe in the future $n = 3$).
         \end{description}
     \end{minipage}
 \end{center}
