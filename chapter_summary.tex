@@ -14,33 +14,59 @@
 \addcontentsline{toc}{section}{Summary in English}
 
 An $n$-dimensional time-independent Schrödinger equation is a linear second order partial differential equation given by
-\begin{equation}\label{equ:sum_en_schrodinger}
+\begin{equation}\label{equ:sum_schrodinger}
 -\nabla^2 \psi(\vb{x}) + V(\vb{x}) \psi(\vb{x}) = E\vb{x}\text{.}
 \end{equation}
-In this expression, $V$ is a given potential function defined on a domain $\Omega \subseteq \RR^n$. When solving this equation, the goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ that satisfy the Schrödinger equation~\eqref{equ:sum_en_schrodinger} in combination with appropriate boundary conditions. For such a solution, $E$ is called the eigenvalue with corresponding eigenfunction $\psi(\vb{x})$.
+In this expression, $V$ is a given potential function defined on a domain $\Omega \subseteq \RR^n$. When solving this equation, the goal is to find all functions $\psi : \Omega \to \RR$ and values $E \in \RR$ that satisfy the Schrödinger equation~\eqref{equ:sum_schrodinger} in combination with appropriate boundary conditions. For such a solution, $E$ is called the eigenvalue with corresponding eigenfunction $\psi(\vb{x})$.
 
 For the one-dimensional case, Schrödinger equations are a special case of Sturm--Liouville equations:
-\begin{equation}\label{equ:sum_en_sl}
+\begin{equation}\label{equ:sum_sl}
     -(p(x), y'(x))' + q(x) y(x) = \lambda w(x) y(x) \text{.}
 \end{equation}
 In this equation $p(x)$, $q(x)$ and $w(x)$ are given real functions on a possibly unbounded interval. Here, $\lambda$ is the unknown eigenvalue with corresponding eigenfunction $y(x)$.
 
-In chapter~\ref{cha:c2}, the well-established constant perturbation method for approximating eigenvalues and eigenfunctions of~\eqref{equ:sum_en_sl} is studied. Here, regular Sturm--Liouville problems on $[a, b]$ are considered with homogeneous Robin boundary conditions:
+In chapter~\ref{cha:c2}, the well-established constant perturbation method for approximating eigenvalues and eigenfunctions of~\eqref{equ:sum_sl} is studied. Here, regular Sturm--Liouville problems on $[a, b]$ are considered with homogeneous Robin boundary conditions:
 $$
 \alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
 $$
 This constant perturbation method is able to reach extremely accurate results, for small as well as for high eigenvalues. With this method, we build a new \cpp{}-implementation which we call \matslise{3} accompanied by a \lpython{}-package named \pyslise{}. The new implementation is up to $100$ times faster than \matslise{2} when calculating eigenvalues. For the evaluation of eigenfunctions, our program is even up to a $1000$ times faster. These speed-ups are possible due to the development and calculation of novel, more complicated propagation formulae.
 
-We also consider (generalized) periodic boundary conditions. This is the first time, to the best of our knowledge, that a constant perturbation method is used for this type of problem. The main challenge here is to make sure \emph{all} requested eigenvalues are found.
+We also consider Sturm--Liouville problems with (generalized) periodic boundary conditions. This is the first time, to the best of our knowledge, that a constant perturbation method is used for this type of problem. The main challenge here is to make sure \emph{all} requested eigenvalues are found.
 
-In chapters~\ref{cha:c3} and~\ref{cha:c4}, two methods for the approximation of eigenvalues and eigenfunctions of the time-independent two-dimensional Schrödinger equation~\eqref{equ:sum_en_schrodinger}  are studied. The first method (discussed in chapter~\ref{cha:c3}) is an existing method developed by Ixaru based on constant perturbation concepts. It is limited to Schrödinger problems on rectangular domains with homogeneous Dirichlet boundary conditions. Throughout that chapter, we introduce some improvements to this method. Most notably, we develop a technique to reliably determine the index of an eigenvalue. This enables us to ensure all requested eigenvalues have been found.
+In chapters~\ref{cha:c3} and~\ref{cha:c4}, two methods for the approximation of eigenvalues and eigenfunctions of the time-independent two-dimensional Schrödinger equation~\eqref{equ:sum_schrodinger}  are studied. The first method (discussed in chapter~\ref{cha:c3}) is an existing method developed by Ixaru based on constant perturbation concepts. It is limited to Schrödinger problems on rectangular domains with homogeneous Dirichlet boundary conditions. Throughout that chapter, we introduce some improvements to this method. Most notably, we develop a technique to reliably determine the index of an eigenvalue. This enables us to ensure all requested eigenvalues have been found.
 
 A second method for approximating eigenvalues and eigenfunctions of time-independent two-dimensional Schrödinger equations with homogeneous Dirichlet boundary conditions on (possibly non-rectangular) domains can be found in chapter \ref{cha:c4}. Here, we are inspired by a simple method based on a finite difference scheme. This leads us to develop Strands, a \cpp{}-program accompanied by a homonymous \lpython{}-package. Through the use of line-based collocation ideas with well-chosen basis functions (inspired by chapter~\ref{cha:c3}), this new method is able to reach much more accurate results, with a similar computational cost.
 
+\begin{otherlanguage}{dutch}
 % LTeX: language=nl-BE
 \section*{Nederlandse samenvatting}
 \addcontentsline{toc}{section}{Nederlandse samenvatting}
 
+Een $n$-dimensionale tijdsonafhankelijke schrödingervergelijking is een lineaire tweede orde partiële differentiaalvergelijking:
+\begin{equation}
+-\nabla^2 \psi(\vb{x}) + V(\vb{x}) \psi(\vb{x}) = E\vb{x}\text{.} \tag{\ref{equ:sum_schrodinger}}
+\end{equation}
+In deze uitdrukking is $V$ een gegeven potentiaalfunctie die gedefinieerd is op een domein $\Omega \subseteq \RR^n$. Bij het oplossen van deze vergelijking zoekt men alle waarden $E\in \RR$ waarvoor functies $\psi : \Omega \to \RR$ bestaan die voldoen aan~\eqref{equ:sum_schrodinger} samen met gegeven randvoorwaarden. In zo een oplossing noemt men $E$ de eigenwaarde met bijhorende eigenfunctie $\psi(\vb{x})$.
+
+Een eendimensionale tijdsonafhankelijke schrödingervergelijking is een speciaal geval van een Sturm--Liouville vergelijking:
+\begin{equation}
+    -(p(x), y'(x))' + q(x) y(x) = \lambda w(x) y(x) \text{.} \tag{\ref{equ:sum_sl}}
+\end{equation}
+Hierbij zijn $p(x)$, $q(x)$ en $w(x)$ functies, gegeven op een mogelijk onbegrensd interval. De onbekenden zijn de eigenwaarde $\lambda$ met bijhorende eigenfunctie $y(x)$.
+
+In hoofdstuk~\ref{cha:c2} bestuderen we de *** constante perturbatie methode voor het benaderen van de eigenwaarden en eigenfuncties van vergelijking~\eqref{equ:sum_sl}. Meer specifiek behandelen we reguliere Sturm--Liouville problemen met Robin randvoorwaarden:
+$$
+\alpha_a y(a) + \beta_a p(a) y'(a) = 0 \text{ and } \alpha_b y(b) + \beta_b p(b) y'(b) = 0\text{.}
+$$
+Deze constante perturbatie methode bereikt extreem nauwkeurige resultaten voor zowel kleine als grote eigenwaarden. We gebruiken deze methode om een nieuw \cpp{}-programma, dat we \matslise{3} noemen, te ontwikkelen. Dit programma wordt vergezeld van de \lpython{}-bibliotheek \pyslise{}. Deze nieuwe implementatie is tot wel $100$ keer sneller dan \matslise{2} voor de berekening van eigenwaarden. Wanneer eigenfuncties geëvalueerd worden is ons programma zelfs tot $1000$ keer sneller. Onder meer dankzij de ontwikkeling van nieuwe, ingewikkeldere formules waren we in staat deze versnellingen te realiseren. 
+
+We behandelen ook Sturm--Liouville problemen met (veralgemeende) periodieke randvoorwaarden. Naar zover wij weten is dit de eerste keer dat de constante perturbatie methode wordt ingezet voor dit soort problemen. Hierbij bleek het de grootste uitdaging om te kunnen garanderen dat \emph{alle} gevraagde eigenwaarden gevonden worden.
+
+In hoofdstukken~\ref{cha:c3} en~\ref{cha:c4} worden twee methoden bestudeerd die de eigenwaarden en eigenfuncties van een tweedimensionale tijdsonafhankelijke schrödingervergelijking kunnen benaderen. De eerste methode (onderzocht in hoofdstuk~\ref{cha:c3}) is uitgevonden door Ixaru met ideeën gebaseerd op de constante perturbatie methoden. Deze methode is beperkt tot schrödingervergelijkingen op rechthoekige domeinen met homogene Dirichlet-randvoorwaarden. Doorheen hoofdstuk~\ref{cha:c3} introduceren we enkele uitbreiding en verbeteringen op die methode. We ontwikkelen onder andere een techniek waarmee we het volgnummer van een eigenwaarde betrouwbaar kunnen bepalen. Met deze techniek kunnen we garanderen dat alle gevraagde eigenwaarden gevonden zijn.
+
+Een tweede methode om de eigenwaarden en eigenfuncties van tweedimensionale tijdsonafhankelijke schrödingervergelijkingen op (mogelijks niet-rechthoekige) domeinen met homogene Dirichlet-randvoorwaarden te benaderen, wordt ontwikkeld in hoofdstuk~\ref{cha:c4}. Hierbij laten we ons inspireren door een eenvoudige techniek gebaseerd op de eindige-differentiemethode en de lessen die we leerden in hoofdstuk~\ref{cha:c3}. Dit stelde ons in staat om Strands te ontwikkelen. Dit is een \cpp{}-programma, begeleid door een gelijknamige \lpython{}-bibliotheek. Dankzij collocatie-ideeën toegepast op roosterlijnen met goed gekozen basis functies (zoals bij de methode van Ixaru), bereikt ons nieuwe programma een veel hogere nauwkeurige met een gelijkaardige uitvoeringstijd. 
+
 % LTeX: language=en-US
+\end{otherlanguage}
 
 \stopchapter
