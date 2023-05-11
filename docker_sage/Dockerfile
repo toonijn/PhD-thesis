@@ -124,23 +124,18 @@ RUN mkdir -p /home/student/.sage/jupyter-4.1/lab/user-settings/\@jupyterlab/git 
 
 # Install pyslise
 WORKDIR /home/student/
-RUN git clone https://gitlab.com/libeigen/eigen.git
 RUN git clone --recursive https://github.com/twist-numerical/matslise.git \
     && cd matslise \
-    && git checkout 945a6cbdd15894aaa9939e5eaeeb07fbeb3b8db5
+    && git checkout fcc560ce2b4d8973005b327b5af688d5936cb11c
 RUN git clone --recursive https://github.com/twist-numerical/matslise2d.git \
     && cd matslise2d \
-    && git checkout f623a1bd1a2f573ed7d8ff36ccda542f5d1635e6
-RUN mkdir eigen/build
+    && git checkout 7575decdcee783622edf409fdd6c2df3c512b048
 RUN mkdir matslise/build-sage;  mkdir matslise/build-python
 RUN mkdir matslise2d/build-sage ; mkdir matslise2d/build-python
 
-WORKDIR /home/student/eigen/build
-RUN git checkout 3.3; cmake -Wno-dev ..
 
 WORKDIR /home/student/matslise/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
 USER root
 RUN cmake --build . --target pyslise_install --config Release -- -j 5
@@ -148,19 +143,16 @@ USER student
 
 WORKDIR /home/student/matslise/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
 RUN cmake --build . --target pyslise_install --config Release -- -j 5
 
 WORKDIR /home/student/matslise2d/build-sage
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(sage -python -c "import sys; print(sys.executable, end='')")
 RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
 
 WORKDIR /home/student/matslise2d/build-python
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DEigen3_DIR="/home/student/eigen/build" \
     -DPYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable, end='')")
 USER root
 RUN cmake --build . --target pyslise2d_install --config Release -- -j 5
