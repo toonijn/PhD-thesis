@@ -1,0 +1,70 @@
+// https://github.com/hakimel/reveal.js/blob/master/css/theme/README.md
+@import "reveal.js/css/reveal";
+
+// Default mixins and settings -----------------
+@import "reveal.js/css/theme/template/mixins";
+@import "reveal.js/css/theme/template/settings";
+// ---------------------------------------------
+
+$ugent_wit: #ffffff;
+$ugent_zwart: #000000;
+$ugent_blauw: #1e64c8;
+$ugent_geel: #ffd200;
+$ugent_oranje: #f1a42b;
+$ugent_rood: #dc4e28;
+$ugent_aqua: #2d8ca8;
+$ugent_roze: #e85e71;
+$ugent_hemelsblauw: #8bbee8;
+$ugent_lichtgroen: #aeb050;
+$ugent_paars: #825491;
+$ugent_warmoranje: #fb7e3a;
+$ugent_turquoise: #27abad;
+$ugent_lichtpaars: #be5190;
+$ugent_groen: #71a860;
+
+// https://github.com/hakimel/reveal.js/blob/master/css/theme/template/settings.scss
+
+// Background of the presentation
+$backgroundColor: $ugent_wit;
+
+// Primary/body text
+$mainFont: "Lato", sans-serif;
+$mainFontSize: 28px;
+$mainColor: $ugent_zwart;
+
+// Vertical spacing between blocks of text
+$blockMargin: 20px;
+
+// Headings
+$headingMargin: 0 0 $blockMargin 0;
+$headingFont: "League Gothic", Impact, sans-serif;
+$headingColor: $ugent_blauw;
+$headingLineHeight: 1.2;
+$headingLetterSpacing: normal;
+$headingTextTransform: none;
+$headingTextShadow: none;
+$headingFontWeight: normal;
+$heading1TextShadow: $headingTextShadow;
+
+$heading1Size: 3.22em;
+$heading2Size: 2.11em;
+$heading3Size: 1.55em;
+$heading4Size: 1em;
+
+$codeFont: monospace;
+
+// Links and actions
+$linkColor: $ugent_geel;
+$linkColorHover: lighten($linkColor, 20%);
+
+// Text selection
+$selectionBackgroundColor: lighten($ugent_blauw, 30%);
+$selectionColor: inherit;
+
+// Change text colors against dark slide backgrounds
+// @include light-bg-text-color(#222);
+
+// Theme template ------------------------------
+@import "reveal.js/css/theme//template/theme";
+// ---------------------------------------------
+

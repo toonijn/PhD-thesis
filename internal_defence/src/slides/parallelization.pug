@@ -1,0 +1,37 @@
+section
+  section#parallelization
+    h2 Parallelization
+    ul
+      li All operations are thread-safe
+      li
+        a(href="#/par-matslise") Matslise 3.0
+      li
+        a(href="#/par-matslise2d") Matslise2D
+      li
+        a(href="#/par-strands") Strands
+
+  section#par-matslise
+    h2 Parallelization - Matslise 3.0
+    ul
+      li Relatively little computation per sector, relatively few sectors
+      li Per guess for an eigenvalue or per requested eigenvalue
+        ul
+          li CPU straigthforward
+          li GPU possible? But usefull?
+
+  section#par-matslise2d
+    h2 Parallelization - Matslise2D
+    ul
+      li Per sector CPU-parallelize (already experimented with)
+        ul
+          li Automatic sector size is limiting -> some workarounds
+      li Per eigenvalue-guess
+        ul
+          li CPU straigthforward
+          li GPU possible? But usefull?
+
+  section#par-strands
+    h2 Parallelization - Strands
+    ul
+      li Per grid line CPU-parallelize (already experimented with)
+      li Simply use parallel sparse eigenvalue solver (GPU possible)
