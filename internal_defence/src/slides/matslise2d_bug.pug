@@ -1,5 +1,63 @@
 section
   section#matslise2d-bug
-    h2 Parallelization
+    h2 Bug in Matslise2D
     ul
-      li All operations are thread-safe
+      li
+        a(href="#/matslise2d-bug-eta-functions") Calculation of $\eta$-functions
+      li
+        a(href="#/matslise2d-bug-eta-integrals") Computation of $\mathbf{V}^{(k)}$
+      li
+        a(href="#/matslise2d-bug-solution") (Temporary) solution
+
+  section#matslise2d-bug-eta-functions
+    h3 Bug - Calculation of $\eta$-functions
+
+    ul
+      li If $|Z| < 0.5$ we use series expansion
+        ul
+          li Tayler series of $\eta_8$ and $\eta_{9}$
+          li $$ \eta_{m-2}(Z) = Z \eta_m(Z) + (2m-1)\eta_{m-1}(Z) $$
+      li Else we use simple recursive definition
+        ul
+          li Definition of $\eta_{-1}$ and $\eta_0$.
+          li $$ \eta_m(Z) = \frac{1}{Z}\left( \eta_{m-2}(Z) - (2m-1)\eta_{m-1}(Z) \right) $$
+      li Is unit-tested to ensure accurate results to $10^{-8}$.
+
+  section
+    h3 Bug - Calculation of $\eta$-functions
+
+    img.r-stretch(src="./assets/tested_eta_zoom.png")
+
+    ol.references
+      li Ixaru, Liviu Gr., and Guido Vanden Berghe. Exponential Fitting. Dordrecht: Springer Netherlands, 2004. https://doi.org/10.1007/978-1-4020-2100-8.
+
+  section#matslise2d-bug-eta-integrals
+    h3 Bug - $\int \eta_i \eta_j \delta^k \, \text{d} \delta$
+    ul
+      li In Matslise 3.0 becomes $\eta_i$ less important as $i$ rises
+      li In the integrals (in the computation of $\mathbf{V}^{(k)}$) <br />
+        |
+        | these larger $\eta$-functions are important <br />
+        |
+        | and there accuracy was limited
+
+  section#matslise2d-bug-solution
+    h3 Bug - (Temporary) solution
+    ul
+      li Ignore symbolic formulae from section 3.2.3
+      li Use a simple quadrature formula
+        ul
+          li 500-times repeated 4-point Lobatto quadrature
+          li Evaluation of 1D basis functions is fast and accurate
+          li Drawback: many evaluations of $V(x, y)$
+
+  section#matslise2d-new-results
+    div(style="margin-bottom: -40px")
+      h4(style="width: 50%; display: inline-block") With symbolic computation of $\mathbf{V}^{(k)}$
+      h4(style="width: 50%; display: inline-block") With repeated Lobatto-quadrature
+    div(style="width: 50%; display: inline-block")
+      img(src="./assets/ixaru_old.png", width="85%")
+    div(style="width: 50%; display: inline-block")
+      img(src="./assets/ixaru_new.png", width="85%")
+    div(style="position:absolute; bottom: 0; right:0")
+      h4 Section 3.4.3: Ixaru's potential

@@ -11,8 +11,9 @@ section
         a(href="#/par-strands") Strands
 
   section#par-matslise
-    h2 Parallelization - Matslise 3.0
+    h3 Parallelization - Matslise 3.0
     ul
+      li SIMD use is limited
       li Relatively little computation per sector, relatively few sectors
       li Per guess for an eigenvalue or per requested eigenvalue
         ul
@@ -20,8 +21,9 @@ section
           li GPU possible? But usefull?
 
   section#par-matslise2d
-    h2 Parallelization - Matslise2D
+    h3 Parallelization - Matslise2D
     ul
+      li SIMD already extensively used in Eigen
       li Per sector CPU-parallelize (already experimented with)
         ul
           li Automatic sector size is limiting -> some workarounds
@@ -31,7 +33,13 @@ section
           li GPU possible? But usefull?
 
   section#par-strands
-    h2 Parallelization - Strands
+    h3 Parallelization - Strands
     ul
       li Per grid line CPU-parallelize (already experimented with)
-      li Simply use parallel sparse eigenvalue solver (GPU possible)
+      li Sparse eigenvalue solver
+        ul
+          li At the moment we are using a single-threaded implementation (with heavy use of SIMD)
+          li Parallelized libraries exists
+            ul
+              li CPU and HPC (e.g. SLEPc)
+              li Even GPU implementations available

@@ -68,3 +68,34 @@ $selectionColor: inherit;
 @import "reveal.js/css/theme//template/theme";
 // ---------------------------------------------
 
+section:not(.stack) {
+  padding: 20px;
+}
+
+.cite {
+  display: inline-block;
+
+  &:before {
+    content: "[";
+  }
+  &:after {
+    content: "[";
+  }
+}
+
+@counter-style reference {
+  system: numeric;
+  symbols: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9";
+  suffix: "] ";
+  prefix: "[";
+}
+
+ol.references {
+  color: lighten($ugent_zwart, 60%);
+  font-size: 75%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  list-style: reference;
+}
