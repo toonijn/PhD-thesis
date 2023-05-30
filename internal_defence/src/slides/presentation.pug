@@ -1,10 +1,109 @@
 section
-  h1 Algorithms for time-independent Schrödinger equations
-  h2 Internal defence
+  section.title-slide
+    h2 Internal defence
+    h1 Algorithms for time-independent <br /> Schrödinger equations
 
-section
-  h2 Overview
-  ul
-    li Chapter 2
-    li Chapter 3
-    li Chapter 4
+    img.logo(src="./assets/logo_ugent.png", alt="")
+    .info
+      .author Toon Baeyens
+      .promotor
+        | prof. dr. Marnix Van Daele
+        br
+        | prof. dr. Joris Van der Jeugt
+
+  section
+    h2 My master's thesis
+
+    p Implementing #[span.cite 1] in MATLAB with Matslise 2.0
+    ul
+      li Very promising first results
+      li Matslise 2.0 has many features
+      li Evaluating eigenfunctions is slow
+      li #[span.cite 1] lacks assurances for finding all eigenvalues
+
+    .r-stretch
+    ol.references
+      li(value="1") Ixaru, L. Gr. “New Numerical Method for the Eigenvalue Problem of the 2D Schrödinger Equation.” CPC, 2010.
+
+  section
+    h2 First PhD-steps
+    .ref-to-text
+      | Sections 2.3, 2.6 and #[span.cite 2]
+
+    p Reimplementing Matslise 2.0 and MatSCS (for coupled systems) in C++.
+    ul
+      li Features vs. Effeciency
+      li Allow for any Scalar type
+      li General formulae in $\delta$
+      li Python-interface
+
+    .r-stretch
+    ol.references
+      li(value="2") Baeyens, T., and Van Daele, M. “The Fast and Accurate Computation of Eigenvalues and Eigenfunctions of Time-Independent One-Dimensional Schrödinger Equations.” CPC, 2020.
+
+  section
+    h2 Start to run
+    .ref-to-text
+      | Chapter 3 and #[span.cite 3]
+
+    p Implementing #[span.cite 1] in C++
+    ul
+      li More efficient
+      li Much more thorough testing, and more numerical experiments
+      li Automatic sector size selection
+      li Orthonormalization of eigenfunctions
+      li Symbolic computation of
+        div(style="font-size: 0.8em") $$ \mathbf{V}^{(k)}_{ij}(y) = \int_{x_\text{min}}^{x_\text{max}} b_i^{(k)}(x) b_j^{(k)}(x) \left(V(x, y) - \bar{V}^{(k)}(x)\right) \,\text{d} x + \delta_{ij} \lambda_i^{(k)} \text{.} $$
+
+    .r-stretch
+    ol.references
+      li(value="1") Ixaru, L. Gr. “New Numerical Method for the Eigenvalue Problem of the 2D Schrödinger Equation.” CPC, 2010.
+      li(value="3") Baeyens, T., and Van Daele, M. “Improvements to the Computation of Eigenvalues and Eigenfunctions of Two-Dimensional Schrödinger Equations by Constant Perturbation Based Algorithms.” JCAM, 2022.
+
+  section
+    h2 A theoretical sprint
+
+    p To do: ensuring all eigenvalues are found
+
+  section
+    h2 "Met vallen en opstaan"<sup>*</sup>
+    .ref-to-text
+      | Chapter 4 and #[span.cite 4]
+
+    .r-stack
+      .fragment.fade-out(data-fragment-index="0", style="margin: 0")
+        img(
+          src="./assets/grid.png",
+          height="320px",
+          style="float: left; margin-right: 20px"
+        )
+        p Inspired by an extremely accurate finite difference method we develop an improved direct technique on a grid.
+      .fragment.fade-in-then-out(data-fragment-index="0", style="margin: 0")
+        p This reduces to a matrix problem:
+          | $$ \begin{cases} \mathbf{B_x} \mathbf{\Lambda_x}\mathbf{c_x} + \mathbf{B_y} \mathbf{\Lambda_y}\mathbf{c_y} = E \mathbf{B_x} \mathbf{c_x} \\ \mathbf{B_x} \mathbf{c_x} = \mathbf{B_y} \mathbf{c_y}\text{,} \end{cases} $$
+          | with $\mathbf{B_x}$ (analoguous $\mathbf{B_y}$) constructed from the basis functions:
+          | $$ -\beta''^{(x_i)}_k + \frac{V(x_i, y)}{2} \beta^{(x_i)}_k = \lambda_k^{(x_i)} \beta^{(x_i)}_k \text{.}$$
+      .fragment.fade-in-then-out(data-fragment-index="1", style="margin: 0")
+        ul
+          li With a least squares approximation: this generates a discrete sparse eigenvalue problem
+          li Promising first experiments
+          li Smaller grids (compared to finite differences) yield similarly acccurate results
+          li Support for non-rectangular domains
+          li Fast evaluation of eigenfunctions
+
+    .r-stretch
+    ol.references
+      li(value="*", style="list-style-type: '* '") With falling and getting up again
+      li(value="4") Baeyens, T., and Van Daele, M. “Strands: new efficient technique for solving time-independent 2D Schrödinger equations accurately.” submitted
+
+  section
+    h2 Circling back to 1D
+    .ref-to-text
+      | Section 2.4
+    p Using Matslise 3.0 for solving periodic Schrödinger problems. Main difficulty is ensuring all eigenvalues are found with Prüfer transformation.
+
+    img(
+      src="./assets/periodic_minmax.png",
+      width="80%",
+      style="display: block; margin: 0 auto"
+    )

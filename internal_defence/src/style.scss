@@ -46,8 +46,8 @@ $headingTextShadow: none;
 $headingFontWeight: normal;
 $heading1TextShadow: $headingTextShadow;
 
-$heading1Size: 3.22em;
-$heading2Size: 2.11em;
+$heading1Size: 2.8em;
+$heading2Size: 2.1em;
 $heading3Size: 1.55em;
 $heading4Size: 1em;
 
@@ -69,7 +69,10 @@ $selectionColor: inherit;
 // ---------------------------------------------
 
 section:not(.stack) {
-  padding: 20px;
+  box-sizing: border-box;
+  padding: 20px 100px 20px 20px;
+  position: relative;
+  text-align: left;
 }
 
 .cite {
@@ -79,8 +82,14 @@ section:not(.stack) {
     content: "[";
   }
   &:after {
-    content: "[";
+    content: "]";
   }
+}
+
+.ref-to-text {
+  margin: -0.8em 0 0.8em 0;
+  font-size: 0.8em;
+  color: lighten($ugent_zwart, 60%);
 }
 
 @counter-style reference {
@@ -92,10 +101,77 @@ section:not(.stack) {
 
 ol.references {
   color: lighten($ugent_zwart, 60%);
-  font-size: 75%;
+  font-size: 50%;
   position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  bottom: 20px;
+  right: 100px;
+  left: 20px;
   list-style: reference;
+}
+
+.reveal.slide {
+  .slides:before {
+    position: absolute;
+
+    content: " ";
+    display: block;
+    width: var(--slide-height);
+    height: var(--slide-width);
+    transform: matrix(0, 1, 1, 0, 0, 0);
+    transform-origin: 0% 0%;
+    background-image: url("./assets/background.svg");
+    background-position: 0% 98%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.3;
+    transition: opacity 500ms;
+  }
+
+  &:has(.slides .title-slide.present) .slides:before {
+    opacity: 1;
+  }
+}
+
+.reveal img {
+  margin: 0;
+}
+
+section.title-slide {
+  text-align: center;
+  position: relative;
+
+  h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+    margin-bottom: 70px;
+  }
+
+  h1 {
+    font-size: 2em;
+    color: $ugent_zwart;
+  }
+
+  .logo {
+    margin-top: 20px;
+    float: left;
+    width: 250px;
+  }
+
+  .info {
+    text-align: right;
+    margin: 70px 70px 0 0;
+
+    .author {
+      font-size: 1.2em;
+    }
+
+    .promotor {
+      margin-top: 20px;
+      font-size: 0.8em;
+    }
+  }
+}
+
+.katex-display {
+  margin: 0.5em 0 !important;
 }

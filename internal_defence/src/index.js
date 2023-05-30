@@ -11,6 +11,7 @@ let deck = new Reveal({
   center: false,
   width: 1024,
   height: 576,
-  margin: 0.1,
+  margin: 0,
+  maxScale: 3,
 });
 deck.initialize();
