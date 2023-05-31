@@ -1,11 +1,30 @@
 section
   section#future-work
     h2 Future work
+    a.prepared-answers(href="#/prepared-answers")
     ul
-      li Finding users and indintifying needs
-      li Expansion to three-dimensional problems
-        br
-        strong Matslise2D
-        ul
-          li First experiments mixed results
-          li Generates pathological 2D problems
+      li Finding users and indentifying needs
+      li Sturm-Liouville problems - Matslise
+      ul
+        li Thorough testing of generalized periodic problems
+        li True infinite domains
+          br
+          | $\to$ dynamically grow domain when needed
+      li Time-dependent problems
+      li #[a(href="#/future-work-3d") 3D problems]
+    .r-stretch
+
+  section#future-work-3d
+    h2 Expanding to 3D problems
+    p
+      strong Matslise2D
+    ul
+      li First experiments mixed results
+      li Generates pathological 2D problems
+    p
+      strong Strands
+    ul
+      li Different possibilities: $3\times 1\text{D}$, $2\text{D} + 1\text{D}$, $3\times 2\text{D}$
+      li No obvious best choice
+      li In first implementation: main difficulty are the eigenfunctions
+      li Sparse matrix eigenvalue problem scales well

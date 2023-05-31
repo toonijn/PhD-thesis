@@ -1,6 +1,7 @@
 section
   section#matslise2d-bug
     h2 Bug in Matslise2D
+    a.prepared-answers(href="#/prepared-answers")
     ul
       li
         a(href="#/matslise2d-bug-eta-functions") Calculation of $\eta$-functions
@@ -8,6 +9,7 @@ section
         a(href="#/matslise2d-bug-eta-integrals") Computation of $\mathbf{V}^{(k)}$
       li
         a(href="#/matslise2d-bug-solution") (Temporary) solution
+    .r-stretch
 
   section#matslise2d-bug-eta-functions
     h3 Bug - Calculation of $\eta$-functions
@@ -52,12 +54,12 @@ section
           li Drawback: many evaluations of $V(x, y)$
 
   section#matslise2d-new-results
-    div(style="margin-bottom: -40px")
+    div
       h4(style="width: 50%; display: inline-block") With symbolic computation of $\mathbf{V}^{(k)}$
       h4(style="width: 50%; display: inline-block") With repeated Lobatto-quadrature
+    .ref-to-text
+      | Section 3.4.3: Ixaru's potential
     div(style="width: 50%; display: inline-block")
       img(src="./assets/ixaru_old.png", width="85%")
     div(style="width: 50%; display: inline-block")
       img(src="./assets/ixaru_new.png", width="85%")
-    div(style="position:absolute; bottom: 10px; right:150px")
-      h4 Section 3.4.3: Ixaru's potential
