@@ -62,8 +62,24 @@ section
 
   section
     h2 A theoretical sprint
+    .ref-to-text
+      | Section 3.3
 
-    p To do: ensuring all eigenvalues are found
+    .r-stack
+      .fragment.fade-out(data-fragment-index="0", style="margin: 0")
+        img(
+          src="./assets/counting_omega.png",
+          width="700px",
+          style="display: block; margin: 0 auto"
+        )
+        p Given a family of domains $\Omega_\epsilon$ such they become arbitrarily small if $\epsilon \to 0$.
+        p There are exactly as many eigenvalues less then $E$ as there are domains $\Omega_\epsilon$ on which $E$ is an eigenvalue.
+      .fragment.fade-in-then-out(data-fragment-index="0", style="margin: 0")
+        img(
+          src="./assets/counting_eigenvalues.png",
+          width="840px",
+          style="display: block; margin: 0 auto"
+        )
 
   section
     h2 "Met vallen en opstaan"<sup>*</sup>
