@@ -16,23 +16,23 @@ section
     h3 Parallelization - Matslise 3.0
     ul
       li SIMD use is limited
-      li Relatively little computation per sector, relatively few sectors
+      li Relatively few computations per sector, relatively few sectors
       li Per guess for an eigenvalue or per requested eigenvalue
         ul
           li CPU straigthforward
-          li GPU possible? But usefull?
+          li GPU possible? But useful?
 
   section#par-matslise2d
     h3 Parallelization - Matslise2D
     ul
       li SIMD already extensively used in Eigen
-      li Per sector CPU-parallelize (already experimented with)
+      li CPU-parallelization per sector  (already experimented with)
         ul
           li Automatic sector size is limiting -> some workarounds
       li Per eigenvalue-guess
         ul
           li CPU straigthforward
-          li GPU possible? But usefull?
+          li GPU possible? But useful?
 
   section#par-strands
     h3 Parallelization - Strands

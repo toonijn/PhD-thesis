@@ -17,7 +17,7 @@ section
     ul
       li If $|Z| < 0.5$ we use series expansion
         ul
-          li Tayler series of $\eta_8$ and $\eta_{9}$
+          li Taylor series of $\eta_8$ and $\eta_{9}$
           li $$ \eta_{m-2}(Z) = Z \eta_m(Z) + (2m-1)\eta_{m-1}(Z) $$
       li Else we use simple recursive definition
         ul
@@ -28,20 +28,17 @@ section
   section
     h3 Bug - Calculation of $\eta$-functions
 
-    img.r-stretch(src="./assets/tested_eta_zoom.png")
+    img(src="./assets/tested_eta_zoom.png", style=" display:block; margin: 0 auto; width: 500px")
 
+    .r-stretch
     ol.references
       li Ixaru, Liviu Gr., and Guido Vanden Berghe. Exponential Fitting. Dordrecht: Springer Netherlands, 2004. https://doi.org/10.1007/978-1-4020-2100-8.
 
   section#matslise2d-bug-eta-integrals
     h3 Bug - $\int \eta_i \eta_j \delta^k \, \text{d} \delta$
     ul
-      li In Matslise 3.0 becomes $\eta_i$ less important as $i$ rises
-      li In the integrals (in the computation of $\mathbf{V}^{(k)}$) <br />
-        |
-        | these larger $\eta$-functions are important <br />
-        |
-        | and there accuracy was limited
+      li In Matslise 3.0, $\eta_i$ becomes less important as $i$ rises
+      li In the integrals (in the computation of $\mathbf{V}^{(k)}$), even these $\eta$-functions are important and their accuracy was limited
 
   section#matslise2d-bug-solution
     h3 Bug - (Temporary) solution
