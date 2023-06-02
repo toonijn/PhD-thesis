@@ -7,10 +7,21 @@ html
     link(rel="stylesheet", href="style.scss")
   body
     .invite-container
-      .invite
+      #invite.invite
         h1.title Algorithms for time-independent Schrödinger equations
-        p.description Met veel plezier mag ik u uitnodigen op 
-        p.author Toon Baeyens
         .detailed-info
-          p.location Gent, Campus Sterre, S9, Auditorium A2
-          p.date 30 juni 2023, 16:00
+          p.date June 30<sup>th</sup> 2023, 16:00
+          p.location Campus Sterre, S9<br />auditorium A2
+        .description
+          p
+            | With much pleasure I invite you to my PhD defence, followed by a reception.
+          p
+            | To help me estimate the number of attendees,
+            | please register at #[a(href="https://toonijn.be/thesis/register") toonijn.be/thesis/register]
+          .author Toon Baeyens
+        .affiliation
+          p.department Department of Applied Mathematics,<br />Computer Science and Statistics
+          p.faculty Faculty of Sciences
+        img.logo(src="./assets/logo_ugent.png")
+
+  script(src="script.js")
