@@ -1,23 +1,4 @@
-$ugent_wit: #ffffff;
-$ugent_zwart: #000000;
-$ugent_blauw: #1e64c8;
-$ugent_geel: #ffd200;
-$ugent_oranje: #f1a42b;
-$ugent_rood: #dc4e28;
-$ugent_aqua: #2d8ca8;
-$ugent_roze: #e85e71;
-$ugent_hemelsblauw: #8bbee8;
-$ugent_lichtgroen: #aeb050;
-$ugent_paars: #825491;
-$ugent_warmoranje: #fb7e3a;
-$ugent_turquoise: #27abad;
-$ugent_lichtpaars: #be5190;
-$ugent_groen: #71a860;
-
-$width: 19cm;
-$height: 12.8cm;
-$title-left: 0.15 * $width;
-$padding: 0.05 * $width;
+@use "../base.scss" as ugent;
 
 @page {
   size: A5 landscape;
@@ -40,6 +21,11 @@ html {
   padding: 0;
 }
 
+$width: 19cm;
+$height: 12.8cm;
+$title-left: 0.15 * $width;
+$padding: 0.05 * $width;
+
 .invite-container {
   &,
   body,
@@ -56,19 +42,21 @@ html {
   --scale: 1;
   @media print {
     --scale: 1 !important;
+    margin: 0 !important;
   }
   width: $width;
   height: $height;
   position: relative;
-  font-size: 4mm;
+  font-size: 3.9mm;
   transform: scale(var(--scale));
   margin: calc(50vh - $height / 2) auto;
   background-color: white;
   padding-top: calc(0.02 * $width);
+  font-family: "CMU Serif", serif;
 
   h1 {
     position: relative;
-    background-image: url("./assets/invite_background.svg");
+    background-image: url("../assets/invite_background.svg");
     background-position: 0 0;
     background-size: contain;
     background-repeat: no-repeat;
@@ -76,7 +64,8 @@ html {
     padding: 0 0 0 0;
     padding: calc(0.17 * $width) calc(0.25 * $width) 0 $title-left;
     font-size: 2em;
-    text-align: center;
+    text-align: left;
+    font-family: "CMU Sans-Serif", sans-serif;
   }
 
   .affiliation {
@@ -91,7 +80,7 @@ html {
       margin-bottom: 0.5em;
     }
     p.faculty {
-      font-size: 0.85em;
+      font-size: 0.9em;
     }
   }
 
@@ -101,16 +90,23 @@ html {
     float: right;
     padding: $padding $padding 0 0;
     width: $width - $description-width - $padding;
-
     text-align: right;
+
     .date {
       margin-bottom: 1em;
+    }
+
+    .sup {
+      display: inline-block;
+      position: relative;
+      top: -0.5em;
+      font-size: 0.7em;
     }
   }
 
   .description {
     padding: $padding 0 0 $title-left;
-    text-align: right;
+    text-align: left;
     width: $description-width;
 
     p {
@@ -118,7 +114,9 @@ html {
     }
 
     .author {
+      padding-top: 0.5em;
       font-size: 1.2em;
+      text-align: right;
     }
   }
 
@@ -132,7 +130,7 @@ html {
 
   a {
     text-decoration: none;
-    color: $ugent-blauw;
+    color: ugent.$blauw;
 
     &:hover {
       text-decoration: underline;

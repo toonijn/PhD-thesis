@@ -1,0 +1,102 @@
+@use "../base.scss" as ugent;
+
+// Default variable overrides
+$body-bg: ugent.$wit;
+$body-color: ugent.$zwart;
+
+$primary: ugent.$blauw;
+$danger: ugent.$rood;
+$secondary: ugent.$geel;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$width: calc(min(90vw, 800px));
+
+a {
+  color: ugent.$blauw;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.register-container {
+  overflow: hidden;
+  width: 100%;
+  .register {
+    position: relative;
+    max-width: $width;
+    margin: 0 auto;
+    padding-top: calc(0.17 * $width);
+
+    background-image: url("../assets/invite_background.svg");
+    background-size: 100% auto;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-color: ugent.$wit;
+    font-family: "CMU Serif", serif;
+    font-size: 1.1em;
+
+    &:before {
+      $left-shift: calc(0.5 * (100vw - $width));
+
+      position: absolute;
+      content: " ";
+      display: block;
+      height: calc(0.25 * $width);
+      width: 100vw;
+      top: 0;
+      left: calc(-1 * $left-shift);
+      z-index: -1;
+
+      background-image: url("../assets/invite_background.svg");
+      background-size: $width auto;
+      background-position: $left-shift 0;
+      background-repeat: repeat-x;
+      opacity: 0.5;
+    }
+
+    .description {
+      .author {
+        text-align: right;
+        font-size: 1.1em;
+        margin-top: -1em;
+      }
+    }
+
+    .register-form {
+      margin-top: 1em;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-family: "CMU Sans-Serif", sans-serif;
+      padding: 0 calc(0.2 * $width) 1em calc(0.15 * $width);
+    }
+
+    .affiliation {
+      $padding: calc(0.05 * $width);
+
+      .logo {
+        display: block;
+        width: calc(5 * $padding);
+        margin: 0 0 0 calc(-1 * $padding);
+      }
+
+      .affilation-details {
+        padding: $padding 0 $padding 0;
+        text-align: right;
+
+        .department {
+          font-size: 0.9em;
+        }
+
+        .faculty {
+          font-size: 1em;
+          margin: 0;
+        }
+      }
+    }
+  }
+}

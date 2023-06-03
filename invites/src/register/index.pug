@@ -1,0 +1,62 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Algorithms for time-independent Schrödinger equations - Defence invite
+    link(rel="stylesheet", href="style.scss")
+  body
+    .register-container
+      .register
+        h1.title Algorithms for time-independent Schrödinger equations
+        .row
+          .col-sm-8.description
+            p
+              | With much pleasure I invite you to my PhD defence, followed by a reception.
+            p
+              | To help me estimate the number of attendees, please register with the following form
+            .author Toon Baeyens
+          .col-sm-4.info.text-sm-end 
+            p.date June 30#[span.sup th] 2023, 16:00
+            p.location
+              a(
+                href="https://www.google.be/maps/place/51%C2%B001'22.6%22N+3%C2%B042'39.1%22E",
+                rel="noreferrer"
+              ) Gent, Campus Sterre
+              br
+              | Gebouw S9, auditorium A2
+
+        form.register-form(action="/registe/process.php", method="post")
+          .form-group
+            label(for="name") Name
+            input#name.form-control(
+              type="text",
+              name="name",
+              placeholder="Erwin Schrödinger",
+              required
+            )
+          .form-group
+            label(for="attendends") With how many people will you attend, yourself included?
+            input#attendends.form-control(
+              type="number",
+              name="attendends",
+              value="1",
+              min="1",
+              required
+            )
+          .form-group
+            label(for="comments") Do you have any additional comments?
+            textarea#comments.form-control(
+              name="comments",
+              maxlength="1000",
+              placeholder="I am looking forward to it!"
+            )
+          .form-group
+            input.btn.btn-primary(type="submit", value="Register")
+
+        .row.affiliation.align-items-end
+          .col-4
+            img.logo(src="../assets/logo_ugent.png")
+          .col-8.affilation-details
+            p.department Department of Applied Mathematics,<br />Computer Science and Statistics
+            p.faculty Faculty of Sciences

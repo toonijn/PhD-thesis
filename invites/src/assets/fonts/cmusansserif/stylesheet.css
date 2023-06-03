@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "CMU Sans-Serif";
+  src: url("cmunsx-webfont.woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CMU Sans-Serif";
+  src: url("cmunso-webfont.woff");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "CMU Sans-Serif";
+  src: url("cmunsi-webfont.woff");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "CMU Sans-Serif";
+  src: url("cmunss-webfont.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CMU Sans-Serif";
+  src: url("cmunssdc-webfont.woff");
+  font-weight: 600;
+  font-style: normal;
+}
