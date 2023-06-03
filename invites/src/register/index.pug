@@ -7,17 +7,18 @@ html
     link(rel="stylesheet", href="style.scss")
   body
     .register-container
-      .register
+      #register-page.register
         h1.title Algorithms for time-independent Schrödinger equations
-        .row
+        .row.mb-5
           .col-sm-8.description
             p
               | With much pleasure I invite you to my PhD defence, followed by a reception.
             p
-              | To help me estimate the number of attendees, please register with the following form
-            .author Toon Baeyens
-          .col-sm-4.info.text-sm-end 
-            p.date June 30#[span.sup th] 2023, 16:00
+              | To help me estimate the number of attendees, please register through the following form.
+            p.hope-to-see-you I hope to see you there!
+            p.author Toon Baeyens
+          .col-sm-4.info.text-sm-end
+            p.date Friday June 30#[span.sup th] 2023, 16h00
             p.location
               a(
                 href="https://www.google.be/maps/place/51%C2%B001'22.6%22N+3%C2%B042'39.1%22E",
@@ -26,37 +27,50 @@ html
               br
               | Gebouw S9, auditorium A2
 
-        form.register-form(action="/registe/process.php", method="post")
-          .form-group
-            label(for="name") Name
-            input#name.form-control(
-              type="text",
-              name="name",
-              placeholder="Erwin Schrödinger",
-              required
-            )
-          .form-group
-            label(for="attendends") With how many people will you attend, yourself included?
-            input#attendends.form-control(
-              type="number",
-              name="attendends",
-              value="1",
-              min="1",
-              required
-            )
-          .form-group
-            label(for="comments") Do you have any additional comments?
-            textarea#comments.form-control(
-              name="comments",
-              maxlength="1000",
-              placeholder="I am looking forward to it!"
-            )
-          .form-group
+        form#register-form.register-form
+          noscript
+            .alert.alert-danger
+              | Felix, JavaScript has to be enabled to submit this form.
+          #register-error.register-error.alert.alert-danger
+            | Something went wrong. Please let me know by sending an email.
+          label.row.align-items-center.mb-3
+            .col-auto Your name:
+            .col
+              input.form-control(
+                type="text",
+                name="name",
+                placeholder="Erwin Schrödinger",
+                required
+              )
+          label.row.form-group.align-items-center.mb-3
+            .col-auto With how many people will you attend, yourself included?
+            .col
+              input.form-control(
+                type="number",
+                name="attendends",
+                value="1",
+                min="1",
+                required
+              )
+          label.form-group.mb-3.row
+            .col-12 Do you have any additional comments?
+            .col-12
+              textarea#comments.form-control(
+                name="comment",
+                maxlength="1000",
+                placeholder="I am looking forward to it!"
+              )
+          .form-group.mb-3.text-center
             input.btn.btn-primary(type="submit", value="Register")
 
+        .register-success
+          h2 Succesfully registered
+          p
+            | I am looking forward to seeing you on June 30#[span.sup th] 2023 at 16h00!
+
         .row.affiliation.align-items-end
-          .col-4
+          .col-6
             img.logo(src="../assets/logo_ugent.png")
-          .col-8.affilation-details
-            p.department Department of Applied Mathematics,<br />Computer Science and Statistics
-            p.faculty Faculty of Sciences
+          .col-6
+            img.logo-faculteit(src="../assets/logo_ugent_we.png")
+    script(src="script.js", type="module")

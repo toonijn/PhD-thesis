@@ -1,13 +1,13 @@
 {
   "name": "phd-invites",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Toon Baeyens",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "start": "parcel src/invite/index.pug src/register/index.pug",
-    "build": "parcel build src/index.pug"
+    "build-register": "parcel build --no-source-maps --public-url . --dist-dir dist-register src/register/index.pug && cp src/register/process.php dist-register/process.php",
+    "build-invite": "parcel build --no-source-maps --public-url . --dist-dir dist-invite src/invite/index.pug"
   },
   "dependencies": {
     "@prettier/plugin-pug": "^2.5.0",

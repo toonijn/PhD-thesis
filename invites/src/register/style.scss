@@ -58,19 +58,35 @@ a {
     }
 
     .description {
+      .hope-to-see-you {
+        text-align: right;
+        margin-bottom: 0;
+      }
+
       .author {
         text-align: right;
         font-size: 1.1em;
-        margin-top: -1em;
       }
+    }
+
+    .sup {
+      display: inline-block;
+      position: relative;
+      top: -0.5em;
+      font-size: 0.7em;
     }
 
     .register-form {
       margin-top: 1em;
+
+      .register-error {
+        display: none;
+      }
     }
 
     h1 {
       font-size: 2em;
+      color: ugent.$aqua;
       font-family: "CMU Sans-Serif", sans-serif;
       padding: 0 calc(0.2 * $width) 1em calc(0.15 * $width);
     }
@@ -82,6 +98,12 @@ a {
         display: block;
         width: calc(5 * $padding);
         margin: 0 0 0 calc(-1 * $padding);
+      }
+      .logo-faculteit {
+        display: block;
+        height: calc(3 * $padding);
+        margin: 0 calc(-1 * $padding) 0 0;
+        float: right;
       }
 
       .affilation-details {
@@ -95,6 +117,31 @@ a {
         .faculty {
           font-size: 1em;
           margin: 0;
+        }
+      }
+    }
+
+    .register-success {
+      display: none;
+
+      text-align: center;
+      padding: 1em 0;
+    }
+
+    &.register-is-success {
+      .register-form {
+        display: none;
+      }
+
+      .register-success {
+        display: block;
+      }
+    }
+
+    &.register-has-error {
+      .register-form {
+        .register-error {
+          display: block;
         }
       }
     }

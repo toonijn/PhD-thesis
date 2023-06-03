@@ -1,5 +1,11 @@
 @use "../base.scss" as ugent;
 
+
+$width: 19cm;
+$height: 12.8cm;
+$title-left: 0.15 * $width;
+$padding: 0.05 * $width;
+
 @page {
   size: A5 landscape;
   margin: 0;
@@ -20,11 +26,6 @@ html {
   margin: 0;
   padding: 0;
 }
-
-$width: 19cm;
-$height: 12.8cm;
-$title-left: 0.15 * $width;
-$padding: 0.05 * $width;
 
 .invite-container {
   &,
@@ -66,9 +67,11 @@ $padding: 0.05 * $width;
     font-size: 2em;
     text-align: left;
     font-family: "CMU Sans-Serif", sans-serif;
+    color: ugent.$aqua;
   }
 
   .affiliation {
+    display: none;
     text-align: right;
     position: absolute;
     width: 8 * $padding;
@@ -113,8 +116,12 @@ $padding: 0.05 * $width;
       margin-bottom: 0.5em;
     }
 
+    .hope-to-see-you {
+      text-align: right;
+      margin-bottom: 0;
+    }
+
     .author {
-      padding-top: 0.5em;
       font-size: 1.2em;
       text-align: right;
     }
@@ -126,6 +133,15 @@ $padding: 0.05 * $width;
     left: 0;
     bottom: 0;
     width: calc($padding * 5);
+  }
+
+  .logo-faculteit {
+    display: block;
+    position: absolute;
+    // left: calc($padding * 5);
+    right: 0;
+    bottom: 0;
+    height: calc($padding * 3);
   }
 
   a {
