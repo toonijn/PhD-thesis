@@ -4,9 +4,22 @@ html
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Algorithms for time-independent Schrödinger equations - Internal defence
-    link(rel="stylesheet", href="style.scss")
+    link(rel="stylesheet", href="primary.scss")
   body
     .reveal
-        .slides
-            include slides/presentation.pug
+      .slides
+        section.title-slide
+          h2 Internal defence
+          h1 Algorithms for time-independent <br /> Schrödinger equations
+
+          img.logo(src="./assets/logo_ugent.png", alt="")
+          .info
+            .author Toon Baeyens
+            .promotor
+              | prof. dr. Marnix Van Daele
+              br
+              | prof. dr. Joris Van der Jeugt
+
+        include primary/differential_equations.pug
+
     script(src="index.js", type="module")

@@ -1,0 +1,13 @@
+@import "./theme.scss";
+
+.full-slide {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.slides {
+  section {
+    width: 100%;
+    height: 100%;
+  }
+}

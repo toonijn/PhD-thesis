@@ -6,12 +6,15 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "parcel src/index.pug",
-    "build": "parcel build --public-url . src/index.pug"
+    "start": "parcel src/primary.pug",
+    "secondary": "parcel src/secondary.pug",
+    "build": "parcel build --public-url . src/primary.pug src/secondary.pug"
   },
   "dependencies": {
     "parcel": "^2.8.3",
-    "reveal.js": "^4.5.0"
+    "reveal.js": "^4.5.0",
+    "simplex-noise": "^4.0.1",
+    "three": "^0.153.0"
   },
   "devDependencies": {
     "@parcel/transformer-pug": "2.8.3",
