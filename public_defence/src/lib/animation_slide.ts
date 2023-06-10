@@ -1,13 +1,14 @@
 export default class AnimationSlide {
-  constructor() {
-    this.active = false;
-    this.initialized = false;
-  }
-  initialize(element) {
+  active: boolean = false;
+  initialized: boolean = false;
+
+  constructor() {}
+
+  initialize(element: HTMLElement) {
     this.initialized = true;
   }
 
-  activate(element) {
+  activate(element: HTMLElement) {
     if (!this.initialized) this.initialize(element);
     this.active = true;
   }

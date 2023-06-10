@@ -1,4 +1,4 @@
-import ThreeSlide from "./three_slide.js";
+import ThreeSlide from "../lib/three_slide.ts";
 import * as THREE from "three";
 import eigenfunctions from "../assets/computed/title_eigenfunctions.json";
 import { createNoise2D } from "simplex-noise";
@@ -110,8 +110,10 @@ export default new (class extends ThreeSlide {
   onFrame() {
     const t = (0.2 * +new Date()) / 1000;
     const phi = (1 + Math.sqrt(5)) / 2;
-    const weights = this.noise
-      .generate((1 + Math.cos(t * phi)) / 2, (1 + Math.sin(t)) / 2);
+    const weights = this.noise.generate(
+      (1 + Math.cos(t * phi)) / 2,
+      (1 + Math.sin(t)) / 2
+    );
     const s = Math.hypot(...weights);
     interpolation_shader.uniforms.weights.value = weights.map((w) => w / s);
     interpolation_shader.uniforms.weights.needsUpdate = true;

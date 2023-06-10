@@ -14,7 +14,7 @@ const animations = {
     import("./secondary/title.js").then((s) => s.default)
   ),
   "function-example": cache(() =>
-    import("./secondary/function_example.js").then((s) => s.default)
+    import("./secondary/function_example.ts").then((s) => s.default)
   ),
 };
 
