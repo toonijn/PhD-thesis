@@ -1,6 +1,23 @@
 import Reveal from "reveal.js";
 import RevealMath from "reveal.js/plugin/math/math.js";
 
+const cache = (f) => {
+  function r() {
+    if (r.cached_value === undefined) r.cached_value = f();
+    return r.cached_value;
+  }
+  return r;
+};
+
+const animations = {
+  "title-slide": cache(() =>
+    import("./secondary/title.js").then((s) => s.default)
+  ),
+  "function-example": cache(() =>
+    import("./secondary/function_example.js").then((s) => s.default)
+  ),
+};
+
 let deck = new Reveal({
   hash: true,
   slideNumber: true,
@@ -17,19 +34,6 @@ let deck = new Reveal({
 });
 deck.initialize();
 
-const cache = (f) => {
-  function r() {
-    if (r.cached_value === undefined) r.cached_value = f();
-    return r.cached_value;
-  }
-  return r;
-};
-
-animations = {
-  "title-slide": cache(() =>
-    import("./secondary/title.js").then((s) => s.default)
-  ),
-};
 
 function onFrame() {
   for (const slide of Object.values(activeSlides)) {

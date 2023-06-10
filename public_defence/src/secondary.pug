@@ -6,11 +6,38 @@ html
     title Algorithms for time-independent Schrödinger equations - Internal defence
     link(rel="stylesheet", href="secondary.scss")
   body
+    - var ugent_wit = "#ffffff";
+    - var ugent_zwart = "#000000";
+    - var ugent_blauw = "#1e64c8";
+    - var ugent_geel = "#ffd200";
+    - var ugent_oranje = "#f1a42b";
+    - var ugent_rood = "#dc4e28";
+    - var ugent_aqua = "#2d8ca8";
+    - var ugent_roze = "#e85e71";
+    - var ugent_hemelsblauw = "#8bbee8";
+    - var ugent_lichtgroen = "#aeb050";
+    - var ugent_paars = "#825491";
+    - var ugent_warmoranje = "#fb7e3a";
+    - var ugent_turquoise = "#27abad";
+    - var ugent_lichtpaars = "#be5190";
+    - var ugent_groen = "#71a860";
     .reveal
       .slides
         section#title-slide
-          canvas.full-slide
-        section#differential-equations
-          canvas.full-slide
+          canvas.full-size
+        section#function-example
+          .side-by-side
+            .item(style="position: relative")
+              img.full-width(src="./assets/computed/function_example.svg")
+              div(style="position: absolute; right: 40px; bottom: 180px")
+                | $ f(x) = x^2 $
+              div(style="position: absolute; right: 50px; bottom: 80px")
+                | $ x $
+              div(style="position: absolute; left: 230px; top: 50px")
+                | $ f(x) $
+            .item(style="position: relative")
+              canvas.full-size
+              div(style="position: absolute; top: 10px; width: 100%")
+                | $$ f(x, y) = xy $$
 
     script(src="secondary_slides.js", type="module")

@@ -74,7 +74,6 @@ export default new (class extends ThreeSlide {
         return t;
       }),
     ];
-    console.log(this.textures);
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -1, 1);
 
@@ -102,7 +101,6 @@ export default new (class extends ThreeSlide {
       this.camera.left = -1;
       this.camera.right = 1;
     }
-    console.log(this.camera);
     this.camera.updateProjectionMatrix();
   }
   activate(element) {
@@ -115,7 +113,6 @@ export default new (class extends ThreeSlide {
     const weights = this.noise
       .generate((1 + Math.cos(t * phi)) / 2, (1 + Math.sin(t)) / 2);
     const s = Math.hypot(...weights);
-    // console.log(weights);
     interpolation_shader.uniforms.weights.value = weights.map((w) => w / s);
     interpolation_shader.uniforms.weights.needsUpdate = true;
 

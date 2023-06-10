@@ -5,6 +5,7 @@ section:not(.stack) {
   padding: 20px 100px 20px 20px;
   position: relative;
   text-align: left;
+  height: 100%;
 }
 
 .reveal.slide {
@@ -72,4 +73,37 @@ section.title-slide {
 
 .katex-display {
   margin: 0.5em 0 !important;
+}
+
+.flex-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  & > .flex-slide-fill {
+    flex: 1;
+  }
+}
+
+.igrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  justify-content: space-around;
+
+  .igrid-column {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    justify-content: space-around;
+
+    .igrid-item {
+      text-align: center;
+      h4 {
+        color: inherit;
+        margin: 0;
+      }
+    }
+  }
 }

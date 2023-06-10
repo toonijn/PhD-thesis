@@ -6,7 +6,8 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "parcel src/primary.pug",
+    "start": "parcel src/primary.pug src/secondary.pug",
+    "primary": "parcel src/primary.pug",
     "secondary": "parcel src/secondary.pug",
     "build": "parcel build --public-url . src/primary.pug src/secondary.pug"
   },

@@ -1,15 +1,25 @@
 section
   section.differential-equations
-    h2 Internal defence
-    h1 Algorithms for time-independent <br /> Schrödinger equations
+    .flex-slide
+      h2 Some mathematical background
 
-    img.logo(src="./assets/logo_ugent.png", alt="")
-    .info
-      .author Toon Baeyens
-      .promotor
-        | prof. dr. Marnix Van Daele
-        br
-        | prof. dr. Joris Van der Jeugt
+      .flex-slide-fill.igrid
+        .igrid-column
+          .igrid-item
+            h4 numbers
+            | $$ \mathbb{N}, \mathbb{Q}, \mathbb{R}, \mathbb{C} $$
+          .igrid-item
+            h4 vectors
+            | $$ \mathbf{v} = \begin{pmatrix} v_x \\ v_y \end{pmatrix} \in \mathbb{R}^2 $$
+        .igrid-column
+          .igrid-item
+            h4 scalar functions
+            | $$ f : \mathbb{R}^n \to \mathbb{R} $$
+            | $$ f(x, y) = x^2 + y^2 $$
+          .igrid-item
+            h4 vector functions
+            | $$ \mathbf{f} : \mathbb{R}^n \to \mathbb{R}^m $$
+            | $$ \mathbf{f}(x, y) = \begin{pmatrix} x + y \\ y - x \end{pmatrix} $$
 
   section
     h2 Time-independent Schrödinger equations
@@ -17,9 +27,9 @@ section
     p
       | Find eigenvalue $E \in \mathbb{R}$ with eigenfunction $\psi : \Omega \rightarrow \mathbb{R}$ such that
       | $$ -\nabla^2 \psi + V(\mathbf{x})\psi = E \psi \quad \forall \mathbf{x} \in \Omega\text{,} $$
-      | with $\Omega \subseteq \mathbb{R}^n$ and $\psi(\mathbf{x}) = 0, \forall \mathbf{x} \in \partial\Omega$. 
+      | with $\Omega \subseteq \mathbb{R}^n$ and $\psi(\mathbf{x}) = 0, \forall \mathbf{x} \in \partial\Omega$.
 
     aside.notes
       p Een klein beetje achtergrond over de geschiedenis
-      ul 
+      ul
         li 
