@@ -1,0 +1,7 @@
+FROM ghcr.io/xu-cheng/texlive-full
+
+LABEL maintainer="Toon Baeyens <toon.baeyens@ugent.be>"
+
+COPY pygments_ugent /opt/pygments_ugent/
+RUN apk add py3-pip
+RUN pip install --user /opt/pygments_ugent
