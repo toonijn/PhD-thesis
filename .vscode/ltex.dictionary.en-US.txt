@@ -99,3 +99,4 @@ monopoles
 decompositions
 ARPACK
 ChatGPT
+Bombelli

@@ -3,7 +3,7 @@ Schrödinger
 eigenfunctie
 perturbatie
 eigenfuncties
-schrödingervergelijking
-schrödingervergelijkingen
 Dirichlet-randvoorwaarden
 Ixaru
+Schrödinger-vergelijking
+Sturm–Liouville-problemen

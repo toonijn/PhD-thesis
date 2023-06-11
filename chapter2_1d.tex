@@ -441,13 +441,13 @@ Other interesting properties of these special functions are already studied. Her
 
 Later on, we will use these $\eta$-functions as part of terms in infinite sums. Convergence of these sums is aided by the fact that $\eta_m(Z) \to 0$ for $m \to + \infty$ for any fixed $Z$.
 
-Surprisingly, during the writing of this thesis my copromotor mentioned he recognized the series expansion of the $\eta$-functions to be those of a specific generalized hypergeometric function. In the literature we have not found this relation. As such, we believe the following theorem to be new.
+Surprisingly, during the writing of this thesis my copromotor mentioned he recognized the series expansion of the $\eta$-functions to be those of a specific generalized hypergeometric function. In the literature we have not found this relation to hypergeometric functions. As such, we believe the following theorem to be new.
 
 \begin{theorem} For all $m \in \{-1, 0, 1, \dots\}$ is $\eta_m(Z)$ a special case of generalized hypergeometric function\footnote{Chapter 16 of~\cite{nist_dlmf} is dedicated to these functions, with many known properties.}:
     \begin{equation}\label{equ:c4_eta_as_hypergeometric}
         \eta_m(Z) = 2^{m+1}(m+1)!\, {}_0F_1\left(\genfrac..{0pt}{}{ - }{m+\frac{3}{2}}; \frac{Z}{4}\right)
     \end{equation}
-    Consequently if $m \geq 0$, this can also be expressed with modified Bessel functions of the first kind $I_\alpha$:
+    Consequently if $m \geq 0$, this can also be expressed with modified Bessel functions\footnote{The relation to Bessel functions has already been documented in~\cite{ixaru_exponential_2004}.} of the first kind $I_\alpha$:
     $$
         \eta_m(Z) = \sqrt{2\pi} \,(2m+1)! \, Z^{-\frac{m}{2} - \frac{1}{4}} \, I_{m + \frac{1}{2}}\left(\sqrt{Z}\right)\text{.}
     $$
@@ -1429,7 +1429,7 @@ Besides the numerical results, also the computational running time is reported i
               & {$\beta=5$}       & {\matslise{2}}                       & {\pyslise{}}                        \\
             \midrule
               &                   & \multicolumn{1}{c}{$8.94\text{ms}$}  & \multicolumn{1}{c}{$0.33\text{ms}$} \\
-            0 & 0.0005463030588   & 4.5e-1                               & 2.4e-10                             \\
+            0 & 0.0005463030588   & 4.5e-10                              & 2.4e-10                             \\
             1 & 17.4201300751401  & 3.1e-9                               & 1.4e-11                             \\
             2 & 26.8313294875207  & 8.2e-9                               & 5.2e-12                             \\
             3 & 30.6514597044625  & 1.1e-9                               & -3.2e-12                            \\

@@ -221,7 +221,7 @@ Before writing this as a matrix-problem, we first have to limit the range of the
 With these finite sums, equations~\eqref{equ:c4_new_method_pre_matrix_equality} and~\eqref{equ:c4_new_method_pre_matrix} become, on the intersection $(x_i, y_j)$:
 \begin{align}
      & \sum_{k=0}^{K_{x_i}-1} \lambda_k^{(x_i)} c_k^{(x_i)} \beta^{(x_i)}_k(y_j) + \sum_{k=0}^{K_{y_j}-1} \lambda_k^{(y_j)} c_k^{(y_j)} \beta_k^{(y_j)}(x_i)\nonumber                                  \\
-     & \qquad\qquad\qquad     = \sum_{k=0}^{K_{x_i}-1} c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = \sum_{k=0}^{K_{y_j}-1} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) \text{.}\label{equ:c4_new_method_pre_matrix_unified}
+     & \qquad\qquad\qquad     = E \sum_{k=0}^{K_{x_i}-1} c_k^{(x_i)} \beta_k^{(x_i)}(y_j) = E \sum_{k=0}^{K_{y_j}-1} c_k^{(y_j)} \beta_k^{(y_j)}(x_i) \text{.}\label{equ:c4_new_method_pre_matrix_unified}
 \end{align}
 The introduction of appropriate vectors and matrices will allow us to translate~\eqref{equ:c4_new_method_pre_matrix_unified} into a matrix problem. The unknowns will be summarized into the two vectors $\vb{c_x}$ and $\vb{c_y}$, with sizes $n_x := \sum_i K_{x_i}$ and $n_y := \sum_j K_{y_j}$ respectively:
 \begin{align*}
