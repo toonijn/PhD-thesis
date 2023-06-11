@@ -55,6 +55,7 @@
 \usepackage{eso-pic} % Background on title page
 \usepackage{tgadventor} % Titlepage-font
 \usepackage{sectsty} % Allow custom font in chapters
+\usepackage{transparent} % Make footer image transparent
 
 \chapterfont{\fontfamily{qag}\selectfont}
 
@@ -89,7 +90,8 @@
   \setcounter{oddpagecounter}{8}
   \fancyfoot[OR]{%
     \stepcounter{oddpagecounter}%
-    % \includegraphics[width=2cm]{flipbook/pdf/\padnum{4}{\value{oddpagecounter}}.pdf}
+    \vspace{-3cm}
+    % {\transparent{0.5}\includegraphics[width=6cm]{flipbook/pdf/\padnum{4}{\value{oddpagecounter}}.pdf}}\hspace{-2cm}
   }
   %\includegraphics[width=\paperwidth]{\flipbookpath{\padzeroes[2]{\decimal{oddpagecounter}}}}
 
