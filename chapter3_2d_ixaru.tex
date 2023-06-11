@@ -264,7 +264,7 @@ Calculating the inner product on the whole domain at once is difficult due to th
 \begin{theorem}\label{the:c3_dot_product}
   Let $\psi_a(x, y)$ and $\psi_b(x, y)$ be two, not necessarily distinct, real eigenfunctions of the Schrödinger operator corresponding to the same eigenvalue $E$. Denote both eigenfunctions as linear combinations of one-dimensional orthonormal basis functions with $b_i(\xmin) = b_i(\xmax) = 0$ (as described in section~\ref{sec:c3_ixarus_method}, on a single sector).
   \begin{align*}
-    \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \text{,}\\
+    \psi_a(x, y) = \transpose{\vb{b}(x)} \vb{c_a}(y) = \sum_i b_i(x) c_{a, i}(y) \text{,} \\
     \psi_b(x, y) = \transpose{\vb{b}(x)} \vb{c_b}(y) = \sum_i b_i(x) c_{b, i}(y) \text{.}
   \end{align*}
   On a rectangular domain $[\xmin, \xmax] \times [\ymin, \ymax]$ the inner product of these two functions can be expressed as
@@ -343,16 +343,16 @@ $$
 $$
 if the first values of~\eqref{equ:c3_eta_eta_inegral} are known for all $n$, the others follow. So we calculate four integrals symbolically (denote $\theta_i := \bar{V}_0^{(m)} -  \lambda_i$ and $\hat{Z}_i = h^2\theta_i$):
 \begin{align*}
-  F^0 := I_{-1,-1}^0 & = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right) \text{,}  \\
+  F^0 := I_{-1,-1}^0 & = \frac{h}{\theta_i - \theta_j}\left(\theta_i \eta_0(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \theta_j \eta_{-1}(\hat{Z}_i)\eta_0(\hat{Z}_j)\right) \text{,}   \\
   G^0 := I_{-1, 0}^1 & = \frac{-1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_i \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right) \text{,} \\
   H^0 := I_{0, -1}^1 & = \frac{1}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j) - \hat{Z}_j \eta_{0}(\hat{Z}_i)\eta_{0}(\hat{Z}_j)  - 1\right) \text{,}  \\
   J^0 := I_{0,0}^{2} & = \frac{h}{\theta_i - \theta_j}\left(\eta_{-1}(\hat{Z}_i)\eta_{0}(\hat{Z}_j) - \eta_{0}(\hat{Z}_i)\eta_{-1}(\hat{Z}_j)\right) \text{.}
 \end{align*}
 In the case where $i = j$, these values are given as
 \begin{align*}
-  F^0 := I_{-1,-1}^0 & = \frac{h}{2} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) + 1\right) \text{,}            \\
-  G^0 := I_{-1, 0}^1 & = \frac{h^2}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i)^2 - 1\right) \text{,}                  \\
-  H^0 := I_{0, -1}^1 & = G^0 \text{,}                                                                              \\
+  F^0 := I_{-1,-1}^0 & = \frac{h}{2} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) + 1\right) \text{,}             \\
+  G^0 := I_{-1, 0}^1 & = \frac{h^2}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i)^2 - 1\right) \text{,}                   \\
+  H^0 := I_{0, -1}^1 & = G^0 \text{,}                                                                               \\
   J^0 := I_{0,0}^{2} & = \frac{h^3}{2 \hat{Z}_i} \left(\eta_{-1}(\hat{Z}_i) \eta_{0}(\hat{Z}_i) - 1\right) \text{.}
 \end{align*}
 
@@ -379,7 +379,7 @@ we obtain
         & =h^{n} F^0 - \frac{n}{\theta_i - \theta_j}\int_{0}^{h} \delta^{n} \left( \theta_i \eta_{0}(Z_i)\eta_{-1}(Z_j)
   % \right. \\  &\hspace{54mm} \left.
   - \theta_j \eta_{-1}(Z_i)\eta_{0}(Z_j) \right) \dd \delta                                                                                                   \\
-        & =h^{n} F^0 - \frac{n}{\theta_i-\theta_j}\left(\theta_i H^{n-1} - \theta_j G^{n-1}\right)\text{.}                                                   \\
+        & =h^{n} F^0 - \frac{n}{\theta_i-\theta_j}\left(\theta_i H^{n-1} - \theta_j G^{n-1}\right)\text{.}                                                    \\
   \intertext{With similar computations we obtain the following formulae}
   G^{n} & = \int_{0}^{h}\eta_{-1}(Z_i)\eta_{0}(Z_j) \delta^{n+1} \dd \delta                                                                                   \\
         & = h^{n} G^0 + \frac{n}{\theta_i - \theta_j}\int_0^h \delta^{n-1} \left( \eta_{-1}(Z_i)\eta_{-1}(Z_j)
@@ -430,7 +430,7 @@ In practice, we have found reliable convergence when starting this recursion wit
 
 Lastly, the other values for $I_{k,l}^n$, with $k, l > 0$, can be computed via the recursion relation between the $\eta$-functions:
 \begin{align*}
-  I_{k, l}^n & = \frac{1}{\theta_i} \left(I_{k-2,l}^{n-2} - (2k - 1) I_{k-1,l}^{n-2}\right) \\
+  I_{k, l}^n & = \frac{1}{\theta_i} \left(I_{k-2,l}^{n-2} - (2k - 1) I_{k-1,l}^{n-2}\right)         \\
   I_{k, l}^n & = \frac{1}{\theta_j} \left(I_{k,l-2}^{n-2} - (2l - 1) I_{k,l-1}^{n-2}\right)\text{.}
 \end{align*}
 
@@ -1000,8 +1000,8 @@ $$
 Also, to be able to write down $\mathcal{D}$ as a matrix operation, we need to define
 $$
   \vb{C}^{t} := \diag\left(
-      c^{t}(\alpha_1, t_1) , \dots , c^{t}(\alpha_{n_\alpha-1}, t_1) , c^{t}(\alpha_1, t_2) , \dots , c^{t}(\alpha_{n_\alpha-1}, t_{n_t-1})
-    \right)\text{,}
+  c^{t}(\alpha_1, t_1) , \dots , c^{t}(\alpha_{n_\alpha-1}, t_1) , c^{t}(\alpha_1, t_2) , \dots , c^{t}(\alpha_{n_\alpha-1}, t_{n_t-1})
+  \right)\text{,}
 $$
 and analogously for $\vb{C}^{\alpha}$, $\vb{C}^{\alpha\alpha}$, $\vb{C}^{\alpha t}$ and $\vb{C}^{t t}$.
 
@@ -1116,7 +1116,7 @@ Our implementation is relatively autonomous, there are only two parameters to st
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=\textwidth]{img/chapter3/experiments/harmonic.pdf}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/harmonic_lobatto.pdf}
   \end{center}
   \caption{A comparison of relative error of the first fifty eigenvalues of the harmonic oscillator problem for different basis sizes $N$ and requested tolerances $\text{tol}$. For $N=22$, the algorithm with different tolerances used respectively $19$, $29$ and $40$ sectors.}\label{fig:c3_experiment_harmonic}
 \end{figure}
@@ -1124,6 +1124,8 @@ Our implementation is relatively autonomous, there are only two parameters to st
 In figure~\ref{fig:c3_experiment_harmonic}, we provide a comparison of the relative error of the first few eigenvalues when varying these two parameters. The first thing we must remark is that our implementation has degenerate eigenvalue detection. This can be seen in the equal error for each of these eigenvalues.
 
 For a small basis size ($N = 6$), we observe the same behavior as in figure~\ref{fig:c3_experiment_zero}. From a certain point onward, eigenvalues will be plain wrong. For the first fifty eigenvalues, this behavior disappears once $N$ is sufficiently large.
+
+\todo{Rewrite for improved figures}
 
 When we focus upon the first three eigenvalues, we see (as expected) that, if we lower the requested tolerance, the eigenvalue approximations become more accurate. However, for higher lying eigenvalues, this relation seems to disappear unexpectedly. This is concerning. It may suggest that there is still somewhere a source of inaccuracy which we are not controlling for. In section~\ref{sec:c3_conclusion_hypothesis}, we will present some hypotheses and deeper analysis for these results.
 
@@ -1174,16 +1176,16 @@ problem.eigenvaluesByIndex(0, 12)
     \toprule
                     & {Ixaru~\cite{ixaru_new_2010}} & {Our results} \\
     \midrule
-    $E_{0}$         & 3.1959181                    & 3.195918111   \\
-    $E_{1} = E_{2}$ & 5.5267439                    & 5.526744074   \\
-    $E_{3}$         & 7.5578033                    & 7.557803572   \\
-    $E_{4}$         & 8.0312723                    & 8.031272363   \\
-    $E_{5}$         & 8.4445814                    & 8.444581756   \\
-    $E_{6} = E_{7}$ & 9.9280611                    & 9.928061161   \\
-    $E_{8} = E_{9}$ & 11.3118171                   & 11.311817614  \\
-    $E_{10}$        & 12.1032536                   & 12.103253445  \\
-    $E_{11}$        & 12.2011790                   & 12.201179825  \\
-    $E_{12}$        & 13.3323313                   & 13.332332972  \\
+    $E_{0}$         & 3.1959181                     & 3.1959180852  \\
+    $E_{1} = E_{2}$ & 5.5267439                     & 5.5267438744  \\
+    $E_{3}$         & 7.5578033                     & 7.5578033268  \\
+    $E_{4}$         & 8.0312723                     & 8.0312723403  \\
+    $E_{5}$         & 8.4445814                     & 8.4445813616  \\
+    $E_{6} = E_{7}$ & 9.9280611                     & 9.9280610570  \\
+    $E_{8} = E_{9}$ & 11.3118171                    & 11.3118170506 \\
+    $E_{10}$        & 12.1032536                    & 12.1032535787 \\
+    $E_{11}$        & 12.2011790                    & 12.2011789679 \\
+    $E_{12}$        & 13.3323313                    & 13.3323312712 \\
     \bottomrule
   \end{tabular}
   \caption{\label{tab:ixaru_eigenvalues} The first few eigenvalues of the problem with potential $V(x,y) = (1+x^2)(1+y^2)$ on the domain $[-5.5; 5.5] \times [-5.5; 5.5]$.}
@@ -1191,14 +1193,16 @@ problem.eigenvaluesByIndex(0, 12)
 
 In table~\ref{tab:ixaru_eigenvalues}, our results are compared to the reference values calculated by Ixaru in~\cite{ixaru_new_2010}. There, the computation took $45$ seconds. Our values were computed within $1.4$ seconds on an Intel i7-8700K. Blindly comparing these run-times is ill-informed as the hardware is significantly different. Regardless, we are quite satisfied with the speed our program is able to achieve.
 
-Upon close inspection of table~\ref{tab:ixaru_eigenvalues}, we remark that our results agree with these from~\cite{ixaru_new_2010} to all digits, except sometimes the last (two).
+Upon close inspection of table~\ref{tab:ixaru_eigenvalues}, we remark that our results agree with these from~\cite{ixaru_new_2010} to all digits.
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=\textwidth]{img/chapter3/experiments/ixaru.pdf}
+    \includegraphics[width=\textwidth]{img/chapter3/experiments/ixaru_lobatto.pdf}
   \end{center}
   \caption{A comparison of relative error of the first thirty eigenvalues of the Schrödinger problem with Ixaru's potential from section~\ref{sec:c3_experiment_ixaru} for different basis sizes $N$ and requested tolerances.}\label{fig:c3_experiment_ixaru}
 \end{figure}
+
+\todo{Rewrite for new graphs}
 
 Alternative to a table of values, we plot the relative errors of the found eigenvalues for different basis sizes $N$ and requested tolerances in figure~\ref{fig:c3_experiment_ixaru}. As we observed numerical issues in the previous experiment, here the reference values were not computed with \pyslisetd{}, rather we employed our method from the next chapter. Some remarks can be made on figure~\ref{fig:c3_experiment_ixaru}. First, the same numerical issues as for the harmonic oscillator can be observed. The relative errors seem to plateau around $10^{-8}$, independent of which accuracy is requested, or the basis size used. Second, in all panels, we can observe a clear trend in the blue curve with $N = 6$: if the index of the eigenvalue becomes larger, the accuracy decreases. For the red curve with $N = 12$,  a similar trend can be suspected in the eigenvalues with index close to $30$.
 
@@ -1219,18 +1223,18 @@ Following~\cite{braun_efficient_1996}, we impose homogeneous Dirichlet boundary 
     \toprule
                       & {Braun et al.~\cite{braun_efficient_1996}} & {Our results} \\
     \midrule
-    $E_{0}$           & 0.998595                                   & 0.9985947661  \\
-    $E_{1} = E_{2}$   & 1.990077                                   & 1.9900767814  \\
-    $E_{3}$           & 2.956243                                   & 2.9562429806  \\
-    $E_{4} = E_{5}$   & 2.985326                                   & 2.9853263715  \\
-    $E_{6} = E_{7}$   & 3.925964                                   & 3.9259638565  \\
-    $E_{8}$           & 3.982417                                   & 3.9824172948  \\
-    $E_{9}$           & 3.985761                                   & 3.9857610624  \\
-    $E_{10}$          & 4.870144                                   & 4.8701435890  \\
-    $E_{11} = E_{12}$ & 4.898644                                   & 4.8986454644  \\
-    $E_{13} = E_{14}$ & 4.986251                                   & 4.9862512850  \\
-    $E_{15}$          & 5.817019                                   & 5.8170190699  \\
-    $E_{16}$          & 5.817027                                   & 5.8170279899  \\
+    $E_{0}$           & 0.998595                                   & 0.9985947726  \\
+    $E_{1} = E_{2}$   & 1.990077                                   & 1.9900767601  \\
+    $E_{3}$           & 2.956243                                   & 2.9562429896  \\
+    $E_{4} = E_{5}$   & 2.985326                                   & 2.9853264281  \\
+    $E_{6} = E_{7}$   & 3.925964                                   & 3.9259637501  \\
+    $E_{8}$           & 3.982417                                   & 3.9824172945  \\
+    $E_{9}$           & 3.985761                                   & 3.9857609265  \\
+    $E_{10}$          & 4.870144                                   & 4.8701443380  \\
+    $E_{11} = E_{12}$ & 4.898644                                   & 4.8986446755  \\
+    $E_{13} = E_{14}$ & 4.986251                                   & 4.9862510297  \\
+    $E_{15}$          & 5.817019                                   & 5.8170196626  \\
+    $E_{16}$          & 5.817027                                   & 5.8170275922  \\
     \bottomrule
   \end{tabular}
   \caption{\label{tab:henon_heiles_eigenvalues}  The first few eigenvalues of the problem with potential $V(x,y) = x^2 + y^2 + \frac{1}{6\sqrt{5}} y \left(3 x^2  - y^2\right)$ on the domain $[-6; 6] \times [-6; 6]$. The results are reported divided by $2$ to provide compatibility with~\cite{braun_efficient_1996}.}
@@ -1263,6 +1267,8 @@ Here we have opted to not include similar figures to visualize the relative erro
 
 \subsection{Analyzing unexpected numerical behavior}\label{sec:c3_conclusion_hypothesis}
 
+\todo{Throw away}
+
 In figure~\ref{fig:c3_experiment_harmonic}, we have seen some strange behavior of the relative error of the eigenvalues in function of the tolerance and basis size. In some cases, the relative error of the eigenvalues found, did not decrease if a larger basis on each sector or more sectors were used. It was clear that something unexpected was happening. Ideally for numerical methods, we should observe an increase in accuracy when more accurate intermediate results are used.
 
 Discovering where we lost accuracy, is a real challenge. As chapter~\ref{cha:c2} contains many numerical experiments up to extreme precision, it would be very surprising if the basis functions would be the cause of these inaccuracies. Another possible source could be the propagation of $\vb{c}^{(k)}$ from~\eqref{equ:c3_coupled_system} within a sector. Yet, our implementation of \matscs{} has been thoroughly tested. Furthermore, numerical issues with the propagation would more likely lead to a large error, which in turn would manifest itself as an abundance of sectors, which is not the case. In section~\ref{sec:c3_experiments_zero}, we have studied the Schrödinger problem with zero potential. Here, our program was able to reach machine precision without much trouble. This likely confirms that basis functions are correctly calculated and that propagation with the coupled system of Schrödinger equations seems to work.
@@ -1294,6 +1300,8 @@ In summary, we were unable to exactly pinpoint the source of the particular unex
 
 
 \section{Conclusions}
+
+\todo{Rewrite}
 
 In this chapter, we have studied the method introduced by Ixaru in~\cite{ixaru_new_2010} for two-dimensional time-independent Schrödinger equations. The original work presented an intriguing innovative method accompanied by a promising numerical example. Section~\ref{sec:c3_ixarus_method} presents an overview of this method as first described. In section~\ref{sec:c3_improvements}, we proudly presented our additions and improvements to this method. In particular, we have devised a way to reliably determine the index of an eigenvalue. For this, we developed some new theory in section~\ref{sec:c3_index_of_e}.
 
