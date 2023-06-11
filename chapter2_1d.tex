@@ -251,7 +251,7 @@ for this method applied to problem~\eqref{equ:c2_fd_test_problem}. This shows us
 
 \subsection{CP-methods}
 
-The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In~\cite{ledoux_solving_2010}, a brief historical overview is given of the application of CP-methods to Sturm--Liouville problems. In this thesis, we will take the time to take a closer look at the earlier methods. They will provide us with a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was ``A new method for the solution of the Schrödinger equation''~\cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions of the one-dimensional time-independent Schrödinger equation. Here, the foundations are build to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from~\cite{canosa_new_1970}.
+The drawbacks of the methods based upon finite differences are already known for a long time. One of the first\footnote{In~\cite{ledoux_solving_2010}, a brief historical overview is given of the application of CP-methods to Sturm--Liouville problems. In this thesis, we will take the time to take a closer look at the earlier methods. They will provide us with a more intuitive understanding of the algorithms, in preparation of our own advancements within employing these ideas.} works that tries to not only mitigate these troubles but rather fully fix them, was ``A new method for the solution of the Schrödinger equation''~\cite{canosa_new_1970} in 1970. There, Canosa and De Oliveira present a new method to approximate solutions of the one-dimensional time-independent Schrödinger equation. Here, the foundations are built to what would later be called constant perturbation methods (CPM or CP-methods). To intuitively appreciate these CP-methods it is valuable to study the method from~\cite{canosa_new_1970}.
 
 For this, we will only consider the Schrödinger equation
 \begin{equation}\label{equ:c2_cpm_schrodinger}
@@ -1152,7 +1152,7 @@ Consider the Schrödinger problem with equation
 \end{equation}
 on the domain $[a, b] = [0, \pi]$ and with homogeneous Dirichlet boundary conditions.
 
-Before jumping into the graphs, we have to note that \matslise{3} has automatic step size selection build in. This allows the algorithm to generate its own piecewise approximation of the potential. But, this also implies that a user is not directly able to control the number of subintervals used, which makes generating a figure like~\ref{fig:c2_pruess_h_error} or~\ref{fig:c2_pruess_k_error} more difficult.
+Before jumping into the graphs, we have to note that \matslise{3} has automatic step size selection built in. This allows the algorithm to generate its own piecewise approximation of the potential. But, this also implies that a user is not directly able to control the number of subintervals used, which makes generating a figure like~\ref{fig:c2_pruess_h_error} or~\ref{fig:c2_pruess_k_error} more difficult.
 
 \begin{figure}
     \begin{center}
@@ -1176,7 +1176,7 @@ In figure~\ref{fig:c2_matslise_h_error}, we see that the number of subintervals 
 
 From the theory, we know little about the error estimate with respect to $k$. In theorem~\ref{the:c2_pruess_1973_2}, we learned that for the Pruess method this order was $\OO(k^{-4})$. With \matslise{} (both \texttt{2.0} and \texttt{3.0}) we observe a much more considerable value, visually we suspect this to be $\OO(k^{-9})$ or $\OO(k^{-10})$.
 
-These numerical experiments may serve as a kind of tutorial to get to know \pyslise{}, this is the \lpython{}-packages build on top of \matslise{3}. So we will provide the code each time to solve the problem at hand. Here, to generate the first fifty eigenvalues the following code can be used.
+These numerical experiments may serve as a kind of tutorial to get to know \pyslise{}, this is the \lpython{}-package built on top of \matslise{3}. So we will provide the code each time to solve the problem at hand. Here, to generate the first fifty eigenvalues the following code can be used.
 % \begin{noindent}
 \begin{minted}{python}
 from pyslise import Pyslise
@@ -1345,7 +1345,7 @@ Second, the accuracy of \pyslise{} is a lot higher. This can be explained by the
 
 In practice, and for our use-cases in the following chapters, we have found \matslise{3} and \pyslise{} to be sufficiently fast. Knowing this, we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
 
-\paragraph{Eigenfunctions} As explained in section~\ref{sec:c2_matslise3}, one of the reasons we developed more complicated formulae and build a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
+\paragraph{Eigenfunctions} As explained in section~\ref{sec:c2_matslise3}, one of the reasons we developed more complicated formulae and built a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
 
 Assume\footnote{Or take a look at section~\ref{sec:c3_calculate_vk}, where we need to do exactly this.} we want to compute an orthogonal projection of a function $f(x)$ to the truncated basis of the eigenfunctions $y_i$: $ f(x) = \sum_{i = 0} c_i y_i(x)$.
 To compute these numerically we need to approximate the following integrals for all necessary values for $i$:
