@@ -1,3 +1,4 @@
+@import "../node_modules/katex/dist/katex.css";
 @import "./theme.scss";
 
 section:not(.stack) {
@@ -86,24 +87,14 @@ section.title-slide {
 }
 
 .igrid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-content: stretch;
-  justify-content: space-around;
+  display: grid;
+  align-items: center;
 
-  .igrid-column {
-    display: flex;
-    flex-direction: column;
-    align-content: stretch;
-    justify-content: space-around;
-
-    .igrid-item {
-      text-align: center;
-      h4 {
-        color: inherit;
-        margin: 0;
-      }
+  .igrid-item {
+    text-align: center;
+    h4 {
+      color: inherit;
+      margin: 0;
     }
   }
 }

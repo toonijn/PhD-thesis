@@ -12,6 +12,8 @@
     "build": "parcel build --public-url . src/primary.pug src/secondary.pug"
   },
   "dependencies": {
+    "katex": "^0.16.7",
+    "odex": "^3.0.0-rc.4",
     "parcel": "^2.8.3",
     "reveal.js": "^4.5.0",
     "simplex-noise": "^4.0.1",

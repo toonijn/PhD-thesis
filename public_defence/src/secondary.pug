@@ -29,7 +29,7 @@ html
           .side-by-side
             .item(style="position: relative")
               .plot1d.full-size
-              div(style="position: absolute; right: 40px; bottom: 180px")
+              div(style="position: absolute; right: 40px; bottom: 150px")
                 | $ f(x) = x^2 $
               div(style="position: absolute; right: 50px; bottom: 80px")
                 | $ x $
@@ -38,6 +38,24 @@ html
             .item(style="position: relative")
               canvas.full-size
               div(style="position: absolute; top: 10px; width: 100%")
-                | $$ f(x, y) = xy $$
+                | $$ g(x, y) = xy $$
+        section#first-order-examples
+          .side-by-side
+            .item(style="position: relative")
+              .left.full-size
+              div(style="position: absolute; top: 0px; width: 100%")
+                | $$ \frac{\text{d} f}{\text{d}x} = f(x) $$
+            .item(style="position: relative")
+              .right.full-size
+              div(style="position: absolute; top: 0px; width: 100%")
+                | $$ \frac{\text{d}^2 g}{\text{d}x^2} = -g(x) $$
+        section#example-pendulum
+          .side-by-side
+            .item(style="position: relative")
+              .left.full-size
+            .item(style="position: relative")
+              .right.full-size
+        section#example-heatequation
+          .heated-rod.full-size
 
     script(src="secondary_slides.js", type="module")

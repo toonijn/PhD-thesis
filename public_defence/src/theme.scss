@@ -68,3 +68,11 @@ $selectionColor: inherit;
 @import "reveal.js/css/theme//template/theme";
 // ---------------------------------------------
 
+.graph-text {
+  position: absolute;
+
+  .katex-display {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

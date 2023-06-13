@@ -3,37 +3,77 @@ section
     .flex-slide
       h2 Some mathematical background
 
-      .flex-slide-fill.igrid
-        .igrid-column
-          .igrid-item
-            h4 numbers
-            | $$ \mathbb{N}, \mathbb{Q}, \mathbb{R}, \mathbb{C} $$
-          .igrid-item
-            h4 vectors
-            | $$ \mathbf{v} = \begin{pmatrix} v_x \\ v_y \end{pmatrix} \in \mathbb{R}^2 $$
-        .igrid-column
-          .igrid-item
-            h4 scalar functions
-            | $$ f : \mathbb{R}^n \to \mathbb{R} $$
-            | $$ f(x, y) = x^2 + y^2 $$
-          .igrid-item
-            h4 vector functions
-            | $$ \mathbf{f} : \mathbb{R}^n \to \mathbb{R}^m $$
-            | $$ \mathbf{f}(x, y) = \begin{pmatrix} x + y \\ y - x \end{pmatrix} $$
+      .flex-slide-fill.igrid(style="grid-template-columns: 1fr 1fr")
+        .igrid-item
+          h4 numbers
+          | $$ \mathbb{N}, \mathbb{Q}, \mathbb{R}, \mathbb{C} $$
+        .igrid-item
+          h4 scalar functions
+          | $$ f : \mathbb{R}^n \to \mathbb{R} $$
+          | $$ f(x, y) = x^2 + y^2 $$
+        .igrid-item
+          h4 vectors
+          | $$ \mathbf{v} = \begin{pmatrix} v_x \\ v_y \end{pmatrix} \in \mathbb{R}^2 $$
+        .igrid-item
+          h4 vector functions
+          | $$ \mathbf{f} : \mathbb{R}^n \to \mathbb{R}^m $$
+          | $$ \mathbf{f}(x, y) = \begin{pmatrix} x + y \\ y - x \end{pmatrix} $$
+  section#de-derivatives
+    .flex-slide
+      h2 Derivatives
+
+      .flex-slide-fill.igrid(style="grid-template-columns: 0.5fr 1fr 1fr")
+        .igrid-item
+        .igrid-item
+          | $$ f : \mathbb{R} \to \mathbb{R} $$
+          | $$ f(x) $$
+        .igrid-item
+          | $$ g : \mathbb{R}^2 \to \mathbb{R} $$
+          | $$ g(x, y) $$
+        .igrid-item
+          h4 steepness
+        .igrid-item
+          | $$ \frac{\text{d} f}{\text{d}x} $$
+        .igrid-item
+          | $$ \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} $$
+        .igrid-item
+          h4 valleys
+        .igrid-item
+          | $$ \frac{\text{d}^2 f}{\text{d}x^2} $$
+        .igrid-item
+          | $$ \nabla^2 g = \frac{\partial^2 g}{\partial x^2} + \frac{\partial^2 g}{\partial y^2} $$
   section#de-definition
     .flex-slide
-      h2 Differential equations 
-      p Maybe something more about derivatives
+      h2 Differential equations
+      p relate unknown functions to their 'shape'
 
-  section
-    h2 Time-independent Schrödinger equations
+      .flex-slide-fill.igrid(style="grid-template-columns: 1fr 1fr")
+        .igrid-item
+          h4 first-order example
+          | $$ \frac{\text{d} f}{\text{d}x} = f(x) $$
+        .igrid-item
+          h4 second-order example
+          | $$ \frac{\text{d}^2 g}{\text{d}x^2} = -g(x) $$
+        .igrid-item
+          h4 solution
+          | $$ f(x) = c_1\,\exp(x) $$
+        .igrid-item
+          h4 solution
+          | $$ g(x) = c_2 \sin(x) + c_3 \cos(x) $$
+      aside.notes
+        ul
+          li Domein moet ook gedefiniëerd zijn
+          li Oplossingen zijn niet per se uniek. Hiervoor hebben we randvoorwaarden nodig.
 
-    p
-      | Find eigenvalue $E \in \mathbb{R}$ with eigenfunction $\psi : \Omega \rightarrow \mathbb{R}$ such that
-      | $$ -\nabla^2 \psi + V(\mathbf{x})\psi = E \psi \quad \forall \mathbf{x} \in \Omega\text{,} $$
-      | with $\Omega \subseteq \mathbb{R}^n$ and $\psi(\mathbf{x}) = 0, \forall \mathbf{x} \in \partial\Omega$.
+  section#de-pendulum
+    .flex-slide
+      h2 Example: the pendulum
+      | $$ \frac{\text{d}^2\theta}{\text{d}t} = -\sin(\theta(t)) $$
+      #pendulum-graph.flex-slide-fill
 
-    aside.notes
-      p Een klein beetje achtergrond over de geschiedenis
-      ul
-        li 
+  section#de-heatequation
+    .flex-slide
+      h2 Example: the heat equation
+      | $$ \frac{\partial T}{\partial t} = \frac{\partial^2 T}{\partial x^2} $$
+      p To do: text about the heat equation
+

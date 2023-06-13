@@ -63,7 +63,7 @@ export default new (class extends ThreeSlide {
         new THREE.MeshMatcapMaterial({
           side: THREE.DoubleSide,
           matcap: new THREE.TextureLoader().load(ugent_matcap),
-        })
+        }) as any as THREE.MeshBasicMaterial
       )
     );
     const plane = new THREE.Mesh(

@@ -6,6 +6,7 @@ export * from "./Group";
 export * from "./Path";
 export * from "./Axis";
 export * from "./ScalarFunction";
+export * from "./Text";
 
 export class GraphContainer {
   element: SVGElement;
@@ -29,8 +30,8 @@ export class GraphContainer {
     );
   }
 
-  add(element: GraphElement) {
-    this.content.add(element);
+  add(...elements: GraphElement[]) {
+    this.content.add(...elements);
   }
 
   getAttribute(name: string) {

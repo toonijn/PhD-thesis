@@ -12,7 +12,7 @@ export default class AnimationSlide {
     if (!this.initialized) this.initialize(element);
     this.active = true;
   }
-  onFrame() {}
+  onFrame(dt: number) {}
   deactivate() {
     this.active = false;
   }

@@ -16,6 +16,15 @@ const animations = {
   "function-example": cache(() =>
     import("./secondary/function_example.ts").then((s) => s.default)
   ),
+  "first-order-examples": cache(() =>
+    import("./secondary/first_order_examples.ts").then((s) => s.default)
+  ),
+  "example-pendulum": cache(() =>
+    import("./secondary/example_pendulum.ts").then((s) => s.default)
+  ),
+  "example-heatequation": cache(() =>
+    import("./secondary/example_heatequation.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({
@@ -34,14 +43,19 @@ let deck = new Reveal({
 });
 deck.initialize();
 
-
-function onFrame() {
-  for (const slide of Object.values(activeSlides)) {
-    slide.onFrame();
+(() => {
+  let lastFrame = 0;
+  function onFrame() {
+    const now = +new Date() / 1000;
+    const delta = Math.min(now - lastFrame, 0.1);
+    lastFrame = now;
+    for (const slide of Object.values(activeSlides)) {
+      slide.onFrame(delta);
+    }
+    requestAnimationFrame(onFrame);
   }
   requestAnimationFrame(onFrame);
-}
-requestAnimationFrame(onFrame);
+})();
 
 const deactivateSlide = (slide_id) => {
   if (!activeSlides[slide_id]) return;

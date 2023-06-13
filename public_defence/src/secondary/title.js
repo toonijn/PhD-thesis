@@ -2,6 +2,8 @@ import ThreeSlide from "../lib/three_slide.ts";
 import * as THREE from "three";
 import eigenfunctions from "../assets/computed/title_eigenfunctions.json";
 import { createNoise2D } from "simplex-noise";
+import { hexToGLSL } from "../lib/color.ts";
+import ugent from "../lib/theme.ts";
 
 class NoiseGenerator {
   constructor(dimensions) {
@@ -41,9 +43,21 @@ const interpolation_shader = new THREE.ShaderMaterial({
         precision highp float;
         precision highp sampler2D;
 
+        const vec3 ugent_blauw = ${hexToGLSL(ugent.blauw)};
+        const vec3 ugent_wit = ${hexToGLSL(ugent.wit)};
+        const vec3 ugent_rood = ${hexToGLSL(ugent.rood)};
+
         varying vec2 vUv;
         uniform sampler2D textures[${n}];
         uniform float weights[${n}];
+
+        vec3 cmap(float t) {
+          float f = pow(abs(t), 0.8);
+          if(t < 0.0)
+            return mix(ugent_wit, ugent_blauw, f);
+          else
+            return mix(ugent_wit, ugent_rood, f);
+        }
         
         void main() {
           float r = 0.;
@@ -51,7 +65,7 @@ const interpolation_shader = new THREE.ShaderMaterial({
             { length: n },
             (_, i) => `r += weights[${i}] * texture2D(textures[${i}], vUv).r;`
           ).join("\n")}
-          gl_FragColor = vec4(1. + r, 1. - r, 1., 1.);
+          gl_FragColor = vec4(cmap(r), 1.);
         }`,
 });
 

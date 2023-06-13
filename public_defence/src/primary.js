@@ -1,5 +1,6 @@
 import Reveal from "reveal.js";
-import RevealMath from "reveal.js/plugin/math/math.js";
+import { RenderMathPlugin } from "./lib/render_math_plugin";
+import {} from "./primary/pendulum.ts";
 
 let deck = new Reveal({
   hash: true,
@@ -7,7 +8,7 @@ let deck = new Reveal({
   history: true,
   progress: false,
   controlsTutorial: false,
-  plugins: [RevealMath.KaTeX],
+  plugins: [RenderMathPlugin],
   center: false,
   width: 1024,
   height: 576,
