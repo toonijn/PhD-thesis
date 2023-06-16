@@ -25,6 +25,12 @@ const animations = {
   "example-heatequation": cache(() =>
     import("./secondary/example_heatequation.ts").then((s) => s.default)
   ),
+  "vibrating-string": cache(() =>
+    import("./secondary/vibrating_string.ts").then((s) => s.default)
+  ),
+  "vibrating-string-states": cache(() =>
+    import("./secondary/vibrating_string_states.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({

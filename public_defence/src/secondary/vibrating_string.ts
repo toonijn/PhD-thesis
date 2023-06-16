@@ -13,19 +13,22 @@ import * as odex from "odex";
 
 const interval = 25; // period in seconds
 const smooth_step_factor = 4;
-const n = 50;
+const n = 60;
 const xs: number[] = [];
 const h = 1 / (n + 1);
 for (let x = h; x < 1 - h / 2; x += h) xs.push(x);
 
-const smoothstep = (x: number) => {
-  x = (x + 1) / 2;
-  x = Math.max(0, Math.min(1, x));
-  return x * x * (3 - 2 * x);
+const idst = (c: number[]) => {
+  return (x: number) => {
+    let r = 0;
+    for (let k = 1; k <= c.length; k++)
+      r += c[k - 1] * Math.sin(k * Math.PI * x);
+    return r;
+  };
 };
 
 class HeatedRod {
-  Ts: number[] = xs.map(() => 0);
+  ydy = [...xs, ...xs].map(() => 0);
   solver: odex.Solver;
   integrator: (t: number) => number[] = () => [];
   time = 0;
@@ -34,7 +37,7 @@ class HeatedRod {
   curve = new GraphPath();
 
   constructor() {
-    this.container.setBounds(-20, 220, -110, -10);
+    this.container.setBounds(-20, 220, -60, 60);
 
     this.curve.setAttribute("stroke", ugent.blauw);
     this.curve.setAttribute("fill", "none");
@@ -45,7 +48,7 @@ class HeatedRod {
     const options = { position: 0, arrowHead: 4, arrowFilled: true };
     const axes = [
       new Axis({ type: "x", min: 0, max: 210, ...options }),
-      new Axis({ type: "y", reverse: true, min: -110, max: 0, ...options }),
+      new Axis({ type: "y", reverse: true, min: -50, max: 50, ...options }),
     ];
 
     axes.forEach((axis) => {
@@ -64,9 +67,9 @@ class HeatedRod {
         halign: "center",
         math: true,
       }),
-      new GraphText(`T(t, x)`, {
-        x: 21,
-        y: -105,
+      new GraphText(`y(t, x)`, {
+        x: 16,
+        y: -45,
         width: 100,
         height: 100,
         scale: 0.25,
@@ -80,53 +83,49 @@ class HeatedRod {
   }
 
   reset() {
-    this.time = interval / 4;
-    this.Ts = xs.map(() => 0);
+    this.time = 0;
+    this.ydy = [
+      ...xs.map((x) => idst([0.712, 0.356, -0.237, -0.177])(x)),
+      ...xs.map(() => 0),
+    ];
     this.integrator = new odex.Solver(
-      (t: number, Ts: number[]) => {
-        const b = this.boundary(t);
+      (t: number, ydy: number[]) => {
         const get = (i: number) => {
-          if (0 <= i && i < n) return Ts[i];
-          else return b;
+          if (0 <= i && i < n) return ydy[i];
+          else return 0;
         };
-        const r = Ts.map(
-          (T, i) =>
-            0.005 *
+        const r = ydy.map((_, i) => {
+          if (i < n) return ydy[i + n];
+          i -= n;
+          return (
             ((-get(i - 2) +
               16 * get(i - 1) -
-              30 * T +
+              30 * get(i) +
               16 * get(i + 1) -
               get(i + 2)) /
               (12 * h * h))
-        );
+          );
+        });
         return r;
       },
-      n,
+      2 * n,
       { absoluteTolerance: 1e-8, maxSteps: 1e7 }
-    ).integrate(0, this.Ts);
+    ).integrate(0, this.ydy);
     this.updateDrawing();
   }
 
   tick(dt: number) {
     this.time += dt;
-    this.Ts = this.integrator(this.time);
+    this.ydy = this.integrator(0.3*this.time);
     this.updateDrawing();
   }
 
-  boundary(t = this.time) {
-    t = t % interval;
-    const s = (4 / interval) * smooth_step_factor;
-    if (t < interval / 2) return smoothstep(s * (t - interval / 4));
-    return 1 - smoothstep(s * (t - (3 * interval) / 4));
-  }
-
   updateDrawing() {
-    const boundary = -this.boundary() * 100;
-
+    // console.log(this.ydy.slice(0, n));
     this.curve.d =
-      `M 0 ${boundary}` +
-      this.Ts.map((T, i) => `L ${xs[i] * 200} ${-T * 100}`).join(" ") +
-      `L 200 ${boundary}`;
+      `M 0 0` +
+      xs.map((x, i) => `L ${x * 200} ${-this.ydy[i] * 50}`).join(" ") +
+      `L 200 0`;
   }
 }
 
@@ -139,7 +138,7 @@ export default new (class extends AnimationSlide {
     this.rod = new HeatedRod();
 
     element
-      .querySelector(".heated-rod")
+      .querySelector(".vibrating-string")
       ?.appendChild(this.rod.container.element);
   }
 

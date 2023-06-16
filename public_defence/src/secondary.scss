@@ -27,3 +27,28 @@
     height: 100%;
   }
 }
+
+#sturm-liouville-schrodinger {
+  .side-by-side {
+    .item {
+      padding: 20px;
+      height: auto;
+      font-weight: bold;
+
+      img {
+        margin: 0 0 20px 0;
+        max-width: 220px;
+        max-height: 320px;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .life {
+        display: block;
+        font-weight: normal;
+      }
+    }
+  }
+}

@@ -9,4 +9,27 @@ section
     | $$ - \frac{\text{d}^2 f}{\text{d} x^2} + V(x) f(x) = E f(x) $$
 
     aside.notes
-      p Een klein beetje achtergrond over de geschiedenis
+      ul
+        // https://www.maths.ed.ac.uk/~v1ranick/papers/lutzen.pdf
+        li Sturm en Liovuille
+          ul
+            li Zwitsers-geboren en Fransman (respectievelijk)
+            li Vrienden vanaf 1830 in Parijs
+            li Sturm-Liouville theorie
+            li Warmte door een metalenstaaf, en trilling ketting
+        li Schrödinger
+          ul
+            li Oostenrijk
+            li 1933 nobelprijs
+  section
+    h2 Vibrating string
+
+    p
+      | As differential equation: $\, \displaystyle \frac{\partial^2 y}{\partial t^2} = \frac{\partial^2 y}{\partial x^2}\, $ with $y(0) = 0$ and $y(1) = 0$.
+
+    p.fragment We can write
+      | $$ y(t, x) = \sum_{i=1}^\infty y_i(x) \sin\left(\sqrt{E_i} t\right) $$
+      | with $\, \displaystyle -\frac{\text{d}^2 y_i}{\text{d} x^2} = E_i y_i(x)\, $ and $y_i(0) = y_i(1) = 0$.
+    aside.notes
+      ul
+        li Zeer technisch, volhouden
