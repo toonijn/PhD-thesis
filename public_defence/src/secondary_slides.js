@@ -31,6 +31,9 @@ const animations = {
   "vibrating-string-states": cache(() =>
     import("./secondary/vibrating_string_states.ts").then((s) => s.default)
   ),
+  "fft-cello": cache(() =>
+    import("./secondary/fft_cello.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({

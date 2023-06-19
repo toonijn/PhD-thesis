@@ -1,11 +1,11 @@
 import AnimationSlide from "./animation_slide";
-import { Camera, Scene, WebGLRenderer } from "three";
+import * as THREE from "three";
 
 export default class ThreeSlide extends AnimationSlide {
   get_canvas: (element: HTMLElement) => HTMLCanvasElement;
-  scene: Scene = new Scene();
-  camera: Camera | undefined = undefined;
-  renderer: WebGLRenderer | undefined = undefined;
+  scene = new THREE.Scene();
+  camera: THREE.Camera | undefined = undefined;
+  renderer: THREE.WebGLRenderer | undefined = undefined;
   canvas: HTMLCanvasElement | undefined = undefined;
 
   constructor(get_canvas: (element: HTMLElement) => HTMLCanvasElement) {
@@ -21,7 +21,7 @@ export default class ThreeSlide extends AnimationSlide {
   initialize(element: HTMLElement) {
     super.initialize(element);
     this.canvas = this.get_canvas(element);
-    this.renderer = new WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setClearColor(0xffffff);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
