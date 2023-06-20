@@ -247,7 +247,7 @@ As earlier hinted, methods based upon finite differences struggle with the compu
 $$
     \mathcal{O}(\Delta x^2 k^2)
 $$
-for this method applied to problem~\eqref{equ:c2_fd_test_problem}. This shows us that the larger the eigenvalue, the more difficult it is to compute accurately. This lesson not only holds for this method in particular, but it is also applicable to most methods of this type. In the literature, one can find some techniques to mitigate this effect by applying some corrections. In~\cite{andrew_correction_1985} such a correction is analyzed when applied to Numerov's method~\cite{noumerov_method_1924}. Here, the authors are able to bring the error down from $\mathcal{O}(k^6 h^4)$ to $\mathcal{O}(k^3 h^4)$. This is remarkably better. But even with this correction technique, computing large eigenvalues is still computationally difficult.
+for this method applied to problem~\eqref{equ:c2_fd_test_problem}. This shows us that the larger the eigenvalue, the more difficult it is to compute accurately. This lesson not only holds for this method in particular, but it is also applicable to most methods of this type. In the literature~\cite{andrew_correction_1985,vandenberghe_modified_1990,vandenberghe_accurate_1991}, one can find some techniques to mitigate this effect by applying some corrections. In~\cite{andrew_correction_1985} such a correction is analyzed when applied to Numerov's method~\cite{noumerov_method_1924}. Here, the authors are able to bring the error down from $\mathcal{O}(k^6 h^4)$ to $\mathcal{O}(k^3 h^4)$. This is remarkably better. But even with this correction technique, computing large eigenvalues is still computationally difficult.
 
 \subsection{CP-methods}
 
