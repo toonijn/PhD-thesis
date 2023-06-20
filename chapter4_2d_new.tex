@@ -80,8 +80,6 @@ Besides this remark,~\cite{wang_new_2009} is very valuable as an application of 
 
 \subsubsection{Numerical experiments}\label{sec:c4_fd_numerical}
 
-\paragraph{The harmonic oscillator}
-
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{img/chapter4/fd_harmonic.pdf}
@@ -90,6 +88,7 @@ Besides this remark,~\cite{wang_new_2009} is very valuable as an application of 
     \label{fig:c4_fd_harmonic}
 \end{figure}
 
+\nlparagraph{The harmonic oscillator}
 As a first example, we will replicate the results of~\cite{wang_new_2009} for the harmonic oscillator:
 \begin{equation}\label{equ:c4_fd_harmonic}
     -\nabla^2 \psi(x, y) + \left(x^2 + y^2\right) \psi(x, y) = E \psi(x, y)
@@ -119,7 +118,8 @@ It is important to note that these values are estimates, and are quite sensitive
 
 For one-dimensional problems the behavior of the error with respect to $k$ has already been well studied and improved. In~\cite{paine_correction_1981}, expressions are constructed which provide a correction to the numerical approximation with a finite difference scheme for Sturm--Liouville problems. These correction formulae bring the order in $k$ down from $\OO(k^4h^2)$ to $\OO(k h^2)$. For multidimensional Schrödinger equations, no such corrections are available, let alone for the extremely high order schemes considered here.
 
-\paragraph{Zero potential} Besides the harmonic oscillator, it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\dOmega$ such that the following holds:
+\nlparagraph{Zero potential}-
+Besides the harmonic oscillator, it is also instructive to consider the problem with a zero potential function on the domain $\Omega = [0, \pi] \times [0, \pi]$ and homogeneous Dirichlet boundary conditions. So, find all eigenvalues $E$ for which there exists an eigenfunction $\psi(x, y)$ on the domain with $\psi(x, y) = 0$ on $\dOmega$ such that the following holds:
 \begin{equation}\label{equ:c4_fd_zero}
     -\nabla^2 \psi(x, y) = E \psi(x, y) \text{.}
 \end{equation}
@@ -146,9 +146,6 @@ To combat this issue, on the boundary of the domain asymmetric schemes could be 
     \input{img/chapter4/fd_coefficients.tex}
 \end{center}
 There are two difficulties when using these formulae. First, to reach the required order, one extra point should be used. And second, when using asymmetric formulae, the matrix from~\eqref{equ:c4_fd_sparse_matrix} is no longer symmetric. In principle this should not matter. In practice however, many sparse matrix eigenvalue solvers are much more efficient when working with a real symmetric matrix.
-
-% \paragraph{Hénon--Heiles} Lastly, ...
-
 
 \subsubsection{Computational cost of the method}
 
@@ -352,7 +349,7 @@ This allows us to unify $\vb{c_x}$ and $\vb{c_y}$, while ensuring $\vb{B_x} \vb{
 
 Computing this kernel numerically is definitely not trivial. For rectangular matrices, there are a few well-known methods to compute the kernel. In the next paragraphs we will explore these methods and consider how well they are suited for our problem. For ease of notation we will be solving the rectangular system $\vb{A} \vb{Z} = \vb{0}$ with $\vb{A}$ a (sparse) $m\times n$ matrix and $\vb{Z}$ a yet unknown $n \times z$ matrix, whose columns are a basis for the right null space of $\vb{A}$.
 
-\paragraph{Finding the null space of a matrix}
+\nlparagraph{Finding the null space of a matrix}
 One of the first methods for finding the null space of a matrix one finds when browsing the literature is by computing its singular value decomposition. For extended background about using a singular value decomposition for null space construction, we refer to~\cite[section~2.4]{golub_matrix_2013}. In this book the following theorem can be found.
 
 \begin{theorem}
@@ -373,8 +370,8 @@ The singular value decomposition gives us a constructive way to find a basis of 
 
 Another popular method~\cite{trefethen_numerical_1997} to find the null space of a matrix is by using a QR-decomposition with pivoting. For this we decompose the $m \times n$ matrix $\vb{A}$ as $\transpose{\vb{A}}\vb{E} = \vb{Q} \vb{R}$, with $\vb{E}$ an $m\times m$ permutation matrix, $\vb{Q}$ a square $n \times n$ orthogonal matrix and $\vb{R}$ an $n \times m$ rectangular upper triangular matrix, with the elements on its diagonal sorted (descending in absolute value). To find the kernel, we now consider for which vectors $\vb{z}$ the expression $\vb{A} \vb{z} = \vb{E}\transpose{\vb{R}}\transpose{\vb{Q}}\vb{z}$ becomes zero. Notice that this only happens when $\vb{z}$ is in the linear span of the columns of $\vb{Q}$ corresponding to a diagonal item in $\vb{R}$ that is (close to) zero and, if $n > m$ the last $n - m$ columns of $\vb{Q}$. So an orthogonal basis of the null space of $\vb{A}$ can be found in a selection of columns of $\vb{Q}$ in the QR-decomposition of $\transpose{\vb{A}}$. For dense matrices this procedure also works very well. We can quite easily compute the full kernel with built-in QR routines. Upon selecting which columns to include, the diagonal elements of $\vb{R}$ can even be used to take into account a prespecified tolerance. It is also valuable to notice that computing a QR-decomposition is significantly more efficient than finding all singular values. So, for dense matrices, this second method is preferred. But for sparse matrices, the story is, again, quite different. There are many well-tested routines to compute a sparse QR-decomposition, for example SuiteSparseQR~\cite{davis_algorithm_2011} and \Eigen{}'s QR~\cite{guennebaud_eigen_2010}. Yet, we have tested this algorithm with both solvers, without success. \Eigen{} does not contain a rank revealing sparse QR-decomposition, and as such is unable to compute the full kernel. SuiteSparseQR, on the other hand, was sometimes able to compute the kernel, but this computation was each time very sensitive to the tolerance of when to pivot and which columns of $\vb{Q}$ to include. Even worse, the perfect `tolerance' was different for each test problem, or even for the same problem with different parameters.
 
-\paragraph{Solving the matrix approximation}
-In conclusion, coming back to equation~\eqref{equ:c4_null_space_kernel}, for now we will ignore the sparsity present and use the algorithm for the dense QR-decomposition present in \Eigen{}~\cite{guennebaud_eigen_2010}.
+\nlparagraph{Solving the matrix approximation}
+In conclusion, coming back to equation~\eqref{equ:c4_null_space_kernel}, for now we will ignore the sparsity present and use the algorithm for the dense QR-decomposition from \Eigen{}~\cite{guennebaud_eigen_2010}.
 
 The vector $\vb{c}$ can now be written as a linear combination of columns of $\vb{Z}$:
 $$
@@ -421,7 +418,7 @@ This problem is a classical square non-symmetric sparse eigenvalue problem. The 
 
 Surprisingly, some sparse eigenproblem solvers allow us to do something more efficient. \slepc{}~\cite{hernandez_slepc_2005} for example, allows one to provide a \emph{deflation space}. When this is provided, the eigensolver restricts solutions to the orthogonal complement of the deflation space. This functionality exists to allow users to continue an eigenvalue search, by only seeking solutions orthogonal to earlier seen eigenvectors. Or, a user may provide the null space of the matrix to exclude all zero eigenvalues.
 
-\paragraph{Constructing a deflation space}
+\nlparagraph{Constructing a deflation space}
 In our case, this feature can be used with the span of the rows of $\vb{Z_x} - \vb{Z_y} \vb{P}$ as deflation space. Then, only solutions will be considered which satisfy~\eqref{equ:c4_first_deflation_space}. While implementing and testing, we have found that the algorithms within \slepc{} have trouble converging to the low end of the spectrum of the matrix from~\eqref{equ:c4_nm_sparse_system}. One of  the issues \slepc{} encounters is that the matrix is highly singular. The employed algorithms for finding the low end of the spectrum are advanced adaptations of inverse power iterations. Therefore, during the execution many linear systems will be solved with our singular matrix. To solve these systems, they are using an LU-decomposition of the matrix in question. And, this decomposition is not rank-revealing and has issues with the singularity of the matrix. The developers of \slepc{} propose that a user should use a different, external, linear solver. Or, one could compute the null space independently and provide the results as the deflation space.
 
 Using an external solver is definitely not an attractive solution. Besides the difficulties of finding such a solver in the first place, or getting it to work together with \slepc{} and \Eigen{} (which we are already using), numerically we can do better. As most of the null space of the matrix in~\eqref{equ:c4_nm_sparse_system} is irrelevant for the original Schrödinger problem we are trying to solve, it would be advantageous to be able to exclude this null space before searching for eigenvalues. Trying to numerically compute this null space, is reminiscent of the analysis we have made in section~\ref{sec:nm_by_restriction}. There we came to the conclusion that an implementation which takes the sparsity into account is truly difficult to get working. Therefore, we would prefer a theoretical analysis which provides a sufficiently large null space, such that \slepc{} converges, even when searching for the low end of the spectrum.
@@ -438,7 +435,7 @@ Using deflation gave promising numerical results, but due to implementation draw
 
 %In our case, we are only interested in the first small eigenvalues. This forces us to use these eigenvalue routines in shift-and-invert mode. Here, the largest eigenvalues of $\left(\vb{A} - \sigma \vb{I}\right)^{-1}$ are sought, instead of the eigenvalues of $\vb{A}$ itself. In this mode of operation, it is instrumental to consider the fact that $\vb{A}$ is singular. With a technique called projection deflation we will be able to compute numerous small eigenvalues, excluding eigenvectors which lie in the null space of $\vb{A}$.
 
-\paragraph{Solving the square eigenvalue problem}
+\nlparagraph{Solving the square eigenvalue problem}
 To solve~\eqref{equ:c4_nm_sparse_system}, a matrix-free eigenvalue solver\footnote{A classical (dense) eigenvalue solver assumes the problem is given as $\vb{A} \vb{x} = \lambda \vb{x}$ with $\vb{A}$ a matrix. For sparse problems, constructing the matrix $\vb{A}$ explicitly may be inefficient or may introduce unwanted dense matrices. For example, if $\vb{A}$ is the product of two sparse matrices, in general this will itself not be as sparse. To combat this, many solvers implement what is called a matrix-free operation. Here, the user provides the linear operator $\mathcal{L}$ to find the eigenvalues of as a function: $\mathcal{L} : \RR^n \to \RR^n : \vb{x} \to \mathcal{L}(\vb{x})$. So there is no need to construct any matrix at all.} can be used (e.g.~\cite{lehoucq_arpack_1998,hernandez_slepc_2005,qiu_spectra_2022}). In our implementation we have chosen for \spectra{}~\cite{qiu_spectra_2022}, which is an implicitly restarted Arnoldi method. Since we are only interested in the lowest lying real eigenvalues, we will use a lower bound of the ground state as a shift to make the interesting eigenvalues strictly positive. A simple choice for this shift is $\sigma = \min_{\vb{x} \in \Omega} V(\vb{x})$. Now the values we are interested in are the smallest positive real eigenvalues of $\vb{A} - \sigma \vb{I}$. For finding these, there are two possible strategies. First, most eigenvalue solvers allow users to specify which values to select, the largest negative real values for example. All solvers are best at finding the outer boundaries of the spectrum. However, some also allow selecting values deep inside the spectrum, like the small positive reals, with the caveat that convergence may suffer. On the other hand, we could also search for the largest positive real eigenvalues of the matrix $\left(\vb{A} - \sigma \vb{I}\right)^{-1}$. In this case, the convergence will be better, but the runtime may suffer due to the needed linear solves, for example with an LU-decomposition.
 
 In any case, we want to exclude the null spaces of $\vb{Z_x}$ and $\vb{Z_y} \vb{P}$ to be considered. Let the columns of $\vb{K_x}$ be a basis of the null space of $\vb{Z_x}$ and the columns of $\vb{K_y}$ a basis of the null space of $\vb{Z_y}\vb{P}$. Following~\cite{saad_numerical_2011,mackey_deflation_2008}, let us define $\vb{D} := \left(\vb{I} - \vb{K_y} \vb{K_y}^\transposesign\right) \left(\vb{I} - \vb{K_x} \vb{K_x}^\transposesign\right)$ as what we call the deflation matrix. Applying this operator $\vb{D}$ to any vector orthogonally projects it out of the null spaces to their orthogonal complement. We need to ensure that the operator of which we are searching eigenvalues only returns vectors which are orthogonal to the unwanted space. On the other hand, we also want to ensure that when solving linear systems, the incoming vectors are orthogonal to the null space. With this in mind, we propose to find the smallest real strictly positive eigenvalues of
@@ -573,26 +570,6 @@ $$
 The nine unknown variables are $\psi^{(i, j)}_{m, n}$ for $m, n \in \{1,2,3\}$. The step sizes $\Delta x_i$ and $\Delta x_j$ are defined as $\left(x_{i+1} - x_{i}\right) / K$ and $\left(y_{i+1} - y_{i}\right) / K$ respectively. Notice that for all $m, n \in \{0,1,\dots, K\}$, if any of $m, n \in \{0, 4\}$, the values $\psi^{(i, j)}_{m, n}$ are known, as they can be computed as the boundary values.
 
 This relatively small linear system can now be numerically solved to obtain values of the eigenfunction within the small rectangle $\Omega_{i,j}$. On the right-hand side of figure~\ref{fig:c4_new_method_zoomed_in}, all red dots are now computed values and can be used to construct a polynomial interpolant. As a basis, we have chosen the 25 monomials $x^i y^j$ for all $i,j \in \{0,1,2,3,4\}$.
-
-
-% \subsubsection{Alternative methods}
-
-% Throughout the development of an algorithm to compute values of the eigenfunctions, we have considered many other methods for the computation of these eigenfunctions on an interior rectangle as well. In this section we will acknowledge some of these alternatives, together with their strengths and weaknesses. To motivate our final idea of solving a tiny Schrodinger-like problem to find interior points to interpolate through, a modest numerical comparison will be studied.
-
-% \paragraph{Interpolation through only boundary points} Previously, we stated that the functions $x^2 + y^2 - 1$ and $x^2 y^2$ have an identical boundary on the square $[-1, 1] \times [-1, 1]$. Also recall figure~\ref{fig:c4_interpolation_boundary issue}. This non-uniqueness can be solved by only considering polynomials with a total degree strictly less than four:
-% $$
-%     1, x, y, x^2, xy, y^2, x^3, x^2 y, x y^2 \text{ and } y^3\text{.}
-% $$
-% These ten functions can now be used as an interpolation basis. For this we choose ten points on the boundary of the internal rectangle. Or, we choose more points and use a least squares approximation.
-
-% Interpolation up to cubic functions
-
-% Interpolation over different small rectangles
-
-% $K > 4$, trade off between runtime and accuracy
-
-% \subsubsection{Non-rectangular domains}
-
 
 \subsection{Numerical experiments}\label{sec:c4_numerical_experiments}
 

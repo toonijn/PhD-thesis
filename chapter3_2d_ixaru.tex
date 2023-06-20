@@ -923,8 +923,7 @@ As a boundary condition we impose $\psi(x, y) = 0$ on the boundary $\dOmega_\eps
 
 Later on, the approximate eigenvalues found can be compared to the eigenvalues on the unit disc $\Omega_1$, as described in section~\ref{sec:c3_standing_waves_on_disc}. Theorem~\ref{the:c3_counting_eigenvalues} promises that, for an eigenvalue $\lambda_i$ on the unit disc, exactly $i$ moon-shaped subdomains can be found on which this $\lambda_i$ is also an eigenvalue.
 
-\paragraph{Transforming the problem onto a rectangular domain}
-
+\nlparagraph{Transforming the problem onto a rectangular domain}
 Approximating solutions for the eigenvalues of~\eqref{equ:c3_disc_schrodinger} on such an exotic domain $\Omega_\epsilon$ is not a trivial task. In principle, this problem could be seen as solving the Schrödinger equation on $[-1,1]^2$ with the potential
 $$
   V(x, y) = \begin{cases}
@@ -966,8 +965,7 @@ $$
   \mathcal{D} = c^\alpha {\pdv[]{}{\alpha}} + c^t \pdv[]{}{t} + c^{\alpha\alpha} \pdv[]{}{\alpha\alpha} + c^{\alpha t} \pdv[]{}{\alpha t} + c^{tt} \pdv[]{}{tt}\text{.}
 $$
 
-\paragraph{A specialized numerical method}
-
+\nlparagraph{A specialized numerical method}
 Before we can analyze the eigenvalues of the transformed operator $-\mathcal{D}$ in relation to the domain $\Omega_\epsilon$, we still need a method to approximate these eigenvalues. For general partial differential equations with appropriate boundary conditions, some standard techniques are available.~\cite[Chapter~11]{heath_scientific_2002} contains an overview of some of these methods. Our choices include, but are not limited to, a finite difference method, a finite element method, or a semidiscrete method with shooting. For our purposes, a method that is easy to implement that gives reliable results will be the best choice. A simple finite difference scheme will be sufficient.
 
 We will place an $n_\alpha \times n_t$ grid on the domain $\Xi_\epsilon$. This gives rise to the equidistant points $-\frac{\pi}{2}=\alpha_0, \alpha_1, \dots, \alpha_{n_\alpha} = \frac{\pi}{2}$, and the points $-1 = t_0, t_1, \dots t_{n_t} = -1 + 2\epsilon$. The distances between two points are given by $h_\alpha = \frac{\pi}{n_\alpha}$ and $h_t = \frac{2\epsilon}{n_t}$. Because of the homogeneous Dirichlet boundary conditions $\phi_{0,j} = \phi_{n_\alpha,j} = \phi_{i, 0} = \phi_{i,n_t} = 0$ for all $i$ and $j$. These grid points allow us to write down approximations of the first and second derivatives of $\phi(\alpha, t)$ in each of the grid points $\phi_{i, j} = \phi(\alpha_i, t_j)$.
@@ -1024,8 +1022,7 @@ with
   \end{center}
 \end{figure}
 
-\paragraph{Analysis of eigenvalues in relation to the domain}
-
+\nlparagraph{Analysis of eigenvalues in relation to the domain}
 With a numerical method to compute eigenvalues of the wave equation~\eqref{equ:c3_disc_schrodinger} on moon-shaped domains $\Omega_\epsilon$, and a comprehensive analysis of the true eigenvalues of this equation on the disc $\Omega_1$, we are able to illustrate theorem~\ref{lem:c3_eigenvalues_curves}.
 
 By employing our numerical method on different domains $\Omega_\epsilon$, we can construct figure~\ref{fig:c3_disc_eigenvalues_flow}. This figure was computed with $n_\alpha = n_t = 61$ (which makes $\vb{M}$ a $3600\times3600$ sparse matrix) for $200$ equidistantly-spaced values for $\epsilon$. Here, each line corresponds to a different eigenvalue. The lowest blue line visualizes the changes in the lowest eigenvalue according to the domain. For small domains $\epsilon \to 0$, this value becomes larger. The red line right above the blue line corresponds to the eigenvalue with index $1$ of the wave equation on $\Omega_\epsilon$. For $\Omega_1$, this eigenvalue has a double multiplicity $\lambda_1 = \lambda_2$. But for all smaller domains, this degeneracy disappears, and $\lambda_1$ is a single eigenvalue. Which eigenvalue each line represents is marked on the right side. In accordance with theorem~\ref{lem:c3_eigenvalues_curves}, all lines in figure~\ref{fig:c3_disc_eigenvalues_flow} are continuous, decreasing and unbounded when $\epsilon \to 0$.

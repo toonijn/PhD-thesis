@@ -202,6 +202,7 @@
 \newcommand{\longchapter}[2][]{%
   \chapter[#2]{#2}%
   \ifthenelse{\equal{#1}{}}{}{\chaptermark{#1}}}
+\newcommand{\nlparagraph}[1]{\paragraph{#1}\mbox{}\\} % New line after paragraph
 
 \newcommand{\todo}[1]{\textcolor{red}{To do: #1}}
 

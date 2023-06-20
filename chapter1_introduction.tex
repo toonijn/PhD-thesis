@@ -69,7 +69,8 @@ In the most general formulation, an $n$-dimensional $k^\text{th}$ order \emph{or
 \end{equation}
 expresses $n$ constraints on an unknown sufficiently differentiable function $\vb{y} : \Omega \to \RR^n$ with $\Omega \subseteq \RR$ and $\vb{f}: \Omega \times (\RR^n)^{k+1} \to \RR^n$. In most cases, this equation alone is insufficient to determine a unique solution $\vb{y}(x)$. For this, some initial or boundary conditions can be imposed on $\vb{y}$ (or any of the derivatives). As this abstract description is not intuitive, we provide some examples.
 
-\paragraph{Integrals} The problem of determining primitive functions $F(x)$ can be rewritten as a one-dimensional first order ordinary differential equation:
+\nlparagraph{Integrals}
+The problem of determining primitive functions $F(x)$ can be rewritten as a one-dimensional first order ordinary differential equation:
 $$
     F(x) = \int f(x) \,\dd x \quad \iff \quad \dv[]{F}{x} = f(x)\text{.}
 $$
@@ -80,20 +81,23 @@ $$
 
 Mathematically, this is a valid example. Intuitively however, this seems rather trivial.
 
-\paragraph{Swinging pendulum} Due to Newton's laws of motion, physical systems often give rise to second order ordinary differential equations. One such example is a pendulum. Here, a mass is suspended such that it can swing freely back and forth. Let $\theta(t)$ be the angle by which the mass is displaced from its hanging resting position at time $t$. The movement of the pendulum is described by
+\nlparagraph{Swinging pendulum}
+Due to Newton's laws of motion, physical systems often give rise to second order ordinary differential equations. One such example is a pendulum. Here, a mass is suspended such that it can swing freely back and forth. Let $\theta(t)$ be the angle by which the mass is displaced from its hanging resting position at time $t$. The movement of the pendulum is described by
 $$
     \dv[2]{\theta}{t} + \frac{g}{l} \sin(\theta) = 0\text{,}
 $$
 with $g$ the gravitational constant, and $l$ the distance between the fixed point and the mass. As initial conditions at time $t_0$, $\theta(t_0)$ represents the displacement angle at $t_0$ and $\theta'(t_0)$ represents some initial angular velocity with which the mass is released.
 
-\paragraph{Brachistochrone curve} Mathematicians love challenging each other. This is true today, as much as it was 300 years ago. In 1696, Johann Bernoulli posed the Brachistochrone problem: on which curve slides a frictionless bead the fastest from point $A$ to $B$? There are many strategies for solving this problem. In one such solution, the following differential equation arises:
+\nlparagraph{Brachistochrone curve}
+Mathematicians love challenging each other. This is true today, as much as it was 300 years ago. In 1696, Johann Bernoulli posed the Brachistochrone problem: on which curve slides a frictionless bead the fastest from point $A$ to $B$? There are many strategies for solving this problem. In one such solution, the following differential equation arises:
 $$
     {\dv[]{y}{x}} = \sqrt{\frac{D - y}{x}} \text{ with $y(0) = 0$,}
 $$
 with $D$ a parameter.
 % Image?
 
-\paragraph{Lotka--Volterra equations} In biological modelling, dynamical systems can describe many real-world situations. The Lotka--Volterra equations make up one such system. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of the predatory species (for example foxes). The Lotka--Volterra equations are
+\nlparagraph{Lotka--Volterra equations}
+In biological modelling, dynamical systems can describe many real-world situations. The Lotka--Volterra equations make up one such system. This set of equations models the population size of two species. One function $r(t)$ expresses the population size of prey (for example rabbits), the other function $f(t)$ tracks the population size of the predatory species (for example foxes). The Lotka--Volterra equations are
 $$
     \begin{cases}
         \dv[]{x}{t} = \alpha x - \beta x y  \\
@@ -123,7 +127,8 @@ One of the main characterizing properties of ordinary differential equations is 
 
 Providing a clean general one-formula definition of partial differential equations is quite cumbersome, and not at all instructive. Therefore, let us immediately take a look at some examples.
 
-\paragraph{The heat equation} Conductive heat transfer (among many other diffusive phenomena) is described by the heat equation. Let $f(t, x)$ be the temperature along an insulated metal rod with $x \in [0, 1]$ and $t \in \left[0, \infty\right[$. Physical laws dictate that this function satisfies
+\nlparagraph{The heat equation}
+Conductive heat transfer (among many other diffusive phenomena) is described by the heat equation. Let $f(t, x)$ be the temperature along an insulated metal rod with $x \in [0, 1]$ and $t \in \left[0, \infty\right[$. Physical laws dictate that this function satisfies
 $$
     {\pdv[]{f}{t}} = \alpha \pdv[2]{f}{x}\text{.}
 $$
@@ -135,7 +140,8 @@ $$
 $$
 Again, appropriate boundary and initial conditions have to be specified.
 
-\paragraph{Gauss's law for magnetism} Classical electromagnetism states that no magnetic monopoles exist. Mathematically this can be expressed as: at all times, the magnetic field $\vb{B} : \RR^3 \to \RR^3$ is divergence-free. Writing this as a partial differential equation makes this clear:
+\nlparagraph{Gauss's law for magnetism}
+Classical electromagnetism states that no magnetic monopoles exist. Mathematically this can be expressed as: at all times, the magnetic field $\vb{B} : \RR^3 \to \RR^3$ is divergence-free. Writing this as a partial differential equation makes this clear:
 \begin{equation}\label{equ:c1_gauss_magnets}
     \nabla \cdot \vb{B} = 0 \quad\iff\quad \pdv[]{\vb{B}}{x} + \pdv[]{\vb{B}}{y} + \pdv[]{\vb{B}}{z} = 0\text{.}    
 \end{equation}
@@ -146,7 +152,8 @@ In engineering, computer models of real-world situations are invaluable in makin
 
 % Image?
 
-\paragraph{Incompressible Navier--Stokes equations} To simulate the flow of incompressible fluids\footnote{The flow of water is a straightforward example. Also, these equations can handle slow flowing wind, as pressure can be assumed constant. If pressure cannot be neglected, then the compressible equations should be used.}, the incompressible Navier--Stokes equations can be used. Let $\vb{u} : \RR \times \RR^3 \to \RR^3$ express the flow vector at each moment $t$ in each point $(x, y, z)$. For incompressible flow, $\vb{u}$ has to satisfy
+\nlparagraph{Incompressible Navier--Stokes equations}
+To simulate the flow of incompressible fluids\footnote{The flow of water is a straightforward example. Also, these equations can handle slow flowing wind, as pressure can be assumed constant. If pressure cannot be neglected, then the compressible equations should be used.}, the incompressible Navier--Stokes equations can be used. Let $\vb{u} : \RR \times \RR^3 \to \RR^3$ express the flow vector at each moment $t$ in each point $(x, y, z)$. For incompressible flow, $\vb{u}$ has to satisfy
 \begin{align*}
     & \pdv[]{\vb{u}}{t} = \nabla^2\vb{u} - (\vb{u}\cdot \nabla)\vb{u} + \vb{f} \\
     &\quad\text{ while }\nabla\cdot \vb{u} = 0\text{.}

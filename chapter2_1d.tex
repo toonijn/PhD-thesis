@@ -969,7 +969,7 @@ Remark that in theorem~\ref{the:c2_delta_formulae}, in contrast to theorem~\ref{
 Furthermore, theorem~\ref{the:c2_delta_formulae} also gives more insight in the number of correction terms $Q$ needed to construct higher order methods. In \matslise{2}, $\text{CPM}\{18, 16\}$ was constructed with $N=16$ and $Q=11$. Theorem~\ref{the:c2_delta_formulae} shows that all necessary terms can be generated with $Q=6$ correction terms.
 
 
-\paragraph{Evaluating eigenvalues}
+\nlparagraph{Evaluating eigenvalues}
 Once an eigenvalue is computed in \matslise{} or \matslise{2}, the corresponding eigenfunction can be visualized. Since the mesh is coarse, such a visualization can only be achieved if extra function evaluations are available in a sufficient number of points. Neither \matslise{} nor \matslise{2} were optimized do to so. To visualize the eigenfunction $y_k$ that corresponds to a particular eigenvalue $E_k$, a new, sufficiently fine mesh is constructed, and all necessary computations are carried out once again.
 
 To explain why this approach was chosen in \matslise{} and \matslise{2}, let us consider the propagation matrix in~\eqref{equ:c2_cpm_propmatrix}. From theorem~\ref{the:c2_perturbation_terms}, we learn that each matrix element can be expressed as a polynomial in $\delta$, whose coefficients depend
@@ -1345,7 +1345,8 @@ Second, the accuracy of \pyslise{} is a lot higher. This can be explained by the
 
 In practice, and for our use-cases in the following chapters, we have found \matslise{3} and \pyslise{} to be sufficiently fast. Knowing this, we decided to keep our error estimate as it is, even though it is more conservative than it needs to be.
 
-\paragraph{Eigenfunctions} As explained in section~\ref{sec:c2_matslise3}, one of the reasons we developed more complicated formulae and built a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
+\nlparagraph{Eigenfunctions}
+As explained in section~\ref{sec:c2_matslise3}, one of the reasons we developed more complicated formulae and built a new implementation was the evaluation of the eigenfunctions. To evaluate the eigenfunction in \matslise{2}, the partition of the domain has to be recomputed to include the requested evaluation points. If there are only a limited set of points, and these are known beforehand, then \matslise{2}'s methods is sufficient. In many applications however, this is insufficient.
 
 Assume\footnote{Or take a look at section~\ref{sec:c3_calculate_vk}, where we need to do exactly this.} we want to compute an orthogonal projection of a function $f(x)$ to the truncated basis of the eigenfunctions $y_i$: $ f(x) = \sum_{i = 0} c_i y_i(x)$.
 To compute these numerically we need to approximate the following integrals for all necessary values for $i$:
@@ -1754,7 +1755,8 @@ In the current day and age, one of the more popular languages, with a larger com
 
 These native packages are the answer to the efficiency versus user-friendliness problem we were faced with. The high performing part can be efficiently implemented in a compiled language, but the code that the user will develop can be written in the more approachable \lpython{}. The last question before we could build our new implementation of \matslise{} was: ``Which compiled language?''. This language should be able to support the building of \lpython{}-packages, it should have support for linear algebra, preferably with optimized BLAS libraries, and it should support code architecture for numerical libraries. All of these requests makes \cpp{} a prime candidate. In combination with \pybind{}~\cite{jakob_pybind11_2017} for the \lpython{} compatibility and \Eigen{} v3~\cite{guennebaud_eigen_2010} as linear algebra library we have the perfect tools to satisfy all our needs.
 
-\paragraph{Try it out!} The new implementation, which we called \matslise{3}, can be accessed and executed in three different ways.
+\nlparagraph{Try it out!}
+The new implementation, which we called \matslise{3}, can be accessed and executed in three different ways.
 
 \begin{itemize}
     \item As a \cpp{} program: the source code of the package is hosted at \url{https://github.com/twist-numerical/matslise}. There, instructions to compile it can be found.
