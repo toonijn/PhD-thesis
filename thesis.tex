@@ -9,9 +9,12 @@
 
 \input{titlepage.tex}
 
-\cleardoublepage
-\pdfbookmark[chapter]{\contentsname}{toc}
-\tableofcontents
+\chapter*{Table of contents}
+\addcontentsline{toc}{chapter}{Table of contents}
+\markboth{Table of contents}{Table of contents}
+\makeatletter
+\@starttoc{toc}
+\makeatother
 
 \input{chapter_preface.tex}
 
