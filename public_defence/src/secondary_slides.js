@@ -34,6 +34,9 @@ const animations = {
   "fft-cello": cache(() =>
     import("./secondary/fft_cello.ts").then((s) => s.default)
   ),
+  "initial-value-ode": cache(() =>
+    import("./secondary/initial_value_ode.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({

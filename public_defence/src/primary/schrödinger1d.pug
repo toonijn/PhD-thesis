@@ -25,11 +25,21 @@ section
     h2 Vibrating string
 
     p
-      | As differential equation: $\, \displaystyle \frac{\partial^2 y}{\partial t^2} = \frac{\partial^2 y}{\partial x^2}\, $ with $y(0) = 0$ and $y(1) = 0$.
+      | As differential equation: $\, \displaystyle \frac{\partial^2 f}{\partial t^2} = \frac{\partial^2 f}{\partial x^2}\, $ with $f(0) = 0$ and $f(1) = 0$.
 
     p.fragment We can write
-      | $$ y(t, x) = \sum_{i=1}^\infty y_i(x) \sin\left(\sqrt{E_i} t\right) $$
-      | with $\, \displaystyle -\frac{\text{d}^2 y_i}{\text{d} x^2} = E_i y_i(x)\, $ and $y_i(0) = y_i(1) = 0$.
+      | $$ f(t, x) = \sum_{i=1}^\infty f_i(x) \sin\left(\sqrt{E_i} t\right) $$
+      | with $\, \displaystyle -\frac{\text{d}^2 f_i}{\text{d} x^2} = E_i f_i(x)\, $ and $f_i(0) = f_i(1) = 0$.
     aside.notes
       ul
         li Zeer technisch, volhouden
+
+  section
+    h2 Approximating solutions
+    h3 Initial value example
+
+    p
+      | $$ -\frac{\text{d}^2 f}{\text{d} x^2} + 4 x^2 f(x) = 3 f(x) $$
+      | with $f(0) = 0$ and $\frac{\text{d}f}{\text{d}x}(0) = 1$.
+
+    p(style="text-align: center; font-size: 110%; margin-top: 50px") Small steps!

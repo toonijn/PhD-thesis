@@ -7,6 +7,8 @@ export * from "./Path";
 export * from "./Axis";
 export * from "./ScalarFunction";
 export * from "./Text";
+export * from "./Line";
+export * from "./Circle";
 
 export class GraphContainer {
   element: SVGElement;
