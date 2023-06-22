@@ -63,7 +63,7 @@ class VibratingString {
         math: true,
       }),
       new GraphText(
-        `E_{${this.state}} = ${this.state == 0 ? '' : (1 + this.state) * (1 + this.state)}\\pi^2`,
+        `E_{${this.state}} = ${(1 + this.state) * (1 + this.state)}`,
         {
           x: 100,
           y: -60,

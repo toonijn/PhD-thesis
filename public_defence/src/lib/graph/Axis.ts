@@ -9,6 +9,8 @@ interface AxisOptions {
   arrowHead: number;
   arrowAngle: number;
   arrowFilled: boolean;
+  ticks: number[];
+  tickSize: number;
 }
 
 export class Axis extends GraphPath {
@@ -21,6 +23,8 @@ export class Axis extends GraphPath {
     arrowHead: 0.1,
     arrowAngle: 30,
     arrowFilled: true,
+    ticks: [],
+    tickSize: 0.1,
   };
 
   constructor(options: Partial<AxisOptions>) {
@@ -57,6 +61,11 @@ export class Axis extends GraphPath {
         steps.push("M" + coord(hx, hy));
         steps.push("L" + coord(hx - dx, hy + dy));
       }
+
+      this.options.ticks.forEach((tick) => {
+        steps.push("M" + coord(tick, hy - this.options.tickSize));
+        steps.push("L" + coord(tick, hy + this.options.tickSize));
+      });
     }
 
     this.d = steps.join(" ");

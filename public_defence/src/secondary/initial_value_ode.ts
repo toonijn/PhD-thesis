@@ -11,11 +11,11 @@ import {
 } from "../lib/graph/graph";
 import AnimationSlide from "../lib/animation_slide";
 
-const square = (x:number) => x * x;
+const square = (x: number) => x * x;
 
 const f = (x: number, fdf: number[]) => {
   const [f, df] = fdf;
-  return [df, (120*square(x) - 100) * f];
+  return [df, (120 * square(x) - 100) * f];
 };
 
 function ode_step(
@@ -36,7 +36,7 @@ function ode_step(
 function construct_plot() {
   const container = new GraphContainer();
   const ratio = 3;
-  const [xmin, xmax] = [0, ratio];
+  const [xmin, xmax] = [0, 1.1*ratio];
   const [ymin, ymax] = [-1, 1];
   const b = 0.1;
 
@@ -44,7 +44,14 @@ function construct_plot() {
 
   const options = { position: 0, arrowHead: 0.05, arrowFilled: true };
   const axes = [
-    new Axis({ type: "x", min: xmin, max: xmax, ...options }),
+    new Axis({
+      type: "x",
+      min: xmin,
+      max: xmax,
+      ticks: [1],
+      tickSize: 0.01,
+      ...options,
+    }),
     new Axis({ type: "y", reverse: true, min: ymin, max: ymax, ...options }),
   ];
   axes.forEach((axis) => {
@@ -77,7 +84,7 @@ function construct_plot() {
     container.add(l);
   };
 
-  let f0 = [0, 3];
+  let f0 = [0, ratio];
   const h = 0.08;
   let x = 0;
   while (x - h / 2 <= 1) {

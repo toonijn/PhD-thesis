@@ -9,7 +9,14 @@
     "start": "parcel src/primary.pug src/secondary.pug",
     "primary": "parcel src/primary.pug",
     "secondary": "parcel src/secondary.pug",
-    "build": "parcel build --public-url . src/primary.pug src/secondary.pug"
+    "build": "parcel build --public-url . src/primary.pug src/secondary.pug",
+    "server": "parcel build --target server && node dist/server.js"
+  },
+  "targets": {
+    "server": {
+      "context": "node",
+      "source": "src/server.ts"
+    }
   },
   "dependencies": {
     "katex": "^0.16.7",
@@ -17,13 +24,20 @@
     "parcel": "^2.8.3",
     "reveal.js": "^4.5.0",
     "simplex-noise": "^4.0.1",
+    "socket.io-client": "^4.7.0",
     "three": "^0.152.1"
   },
   "devDependencies": {
     "@parcel/transformer-pug": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
     "@prettier/plugin-pug": "^2.5.0",
+    "@types/three": "^0.152.1",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^5.5.0",
+    "path-browserify": "^1.0.0",
     "prettier": "^2.8.8",
-    "@types/three": "^0.152.1"
+    "socket.io": "^4.7.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.1.0"
   }
 }

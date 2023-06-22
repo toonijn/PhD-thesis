@@ -16,4 +16,6 @@ export default class AnimationSlide {
   deactivate() {
     this.active = false;
   }
+
+  setState() {}
 }

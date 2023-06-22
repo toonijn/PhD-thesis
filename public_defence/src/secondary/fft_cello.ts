@@ -5,7 +5,7 @@ import VerticalLines from "../lib/vertical_lines";
 import ugent from "../lib/theme";
 
 const max_frequency = 2000;
-const base_frequency = 442 / 2;
+const base_frequency = 220;
 
 export default new (class FFTCello extends ThreeSlide {
   fft = new FFTCanvas(1024 * 8, max_frequency);
@@ -29,6 +29,26 @@ export default new (class FFTCello extends ThreeSlide {
     this.vertical_lines.setLocations(locations);
     this.scene.add(this.vertical_lines);
     this.vertical_lines.position.z = -0.5;
+  }
+
+  initialize(element: HTMLElement): void {
+    super.initialize(element);
+    (
+      [
+        ["A<sub>3</sub>", 220],
+        ["A<sub>4</sub>", 440],
+        ["A<sub>5</sub>", 880],
+        ["A<sub>6</sub>", 1760],
+      ] as [string, number][]
+    ).forEach(([text, frequency]) => {
+      const label = document.createElement("div");
+      label.innerHTML = text;
+      label.style.position = "absolute";
+      label.style.left = `${(frequency / max_frequency) * 1024 + 10}px`;
+      label.style.top = "10px";
+
+      element.appendChild(label);
+    });
   }
 
   onFrame() {

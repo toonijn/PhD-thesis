@@ -1,6 +1,7 @@
 import Reveal from "reveal.js";
 import { RenderMathPlugin } from "./lib/render_math_plugin";
 import {} from "./primary/pendulum.ts";
+import SyncSlides from "./lib/sync_slides";
 
 let deck = new Reveal({
   hash: true,
@@ -17,3 +18,21 @@ let deck = new Reveal({
   showNotes: true,
 });
 deck.initialize();
+
+function change_slide(element) {
+  const animation = element.getAttribute("data-animation");
+  const state = element.getAttribute("data-animation-state");
+  if (animation)
+    sync_slides.changed({
+      animation: animation,
+      state: state,
+    });
+}
+
+const sync_slides = new SyncSlides();
+deck.on("slidechanged", (event) => {
+  change_slide(event.currentSlide);
+});
+deck.on("fragmentshown", (event) => {
+  change_slide(event.fragment);
+});

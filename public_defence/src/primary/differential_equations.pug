@@ -1,5 +1,5 @@
 section
-  section#de-background
+  section#de-background(data-animation="function-example")
     .flex-slide
       h2 Some mathematical background
 
@@ -18,7 +18,7 @@ section
           h4 vector functions
           | $$ \mathbf{f} : \mathbb{R}^n \to \mathbb{R}^m $$
           | $$ \mathbf{f}(x, y) = \begin{pmatrix} x + y \\ y - x \end{pmatrix} $$
-  section#de-derivatives
+  section#de-derivatives(data-animation="function-example")
     .flex-slide
       h2 Derivatives
 
@@ -42,7 +42,7 @@ section
           | $$ \frac{\text{d}^2 f}{\text{d}x^2} $$
         .igrid-item
           | $$ \nabla^2 g = \frac{\partial^2 g}{\partial x^2} + \frac{\partial^2 g}{\partial y^2} $$
-  section#de-definition
+  section#de-definition(data-animation="first-order-examples")
     .flex-slide
       h2 Differential equations
       p relate unknown functions to their 'shape'
@@ -64,18 +64,17 @@ section
         ul
           li Domein moet ook gedefiniëerd zijn
           li Oplossingen zijn niet per se uniek. Hiervoor hebben we randvoorwaarden nodig.
-          li Publieksinteractie: "Wie heeft al eens met differentiaalvergelijkingen gewerkt?" 
-          li Publieksinteractie: "Wie komt met enige regelmaat differentiaalvergelijkingen tegen in het wild?" 
+          li Publieksinteractie: "Wie heeft al eens met differentiaalvergelijkingen gewerkt?"
+          li Publieksinteractie: "Wie komt met enige regelmaat differentiaalvergelijkingen tegen in het wild?"
 
-  section#de-pendulum
+  section#de-pendulum(data-animation="example-pendulum")
     .flex-slide
       h2 Example: the pendulum
       | $$ \frac{\text{d}^2\theta}{\text{d}t} = -\sin(\theta(t)) $$
       #pendulum-graph.flex-slide-fill
 
-  section#de-heatequation
+  section#de-heatequation(data-animation="example-heatequation")
     .flex-slide
       h2 Example: the heat equation
       | $$ \frac{\partial T}{\partial t} = \frac{\partial^2 T}{\partial x^2} $$
       p To do: text about the heat equation
-

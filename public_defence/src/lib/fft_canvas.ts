@@ -81,7 +81,7 @@ class Bars extends THREE.Mesh {
   }
 
   get data() {
-    return this.data_attribute.array;
+    return this.data_attribute.array as Float32Array;
   }
 
   set needsUpdate(value: boolean) {
@@ -102,7 +102,7 @@ export default class FFTCanvas extends THREE.Group {
   constructor(size: number, highest_frequency: number) {
     super();
     this.fft_size = size;
-    const bar_width = 44100 / size / highest_frequency;
+    const bar_width = (1 / (size / 2)) * (44100 / 2 / highest_frequency);
     this.bar_count = Math.min(Math.ceil(1 / bar_width), this.fft_size / 2);
 
     this.bars = new Bars(this.bar_count, bar_width);

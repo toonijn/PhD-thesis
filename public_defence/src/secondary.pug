@@ -74,7 +74,7 @@ html
         section#vibrating-string
           .vibrating-string.full-size
         section#vibrating-string-states
-          div(style="display:grid; grid-template-columns: 1fr 1fr;")
+          div(style="display: grid; grid-template-columns: 1fr 1fr")
             .vibrating-string-state-0
             .vibrating-string-state-1
             .vibrating-string-state-2
@@ -83,5 +83,17 @@ html
           canvas.full-size
         section#initial-value-ode
           .initial-value-example.full-size
+        section#shooting-ode
+          .shooting-ode.full-size
+        section#all-eigenvalues-1d
+          .full-size(
+            style="display: grid; align-items: center; grid-template-columns: 1fr 1fr 1fr"
+          )
+            #ae1-0.item
+            #ae1-1.item
+            #ae1-2.item
+            #ae1-3.item
+            #ae1-4.item
+            #ae1-5.item
 
     script(src="secondary_slides.js", type="module")

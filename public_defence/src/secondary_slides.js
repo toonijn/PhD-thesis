@@ -1,5 +1,6 @@
 import Reveal from "reveal.js";
 import RevealMath from "reveal.js/plugin/math/math.js";
+import SyncSlides from "./lib/sync_slides.ts";
 
 const cache = (f) => {
   function r() {
@@ -36,6 +37,12 @@ const animations = {
   ),
   "initial-value-ode": cache(() =>
     import("./secondary/initial_value_ode.ts").then((s) => s.default)
+  ),
+  "shooting-ode": cache(() =>
+    import("./secondary/shooting_ode.ts").then((s) => s.default)
+  ),
+  "all-eigenvalues-1d": cache(() =>
+    import("./secondary/all_eigenvalues_1d.ts").then((s) => s.default)
   ),
 };
 
@@ -99,4 +106,20 @@ deck.on("slidechanged", process_slide);
 deck.on("ready", process_slide);
 deck.on("slidetransitionend", (event) => {
   deactivateAllExcept(event.currentSlide.id);
+});
+
+new SyncSlides().listen((event) => {
+  if (event.animation) {
+    let index = 0;
+    for (const slide of deck.getSlides()) {
+      if (slide.id === event.animation) {
+        deck.slide(index, 0, 0);
+        const imported = animations[slide.id];
+        if (event.state && imported)
+          imported().then((s) => s.setState(event.state));
+        break;
+      }
+      ++index;
+    }
+  }
 });
