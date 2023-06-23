@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import ugent from "./theme";
+import { asThreeColor } from "./color";
 
 const bar_material = new THREE.RawShaderMaterial({
   vertexShader: `
@@ -106,15 +107,9 @@ export default class FFTCanvas extends THREE.Group {
     this.bar_count = Math.min(Math.ceil(1 / bar_width), this.fft_size / 2);
 
     this.bars = new Bars(this.bar_count, bar_width);
-    this.bars.material.uniforms.color.value.setStyle(
-      ugent.blauw,
-      "srgb-linear"
-    );
+    asThreeColor(ugent.blauw, this.bars.material.uniforms.color.value);
     this.delayed_bars = new Bars(this.bar_count, bar_width);
-    this.delayed_bars.material.uniforms.color.value.setStyle(
-      ugent.geel,
-      "srgb-linear"
-    );
+    asThreeColor(ugent.geel, this.delayed_bars.material.uniforms.color.value);
     this.delayed_bars.material.uniforms.depth.value = -0.1;
 
     this.add(this.delayed_bars);

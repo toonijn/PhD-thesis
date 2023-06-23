@@ -93,3 +93,14 @@ section.title-slide {
     }
   }
 }
+
+.now-in-2d {
+  position: absolute;
+  transform: rotate(30deg);
+  transform-origin: 0% 0%;
+  color: $ugent_geel;
+  font-weight: bold;
+  font-size: 1.5em;
+  top: 10px;
+  left: 600px;
+}

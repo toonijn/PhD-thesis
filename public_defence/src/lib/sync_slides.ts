@@ -11,7 +11,7 @@ if (url) {
 }
 
 export default class SyncSlides {
-  constructor() {}
+  readonly socket = socket;
 
   listen(callback: (slideID: string) => void) {
     (async () => {

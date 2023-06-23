@@ -3,6 +3,7 @@ import ThreeSlide from "../lib/three_slide";
 import FFTCanvas from "../lib/fft_canvas";
 import VerticalLines from "../lib/vertical_lines";
 import ugent from "../lib/theme";
+import { asThreeColor } from "../lib/color";
 
 const max_frequency = 2000;
 const base_frequency = 220;
@@ -14,7 +15,7 @@ export default new (class FFTCello extends ThreeSlide {
       linewidth: 3,
       dashSize: 0.025,
       gapSize: 0.015,
-      color: new THREE.Color().setStyle(ugent.zwart, "srgb-linear"),
+      color: asThreeColor(ugent.zwart),
     })
   );
 

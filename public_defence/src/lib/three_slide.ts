@@ -21,7 +21,10 @@ export default class ThreeSlide extends AnimationSlide {
   initialize(element: HTMLElement) {
     super.initialize(element);
     this.canvas = this.get_canvas(element);
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+    });
     this.renderer.setClearColor(0xffffff);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 

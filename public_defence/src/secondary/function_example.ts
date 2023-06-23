@@ -1,6 +1,7 @@
 import ThreeSlide from "../lib/three_slide";
 import * as THREE from "three";
 import ugent from "../lib/theme";
+// @ts-ignore
 import ugent_matcap from "../assets/matcap.png";
 import {
   GraphContainer,
@@ -8,6 +9,7 @@ import {
   GraphGroup,
   Axis,
 } from "../lib/graph/graph";
+import { asThreeColor } from "../lib/color";
 
 const surface_geometry = (() => {
   const geometry = new THREE.PlaneGeometry(2, 2, 21, 21);
@@ -61,6 +63,7 @@ export default new (class extends ThreeSlide {
       new THREE.Mesh(
         surface_geometry,
         new THREE.MeshMatcapMaterial({
+          color: asThreeColor(ugent.blauw),
           side: THREE.DoubleSide,
           matcap: new THREE.TextureLoader().load(ugent_matcap),
         }) as any as THREE.MeshBasicMaterial

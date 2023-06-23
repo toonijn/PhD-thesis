@@ -44,11 +44,14 @@ const animations = {
   "all-eigenvalues-1d": cache(() =>
     import("./secondary/all_eigenvalues_1d.ts").then((s) => s.default)
   ),
+  schrodinger2d: cache(() =>
+    import("./secondary/schrodinger2d.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({
   hash: true,
-  slideNumber: true,
+  slideNumber: false,
   history: true,
   progress: false,
   controlsTutorial: false,
@@ -58,7 +61,8 @@ let deck = new Reveal({
   height: 576,
   margin: 0,
   maxScale: 3,
-  showNotes: true,
+  showNotes: false,
+  controls: false,
 });
 deck.initialize();
 
@@ -108,7 +112,9 @@ deck.on("slidetransitionend", (event) => {
   deactivateAllExcept(event.currentSlide.id);
 });
 
-new SyncSlides().listen((event) => {
+const syncing = new SyncSlides();
+syncing.socket.then(() => {});
+syncing.listen((event) => {
   if (event.animation) {
     let index = 0;
     for (const slide of deck.getSlides()) {
