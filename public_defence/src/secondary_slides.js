@@ -50,6 +50,9 @@ const animations = {
   "vibrating-drum": cache(() =>
     import("./secondary/vibrating_drum.ts").then((s) => s.default)
   ),
+  "fft-drum": cache(() =>
+    import("./secondary/fft_drum.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({
