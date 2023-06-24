@@ -7,6 +7,13 @@ export function hexToGLSL(color: string) {
   return `vec3(${r}, ${g}, ${b})`;
 }
 
-export function asThreeColor(color: string, output?: THREE.Color) {
-  return (output || new THREE.Color()).setStyle(color, "srgb-linear");
+export function asThreeColor(
+  color: string,
+  output?: THREE.Color,
+  correct = false
+) {
+  return (output || new THREE.Color()).setStyle(
+    color,
+    correct ? "srgb-linear" : "srgb"
+  );
 }
