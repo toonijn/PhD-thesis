@@ -12,7 +12,7 @@ const cache = (f) => {
 
 const animations = {
   "title-slide": cache(() =>
-    import("./secondary/title.js").then((s) => s.default)
+    import("./secondary/title.ts").then((s) => s.default)
   ),
   "function-example": cache(() =>
     import("./secondary/function_example.ts").then((s) => s.default)
@@ -46,6 +46,9 @@ const animations = {
   ),
   schrodinger2d: cache(() =>
     import("./secondary/schrodinger2d.ts").then((s) => s.default)
+  ),
+  "vibrating-drum": cache(() =>
+    import("./secondary/vibrating_drum.ts").then((s) => s.default)
   ),
 };
 

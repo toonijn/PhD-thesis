@@ -7,6 +7,7 @@ export default class ThreeSlide extends AnimationSlide {
   camera: THREE.Camera | undefined = undefined;
   renderer: THREE.WebGLRenderer | undefined = undefined;
   canvas: HTMLCanvasElement | undefined = undefined;
+  size: THREE.Vector2 = new THREE.Vector2(0, 0);
 
   constructor(get_canvas: (element: HTMLElement) => HTMLCanvasElement) {
     super();
@@ -16,6 +17,7 @@ export default class ThreeSlide extends AnimationSlide {
   resize() {
     if (!this.renderer || !this.canvas) return;
     this.renderer.setSize(this.canvas.offsetWidth, this.canvas.offsetHeight);
+    this.renderer.getSize(this.size);
   }
 
   initialize(element: HTMLElement) {
@@ -36,7 +38,7 @@ export default class ThreeSlide extends AnimationSlide {
     this.resize();
   }
 
-  onFrame() {
+  onFrame(dt:number) {
     if (this.renderer && this.camera)
       this.renderer.render(this.scene, this.camera);
   }
