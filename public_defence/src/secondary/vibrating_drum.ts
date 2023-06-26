@@ -4,43 +4,12 @@ import LinearCombinationPlot from "../lib/linear_combination_plot";
 import drum from "../assets/computed/drum.json";
 import ugent from "../lib/theme";
 import { asThreeColor } from "../lib/color";
+import DiscGeometry from "../lib/disc_geometry";
 
-const rn = 40;
-const tn = 120;
+const angular_segments = 120;
+const disc = new DiscGeometry(40, angular_segments);
 
-const disc = (() => {
-  const disc = new THREE.BufferGeometry();
-  const positions: number[] = [];
-  const indices: number[] = [];
-  const uv: number[] = [];
-
-  for (let r = 0; r <= rn; r++) {
-    const radius = r / rn;
-    for (let t = 0; t <= tn; t++) {
-      const theta = (t / tn) * 2 * Math.PI;
-      positions.push(radius * Math.cos(theta), radius * Math.sin(theta), 0);
-      uv.push(r / rn, 1 - t / tn);
-    }
-    if (r > 0) {
-      const s = r * (tn + 1);
-      for (let t = 0; t < tn; t++) {
-        indices.push(s + t, s + t + 1, s - tn - 1 + t);
-        indices.push(s - tn - 1 + t, s + t + 1, s - tn + t);
-      }
-    }
-  }
-  console.log(indices.reduce((a, b) => Math.max(a, b)));
-  console.log(positions.length / 3);
-  console.log(positions);
-
-  disc.setIndex(indices);
-  disc.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  disc.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
-
-  return disc;
-})();
-
-const initial = [[0], [0, 0.5], [0.5, 1], [0.2], [0, 1]];
+const initial = [[0], [0, 0.5], [0.5, 1], [0.2], [0, 1], [0, 0]];
 const offset = initial.map((a) => a.map(() => 2 * Math.PI * Math.random()));
 
 export default new (class extends ThreeSlide {
@@ -74,7 +43,7 @@ export default new (class extends ThreeSlide {
 
     this.plot.add(
       new THREE.Mesh(
-        new THREE.TorusGeometry(1, 0.015, 12, tn),
+        new THREE.TorusGeometry(1, 0.015, 12, angular_segments),
         new THREE.MeshBasicMaterial({
           color: asThreeColor(ugent.wit).multiplyScalar(0.3),
         })

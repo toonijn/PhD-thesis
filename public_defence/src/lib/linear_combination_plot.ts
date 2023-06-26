@@ -5,7 +5,7 @@ import * as THREE from "three";
 const interpolationMaterial = (() => {
   const cache = {};
   return (n: number) => {
-    if (cache[n] !== undefined) return cache[n];
+    if (cache[n] !== undefined) return cache[n].clone();
     return (cache[n] = new THREE.ShaderMaterial({
       uniforms: {
         textures: { value: [0, 1] },

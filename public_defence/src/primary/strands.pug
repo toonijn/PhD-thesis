@@ -4,11 +4,52 @@ section
 
     .now-in-2d Now in 2D!
 
-    p(style="color: red") To do: display a simple eigenfunction to explain graphs and colors
-
-    p Find values for $E$ and $f : \Omega \to \mathbb{R}$ such that
+    p(style="margin-top: 100px") Find values for $E$ and $f : \Omega \to \mathbb{R}$ such that
     p $$ - \nabla^2 f(x, y) + V(x, y) f(x, y) = E f(x, y) $$
     p on $\Omega \subseteq \mathbb{R}^2$ with boundary conditions.
 
+    aside.notes
+      p Beschrijft de waarschijnlijkheid om een deetje op een plek te vinden
+      p Het domein maakt de dingen moeilijker (vorm? begrensd? randvoorwaarden? samenhangend?)
+
   section(data-animation="vibrating-drum")
-    p Test
+    h2 Vibrating drum
+
+    p
+      | As a PDE on the unit disc with Dirichlet boundary conditions
+      | $$ \frac{\partial^2 f}{\partial t^2} = \nabla^2 f(t, x, y) $$
+
+    p.fragment(data-animation="vibrating-drum-states")
+      | We can write
+      | $$ f(t, x, y) = \sum_{i=1}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
+      | with $\, \displaystyle -\nabla^2 f_i(x, y) = E_i f_i(x, y)\, $.
+
+  section(data-animation="fft-drum")
+    .flex-slide
+      h2 Vibrating drum
+
+      p $$ f(t, x, y) = \sum_{i=1}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
+      p(style="margin-top: -20px") with $\, -\nabla^2 f_i(x, y) = E_i f_i(x, y)\, $.
+
+      .flex-slide-fill.igrid(style="grid-template-columns: 1fr")
+        div(
+          style="display: flex; flex-flow: row nowrap; justify-content: space-evenly"
+        )
+          div $$ E_{0} \approx 5.78 $$
+          div $$ E_{1} = E_{2} \approx 14.68 $$
+          div $$ E_{3} = E_{4} \approx 26.37 $$
+        div(
+          style="display: flex; flex-flow: row nowrap; justify-content: space-evenly"
+        )
+          div $$ E_{5} \approx 30.47 $$
+          div $$ E_{6} = E_{7} \approx 40.71 $$
+          div $$ E_{8} = E_{9} \approx 49.22 $$
+
+        div(
+          style="display: flex; flex-flow: row nowrap; justify-content: space-evenly"
+        )
+          div $$ E_{10} = E_{11} \approx 57.58 $$
+          div $$ E_{12} = E_{13} \approx 70.85 $$
+          div $$ \dots $$
+
+

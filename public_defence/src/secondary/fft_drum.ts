@@ -5,8 +5,8 @@ import VerticalLines from "../lib/vertical_lines";
 import ugent from "../lib/theme";
 import { asThreeColor } from "../lib/color";
 
-const max_frequency = 2000;
-const base_frequency = 150;
+const max_frequency = 500;
+const base_frequency = 40;
 
 const frequencies = [
   2.404825557695773, 3.8317059702075125, 5.135622301840683, 5.520078110286311,
@@ -26,7 +26,7 @@ const frequencies = [
 ];
 
 export default new (class FFTCello extends ThreeSlide {
-  fft = new FFTCanvas(1024 * 8, max_frequency);
+  fft = new FFTCanvas(1024 * 16, max_frequency);
   vertical_lines = new VerticalLines(
     new THREE.LineDashedMaterial({
       linewidth: 3,

@@ -52,9 +52,9 @@ export default new (class FFTCello extends ThreeSlide {
     });
   }
 
-  onFrame() {
+  onFrame(dt: number) {
     this.fft.update();
-    super.onFrame();
+    super.onFrame(dt);
   }
 
   deactivate() {

@@ -28,18 +28,16 @@ section
       | As differential equation: $\, \displaystyle \frac{\partial^2 f}{\partial t^2} = \frac{\partial^2 f}{\partial x^2}\, $ with $f(0) = 0$ and $f(\pi) = 0$.
 
     p.fragment(data-animation="vibrating-string-states") We can write
-      | $$ f(t, x) = \sum_{i=1}^\infty f_i(x) \sin\left(\sqrt{E_i} t\right) $$
+      | $$ f(t, x) = \sum_{i=0}^\infty f_i(x) \sin\left(\sqrt{E_i} t\right) $$
       | with $\, \displaystyle -\frac{\text{d}^2 f_i}{\text{d} x^2} = E_i f_i(x)\, $ and $f_i(0) = f_i(\pi) = 0$.
-    aside.notes
-      ul
-        li Zeer technisch, volhouden
+
 
   section(data-animation="fft-cello")
     .flex-slide
       h2 Vibrating string
 
       p
-        | $$ f(t, x) = \sum_{i=1}^\infty f_i(x) \sin\left(\sqrt{E_i} t\right) $$
+        | $$ f(t, x) = \sum_{i=0}^\infty f_i(x) \sin\left(\sqrt{E_i} t\right) $$
         | with $\, \displaystyle -\frac{\text{d}^2 f_i}{\text{d} x^2} = E_i f_i(x)\, $ and $f_i(0) = f_i(\pi) = 0$.
 
       .flex-slide-fill.igrid(style="grid-template-columns: 1fr")
