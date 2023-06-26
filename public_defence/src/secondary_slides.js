@@ -56,6 +56,9 @@ const animations = {
   "fft-drum": cache(() =>
     import("./secondary/fft_drum.ts").then((s) => s.default)
   ),
+  "tennis-racket": cache(() =>
+    import("./secondary/tennis_racket.ts").then((s) => s.default)
+  ),
 };
 
 let deck = new Reveal({

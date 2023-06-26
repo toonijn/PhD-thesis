@@ -95,7 +95,7 @@ export default new (class extends ThreeSlide {
     this.camera.updateProjectionMatrix();
   }
 
-  onFrame() {
+  onFrame(dt: number) {
     if (!this.camera) return;
 
     const t = (0.2 * +new Date()) / 1000;
@@ -104,6 +104,6 @@ export default new (class extends ThreeSlide {
     this.camera.position.z = 3 * Math.sin(t);
     this.camera.lookAt(0, 0, 0);
 
-    super.onFrame();
+    super.onFrame(dt);
   }
 })();
