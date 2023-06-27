@@ -88,11 +88,8 @@ class Strand extends THREE.SkinnedMesh {
   }
 
   update(data: StrandData) {
-    console.log(data);
     this.bones.forEach((bone, i) => {
-      console.log(data.strand[i][1]);
       bone.matrix.makeRotationX(Math.atan(data.strand[i][1]));
-      console.log(data.strand[i]);
       bone.matrix.setPosition(data.t, data.ts[i], data.strand[i][0]);
       bone.updateMatrixWorld();
     });

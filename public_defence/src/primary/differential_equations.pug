@@ -3,21 +3,23 @@ section
     .flex-slide
       h2 Some mathematical background
 
-      .flex-slide-fill.igrid(style="grid-template-columns: 1fr 1fr")
-        .igrid-item
-          h4 numbers
-          | $$ \mathbb{N}, \mathbb{Q}, \mathbb{R}, \mathbb{C} $$
+      .flex-slide-fill.igrid(
+        style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr"
+      )
+        .igrid-item(
+          style="display: flex; flex-direction: column; justify-content: space-around; height: 100%"
+        )
+          div
+            h4 numbers
+            p $$ \mathbb{N}, \mathbb{Q}, \mathbb{R}, \mathbb{C} $$
+          div
+            h4 vectors
+            p $$ \mathbf{v} = \begin{pmatrix} v_x \\ v_y \end{pmatrix} \in \mathbb{R}^2 $$
         .igrid-item
           h4 scalar functions
-          | $$ f : \mathbb{R}^n \to \mathbb{R} $$
-          | $$ f(x, y) = x^2 + y^2 $$
-        .igrid-item
-          h4 vectors
-          | $$ \mathbf{v} = \begin{pmatrix} v_x \\ v_y \end{pmatrix} \in \mathbb{R}^2 $$
-        .igrid-item
-          h4 vector functions
-          | $$ \mathbf{f} : \mathbb{R}^n \to \mathbb{R}^m $$
-          | $$ \mathbf{f}(x, y) = \begin{pmatrix} x + y \\ y - x \end{pmatrix} $$
+            p
+            | $$ f : \mathbb{R}^n \to \mathbb{R} $$
+            | $$ f(x, y) = x^2 + y^2 $$
   section#de-derivatives(data-animation="function-example")
     .flex-slide
       h2 Derivatives

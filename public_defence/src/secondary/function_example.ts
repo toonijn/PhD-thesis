@@ -53,6 +53,7 @@ function construct1DPlot() {
 
 export default new (class extends ThreeSlide {
   camera: THREE.PerspectiveCamera | undefined;
+  time: number = 0;
 
   constructor() {
     super((element) => element.querySelector("canvas") as HTMLCanvasElement);
@@ -87,6 +88,11 @@ export default new (class extends ThreeSlide {
     element.querySelector(".plot1d")?.appendChild(construct1DPlot().element);
   }
 
+  activate(element: HTMLElement): void {
+    super.activate(element);
+    this.time = 0;
+  }
+
   resize() {
     super.resize();
     if (!this.camera || !this.canvas) return;
@@ -98,7 +104,8 @@ export default new (class extends ThreeSlide {
   onFrame(dt: number) {
     if (!this.camera) return;
 
-    const t = (0.2 * +new Date()) / 1000;
+    this.time += dt;
+    const t = 0.05 - 0.2 * Math.sin(0.3 * this.time);
     this.camera.position.x = 3 * Math.cos(t);
     this.camera.position.y = 1;
     this.camera.position.z = 3 * Math.sin(t);

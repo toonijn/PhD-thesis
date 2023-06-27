@@ -35,9 +35,6 @@ const animations = {
   "fft-cello": cache(() =>
     import("./secondary/fft_cello.ts").then((s) => s.default)
   ),
-  "initial-value-ode": cache(() =>
-    import("./secondary/initial_value_ode.ts").then((s) => s.default)
-  ),
   "shooting-ode": cache(() =>
     import("./secondary/shooting_ode.ts").then((s) => s.default)
   ),
@@ -125,7 +122,6 @@ deck.on("slidetransitionend", (event) => {
 });
 
 const syncing = new SyncSlides();
-syncing.socket.then(() => {});
 syncing.listen((event) => {
   if (event.animation) {
     let index = 0;

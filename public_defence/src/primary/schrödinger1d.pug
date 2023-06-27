@@ -1,6 +1,6 @@
 section
   section(data-animation="sturm-liouville-schrodinger")
-    h2 Sturm-Lioville equations
+    h2 Sturm-Liouville equations
     p Find values for $E$ and $f : [a, b] \to \mathbb{R}$ such that
     | $$ - \frac{\text{d}}{\text{d} x}\left(p(x) \frac{\text{d}f}{\text{d} x}\right) + q(x) f(x) = E w(x) f(x) $$
     p with boundary conditions.
@@ -55,27 +55,6 @@ section
           div $$ E_5 = 36 $$
           div $$ E_6 = 49 $$
 
-  section(data-animation="initial-value-ode")
-    h2 Approximating solutions
-    h3 Initial value example
-
-    p
-      | $$ -\frac{\text{d}^2 f}{\text{d} x^2} + 120 x^2 f(x) = 100 f(x) $$
-      | with $f(0) = 0$ and $\frac{\text{d}f}{\text{d}x}(0) = 1$.
-
-    p(style="color: red") To do: animation
-
-    p(style="text-align: center; font-size: 110%; margin-top: 50px") Small steps!
-
-    aside.notes
-      p Twee problemen
-      ul
-        li Kleine stapjes
-        li Dit is niet het probleem dat we willen oplossen
-          ul
-            li We kennen E niet
-            li En randvoorwaarde probleem
-
   section(data-animation="shooting-ode", data-animation-state="guess-E")
     h2 Approximating solutions
     h3 Shooting
@@ -117,7 +96,7 @@ section
 
     p Features:
     ul
-      li robin boundary conditions
+      li Robin boundary conditions
       li potential with jumps
       li transformed Sturm-Liouville problems
       li fast evaluation of eigenfunctions <strong>(new)</strong>

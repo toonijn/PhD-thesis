@@ -21,14 +21,14 @@ section
 
     p.fragment(data-animation="vibrating-drum-states")
       | We can write
-      | $$ f(t, x, y) = \sum_{i=1}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
+      | $$ f(t, x, y) = \sum_{i=0}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
       | with $\, \displaystyle -\nabla^2 f_i(x, y) = E_i f_i(x, y)\, $.
 
   section(data-animation="fft-drum")
     .flex-slide
       h2 Vibrating drum
 
-      p $$ f(t, x, y) = \sum_{i=1}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
+      p $$ f(t, x, y) = \sum_{i=0}^\infty f_i(x, y) \sin\left(\sqrt{E_i} t\right) $$
       p(style="margin-top: -20px") with $\, -\nabla^2 f_i(x, y) = E_i f_i(x, y)\, $.
 
       .flex-slide-fill.igrid(style="grid-template-columns: 1fr")
@@ -52,4 +52,26 @@ section
           div $$ E_{12} = E_{13} \approx 70.85 $$
           div $$ \dots $$
 
+  section(data-animation="tennis-racket")
+    .flex-slide
+      h2 Finding 2D eigenfunctions
+      div(style="display: grid; grid-template-columns: 1fr 1fr")
+        p Horizontal:
+          | $$ f(x, y_j) = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x) $$
+        p Vertical:
+          | $$ f(x_i, y) = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y) $$
 
+      p If these sums are finite, this yields a matrix-problem:
+        | $$ \mathbf{B_x} \mathbf{\Lambda_x}\mathbf{c_x} + \mathbf{B_y} \mathbf{\Lambda_y}\mathbf{c_y} = E \mathbf{B_x} \mathbf{c_x} = E \mathbf{B_y} \mathbf{c_y}\text{.} $$
+
+  section
+    .flex-slide
+      h2 Strands
+
+      p Features:
+      ul
+        li Dirichlet boundary conditions
+        li accurate eigenvalues
+        li relatively fast eigenfunctions <strong>(new)</strong>
+        li general (non-rectangular) domains <strong>(new)</strong>
+        li 3D problems <strong>(future work)</strong>
