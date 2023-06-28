@@ -60,18 +60,22 @@ section
           | $$ f(x, y_j) = \sum_{k=0}^\infty c_k^{(y_j)} \beta_k^{(y_j)}(x) $$
         p Vertical:
           | $$ f(x_i, y) = \sum_{k=0}^\infty c_k^{(x_i)} \beta_k^{(x_i)}(y) $$
-
-      p If these sums are finite, this yields a matrix-problem:
-        | $$ \mathbf{B_x} \mathbf{\Lambda_x}\mathbf{c_x} + \mathbf{B_y} \mathbf{\Lambda_y}\mathbf{c_y} = E \mathbf{B_x} \mathbf{c_x} = E \mathbf{B_y} \mathbf{c_y}\text{.} $$
+      div(style="margin-top: -30px")
+        | $$ -\frac{\text{d}^2\,\beta_k^{(y_j)}}{\text{d}x^2} + \frac{V(x, y_j)}{2} \beta_k^{(y_j)} = \lambda_k^{(y_j)} \beta_k $$
+      .fragment(data-animation="beta-matrices")
+        p If these sums are finite, this yields a matrix-problem:
+          | $$ \mathbf{B_x} \mathbf{\Lambda_x}\mathbf{c_x} + \mathbf{B_y} \mathbf{\Lambda_y}\mathbf{c_y} = E \mathbf{B_x} \mathbf{c_x} = E \mathbf{B_y} \mathbf{c_y}\text{.} $$
 
   section
     .flex-slide
       h2 Strands
 
+      p(style="color: red") To do: a fitting image
+
       p Features:
       ul
         li Dirichlet boundary conditions
         li accurate eigenvalues
-        li relatively fast eigenfunctions <strong>(new)</strong>
+        li relatively fast evaluation of eigenfunctions <strong>(new)</strong>
         li general (non-rectangular) domains <strong>(new)</strong>
         li 3D problems <strong>(future work)</strong>

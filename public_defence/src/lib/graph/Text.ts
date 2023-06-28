@@ -41,7 +41,7 @@ export class GraphText extends GraphElement {
     this.element.appendChild(this.content);
 
     this.update();
-    this.text = text;
+    this.setText(text);
   }
 
   update() {
@@ -69,7 +69,7 @@ export class GraphText extends GraphElement {
     this.content.style.transformOrigin = "0 0";
   }
 
-  set text(text: string | HTMLElement) {
+  setText(text: string | HTMLElement, innerHTML = false) {
     if (this.options.math !== false) {
       this.content.innerHTML = katex.renderToString(
         text,
@@ -81,7 +81,8 @@ export class GraphText extends GraphElement {
           : this.options.math
       );
     } else if (typeof text === "string") {
-      this.content.textContent = text;
+      if (innerHTML) this.content.innerHTML = text;
+      else this.content.textContent = text;
     } else {
       this.content.innerHTML = "";
       this.content.appendChild(text);

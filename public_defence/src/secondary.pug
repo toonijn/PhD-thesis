@@ -74,7 +74,7 @@ html
         section#vibrating-string
           .vibrating-string.full-size
         section#vibrating-string-states
-          div.full-size(style="display: grid; grid-template-columns: 1fr 1fr")
+          .full-size(style="display: grid; grid-template-columns: 1fr 1fr")
             .vibrating-string-state-0
             .vibrating-string-state-1
             .vibrating-string-state-2
@@ -107,5 +107,10 @@ html
           canvas.full-size
         section#tennis-racket
           canvas.full-size
+        section#beta-matrices
+          .full-size(
+            style="display: grid; align-items: center; justify-items: center; grid-template-columns: 1fr"
+          )
+            img(src="./assets/strands_b_matrices.svg", style="width: 800px")
 
     script(src="secondary_slides.js", type="module")
