@@ -29,16 +29,16 @@ html
           .side-by-side
             .item(style="position: relative")
               .plot1d.full-size
-              div(style="position: absolute; right: 40px; bottom: 150px")
-                | $ f(x) = x^2 $
-              div(style="position: absolute; right: 50px; bottom: 80px")
+              div(style="position: absolute; top: 10px; width: 100%")
+                | $$ f(x) = x^3 - x $$
+              div(style="position: absolute; right: 50px; bottom: 170px")
                 | $ x $
-              div(style="position: absolute; left: 230px; top: 50px")
+              div(style="position: absolute; left: 215px; top: 180px")
                 | $ f(x) $
             .item(style="position: relative")
               canvas.full-size
               div(style="position: absolute; top: 10px; width: 100%")
-                | $$ g(x, y) = xy $$
+                | $$ g(x, y) = \sin(x)\,e^{-x^2 - y^2} $$
         section#first-order-examples
           .side-by-side
             .item(style="position: relative")
@@ -74,7 +74,7 @@ html
         section#vibrating-string
           .vibrating-string.full-size
         section#vibrating-string-states
-          div(style="display: grid; grid-template-columns: 1fr 1fr")
+          div.full-size(style="display: grid; grid-template-columns: 1fr 1fr")
             .vibrating-string-state-0
             .vibrating-string-state-1
             .vibrating-string-state-2

@@ -45,35 +45,23 @@ class VibratingString {
       ...axes,
       this.curve,
       new GraphText("x", {
-        x: 200,
-        y: -11,
+        x: 205,
+        y: -18,
         width: 100,
         height: 100,
         scale: 0.4,
         halign: "center",
         math: true,
       }),
-      new GraphText(`y_{${this.state}}(x)`, {
-        x: 16,
-        y: -45,
+      new GraphText(`f_{${this.state}}(x)\\sin(${this.state == 0 ? '' : 1+this.state} t)`, {
+        x: 45,
+        y: -60,
         width: 100,
         height: 100,
         scale: 0.4,
         halign: "center",
         math: true,
-      }),
-      new GraphText(
-        `E_{${this.state}} = ${(1 + this.state) * (1 + this.state)}`,
-        {
-          x: 100,
-          y: -60,
-          width: 100,
-          height: 100,
-          scale: 0.4,
-          halign: "center",
-          math: true,
-        }
-      )
+      })
     );
   }
 

@@ -50,10 +50,10 @@ function eigenfunction(i: number, E: number, x: number[], f: number[]) {
   path.setAttribute("stroke-width", (0.015 * scale).toString());
   container.add(path);
 
-  const text = new GraphText(`E_{${i}} \\approx ${E.toFixed(4)}`, {
+  const text = new GraphText(`E_{${i}} \\approx ${E.toPrecision(7)}`, {
     x: 0.5 * scale,
     y: -1.2 * scale * yheight,
-    scale: 0.13,
+    scale: 0.1,
     width: scale,
     height: yheight * scale,
     halign: "center",

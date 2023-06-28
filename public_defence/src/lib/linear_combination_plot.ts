@@ -1,4 +1,4 @@
-import { hexToGLSL } from "./color";
+import { asThreeColor, hexToGLSL } from "./color";
 import ugent from "./theme";
 import * as THREE from "three";
 
@@ -8,6 +8,9 @@ const interpolationMaterial = (() => {
     if (cache[n] !== undefined) return cache[n].clone();
     return (cache[n] = new THREE.ShaderMaterial({
       uniforms: {
+        theme_red: { value: asThreeColor(ugent.rood, undefined, true) },
+        theme_white: { value: asThreeColor(ugent.wit, undefined, true) },
+        theme_blue: { value: asThreeColor(ugent.blauw, undefined, true) },
         textures: { value: [0, 1] },
         weights: { value: [0, 0] },
       },
@@ -24,9 +27,9 @@ const interpolationMaterial = (() => {
           precision highp float;
           precision highp sampler2D;
   
-          const vec3 ugent_blauw = ${hexToGLSL(ugent.blauw)};
-          const vec3 ugent_wit = ${hexToGLSL(ugent.wit)};
-          const vec3 ugent_rood = ${hexToGLSL(ugent.rood)};
+          uniform vec3 theme_red;
+          uniform vec3 theme_white;
+          uniform vec3 theme_blue;
   
           varying vec2 vUv;
           uniform sampler2D textures[${n}];
@@ -36,9 +39,9 @@ const interpolationMaterial = (() => {
             t = clamp(t, -1.0, 1.0);
             float f = 1.0 - pow(1.0 - abs(t), 3.0);
             if(t < 0.0)
-              return mix(ugent_wit, ugent_blauw, f);
+              return mix(theme_white, theme_blue, f);
             else
-              return mix(ugent_wit, ugent_rood, f);
+              return mix(theme_white, theme_red, f);
           }
           
           void main() {

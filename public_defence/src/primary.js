@@ -16,6 +16,9 @@ let deck = new Reveal({
   margin: 0,
   maxScale: 3,
   showNotes: true,
+  controls: false,
+  transition: "fade",
+  transitionSpeed: "slow",
 });
 deck.initialize();
 

@@ -72,6 +72,9 @@ let deck = new Reveal({
   maxScale: 3,
   showNotes: false,
   controls: false,
+  transition: "fade",
+  transition: "fade",
+  transitionSpeed: "slow",
 });
 deck.initialize();
 
