@@ -17,3 +17,9 @@ export function asThreeColor(
     correct ? "srgb-linear" : "srgb"
   );
 }
+
+export function lighten(color: string, amount: number) {
+  const c = asThreeColor(color);
+  c.lerp(new THREE.Color("white"), amount);
+  return c.getStyle();
+}

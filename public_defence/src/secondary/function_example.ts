@@ -32,10 +32,16 @@ const surface_geometry = (() => {
 })();
 
 const smiley = (happy: boolean) => {
-  let path = "M -0.2 -0.4 L -0.2 -0 M 0.2 -0.4 L 0.2 0";
+  let path = "";
 
-  if (happy) path += " M -0.5 0.2 Q 0 0.8 0.5 0.2";
-  else path += " M -0.5 0.5 Q 0 0 0.5 0.5";
+  if (happy) {
+    path += "M -0.2 -0.2 L 0.2 -0.2";
+    path += "M 0 0 L 0 -0.4";
+    path += " M -0.5 0.2 Q 0 0.8 0.5 0.2";
+  } else {
+    path += "M -0.2 -0.2 L 0.2 -0.2";
+    path += " M -0.5 0.5 Q 0 0 0.5 0.5";
+  }
 
   const p = new GraphPath();
   p.d = path;

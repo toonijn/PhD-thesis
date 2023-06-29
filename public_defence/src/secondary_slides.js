@@ -41,6 +41,9 @@ const animations = {
   "all-eigenvalues-1d": cache(() =>
     import("./secondary/all_eigenvalues_1d.ts").then((s) => s.default)
   ),
+  "pyslise-periodic": cache(() =>
+    import("./secondary/pyslise_periodic.ts").then((s) => s.default)
+  ),
   schrodinger2d: cache(() =>
     import("./secondary/schrodinger2d.ts").then((s) => s.default)
   ),
