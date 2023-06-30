@@ -8,7 +8,10 @@ html
   body
     .reveal
       .slides
-        section.title-slide(data-animation="title-slide" data-animation-state="title")
+        section.title-slide(
+          data-animation="title-slide",
+          data-animation-state="title"
+        )
           h1 Algorithms for time-independent <br /> Schrödinger equations
 
           img.logo(src="./assets/logo_ugent.png", alt="")
@@ -25,13 +28,13 @@ html
 
         include primary/strands.pug
 
+        section(data-animation="title-slide", data-animation-state="ending")
+          .flex-slide
+            h2 Looking back
 
-        section(data-animation="title-slide" data-animation-state="ending")
-          h2 Looking back
-
-          p(style="color: red") To do: inspiratie
-
-
-
+            .flex-slide-fill(
+              style="display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; text-align: center; align-items: center; justify-items: center; grid-gap: 1em"
+            )
+              p(style="font-size: 180%") Why?
 
     script(src="primary.js", type="module")
