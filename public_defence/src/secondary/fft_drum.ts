@@ -5,8 +5,8 @@ import VerticalLines from "../lib/vertical_lines";
 import ugent from "../lib/theme";
 import { asThreeColor } from "../lib/color";
 
-const max_frequency = 350;
-const base_frequency = 86 /  2.404825557695773;
+const max_frequency = 400;
+const base_frequency =  45;
 
 const frequencies = [
   2.404825557695773, 3.8317059702075125, 5.135622301840683, 5.520078110286311,
